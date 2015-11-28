@@ -18,7 +18,7 @@ MODULE PIXCMD_VARS
   REAL(SP), DIMENSION(nage) :: model_ages=0.
 
   !number of free parameters
-  INTEGER, PARAMETER :: npar=6
+  INTEGER, PARAMETER :: npar=nage*nz
 
   !max size of array for data and isochrones
   INTEGER, PARAMETER :: ndat_max=3000000,niso_max=5000

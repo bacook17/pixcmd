@@ -11,7 +11,8 @@ PROGRAM FIT_PIXCMD
 
   IMPLICIT NONE
 
-  INTEGER, PARAMETER :: nwalkers=100,nburn=1e3,nmcmc=1e3
+  INTEGER, PARAMETER :: nwalkers=100,nburn=300,nmcmc=200
+  INTEGER, PARAMETER :: dopowell=0
   INTEGER :: i,j,ndat,stat,i1,i2,iter=30,totacc=0
   REAL(SP) :: mpix,fret,bret=huge_number,wdth=0.1
   REAL(SP), DIMENSION(nz) :: zmet
@@ -104,32 +105,38 @@ PROGRAM FIT_PIXCMD
   hess_err  = hess_err /ndat
   hess_data = hess_data/ndat
   
+  CALL DATE_AND_TIME(TIME=time)
+  WRITE(*,*) 'Start Time '//time(1:2)//':'//time(3:4)//':'//time(5:6)
  
   !---------------------Run powell minimization-----------------------!
 
-  CALL DATE_AND_TIME(TIME=time)
-  WRITE(*,*) 'Start Time '//time(1:2)//':'//time(3:4)//':'//time(5:6)
-
-  DO j=1,100
-     !setup params
-     DO i=1,npar-1
-        pos(i) = LOG10(myran()/6.)
+  IF (dopowell.EQ.1) THEN
+  
+     DO j=1,10
+        !setup params
+        DO i=1,npar
+           pos(i) = LOG10(myran()/npar)
+        ENDDO
+        xi=0.0
+        DO i=1,npar
+           xi(i,i) = 1E-2
+        ENDDO
+        fret = huge_number
+        CALL POWELL(pos,xi,ftol,iter,fret)
+        IF (fret.LT.bret) THEN
+           bret = fret
+           bpos = pos
+        ENDIF
      ENDDO
-     pos(npar)   = myran()*2+8
-     xi=0.0
+     WRITE(*,'(200F10.5)') log10(bret/(nx*ny-npar))!,bpos
+
+  ELSE
+
      DO i=1,npar
-        xi(i,i) = 1E-2
+        bpos(i) = LOG10(myran()/npar)
      ENDDO
-     fret = huge_number
-     CALL POWELL(pos,xi,ftol,iter,fret)
-     IF (fret.LT.bret) THEN
-        bret = fret
-        bpos = pos
-     ENDIF
-  ENDDO
-  WRITE(*,'(10F10.5)') alog10(bret/(nx*ny-npar)),&
-       10**bpos(1:npar-1),bpos(npar)
 
+  ENDIF
 
   !-------------------------Run emcee---------------------------------!
 
@@ -142,16 +149,37 @@ PROGRAM FIT_PIXCMD
      lp_emcee_in(j) = -0.5*func(pos_emcee_in(:, j))
   ENDDO
 
-  !burn-in the chain
+  !initial burn-in the chain
   WRITE(*,*) 'burning in...'
-  DO i=1,nburn
+  DO i=1,nburn/2-1
      CALL EMCEE_ADVANCE(npar,nwalkers,2.0,pos_emcee_in,&
           lp_emcee_in,pos_emcee_out,lp_emcee_out,accept_emcee)
      pos_emcee_in = pos_emcee_out
      lp_emcee_in  = lp_emcee_out
   ENDDO
 
-  OPEN(12,FILE='fit.mcmc',STATUS='REPLACE')
+  !prune the walkers and re-initialize
+  i = MAXLOC(lp_emcee_in,1)
+  bpos = pos_emcee_in(:,i)
+  DO j=1,nwalkers
+     DO i=1,npar
+        pos_emcee_in(i,j) = bpos(i) + wdth*(2.*myran()-1.0)
+     ENDDO
+     !Compute the initial log-probability for each walker
+     lp_emcee_in(j) = -0.5*func(pos_emcee_in(:, j))
+  ENDDO
+
+  !second-pass burn-in the chain
+  WRITE(*,*) 'burning in...'
+  DO i=nburn/2,nburn
+     CALL EMCEE_ADVANCE(npar,nwalkers,2.0,pos_emcee_in,&
+          lp_emcee_in,pos_emcee_out,lp_emcee_out,accept_emcee)
+     pos_emcee_in = pos_emcee_out
+     lp_emcee_in  = lp_emcee_out
+  ENDDO
+
+
+  OPEN(12,FILE='../results2/fit.mcmc',STATUS='REPLACE')
 
   !production chain
   WRITE(*,*) 'production run...'       
@@ -164,7 +192,7 @@ PROGRAM FIT_PIXCMD
 
      !write the chain elements to file
      DO j=1,nwalkers
-        WRITE(12,'(ES12.5,1x,99(F9.4,1x))') &
+        WRITE(12,'(ES12.5,1x,999(F9.4,1x))') &
              -2.0*lp_emcee_in(j),pos_emcee_in(:, j)
      ENDDO
      
@@ -175,7 +203,7 @@ PROGRAM FIT_PIXCMD
   !write the best model to a binary file
   bmodel = get_model(bpos)
   OPEN(11,FILE='../results2/fit.hess',&
-       FORM='UNFORMATTED',STATUS='REPLACE',access='direct',&
+       FORM='UNFORMATTED',STATUS='REPLACE',access='DIRECT',&
        recl=nx*ny*4)
   WRITE(11,rec=1) bmodel
   CLOSE(11)
