@@ -45,7 +45,7 @@ PROGRAM FIT_PIXCMD
   !read in the model Hess diagrams
   DO i=1,nz
      WRITE(zstr,'(F6.4)') zmet(i)
-     OPEN(11,FILE='../results/hess_M'//mstr//'_Z'//zstr//'.dat',&
+     OPEN(11,FILE='../hess/hess_M'//mstr//'_Z'//zstr//'.dat',&
           FORM='UNFORMATTED',STATUS='OLD',access='direct',&
           recl=nage*nx*ny*4,ACTION='READ')
      READ(11,rec=1) model(i,:,:,:)
@@ -64,13 +64,10 @@ PROGRAM FIT_PIXCMD
      yarr(i) = ymin+(i-1)*dy
   ENDDO
 
-  !read in the model ages
-  OPEN(13,FILE='../data/ages.dat',STATUS='OLD',iostat=stat,&
-       ACTION='READ')
+  !set up model ages array
   DO i=1,nage
-     READ(13,*) model_ages(i)
+     model_ages(i) = age0+(i-1)*dage
   ENDDO
-  CLOSE(13)
 
   !read in the data
   OPEN(12,FILE='../data/m31_bulge.dat',STATUS='OLD',iostat=stat,&
@@ -133,6 +130,7 @@ PROGRAM FIT_PIXCMD
   WRITE(*,'(10F10.5)') alog10(bret/(nx*ny-npar)),&
        10**bpos(1:npar-1),bpos(npar)
 
+
   !-------------------------Run emcee---------------------------------!
 
   !initialize the walkers
@@ -153,7 +151,7 @@ PROGRAM FIT_PIXCMD
      lp_emcee_in  = lp_emcee_out
   ENDDO
 
-  OPEN(12,FILE='out.mcmc',STATUS='REPLACE')
+  OPEN(12,FILE='fit.mcmc',STATUS='REPLACE')
 
   !production chain
   WRITE(*,*) 'production run...'       
@@ -176,7 +174,7 @@ PROGRAM FIT_PIXCMD
 
   !write the best model to a binary file
   bmodel = get_model(bpos)
-  OPEN(11,FILE='../results/hess_best.dat',&
+  OPEN(11,FILE='../results2/fit.hess',&
        FORM='UNFORMATTED',STATUS='REPLACE',access='direct',&
        recl=nx*ny*4)
   WRITE(11,rec=1) bmodel

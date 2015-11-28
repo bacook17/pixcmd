@@ -18,7 +18,7 @@ FUNCTION GET_MODEL(inpos)
   !the weight of the 6th metallicity point is defined
   !so that the total is one.
   ff = 1-SUM(10**inpos(1:5))
-
+ 
   m1 = 10**inpos(1)*model(1,ilo,:,:) + &
        10**inpos(2)*model(2,ilo,:,:) + &
        10**inpos(3)*model(3,ilo,:,:) + &

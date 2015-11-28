@@ -169,7 +169,7 @@ PROGRAM SIM_PIXCMD
 
   CLOSE(10)
 
-  OPEN(11,FILE='../results/hess_M'//mstr//'_Z'//zstr//'.dat',&
+  OPEN(11,FILE='../hess/hess_M'//mstr//'_Z'//zstr//'.dat',&
        FORM='UNFORMATTED',STATUS='REPLACE',access='direct',&
        recl=nage*nx*ny*4)
   WRITE(11,rec=1) hess
