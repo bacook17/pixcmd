@@ -61,7 +61,7 @@ PROGRAM SIM_PIXCMD
      READ(file,*) nmpix
      CALL GETARG(3,file)
      READ(file,*) dmpix
-     CALL GETARG(2,file)
+     CALL GETARG(4,file)
      READ(file,'(F6.4)') zmet
   ENDIF
   WRITE(zstr,'(F6.4)') zmet
