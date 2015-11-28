@@ -36,6 +36,8 @@ PROGRAM FIT_PIXCMD
   INTEGER,  DIMENSION(nwalkers)  :: accept_emcee
   !------------------------------------------------------------!
 
+  CALL GETENV('PIXCMD_HOME',PIXCMD_HOME)
+
   !initialize the random number generator
   CALL INIT_RANDOM_SEED()
 
@@ -46,8 +48,8 @@ PROGRAM FIT_PIXCMD
   !read in the model Hess diagrams
   DO i=1,nz
      WRITE(zstr,'(F6.4)') zmet(i)
-     OPEN(11,FILE='../hess/hess_M'//mstr//'_Z'//zstr//'.dat',&
-          FORM='UNFORMATTED',STATUS='OLD',access='direct',&
+     OPEN(11,FILE=TRIM(PIXCMD_HOME)//'/hess/hess_M'//mstr//'_Z'//zstr//&
+          '.dat',FORM='UNFORMATTED',STATUS='OLD',access='direct',&
           recl=nage*nx*ny*4,ACTION='READ')
      READ(11,rec=1) model(i,:,:,:)
      CLOSE(11)
@@ -71,8 +73,8 @@ PROGRAM FIT_PIXCMD
   ENDDO
 
   !read in the data
-  OPEN(12,FILE='../data/m31_bulge.dat',STATUS='OLD',iostat=stat,&
-       ACTION='READ')
+  OPEN(12,FILE=TRIM(PIXCMD_HOME)//'/data/m31_bulge.dat',STATUS='OLD',&
+       iostat=stat,ACTION='READ')
   DO i=1,ndat_max
      READ(12,*,IOSTAT=stat) xdat(i),ydat(i)
      IF (stat.NE.0) GOTO 20
@@ -179,7 +181,7 @@ PROGRAM FIT_PIXCMD
   ENDDO
 
 
-  OPEN(12,FILE='../results2/fit.mcmc',STATUS='REPLACE')
+  OPEN(12,FILE=TRIM(PIXCMD_HOME)//'/results2/fit.mcmc',STATUS='REPLACE')
 
   !production chain
   WRITE(*,*) 'production run...'       
@@ -202,7 +204,7 @@ PROGRAM FIT_PIXCMD
 
   !write the best model to a binary file
   bmodel = get_model(bpos)
-  OPEN(11,FILE='../results2/fit.hess',&
+  OPEN(11,FILE=TRIM(PIXCMD_HOME)//'/results2/fit.hess',&
        FORM='UNFORMATTED',STATUS='REPLACE',access='DIRECT',&
        recl=nx*ny*4)
   WRITE(11,rec=1) bmodel

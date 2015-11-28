@@ -30,6 +30,8 @@ MODULE PIXCMD_VARS
   REAL(SP), PARAMETER :: huge_number = 1E33
   REAL(SP), PARAMETER :: tiny_number = 1E-33
 
+  CHARACTER(250) :: PIXCMD_HOME=''
+
   !---------------------common arrays---------------------!
 
   !array for model grids

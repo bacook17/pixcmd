@@ -44,6 +44,8 @@ PROGRAM SIM_PIXCMD
   
   !----------------------------------------------------------------!
 
+  CALL GETENV('PIXCMD_HOME',PIXCMD_HOME)
+
   IF (IARGC().LT.1) THEN
      mpix0 = 3.0
      dmpix = 0.1
@@ -82,7 +84,8 @@ PROGRAM SIM_PIXCMD
   CALL INIT_RANDOM_SEED()
 
   !read in the ACS F814W PSF (log PSF in the file)
-  OPEN(12,file='../psf/f814w.psf',STATUS='OLD',iostat=stat,ACTION='READ')
+  OPEN(12,file=TRIM(PIXCMD_HOME)//'/psf/f814w.psf',&
+       STATUS='OLD',iostat=stat,ACTION='READ')
   IF (stat.NE.0) THEN
      WRITE(*,*) 'PIXCMD ERROR: PSF file not found'
      STOP
@@ -106,8 +109,8 @@ PROGRAM SIM_PIXCMD
      WRITE(*,'("   log Mpix  =",F6.2)') LOG10(mpix)
 
      !open the isochrone file
-     OPEN(10,file='../isoc/SSP_MISTv29_BaSeL_Salpeter_Z'//zstr//&
-          '_default.out.cmd',STATUS='OLD',iostat=stat,ACTION='READ')
+     OPEN(10,file=TRIM(PIXCMD_HOME)//'/isoc/SSP_MISTv29_BaSeL_Salpeter_Z'//&
+          zstr//'_default.out.cmd',STATUS='OLD',iostat=stat,ACTION='READ')
      IF (stat.NE.0) THEN
         WRITE(*,*) 'PIXCMD ERROR: isoc file not found'
         STOP
@@ -183,8 +186,8 @@ PROGRAM SIM_PIXCMD
      
      CLOSE(10)
      
-     OPEN(11,FILE='../hess/hess_M'//mstr//'_Z'//zstr//'.dat',&
-          FORM='UNFORMATTED',STATUS='REPLACE',access='direct',&
+     OPEN(11,FILE=TRIM(PIXCMD_HOME)//'/hess/hess_M'//mstr//'_Z'//zstr//&
+          '.dat',FORM='UNFORMATTED',STATUS='REPLACE',access='direct',&
           recl=nage*nx*ny*4)
      WRITE(11,rec=1) hess
      CLOSE(11)
