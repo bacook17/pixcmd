@@ -102,7 +102,8 @@ PROGRAM SIM_PIXCMD
 
   DO m=1,nmpix
 
-     hess=0.0
+     hess = 0.0
+     iage = 0.0
 
      mpix = 10**(mpix0+(m-1)*dmpix)
      WRITE(mstr,'(F4.2)') LOG10(mpix)

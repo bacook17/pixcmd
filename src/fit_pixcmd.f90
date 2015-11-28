@@ -11,7 +11,7 @@ PROGRAM FIT_PIXCMD
 
   IMPLICIT NONE
 
-  INTEGER, PARAMETER :: nwalkers=100,nburn=300,nmcmc=200
+  INTEGER, PARAMETER :: nwalkers=100,nburn=2000,nmcmc=200
   INTEGER, PARAMETER :: dopowell=0
   INTEGER :: i,j,ndat,stat,i1,i2,iter=30,totacc=0
   REAL(SP) :: mpix,fret,bret=huge_number,wdth=0.1
