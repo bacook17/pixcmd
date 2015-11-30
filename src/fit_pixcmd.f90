@@ -6,24 +6,18 @@ PROGRAM FIT_PIXCMD
   !Note: 1E6 pix is not quite enough compared to 2E7.
 
   USE pixcmd_utils; USE pixcmd_vars; USE nrtype
-  USE nr, ONLY : locate,powell
+  USE nr, ONLY : powell
   USE ran_state, ONLY : ran_seed,ran_init
 
   IMPLICIT NONE
 
-  INTEGER, PARAMETER :: nwalkers=100,nburn=2000,nmcmc=200
+  INTEGER, PARAMETER :: nwalkers=100,nburn=100,nmcmc=100
   INTEGER, PARAMETER :: dopowell=0
   INTEGER :: i,j,ndat,stat,i1,i2,iter=30,totacc=0
   REAL(SP) :: mpix,fret,bret=huge_number,wdth=0.1
-  REAL(SP), DIMENSION(nz) :: zmet
   CHARACTER(10) :: time
-  CHARACTER(6)  :: zstr
-  CHARACTER(4)  :: mstr
-  
-  REAL(SP), DIMENSION(nx) :: xarr=0.
-  REAL(SP), DIMENSION(ny) :: yarr=0.
-  REAL(SP), DIMENSION(ndat_max) :: xdat=0.,ydat=0.
-  REAL(SP), DIMENSION(nx,ny) :: bmodel=0.
+  CHARACTER(50) :: infile
+  REAL(SP), DIMENSION(nx,ny)    :: bmodel=0.
 
   !Powell iteration tolerance
   REAL(SP), PARAMETER :: ftol=0.01
@@ -33,67 +27,28 @@ PROGRAM FIT_PIXCMD
   !emcee variables
   REAL(SP), DIMENSION(npar,nwalkers) :: pos_emcee_in,pos_emcee_out
   REAL(SP), DIMENSION(nwalkers)      :: lp_emcee_in,lp_emcee_out
-  INTEGER,  DIMENSION(nwalkers)  :: accept_emcee
+  INTEGER,  DIMENSION(nwalkers)      :: accept_emcee
   !------------------------------------------------------------!
 
-  CALL GETENV('PIXCMD_HOME',PIXCMD_HOME)
+  IF (IARGC().LT.1) THEN
+     infile='m31_bulge'
+  ELSE
+     CALL GETARG(1,infile)
+  ENDIF
 
   !initialize the random number generator
   CALL INIT_RANDOM_SEED()
 
-  mpix = 1E2
-  WRITE(mstr,'(F4.2)') LOG10(mpix)
-  zmet = (/0.0010,0.0025,0.0040,0.0080,0.0190,0.0290/)
+  !setup the model grid
+  CALL SETUP_MODELS()
 
-  !read in the model Hess diagrams
-  DO i=1,nz
-     WRITE(zstr,'(F6.4)') zmet(i)
-     OPEN(11,FILE=TRIM(PIXCMD_HOME)//'/hess/hess_M'//mstr//'_Z'//zstr//&
-          '.dat',FORM='UNFORMATTED',STATUS='OLD',access='direct',&
-          recl=nage*nx*ny*4,ACTION='READ')
-     READ(11,rec=1) model(i,:,:,:)
-     CLOSE(11)
-     !normalize each model to unity and compute Poisson err
-     DO j=1,nage
-        model(i,j,:,:) = model(i,j,:,:)/npix**2
-     ENDDO
-  ENDDO
-
-  !set up the Hess arrays
-  DO i=1,nx
-     xarr(i) = xmin+(i-1)*dx
-  ENDDO
-  DO i=1,ny
-     yarr(i) = ymin+(i-1)*dy
-  ENDDO
-
-  !set up model ages array
-  DO i=1,nage
-     model_ages(i) = age0+(i-1)*dage
-  ENDDO
-
-  !read in the data
-  OPEN(12,FILE=TRIM(PIXCMD_HOME)//'/data/m31_bulge.dat',STATUS='OLD',&
-       iostat=stat,ACTION='READ')
-  DO i=1,ndat_max
-     READ(12,*,IOSTAT=stat) xdat(i),ydat(i)
-     IF (stat.NE.0) GOTO 20
-  ENDDO
-  WRITE(*,*) 'FIT_PIXCMD ERROR: did not finish reading in data file'
-  STOP
-20 CONTINUE
-  ndat = i-1
-  CLOSE(12)
-
-  !create a Hess diagram for the data
-  hess_data=0.0
-  DO i=1,ndat
-     IF (xdat(i).LT.xarr(1).OR.xdat(i).GT.xarr(nx).OR.&
-          ydat(i).LT.yarr(1).OR.ydat(i).GT.yarr(ny)) CYCLE
-     i1 = locate(xarr,xdat(i))
-     i2 = locate(yarr,ydat(i))
-     hess_data(i1,i2) = hess_data(i1,i2)+1.
-  ENDDO
+  !read in the Hess diagram for the data
+  OPEN(1,FILE=TRIM(PIXCMD_HOME)//'/data/'//TRIM(infile)//'.hess',&
+       FORM='UNFORMATTED',STATUS='OLD',access='direct',&
+       recl=nx*ny*4,ACTION='READ')
+  READ(1,rec=1) hess_data
+  CLOSE(1)
+  ndat = SUM(hess_data)
 
   !Poisson error at each CMD pixel
   hess_err = SQRT(hess_data)
@@ -116,7 +71,8 @@ PROGRAM FIT_PIXCMD
   
      DO j=1,10
         !setup params
-        DO i=1,npar
+        pos(1) = myran()+1.5
+        DO i=2,npar
            pos(i) = LOG10(myran()/npar)
         ENDDO
         xi=0.0
@@ -134,7 +90,8 @@ PROGRAM FIT_PIXCMD
 
   ELSE
 
-     DO i=1,npar
+     pos(1) = myran()+1.5
+     DO i=2,npar
         bpos(i) = LOG10(myran()/npar)
      ENDDO
 
@@ -152,7 +109,7 @@ PROGRAM FIT_PIXCMD
   ENDDO
 
   !initial burn-in the chain
-  WRITE(*,*) 'burning in...'
+  WRITE(*,*) 'first burn-in...'
   DO i=1,nburn/2-1
      CALL EMCEE_ADVANCE(npar,nwalkers,2.0,pos_emcee_in,&
           lp_emcee_in,pos_emcee_out,lp_emcee_out,accept_emcee)
@@ -172,7 +129,7 @@ PROGRAM FIT_PIXCMD
   ENDDO
 
   !second-pass burn-in the chain
-  WRITE(*,*) 'burning in...'
+  WRITE(*,*) 'second burn-in...'
   DO i=nburn/2,nburn
      CALL EMCEE_ADVANCE(npar,nwalkers,2.0,pos_emcee_in,&
           lp_emcee_in,pos_emcee_out,lp_emcee_out,accept_emcee)

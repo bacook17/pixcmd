@@ -19,10 +19,11 @@ PROGRAM SIM_PIXCMD
   END TYPE TISO
   
   INTEGER :: i,j,k,m,t,iseed,nn,niso,stat,nmpix
-  REAL(SP) :: mpix,zmet,age,iage=0.,d1,d2,d3,d4,d5,phase,mpix0,dmpix
+  REAL(SP) :: mpix,zmet1,age,iage=0.,d1,d2,d3,d4,d5,phase,mpx0,dmpx
   REAL(SP), DIMENSION(5)  :: dum5
   REAL(SP), DIMENSION(27) :: dum27
-  REAL(SP), DIMENSION(nfil,npix,npix)  :: flux=0.,cflux=0.,oflux=0.
+  REAL(SP), DIMENSION(nage,npix,npix,nfil)  :: flux=0.
+  REAL(SP), DIMENSION(npix,npix,nfil)  :: cflux=0.,oflux=0.
   REAL(SP), DIMENSION(npsf,npsf) :: psf=0.
   TYPE(TISO), DIMENSION(niso_max) :: iso
   CHARACTER(10) :: time
@@ -44,44 +45,44 @@ PROGRAM SIM_PIXCMD
   
   !----------------------------------------------------------------!
 
-  CALL GETENV('PIXCMD_HOME',PIXCMD_HOME)
-
   IF (IARGC().LT.1) THEN
-     mpix0 = 3.0
-     dmpix = 0.1
+     mpx0 = 3.0
+     dmpx = 0.1
      nmpix = 1
-     zmet  = 0.0190
+     zmet1 = 0.0190
   ELSE IF (IARGC().NE.4) THEN
      WRITE(*,*) 'PIXCMD ERROR: incorrect syntax, returning'
      STOP
   ELSE
      CALL GETARG(1,file)
-     READ(file,*) mpix0
+     READ(file,*) mpx0
      CALL GETARG(2,file)
      READ(file,*) nmpix
      CALL GETARG(3,file)
-     READ(file,*) dmpix
+     READ(file,*) dmpx
      CALL GETARG(4,file)
-     READ(file,'(F6.4)') zmet
+     READ(file,'(F6.4)') zmet1
   ENDIF
-  WRITE(zstr,'(F6.4)') zmet
+  WRITE(zstr,'(F6.4)') zmet1
 
   WRITE(*,*) 
-  WRITE(*,'("log Z/Zsol=",F6.2)') LOG10(zmet/0.0190)
+  WRITE(*,'("log Z/Zsol=",F6.2)') LOG10(zmet1/0.0190)
 
   !set a background flux level
   flux = bkgnd
 
-  !set up the Hess arrays
-  DO i=1,nx
-     xarr(i) = xmin+(i-1)*dx
-  ENDDO
-  DO i=1,ny
-     yarr(i) = ymin+(i-1)*dy
-  ENDDO
-
   !initialize the random number generator
   CALL INIT_RANDOM_SEED()
+
+  CALL GETENV('PIXCMD_HOME',PIXCMD_HOME)
+
+  !set up the Hess arrays
+  DO i=1,nx
+     xhess(i) = xmin+(i-1)*dx
+  ENDDO
+  DO i=1,ny
+     yhess(i) = ymin+(i-1)*dy
+  ENDDO
 
   !read in the ACS F814W PSF (log PSF in the file)
   OPEN(12,file=TRIM(PIXCMD_HOME)//'/psf/f814w.psf',&
@@ -105,7 +106,7 @@ PROGRAM SIM_PIXCMD
      hess = 0.0
      iage = 0.0
 
-     mpix = 10**(mpix0+(m-1)*dmpix)
+     mpix = 10**(mpx0+(m-1)*dmpx)
      WRITE(mstr,'(F4.2)') LOG10(mpix)
      WRITE(*,'("   log Mpix  =",F6.2)') LOG10(mpix)
 
@@ -120,7 +121,7 @@ PROGRAM SIM_PIXCMD
 
      !--------------------Loop on population age--------------------!
      
-     DO t=1,nage
+     DO t=20,20 !1,nage
 
         age = age0+(t-1)*dage
 
@@ -157,41 +158,53 @@ PROGRAM SIM_PIXCMD
         !----------------Compute the model at each pixel-----------------!
         
         !compute the model over an NxN image
-        flux = 0.0
+        !flux = 0.0
         DO j=1,npix
            DO i=1,npix
               DO k=1,niso
                  nn = poidev(mpix*iso(k)%imf)
-                 flux(:,i,j) = flux(:,i,j) + nn*iso(k)%bands
+                 flux(t,i,j,:) = flux(t,i,j,:) + nn*iso(k)%bands
               ENDDO
            ENDDO
         ENDDO
         
         !-------------------Convolve with the ACS PSF--------------------!
         
-        cflux = convolve(flux,psf,npix,nfil,npsf)
-        
+        cflux = convolve(flux(t,:,:,:),psf,npix,nfil,npsf)
+
         !convert to mags
         cflux = -2.5*LOG10(cflux)
         
         !--------------------Add observational errors--------------------!
         
         oflux = add_obs_err(cflux,dm,exptime,zpt)
-        
+
         !---------------Compute a Hess diagram in B-I vs. I--------------!
 
-        hess(t,:,:) = hist_2d(oflux(1,:,:)-oflux(2,:,:),oflux(2,:,:),&
-             xarr,yarr,nx,ny,npix)
+        hess(t,:,:) = hist_2d(oflux(:,:,1)-oflux(:,:,2),oflux(:,:,2),&
+             xhess,yhess,nx,ny,npix)
 
      ENDDO
      
      CLOSE(10)
      
-     OPEN(11,FILE=TRIM(PIXCMD_HOME)//'/hess/hess_M'//mstr//'_Z'//zstr//&
-          '.dat',FORM='UNFORMATTED',STATUS='REPLACE',access='direct',&
+     !save the PSF-convolved, obs err-included Hess diagram
+     OPEN(11,FILE=TRIM(PIXCMD_HOME)//'/models/M'//mstr//'_Z'//zstr//&
+          '.hess',FORM='UNFORMATTED',STATUS='REPLACE',access='direct',&
           recl=nage*nx*ny*4)
      WRITE(11,rec=1) hess
      CLOSE(11)
+     CALL SYSTEM('gzip -f '//TRIM(PIXCMD_HOME)//'/models/M'//mstr//'_Z'//zstr//&
+          '.hess')
+
+     !save the noise-free model image
+     OPEN(11,FILE=TRIM(PIXCMD_HOME)//'/models/M'//mstr//'_Z'//zstr//&
+          '.im',FORM='UNFORMATTED',STATUS='REPLACE',access='direct',&
+          recl=nage*npix*npix*nfil*4)
+     WRITE(11,rec=1) flux
+     CLOSE(11)
+     CALL SYSTEM('gzip -f '//TRIM(PIXCMD_HOME)//'/models/M'//mstr//'_Z'//zstr//&
+          '.im')
 
   ENDDO
 

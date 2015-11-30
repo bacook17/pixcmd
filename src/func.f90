@@ -26,12 +26,12 @@ FUNCTION FUNC(inpos)
   !IF (SUM(10**inpos(1:5)).GT.1.0) func=huge_number
   
   !dont let the factors get too low or too high
-  DO i=1,npar
+  DO i=2,npar
      IF (inpos(i).LT.-9.0.OR.inpos(i).GT.0.0) func=huge_number
   ENDDO
 
-  !set limits on the age
-  !IF (inpos(6).LT.7.0.OR.inpos(6).GT.10.3) func=huge_number
+  !set limits on Mpix
+  IF (inpos(1).LT.mpix0.OR.inpos(1).GT.(mpix0+nm*dmpix)) func=huge_number
 
   !error checking
   IF (ISNAN(func)) THEN

@@ -32,7 +32,7 @@ PRO M31_PCMD, ir=ir, brick=brick
 
   dm  = 24.47 ; McConnachie et al. 2005
 
-  pdir = '~/sps/timedomain/pixcmd/plots/'
+  pdir = '~/pixcmd/plots/'
 
   ;read in model isochrone
   cmdfile = 'tdsp/SSP_MISTv29_BaSeL_Salpeter_Z0.0190_default.out.cmd'
@@ -99,7 +99,7 @@ PRO M31_PCMD, ir=ir, brick=brick
   rr[wh] = 0.0
 
  
-  dir  = '~/sps/timedomain/pixcmd/results/'
+  dir  = '~/pixcmd/results/'
   sage = '10.0'
   m1   = mrdfits(dir+'pixcmd_t'+sage+'_Z0.0190_Mbin1.60.fits',2,/sil)
   m2   = mrdfits(dir+'pixcmd_t'+sage+'_Z0.0190_Mbin2.00.fits',2,/sil)
@@ -225,10 +225,14 @@ PRO M31_PCMD, ir=ir, brick=brick
      endplot,/quiet
  
      wh = where(rr GE 6150 AND rr LE 6250 AND finite(im1) EQ 1,ct)
+     wh = where(rr GE 6200 AND rr LE 6250 AND finite(im1) EQ 1,ct)
  
      dd = hist_2d(im1[wh]-im2[wh],im2[wh],bin1=0.05,bin2=0.05,$
                 min1=-1.5,max1=4.5,min2=-6,max2=5)
      dd = reverse(dd,2)
+
+stop
+
      mm = hist_2d(mzz.(whm1)-mzz.(whm2),mzz.(whm2),bin1=0.05,bin2=0.05,$
                   min1=-1.5,max1=4.5,min2=-6,max2=5)
      mm = reverse(mm,2)
@@ -237,13 +241,17 @@ PRO M31_PCMD, ir=ir, brick=brick
                   min1=-1.5,max1=4.5,min2=-6,max2=5)
      m2h = reverse(m2h,2)
 
-     b = read_binary('../results/hess_M2.00_Z0.0190.dat',$
+     b = read_binary('../hess/hess_M2.00_Z0.0190.dat',$
                      data_dims=[22,121,221],data_type=4)
      bb = reverse(reform(b[20,*,*]),2)
 
      r = read_binary('../results/hess_best.dat',$
                      data_dims=[121,221],data_type=4)
      r = reverse(r,2)
+
+     b = read_binary('../data/model_tau2.0_mpix3.5_mdf0.0_0.05.hess',$
+                     data_dims=[121,221],data_type=4)
+     bb = reverse(b,2)
 
      stop
 
@@ -299,7 +307,7 @@ PRO M31_PCMD, ir=ir, brick=brick
 
   IF brick EQ '22' THEN BEGIN
 
-     dir  = '~/sps/timedomain/pixcmd/results/'
+     dir  = '~/pixcmd/results/'
      m1     = mrdfits(dir+'pixcmd_t10.0_Z0.0190_Mbin1.00.fits',2,/sil)
 
      begplot,name=pdir+'pixcmd_m31_outerdisk'+str+'.eps',/col,$

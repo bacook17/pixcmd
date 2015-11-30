@@ -3,10 +3,10 @@ MODULE PIXCMD_UTILS
   INTERFACE
      FUNCTION ADD_OBS_ERR(flux,dm,exptime,zpt)
        USE pixcmd_vars; USE nrtype
-       REAL(SP), DIMENSION(nfil,npix,npix), INTENT(in) :: flux
+       REAL(SP), DIMENSION(npix,npix,nfil), INTENT(in) :: flux
        REAL(SP), INTENT(in) :: dm
        REAL(SP), DIMENSION(nfil), INTENT(in) :: exptime,zpt
-       REAL(SP), DIMENSION(nfil,npix,npix) :: add_obs_err
+       REAL(SP), DIMENSION(npix,npix,nfil) :: add_obs_err
      END FUNCTION ADD_OBS_ERR
   END INTERFACE
 
@@ -14,9 +14,9 @@ MODULE PIXCMD_UTILS
      FUNCTION CONVOLVE(arr,psf,na,nb,np)
        USE nrtype
        INTEGER, INTENT(in) :: na,np
-       REAL(SP), DIMENSION(nb,na,na), INTENT(in) :: arr
+       REAL(SP), DIMENSION(na,na,nb), INTENT(in) :: arr
        REAL(SP), DIMENSION(np,np), INTENT(in) :: psf  
-       REAL(SP), DIMENSION(nb,np,np) :: convolve
+       REAL(SP), DIMENSION(na,na,nb) :: convolve
      END FUNCTION CONVOLVE
   END INTERFACE
 
@@ -68,5 +68,18 @@ MODULE PIXCMD_UTILS
      END FUNCTION MYRAN
   END INTERFACE
   
+  INTERFACE
+     SUBROUTINE SETUP_MODELS()
+     END SUBROUTINE SETUP_MODELS
+  END INTERFACE
+
+  INTERFACE
+     FUNCTION TSUM(xin,yin)
+       USE nrtype
+       REAL(SP), DIMENSION(:), INTENT(in) :: xin,yin
+       REAL(SP) :: tsum
+     END FUNCTION TSUM
+  END INTERFACE
+
 END MODULE PIXCMD_UTILS
 
