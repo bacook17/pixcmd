@@ -1,22 +1,18 @@
 MODULE PIXCMD_UTILS
 
   INTERFACE
-     FUNCTION ADD_OBS_ERR(flux,dm,exptime,zpt)
+     FUNCTION ADD_OBS_ERR(flux)
        USE pixcmd_vars; USE nrtype
        REAL(SP), DIMENSION(npix,npix,nfil), INTENT(in) :: flux
-       REAL(SP), INTENT(in) :: dm
-       REAL(SP), DIMENSION(nfil), INTENT(in) :: exptime,zpt
        REAL(SP), DIMENSION(npix,npix,nfil) :: add_obs_err
      END FUNCTION ADD_OBS_ERR
   END INTERFACE
 
   INTERFACE
-     FUNCTION CONVOLVE(arr,psf,na,nb,np)
-       USE nrtype
-       INTEGER, INTENT(in) :: na,np
-       REAL(SP), DIMENSION(na,na,nb), INTENT(in) :: arr
-       REAL(SP), DIMENSION(np,np), INTENT(in) :: psf  
-       REAL(SP), DIMENSION(na,na,nb) :: convolve
+     FUNCTION CONVOLVE(arr)
+       USE pixcmd_vars; USE nrtype
+       REAL(SP), DIMENSION(npix,npix,nfil), INTENT(in) :: arr
+       REAL(SP), DIMENSION(npix,npix,nfil) :: convolve
      END FUNCTION CONVOLVE
   END INTERFACE
 

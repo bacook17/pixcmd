@@ -24,7 +24,6 @@ PROGRAM SIM_PIXCMD
   REAL(SP), DIMENSION(27) :: dum27
   REAL(SP), DIMENSION(nage,npix,npix,nfil)  :: flux=0.
   REAL(SP), DIMENSION(npix,npix,nfil)  :: cflux=0.,oflux=0.
-  REAL(SP), DIMENSION(npsf,npsf) :: psf=0.
   TYPE(TISO), DIMENSION(niso_max) :: iso
   CHARACTER(10) :: time
   CHARACTER(50) :: file='',tag=''
@@ -36,13 +35,6 @@ PROGRAM SIM_PIXCMD
   REAL(SP), DIMENSION(ny) :: yarr
   REAL(SP), DIMENSION(nage,nx,ny) :: hess=0.
 
-  !data-specific parameters
-  REAL(SP) :: dm=24.47  !M31 distance modulus
-  !exposure times B,I
-  REAL(SP), DIMENSION(nfil) :: exptime=(/1720.+1900.,1520.+1715./)
-  !zero-points, B,I
-  REAL(SP), DIMENSION(nfil) :: zpt=(/26.0593,25.9433/)
-  
   !----------------------------------------------------------------!
 
   IF (IARGC().LT.1) THEN
@@ -121,7 +113,7 @@ PROGRAM SIM_PIXCMD
 
      !--------------------Loop on population age--------------------!
      
-     DO t=20,20 !1,nage
+     DO t=1,nage
 
         age = age0+(t-1)*dage
 
@@ -170,14 +162,14 @@ PROGRAM SIM_PIXCMD
         
         !-------------------Convolve with the ACS PSF--------------------!
         
-        cflux = convolve(flux(t,:,:,:),psf,npix,nfil,npsf)
+        cflux = convolve(flux(t,:,:,:))
 
         !convert to mags
         cflux = -2.5*LOG10(cflux)
         
         !--------------------Add observational errors--------------------!
         
-        oflux = add_obs_err(cflux,dm,exptime,zpt)
+        oflux = add_obs_err(cflux)
 
         !---------------Compute a Hess diagram in B-I vs. I--------------!
 
@@ -194,8 +186,6 @@ PROGRAM SIM_PIXCMD
           recl=nage*nx*ny*4)
      WRITE(11,rec=1) hess
      CLOSE(11)
-     CALL SYSTEM('gzip -f '//TRIM(PIXCMD_HOME)//'/models/M'//mstr//'_Z'//zstr//&
-          '.hess')
 
      !save the noise-free model image
      OPEN(11,FILE=TRIM(PIXCMD_HOME)//'/models/M'//mstr//'_Z'//zstr//&
@@ -203,8 +193,6 @@ PROGRAM SIM_PIXCMD
           recl=nage*npix*npix*nfil*4)
      WRITE(11,rec=1) flux
      CLOSE(11)
-     CALL SYSTEM('gzip -f '//TRIM(PIXCMD_HOME)//'/models/M'//mstr//'_Z'//zstr//&
-          '.im')
 
   ENDDO
 

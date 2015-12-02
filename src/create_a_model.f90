@@ -7,20 +7,22 @@ PROGRAM CREATE_A_MODEL
   USE nr, ONLY : locate
   IMPLICIT NONE
   
-  INTEGER  :: ilo,i,j,k
-  REAL(SP) :: di,mpix,wgt,zmet0,zmets,tau,tot
+  INTEGER  :: i,j,k
+  REAL(SP) :: mpix,wgt,zmet0,zmets,tau,tot
   CHARACTER(50) :: infile
-  REAL(SP), DIMENSION(nx,ny) :: onemodel,m1,m2
+  REAL(SP), DIMENSION(nx,ny) :: onemodel
+  REAL(SP), DIMENSION(npix,npix,nfil) :: f1,cf1,of1
   REAL(SP), DIMENSION(nage)  :: sfh
   REAL(SP), DIMENSION(nz)    :: mdf,zz
+  CHARACTER(10) :: time
 
   !------------------------------------------------------------!
 
-  infile = 'model_tau2.0_mpix3.5_mdf0.0_0.05'
-  mpix   = 3.5
+  infile = 'model_tau1.0'
+  mpix   = 2.0
   zmet0  = 0.0
   zmets  = 0.05
-  tau    = 0.5
+  tau    = 2.0
 
   !setup the model grid
   CALL SETUP_MODELS()
@@ -30,12 +32,13 @@ PROGRAM CREATE_A_MODEL
 
   !MDF
   zz  = LOG10(zmetarr/0.0190)
-  mdf = EXP(-(zz-zmet0)**2/2/zmets)
-
+  !mdf = EXP(-(zz-zmet0)**2/2/zmets)
+  mdf = 1.0
+  
   !SFH
   sfh = EXP(-(10**10.201-10**agesarr)/1E9/tau)
   sfh=0.
-  sfh(20)=1.
+  sfh(15:15)=1.0
 
   tot=0.
   DO i=1,nage
@@ -44,29 +47,23 @@ PROGRAM CREATE_A_MODEL
      ENDDO
   ENDDO
 
-  m1 = 0.0
-  m2 = 0.0
-
-  ilo = MAX(MIN(locate(mpixarr,mpix),nm-1),1)
-  di  = (mpix-mpixarr(ilo))/(mpixarr(ilo+1)-mpixarr(ilo))
-
+  f1 = 0.0
   DO j=1,nage
      DO i=1,nz
         wgt = mdf(i)*sfh(j)/tot
-        m1  = m1+wgt*model(ilo,i,j,:,:)
-        m2  = m2+wgt*model(ilo+1,i,j,:,:)
-     ENDDO
-  ENDDO
-  
-  onemodel = m1*(1-di) + m2*di
-
-  onemodel=0.0
-  DO i=1,nx
-     DO j=1,ny
-        onemodel(i,j) = TSUM(zz,mdf*model(ilo,:,20,i,j))
+        f1  = f1+wgt*model(1,i,j,:,:,:)
      ENDDO
   ENDDO
 
+  !convolve with PSF
+  cf1 = -2.5*LOG10(convolve(f1))
+
+  !add obs errors
+  of1 = add_obs_err(cf1)
+
+  !compute Hess diagram
+  onemodel = hist_2d(of1(:,:,1)-of1(:,:,2),of1(:,:,2),&
+       xhess,yhess,nx,ny,npix)
 
   !save the Hess diagram to file
   OPEN(1,FILE=TRIM(PIXCMD_HOME)//'data/'//TRIM(infile)//'.hess',&
@@ -74,7 +71,6 @@ PROGRAM CREATE_A_MODEL
        recl=nx*ny*4)
   WRITE(1,rec=1) onemodel
   CLOSE(1)
-
 
 
 END PROGRAM CREATE_A_MODEL

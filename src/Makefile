@@ -19,7 +19,8 @@ PROGS = sim_pixcmd fit_pixcmd dohess create_a_model
 COMMON = nrtype.o nr.o pixcmd_vars.o nrutil.o pixcmd_utils.o ran_state.o \
 	ran1.o gammln.o poidev.o locate.o init_random_seed.o convolve.o hist_2d.o \
 	func.o powell.o linmin.o mnbrak.o brent.o get_model.o myran.o \
-	emcee_advance.o add_obs_err.o setup_models.o tsum.o
+	emcee_advance.o add_obs_err.o setup_models.o tsum.o four2.o rlft2.o \
+	fourrow.o gasdev.o
 
 all : $(PROGS)
 

@@ -10,10 +10,8 @@ PRO M31_PCMD, ir=ir, brick=brick
      xtit   = 'J-H'
      yr     = [6,-6]
      xr     = [-0.5,1.0]
-     zpt1   = 26.8223
-     zpt2   = 25.9463
-     exp1   = 699.+799.
-     exp2   = 1596.+1696.
+     zpt   = [26.8223,25.9463]
+     exptime   = [699.+799.,1596.+1696.]
      str    = '_ir'
   ENDIF ELSE BEGIN
      magsol = 4.52  ;M_I_sol
@@ -23,10 +21,8 @@ PRO M31_PCMD, ir=ir, brick=brick
      xtit   = 'B-I'
      yr     = [4,-6]
      xr     = [0,4]
-     zpt1   = 26.0593
-     zpt2   = 25.9433
-     exp1   = 1720.+1900.
-     exp2   = 1520.+1715.
+     zpt   = [26.0593,25.9433]
+     exptime   = [1720.+1900.,1520.+1715.]
      str    = '_opt'
   ENDELSE
 
@@ -47,23 +43,11 @@ PRO M31_PCMD, ir=ir, brick=brick
   ;astrometrically align the two images
   hastrom,tim2,h2,im2,newhdr,h1,interp=2,cubic=-0.5,/silent
 
-  sn1 = sqrt(im1*exp1)
-  sn2 = sqrt(im2*exp2)
-  im1 = -2.5*alog10(im1) + zpt1 - dm
-  im2 = -2.5*alog10(im2) + zpt2 - dm
+  sn1 = sqrt(im1*exptime[0])
+  sn2 = sqrt(im2*exptime[1])
+  im1 = -2.5*alog10(im1) + zpt[0] - dm
+  im2 = -2.5*alog10(im2) + zpt[1] - dm
 
-  ;generate mag err vs. mag relation in both bands
-  wh = randomu(seed,1E5)*n_elements(im1)
-  x  = im1[wh]
-  y  = 2.5/sn1[wh] ;is this eqn correct?  (OK in small err limit)
-  wh = where(finite(x) EQ 1 AND finite(y) EQ 1)
-  p1 = poly_fit(x[wh],alog10(y[wh]),1)
-  wh = randomu(seed,1E5)*n_elements(im2)
-  x  = im2[wh]
-  y  = 2.5/sn2[wh]
-  wh = where(finite(x) EQ 1 AND finite(y) EQ 1)
-  p2 = poly_fit(x[wh],alog10(y[wh]),1)
- 
   ;luminosity per pixel (I or H)
   lpix = alog10( 10^(2./5*(magsol-im2)) )
 
@@ -122,12 +106,11 @@ PRO M31_PCMD, ir=ir, brick=brick
 
 
   ;add photometric uncertainties
-  m1 = add_phot_err(m1,whm1,whm2,p1,p2)
-  m2 = add_phot_err(m2,whm1,whm2,p1,p2)
-  m3 = add_phot_err(m3,whm1,whm2,p1,p2)
-  m4 = add_phot_err(m4,whm1,whm2,p1,p2)
-  m5 = add_phot_err(m5,whm1,whm2,p1,p2)
-
+  m1 = add_phot_err(m1,whm1,whm2,dm,zpt,exptime)
+  m2 = add_phot_err(m2,whm1,whm2,dm,zpt,exptime)
+  m3 = add_phot_err(m3,whm1,whm2,dm,zpt,exptime)
+  m4 = add_phot_err(m4,whm1,whm2,dm,zpt,exptime)
+  m5 = add_phot_err(m5,whm1,whm2,dm,zpt,exptime)
 
   ;--------------------------------------------------------------;
   ;-------------------------brick 01-----------------------------;
@@ -135,13 +118,13 @@ PRO M31_PCMD, ir=ir, brick=brick
 
   IF brick EQ '01' THEN BEGIN
 
-     m2   = mrdfits(dir+'pixcmd_t'+sage+'_Z0.0190_Mbin2.00_N1000.fits',2,/sil)
+;     m2   = mrdfits(dir+'pixcmd_t'+sage+'_Z0.0190_Mbin2.00_N1000.fits',2,/sil)
      tm2  = mrdfits(dir+'pixcmd_t'+sage+'_Z0.0190_Mbin2.00.fits',2,/sil)
      m2zp = mrdfits(dir+'pixcmd_t'+sage+'_Z0.0290_Mbin2.00.fits',2,/sil)
      m2zm = mrdfits(dir+'pixcmd_t'+sage+'_Z0.0040_Mbin2.00.fits',2,/sil)
      mzz  = [tm2,m2zp,m2zp,m2zm]
      mzz  = mzz[randomu(seed,nn)*n_elements(mzz)]
-     mzz  = add_phot_err(mzz,whm1,whm2,p1,p2)
+     mzz  = add_phot_err(mzz,whm1,whm2,dm,zpt,exptime)
  
      begplot,name=pdir+'pixcmd_m31_bulge'+str+'.eps',/col,xsize=10,$
              ysize=6,/quiet,/encap
@@ -249,7 +232,7 @@ stop
                      data_dims=[121,221],data_type=4)
      r = reverse(r,2)
 
-     b = read_binary('../data/model_tau2.0_mpix3.5_mdf0.0_0.05.hess',$
+     b = read_binary('../data/model_tau2.0_mpix3.1_mdf0.0_0.05.hess',$
                      data_dims=[121,221],data_type=4)
      bb = reverse(b,2)
 
@@ -269,10 +252,10 @@ stop
      cs   = mrdfits(dir+'pixcmd_tau10.0_Z0.0190_Mbin1.30.fits',2,/sil)
      t5   = mrdfits(dir+'pixcmd_tau5.00_Z0.0190_Mbin1.30.fits',2,/sil)
      t2   = mrdfits(dir+'pixcmd_tau2.00_Z0.0190_Mbin1.30.fits',2,/sil)
-     m1   = add_phot_err(m1,whm1,whm2,p1,p2)
-     cs   = add_phot_err(cs,whm1,whm2,p1,p2)
-     t5   = add_phot_err(t5,whm1,whm2,p1,p2)
-     t2   = add_phot_err(t2,whm1,whm2,p1,p2)
+     m1   = add_phot_err(m1,whm1,whm2,dm,zpt,exptime)
+     cs   = add_phot_err(cs,whm1,whm2,dm,zpt,exptime)
+     t5   = add_phot_err(t5,whm1,whm2,dm,zpt,exptime)
+     t2   = add_phot_err(t2,whm1,whm2,dm,zpt,exptime)
      nn   = n_elements(m1)
      wh   = wh[randomu(seed,nn)*ct]
 

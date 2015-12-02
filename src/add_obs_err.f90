@@ -1,18 +1,17 @@
-FUNCTION ADD_OBS_ERR(flux,dm,exptime,zpt)
+FUNCTION ADD_OBS_ERR(flux)
 
   ! Routine to generate a realization of observational
   ! data given an input exposure time.  Converts from
-  ! mags to counts and draws from a Poisson distribution
+  ! mags to counts and draws from a Poisson/Gaussian distribution
 
   USE pixcmd_vars; USE nrtype
-  USE nr, ONLY : poidev
+  USE nr, ONLY : poidev, gasdev
   IMPLICIT NONE
 
   REAL(SP), DIMENSION(npix,npix,nfil), INTENT(in) :: flux
-  REAL(SP), INTENT(in) :: dm
-  REAL(SP), DIMENSION(nfil), INTENT(in) :: exptime,zpt
   REAL(SP), DIMENSION(npix,npix,nfil) :: add_obs_err
   REAL(SP), DIMENSION(npix,npix) :: cts,cti
+  REAL(SP), DIMENSION(npix) :: gdev
   INTEGER :: i,j,k
 
   !------------------------------------------------------------!
@@ -24,9 +23,17 @@ FUNCTION ADD_OBS_ERR(flux,dm,exptime,zpt)
      cts = 10**(-2./5*(flux(:,:,k)+dm-zpt(k)))*exptime(k)
      
      DO j=1,npix
+        CALL GASDEV(gdev)
         DO i=1,npix
-           !draw from a Poisson distribution
-           cti(i,j) = poidev(cts(i,j))
+           IF (cts(i,j).LT.0.) CYCLE
+           IF (cts(i,j).LT.100.) THEN
+              !draw from a Poisson distribution
+              cti(i,j) = poidev(cts(i,j))
+           ELSE
+              !draw from a Guassian distribution
+              !this is much faster and OK for N>>1
+              cti(i,j) = cts(i,j) + gdev(i)*SQRT(cts(i,j))
+           ENDIF
         ENDDO
      ENDDO
      
