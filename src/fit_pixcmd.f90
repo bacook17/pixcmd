@@ -12,7 +12,7 @@ PROGRAM FIT_PIXCMD
   IMPLICIT NONE
 
   !emcee variables
-  INTEGER, PARAMETER :: nwalkers=100,nburn=1000,nmcmc=100
+  INTEGER, PARAMETER :: nwalkers=100,nburn=100,nmcmc=100
   REAL(SP), DIMENSION(npar,nwalkers) :: pos_emcee_in,pos_emcee_out
   REAL(SP), DIMENSION(nwalkers)      :: lp_emcee_in,lp_emcee_out
   INTEGER,  DIMENSION(nwalkers)      :: accept_emcee
