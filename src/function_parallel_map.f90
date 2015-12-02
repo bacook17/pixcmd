@@ -27,14 +27,14 @@ SUBROUTINE FUNCTION_PARALLEL_MAP(ndim, nk, nworkers, pos, lnpout)
   !   The value of the log-probability function at positions `pos`.
   !
   
-  USE MPI; USE alf_vars
+  USE MPI; USE nrtype
   IMPLICIT NONE
 
   INTEGER, INTENT(in) :: ndim, nk, nworkers
-  REAL(DP), INTENT(in), DIMENSION(ndim,nk) :: pos
-  REAL(DP), INTENT(out), DIMENSION(nk) :: lnpout
+  REAL(SP), INTENT(in), DIMENSION(ndim,nk) :: pos
+  REAL(SP), INTENT(out), DIMENSION(nk) :: lnpout
 
-  integer :: k, ierr, status(MPI_STATUS_SIZE), BEGIN=0
+  INTEGER :: k, ierr, status(MPI_STATUS_SIZE), BEGIN=0
   INTEGER :: npos, walk_per_work, extra, offset
 
   !Compute useful numbers for worker to walker ratio

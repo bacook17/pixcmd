@@ -1,7 +1,7 @@
 PROGRAM FIT_PIXCMD
 
-  !To Do: 1) fit the 2D space of age-Z
-  !       2) include E(B-V), Mpix as free parameters
+  !To Do: 1) include E(B-V) as free parameter
+  !       2) MPI parallelize
 
   !Note: 1E6 pix is not quite enough compared to 2E7.
 
@@ -11,23 +11,24 @@ PROGRAM FIT_PIXCMD
 
   IMPLICIT NONE
 
-  INTEGER, PARAMETER :: nwalkers=100,nburn=100,nmcmc=100
-  INTEGER, PARAMETER :: dopowell=0
+  !emcee variables
+  INTEGER, PARAMETER :: nwalkers=100,nburn=1000,nmcmc=100
+  REAL(SP), DIMENSION(npar,nwalkers) :: pos_emcee_in,pos_emcee_out
+  REAL(SP), DIMENSION(nwalkers)      :: lp_emcee_in,lp_emcee_out
+  INTEGER,  DIMENSION(nwalkers)      :: accept_emcee
+
   INTEGER :: i,j,ndat,stat,i1,i2,iter=30,totacc=0
   REAL(SP) :: mpix,fret,bret=huge_number,wdth=0.1
   CHARACTER(10) :: time
   CHARACTER(50) :: infile
-  REAL(SP), DIMENSION(nx,ny)    :: bmodel=0.
+  REAL(SP), DIMENSION(nx,ny) :: bmodel=0.
 
-  !Powell iteration tolerance
+  !Powell parameters
+  INTEGER, PARAMETER :: dopowell=0
   REAL(SP), PARAMETER :: ftol=0.01
   REAL(SP), DIMENSION(npar,npar) :: xi=0.0
   REAL(SP), DIMENSION(npar)      :: pos=0.0,bpos=0.
 
-  !emcee variables
-  REAL(SP), DIMENSION(npar,nwalkers) :: pos_emcee_in,pos_emcee_out
-  REAL(SP), DIMENSION(nwalkers)      :: lp_emcee_in,lp_emcee_out
-  INTEGER,  DIMENSION(nwalkers)      :: accept_emcee
   !------------------------------------------------------------!
 
   IF (IARGC().LT.1) THEN
@@ -90,8 +91,7 @@ PROGRAM FIT_PIXCMD
 
   ELSE
 
-     pos(1) = myran()+1.5
-     DO i=2,npar
+     DO i=1,npar
         bpos(i) = LOG10(myran()/npar)
      ENDDO
 
@@ -160,7 +160,7 @@ PROGRAM FIT_PIXCMD
   WRITE(*,'("  Facc: ",F5.2)') REAL(totacc)/REAL(nmcmc*nwalkers)
 
   !write the best model to a binary file
-  bmodel = get_model(bpos)
+  bmodel = getmodel(bpos)
   OPEN(11,FILE=TRIM(PIXCMD_HOME)//'/results2/fit.hess',&
        FORM='UNFORMATTED',STATUS='REPLACE',access='DIRECT',&
        recl=nx*ny*4)

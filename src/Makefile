@@ -14,11 +14,11 @@ F90 = gfortran
 # GNU
 F90FLAGS = -O  #-mcmodel=large
 
-PROGS = sim_pixcmd fit_pixcmd dohess create_a_model
+PROGS = sim_pixcmd fit_pixcmd dohess write_a_model
 
 COMMON = nrtype.o nr.o pixcmd_vars.o nrutil.o pixcmd_utils.o ran_state.o \
 	ran1.o gammln.o poidev.o locate.o init_random_seed.o convolve.o hist_2d.o \
-	func.o powell.o linmin.o mnbrak.o brent.o get_model.o myran.o \
+	func.o powell.o linmin.o mnbrak.o brent.o getmodel.o myran.o \
 	emcee_advance.o add_obs_err.o setup_models.o tsum.o four2.o rlft2.o \
 	fourrow.o gasdev.o
 
@@ -36,19 +36,20 @@ fit_pixcmd : fit_pixcmd.o $(COMMON)
 dohess : dohess.o $(COMMON)
 	$(F90) -o dohess.exe dohess.o $(COMMON)
 
-create_a_model : create_a_model.o $(COMMON)
-	$(F90) -o create_a_model.exe create_a_model.o $(COMMON)
+write_a_model : write_a_model.o $(COMMON)
+	$(F90) -o write_a_model.exe write_a_model.o $(COMMON)
 
 #------------------------------------------------------------------------#
 
 sim_pixcmd.o : nrtype.o pixcmd_vars.o nr.o pixcmd_utils.o 
 
-fit_pixcmd.o : nrtype.o pixcmd_vars.o nr.o pixcmd_utils.o 
+fit_pixcmd.o : nrtype.o pixcmd_vars.o nr.o pixcmd_utils.o ran_state.o
 
 dohess.o : nrtype.o pixcmd_vars.o nr.o pixcmd_utils.o 
 
-create_a_model.o : nrtype.o pixcmd_vars.o nr.o pixcmd_utils.o 
+write_a_model.o : nrtype.o pixcmd_vars.o nr.o pixcmd_utils.o 
 
+ran_state.o: nrutil.o
 
 %.o : %.f90
 	$(F90) $(F90FLAGS) -o  $@ -c $<

@@ -1,18 +1,19 @@
 FUNCTION FUNC(inpos)
 
   USE pixcmd_vars; USE nrtype
-  USE pixcmd_utils, ONLY : get_model
+  USE pixcmd_utils, ONLY : getmodel
   IMPLICIT NONE
 
   REAL(SP), DIMENSION(:) :: inpos
   REAL(SP) :: func
   REAL(SP), DIMENSION(nx,ny) :: imodel,model_err
   INTEGER :: i
-
+ 
   !------------------------------------------------------------!
 
-  imodel = get_model(inpos)
-
+  !get the model
+  imodel = getmodel(inpos)
+ 
   !Poisson uncertainty on the model
   model_err = SQRT(imodel*npix**2)/npix**2
 
@@ -26,12 +27,12 @@ FUNCTION FUNC(inpos)
   !IF (SUM(10**inpos(1:5)).GT.1.0) func=huge_number
   
   !dont let the factors get too low or too high
-  DO i=2,npar
+  DO i=1,npar
      IF (inpos(i).LT.-9.0.OR.inpos(i).GT.0.0) func=huge_number
   ENDDO
 
   !set limits on Mpix
-  IF (inpos(1).LT.mpix0.OR.inpos(1).GT.(mpix0+nm*dmpix)) func=huge_number
+  !IF (inpos(1).LT.mpix0.OR.inpos(1).GT.(mpix0+nm*dmpix)) func=huge_number
 
   !error checking
   IF (ISNAN(func)) THEN

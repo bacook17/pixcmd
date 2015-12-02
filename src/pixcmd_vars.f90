@@ -25,14 +25,14 @@ MODULE PIXCMD_VARS
   REAL(SP), DIMENSION(nfil) :: zpt=(/26.0593,25.9433/)
  
   !number of age and metallicity points in the model
-  INTEGER, PARAMETER :: nage=15,nz=1,nm=1
+  INTEGER, PARAMETER :: nage=15,nz=5,nm=1
   REAL(SP) :: dage=0.2,age0=7.2,mpix0=2.0,dmpix=0.2
   REAL(SP), DIMENSION(nage) :: agesarr=0.
   REAL(SP), DIMENSION(nm)   :: mpixarr=0.
   REAL(SP), DIMENSION(nz)   :: zmetarr=0.
 
   !number of free parameters
-  INTEGER, PARAMETER :: npar=nage*nz+1
+  INTEGER, PARAMETER :: npar=nage*nz
 
   !max size of array for data and isochrones
   INTEGER, PARAMETER :: ndat_max=3000000,niso_max=5000
@@ -51,7 +51,7 @@ MODULE PIXCMD_VARS
   !---------------------common arrays---------------------!
 
   !array for model grids
-  REAL(SP), DIMENSION(nm,nz,nage,npix,npix,nfil) :: model=0.
+  REAL(SP), DIMENSION(npix,npix,nfil,nz,nage) :: model=0.
   !array for the data
   REAL(SP), DIMENSION(nx,ny)    :: hess_data=0., hess_err=0.
 

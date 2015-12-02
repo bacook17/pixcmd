@@ -40,23 +40,23 @@ SUBROUTINE EMCEE_ADVANCE_MPI (ndim, nwalkers, a, pin, lpin, &
   !   A binary list indicating whether or not each proposal was
   !   accepted.
   
-  USE mpi; USE alf_vars
-  USE alf_utils, ONLY : func, myran, function_parallel_map
+  USE mpi; USE nrtype
+  USE pixcmd_utils, ONLY : func, myran, function_parallel_map
   IMPLICIT NONE
 
   INTEGER, INTENT(in)  :: ndim, nwalkers
-  REAL(DP), INTENT(in) :: a
-  REAL(DP), INTENT(in), DIMENSION(ndim,nwalkers) :: pin
-  REAL(DP), INTENT(in), DIMENSION(nwalkers) :: lpin
+  REAL(SP), INTENT(in) :: a
+  REAL(SP), INTENT(in), DIMENSION(ndim,nwalkers) :: pin
+  REAL(SP), INTENT(in), DIMENSION(nwalkers) :: lpin
   INTEGER, INTENT(in) :: nworkers
-  REAL(DP), INTENT(inout), DIMENSION(ndim,nwalkers) :: pout
-  REAL(DP), INTENT(inout), DIMENSION(nwalkers) :: lpout
+  REAL(SP), INTENT(inout), DIMENSION(ndim,nwalkers) :: pout
+  REAL(SP), INTENT(inout), DIMENSION(nwalkers) :: lpout
   INTEGER, INTENT(out), DIMENSION(nwalkers) :: accept
 
   INTEGER  :: k, ri
-  REAL(DP) :: z, diff
-  REAL(DP), DIMENSION(nwalkers) :: zarr, lpnew
-  REAL(DP), DIMENSION(ndim,nwalkers) :: qarr
+  REAL(SP) :: z, diff
+  REAL(SP), DIMENSION(nwalkers) :: zarr, lpnew
+  REAL(SP), DIMENSION(ndim,nwalkers) :: qarr
                 
   !---------------------------------------------------------------!
   !---------------------------------------------------------------!

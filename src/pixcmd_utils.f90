@@ -31,6 +31,20 @@ MODULE PIXCMD_UTILS
   END INTERFACE
 
   INTERFACE
+     SUBROUTINE EMCEE_ADVANCE_MPI(ndim,nwalkers,a,pin,lpin,&
+          pout,lpout,accept,nworkers)
+       USE nrtype
+       INTEGER, INTENT(in) :: ndim, nwalkers,nworkers
+       REAL(SP), INTENT(in) :: a
+       REAL(SP), INTENT(in), DIMENSION(ndim,nwalkers) :: pin
+       REAL(SP), INTENT(in), DIMENSION(nwalkers) :: lpin
+       REAL(SP), INTENT(out), DIMENSION(ndim,nwalkers) :: pout
+       REAL(SP), INTENT(out), DIMENSION(nwalkers) :: lpout
+       INTEGER, INTENT(out), DIMENSION(nwalkers) :: accept
+     END SUBROUTINE EMCEE_ADVANCE_MPI
+  END INTERFACE
+
+  INTERFACE
      FUNCTION FUNC(inpos)
        USE nrtype
        REAL(SP), DIMENSION(:) :: inpos
@@ -39,11 +53,20 @@ MODULE PIXCMD_UTILS
   END INTERFACE
 
   INTERFACE
-     FUNCTION GET_MODEL(inpos)
+     SUBROUTINE FUNCTION_PARALLEL_MAP(ndim, nk, nworkers, pos, lnpout)
+       USE nrtype
+       INTEGER, INTENT(in) :: ndim, nk, nworkers
+       REAL(SP), INTENT(in), DIMENSION(ndim,nk) :: pos
+       REAL(SP), INTENT(out), DIMENSION(nk) :: lnpout
+    END SUBROUTINE FUNCTION_PARALLEL_MAP
+  END INTERFACE
+
+  INTERFACE
+     FUNCTION GETMODEL(inpos)
        USE pixcmd_vars; USE nrtype
        REAL(SP), DIMENSION(npar) :: inpos
-       REAL(SP), DIMENSION(nx,ny) :: get_model
-     END FUNCTION GET_MODEL
+       REAL(SP), DIMENSION(nx,ny) :: getmodel
+     END FUNCTION GETMODEL
   END INTERFACE
 
   INTERFACE

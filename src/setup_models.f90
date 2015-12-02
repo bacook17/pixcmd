@@ -1,18 +1,30 @@
 SUBROUTINE SETUP_MODELS()
 
-  USE pixcmd_vars
+  USE pixcmd_vars; USE nrtype
   IMPLICIT NONE
 
-  CHARACTER(6)  :: zstr
+  CHARACTER(5), DIMENSION(nz)  :: zstr
   CHARACTER(4)  :: mstr
-  INTEGER :: i,j,m,stat
+  INTEGER :: i,j,k,m,stat
+  REAL(SP), DIMENSION(nage,npix,npix,nfil) :: tmodel
 
   !------------------------------------------------------------!
 
   CALL GETENV('PIXCMD_HOME',PIXCMD_HOME)
 
- ! zmetarr = (/0.0010,0.0025,0.0040,0.0080,0.0190,0.0290/)
-  zmetarr = (/0.0190/)
+  OPEN(13,FILE=TRIM(PIXCMD_HOME)//'models/zlegend.dat',&
+       STATUS='OLD',iostat=stat,ACTION='READ')
+  IF (stat.NE.0) THEN
+     WRITE(*,*) 'SETUP_MODELS ERROR: zlegend.dat file not found'
+     STOP
+  ENDIF
+  DO i=1,2 
+     READ(13,*)
+  ENDDO
+  DO i=1,nz
+     READ(13,'(A5,3x,F6.4)') zstr(i),zmetarr(i)
+  ENDDO
+  CLOSE(13)
 
   !set up model ages array
   DO i=1,nage
@@ -36,7 +48,7 @@ SUBROUTINE SETUP_MODELS()
   OPEN(12,file=TRIM(PIXCMD_HOME)//'/psf/f814w.psf',&
        STATUS='OLD',iostat=stat,ACTION='READ')
   IF (stat.NE.0) THEN
-     WRITE(*,*) 'PIXCMD ERROR: PSF file not found'
+     WRITE(*,*) 'SETUP_MODELS ERROR: PSF file not found'
      STOP
   ENDIF
   DO i=1,npsf
@@ -60,12 +72,17 @@ SUBROUTINE SETUP_MODELS()
 
      DO i=1,nz
 
-        WRITE(zstr,'(F6.4)') zmetarr(i)
-        OPEN(11,FILE=TRIM(PIXCMD_HOME)//'/models/M'//mstr//'_Z'//zstr//&
+        OPEN(11,FILE=TRIM(PIXCMD_HOME)//'/models/M'//mstr//'_Z'//zstr(i)//&
              '.im',FORM='UNFORMATTED',STATUS='OLD',access='direct',&
              recl=nage*npix*npix*nfil*4,ACTION='READ')
-        READ(11,rec=1) model(m,i,:,:,:,:)
+        READ(11,rec=1) tmodel
         CLOSE(11)
+
+        !flip the order around to make array manipulation faster
+        !in getmodel
+        DO k=1,nage
+           model(:,:,:,i,k) = tmodel(k,:,:,:)
+        ENDDO
 
      ENDDO
 

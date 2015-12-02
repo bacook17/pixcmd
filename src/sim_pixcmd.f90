@@ -27,7 +27,7 @@ PROGRAM SIM_PIXCMD
   TYPE(TISO), DIMENSION(niso_max) :: iso
   CHARACTER(10) :: time
   CHARACTER(50) :: file='',tag=''
-  CHARACTER(6)  :: zstr
+  CHARACTER(5)  :: zstr
   CHARACTER(4)  :: mstr
 
   !variables for 2D histogram in B-I vs. I
@@ -53,12 +53,11 @@ PROGRAM SIM_PIXCMD
      CALL GETARG(3,file)
      READ(file,*) dmpx
      CALL GETARG(4,file)
-     READ(file,'(F6.4)') zmet1
+     READ(file,'(A5)') zstr
   ENDIF
-  WRITE(zstr,'(F6.4)') zmet1
 
   WRITE(*,*) 
-  WRITE(*,'("log Z/Zsol=",F6.2)') LOG10(zmet1/0.0190)
+  WRITE(*,'("log Z/Zsol=",A5)') zstr
 
   !set a background flux level
   flux = bkgnd
@@ -103,8 +102,8 @@ PROGRAM SIM_PIXCMD
      WRITE(*,'("   log Mpix  =",F6.2)') LOG10(mpix)
 
      !open the isochrone file
-     OPEN(10,file=TRIM(PIXCMD_HOME)//'/isoc/SSP_MISTv29_BaSeL_Salpeter_Z'//&
-          zstr//'_default.out.cmd',STATUS='OLD',iostat=stat,ACTION='READ')
+     OPEN(10,file=TRIM(PIXCMD_HOME)//'/isoc/SSP_MISTv29_BaSeL_Salpeter_'//&
+          zstr//'.cmd',STATUS='OLD',iostat=stat,ACTION='READ')
      IF (stat.NE.0) THEN
         WRITE(*,*) 'PIXCMD ERROR: isoc file not found'
         STOP
