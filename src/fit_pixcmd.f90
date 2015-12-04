@@ -12,12 +12,12 @@ PROGRAM FIT_PIXCMD
   IMPLICIT NONE
 
   !emcee variables
-  INTEGER, PARAMETER :: nwalkers=100,nburn=100,nmcmc=100
+  INTEGER, PARAMETER :: nwalkers=10,nburn=10,nmcmc=1000
   REAL(SP), DIMENSION(npar,nwalkers) :: pos_emcee_in,pos_emcee_out
   REAL(SP), DIMENSION(nwalkers)      :: lp_emcee_in,lp_emcee_out
   INTEGER,  DIMENSION(nwalkers)      :: accept_emcee
 
-  INTEGER :: i,j,ndat,stat,i1,i2,iter=30,totacc=0
+  INTEGER :: i,j,k,ndat,stat,i1,i2,iter=30,totacc=0
   REAL(SP) :: mpix,fret,bret=huge_number,wdth=0.1
   CHARACTER(10) :: time
   CHARACTER(50) :: infile
@@ -62,7 +62,8 @@ PROGRAM FIT_PIXCMD
   !normalize the data to unity
   hess_err  = hess_err /ndat
   hess_data = hess_data/ndat
-  
+
+
   CALL DATE_AND_TIME(TIME=time)
   WRITE(*,*) 'Start Time '//time(1:2)//':'//time(3:4)//':'//time(5:6)
  
@@ -70,10 +71,11 @@ PROGRAM FIT_PIXCMD
 
   IF (dopowell.EQ.1) THEN
   
+     WRITE(*,*) 'Running Powell minimization'
+
      DO j=1,10
         !setup params
-        pos(1) = myran()+1.5
-        DO i=2,npar
+        DO i=1,npar
            pos(i) = LOG10(myran()/npar)
         ENDDO
         xi=0.0
@@ -82,17 +84,26 @@ PROGRAM FIT_PIXCMD
         ENDDO
         fret = huge_number
         CALL POWELL(pos,xi,ftol,iter,fret)
+        WRITE(*,'(F10.5)') log10(fret/(nx*ny-npar))
         IF (fret.LT.bret) THEN
            bret = fret
            bpos = pos
         ENDIF
      ENDDO
-     WRITE(*,'(200F10.5)') log10(bret/(nx*ny-npar))!,bpos
+     WRITE(*,'(F10.5)') log10(bret/(nx*ny-npar))
 
   ELSE
 
-     DO i=1,npar
-        bpos(i) = LOG10(myran()/npar)
+     !DO i=1,npar
+     !   bpos(i) = LOG10(myran()/npar)
+     !ENDDO
+     bpos=-6.0
+     k=1
+     DO i=nage-2,nage
+        DO j=nz-2,nz
+           bpos(k) = LOG10(1/5.)
+           k=k+1
+        ENDDO
      ENDDO
 
   ENDIF

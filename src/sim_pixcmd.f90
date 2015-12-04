@@ -10,7 +10,7 @@ PROGRAM SIM_PIXCMD
   USE nr, ONLY : poidev; USE nrtype 
   IMPLICIT NONE
 
-  REAL(SP), PARAMETER    :: bkgnd = 1E-10
+  REAL(SP), PARAMETER :: bkgnd = 1E-10
 
   TYPE TISO
      !band order is BVIJH
@@ -19,9 +19,7 @@ PROGRAM SIM_PIXCMD
   END TYPE TISO
   
   INTEGER :: i,j,k,m,t,iseed,nn,niso,stat,nmpix
-  REAL(SP) :: mpix,zmet1,age,iage=0.,d1,d2,d3,d4,d5,phase,mpx0,dmpx
-  REAL(SP), DIMENSION(5)  :: dum5
-  REAL(SP), DIMENSION(27) :: dum27
+  REAL(SP) :: mpix,age,iage=0.,mpx0,dmpx
   REAL(SP), DIMENSION(nage,npix,npix,nfil)  :: flux=0.
   REAL(SP), DIMENSION(npix,npix,nfil)  :: cflux=0.,oflux=0.
   TYPE(TISO), DIMENSION(niso_max) :: iso
@@ -38,10 +36,10 @@ PROGRAM SIM_PIXCMD
   !----------------------------------------------------------------!
 
   IF (IARGC().LT.1) THEN
-     mpx0 = 3.0
-     dmpx = 0.1
+     mpx0  = 3.0
+     dmpx  = 0.1
      nmpix = 1
-     zmet1 = 0.0190
+     zstr  = 'p0.00'
   ELSE IF (IARGC().NE.4) THEN
      WRITE(*,*) 'PIXCMD ERROR: incorrect syntax, returning'
      STOP
@@ -57,7 +55,11 @@ PROGRAM SIM_PIXCMD
   ENDIF
 
   WRITE(*,*) 
-  WRITE(*,'("log Z/Zsol=",A5)') zstr
+  IF (zstr(1:1).EQ.'p') THEN
+     WRITE(*,'("[Z/H]=+",A4)') zstr(2:)
+  ELSE
+     WRITE(*,'("[Z/H]=-",A4)') zstr(2:)
+  ENDIF
 
   !set a background flux level
   flux = bkgnd
@@ -102,13 +104,13 @@ PROGRAM SIM_PIXCMD
      WRITE(*,'("   log Mpix  =",F6.2)') LOG10(mpix)
 
      !open the isochrone file
-     OPEN(10,file=TRIM(PIXCMD_HOME)//'/isoc/SSP_MISTv29_BaSeL_Salpeter_'//&
-          zstr//'.cmd',STATUS='OLD',iostat=stat,ACTION='READ')
+     OPEN(10,file=TRIM(PIXCMD_HOME)//'/isoc/MIST_v29_Z'//&
+          zstr//'.dat',STATUS='OLD',iostat=stat,ACTION='READ')
      IF (stat.NE.0) THEN
         WRITE(*,*) 'PIXCMD ERROR: isoc file not found'
         STOP
      ENDIF
-     READ(10,*)
+     !READ(10,*)
 
      !--------------------Loop on population age--------------------!
      
@@ -131,9 +133,9 @@ PROGRAM SIM_PIXCMD
               WRITE(*,*) 'PIXCMD ERROR niso_max reached',i
               STOP
            ENDIF
-           READ(10,*,IOSTAT=stat) iage,dum5,phase,d5,iso(i)%imf,&
-                dum27,iso(i)%bands(1),d1,d2,d3,d4,iso(i)%bands(2)
-           IF (phase.NE.6) i=i+1  !skip the post-AGB
+           READ(10,*,IOSTAT=stat) iage,iso(i)%imf,&
+                iso(i)%bands(1),iso(i)%bands(2)
+           i=i+1
            IF (stat.NE.0) GOTO 20
         ENDDO
 20      CONTINUE

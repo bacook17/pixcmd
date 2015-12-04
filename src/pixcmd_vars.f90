@@ -26,7 +26,7 @@ MODULE PIXCMD_VARS
  
   !number of age and metallicity points in the model
   INTEGER, PARAMETER :: nage=15,nz=5,nm=1
-  REAL(SP) :: dage=0.2,age0=7.2,mpix0=2.0,dmpix=0.2
+  REAL(SP) :: dage=0.2,age0=7.4,mpix0=2.0,dmpix=0.2
   REAL(SP), DIMENSION(nage) :: agesarr=0.
   REAL(SP), DIMENSION(nm)   :: mpixarr=0.
   REAL(SP), DIMENSION(nz)   :: zmetarr=0.

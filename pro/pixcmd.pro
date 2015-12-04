@@ -33,19 +33,16 @@ PRO PIXCMD, mbin=mbin, zh=zh, ssp=ssp, sfh_tau=sfh_tau, $
   IF keyword_set(more_eep)  THEN isoc_tag = 'moreEEP' $
   ELSE isoc_tag='default'
   
-
-  IF zh EQ 0.0 THEN zstr='Z0.0190'
-  IF zh GT 0.0 THEN zstr='Z0.0290'
-  IF zh LT 0.0 THEN zstr='Z0.0040'
+  IF zh EQ 0.0 THEN zstr='p0.00'
+  IF zh GT 0.0 THEN zstr='p0.30'
+  IF zh LT 0.0 THEN zstr='m0.52'
 
   ;read in the model isochrone and the ACS PSF
-  cmdfile = 'tdsp/SSP_MISTv29_BaSeL_Salpeter_'+zstr+'_'+$
-            isoc_tag+'.out.cmd'
-  a       = cmd_add_variables(cmdfile,kband=kband)
-  psf     = mrdfits('~/DATA/HST/psf_f814w_unbinned.fits',0,/sil)
+  a   = mrdfits('~/pixcmd/isoc/MIST_v29_Z'+zstr+'.fits',1,/sil)
+  psf = mrdfits('~/DATA/HST/psf_f814w_unbinned.fits',0,/sil)
   ;smooth the PSF in angle
-  psf     = sqrt( psf * transpose(psf) )
-  psf     = psf / total(psf)
+  psf = sqrt( psf * transpose(psf) )
+  psf = psf / total(psf)
 
   ;set up the isochrones
   IF keyword_set(ssp) THEN BEGIN
@@ -135,11 +132,11 @@ PRO PIXCMD, mbin=mbin, zh=zh, ssp=ssp, sfh_tau=sfh_tau, $
   IF nbin NE nfix THEN nstr='_N'+strtrim(fix(nbin),2) ELSE nstr=''
 
   IF keyword_set(sfh_tau) THEN BEGIN
-     file = '~/sps/timedomain/pixcmd/results/pixcmd_tau'+$
+     file = '~/pixcmd/results/pixcmd_tau'+$
             strmid(strtrim(sfh_tau,2),0,4)+'_'+zstr+'_Mbin'+$
             strmid(strtrim(alog10(mbin),2),0,4)+nstr+tag+'.fits'
   ENDIF ELSE BEGIN
-     file = '~/sps/timedomain/pixcmd/results/pixcmd_t'+$
+     file = '~/pixcmd/results/pixcmd_t'+$
             strmid(strtrim(age,2),0,4)+'_'+zstr+'_Mbin'+$
             strmid(strtrim(alog10(mbin),2),0,4)+nstr+tag+'.fits'
   ENDELSE

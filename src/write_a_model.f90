@@ -18,7 +18,7 @@ PROGRAM WRITE_A_MODEL
 
   !------------------------------------------------------------!
 
-  infile = 'model_tau1.0'
+  infile = 'model_M2.0_t15_Z5_new'
   mpix   = 2.0
   zmet0  = 0.0
   zmets  = 0.05
@@ -55,20 +55,13 @@ PROGRAM WRITE_A_MODEL
      ENDDO
   ENDDO
 
-  CALL DATE_AND_TIME(TIME=time)
-  WRITE(*,*) 'Time '//time(1:2)//':'//time(3:4)//':'//time(5:9)
+  f1 = model(:,:,:,nz,nage)
 
   !convolve with PSF
   cf1 = -2.5*LOG10(convolve(f1))
 
-  CALL DATE_AND_TIME(TIME=time)
-  WRITE(*,*) 'Time '//time(1:2)//':'//time(3:4)//':'//time(5:9)
-
   !add obs errors
   of1 = add_obs_err(cf1)
-
-  CALL DATE_AND_TIME(TIME=time)
-  WRITE(*,*) 'Time '//time(1:2)//':'//time(3:4)//':'//time(5:9)
 
   !compute Hess diagram
   onemodel = hist_2d(of1(:,:,1)-of1(:,:,2),of1(:,:,2),&

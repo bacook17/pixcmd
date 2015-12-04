@@ -141,7 +141,8 @@ PRO M31_PCMD, ir=ir, brick=brick
        legend,['log M!Dpix!N='+ss],box=0,/right,charsize=0.9
        legend,['M31 Bulge'],box=0,/bottom,/right,charsize=0.9
 
-       wh = where(rr GE 6150 AND rr LE 6250,ct)
+       wh = where(rr GE 6200 AND rr LE 6250 AND finite(im1) EQ 1 $
+                  AND xx LE xc,ct)
        IF ct GT nn THEN wh = wh[randomu(seed,nn)*ct]
        plot,im1[wh]-im2[wh],im2[wh],ps=8,yr=yr,xr=xr,ys=1,xs=1,$
             xtit=xtit,ytit=ytit,symsize=0.2
@@ -185,7 +186,8 @@ PRO M31_PCMD, ir=ir, brick=brick
        !p.multi=[0,3,1]
        !p.charsize=1.8
  
-       wh = where(rr GE 6150 AND rr LE 6250 AND finite(im1) EQ 1,ct)
+       wh = where(rr GE 6200 AND rr LE 6250 AND finite(im1) EQ 1 $
+                AND xx LE xc,ct)
        IF ct GT nn THEN wh = wh[randomu(seed,nn)*ct]
        plot,im1[wh]-im2[wh],im2[wh],ps=8,yr=yr,xr=xr,ys=1,xs=1,$
             xtit=xtit,ytit=ytit,symsize=0.2,pos=[0.07,0.15,0.32,0.9]
@@ -207,9 +209,9 @@ PRO M31_PCMD, ir=ir, brick=brick
  
      endplot,/quiet
  
-     wh = where(rr GE 6150 AND rr LE 6250 AND finite(im1) EQ 1,ct)
-     wh = where(rr GE 6200 AND rr LE 6250 AND finite(im1) EQ 1,ct)
- 
+     wh = where(rr GE 6200 AND rr LE 6250 AND finite(im1) EQ 1 $
+                AND xx LE xc AND im2 GT -2*(im1-im2)+1.7,ct)
+
      dd = hist_2d(im1[wh]-im2[wh],im2[wh],bin1=0.05,bin2=0.05,$
                 min1=-1.5,max1=4.5,min2=-6,max2=5)
      dd = reverse(dd,2)
@@ -235,6 +237,14 @@ stop
      b = read_binary('../data/model_tau2.0_mpix3.1_mdf0.0_0.05.hess',$
                      data_dims=[121,221],data_type=4)
      bb = reverse(b,2)
+
+     d=read_binary('../data/m31_bulge.hess',data_dims=[121,221],data_type=4)
+     d = reverse(d,2)
+
+     m4=read_binary('../data/model_M2.0_t15_Z4_new.hess',data_dims=[121,221],data_type=4)
+     m4 = reverse(m4,2)
+     m5=read_binary('../data/model_M2.0_t15_Z5_new.hess',data_dims=[121,221],data_type=4)
+     m5 = reverse(m5,2)
 
      stop
 
