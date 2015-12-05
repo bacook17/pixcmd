@@ -241,10 +241,15 @@ stop
      d=read_binary('../data/m31_bulge.hess',data_dims=[121,221],data_type=4)
      d = reverse(d,2)
 
-     m4=read_binary('../data/model_M2.0_t15_Z4_new.hess',data_dims=[121,221],data_type=4)
-     m4 = reverse(m4,2)
-     m5=read_binary('../data/model_M2.0_t15_Z5_new.hess',data_dims=[121,221],data_type=4)
-     m5 = reverse(m5,2)
+     m15 = reverse(read_binary('../data/model_M2.0_t15_Z4.hess',$
+                               data_dims=[121,221],data_type=4),2)
+     m13 = reverse(read_binary('../data/model_M2.0_t13_Z4.hess',$
+                               data_dims=[121,221],data_type=4),2)
+     m10 = reverse(read_binary('../data/model_M2.0_t10_Z4.hess',$
+                               data_dims=[121,221],data_type=4),2)
+     m5 = reverse(read_binary('../data/model_M2.0_t05_Z4.hess',$
+                              data_dims=[121,221],data_type=4),2)
+
 
      stop
 

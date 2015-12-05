@@ -4,7 +4,7 @@ PROGRAM SIM_PIXCMD
   ! syntax: sim_pixcmd.exe log(Mpix) N_Mpix dMpix Z
 
   ! Note that the model Hess diagrams are likely not completely
-  ! converted at Npix=1E3.  Should at some point try 1E4 (!)
+  ! converted at Npix=1E3.  Should at some point try 1E4
   
   USE pixcmd_vars; USE pixcmd_utils
   USE nr, ONLY : poidev; USE nrtype 

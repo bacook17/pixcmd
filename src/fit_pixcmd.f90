@@ -3,8 +3,6 @@ PROGRAM FIT_PIXCMD
   !To Do: 1) include E(B-V) as free parameter
   !       2) MPI parallelize
 
-  !Note: 1E6 pix is not quite enough compared to 2E7.
-
   USE pixcmd_utils; USE pixcmd_vars; USE nrtype
   USE nr, ONLY : powell
   USE ran_state, ONLY : ran_seed,ran_init
@@ -12,7 +10,7 @@ PROGRAM FIT_PIXCMD
   IMPLICIT NONE
 
   !emcee variables
-  INTEGER, PARAMETER :: nwalkers=10,nburn=10,nmcmc=1000
+  INTEGER, PARAMETER :: nwalkers=256,nburn=10,nmcmc=1000
   REAL(SP), DIMENSION(npar,nwalkers) :: pos_emcee_in,pos_emcee_out
   REAL(SP), DIMENSION(nwalkers)      :: lp_emcee_in,lp_emcee_out
   INTEGER,  DIMENSION(nwalkers)      :: accept_emcee
@@ -25,7 +23,7 @@ PROGRAM FIT_PIXCMD
 
   !Powell parameters
   INTEGER, PARAMETER :: dopowell=0
-  REAL(SP), PARAMETER :: ftol=0.01
+  REAL(SP), PARAMETER :: ftol=0.1
   REAL(SP), DIMENSION(npar,npar) :: xi=0.0
   REAL(SP), DIMENSION(npar)      :: pos=0.0,bpos=0.
 
@@ -55,7 +53,7 @@ PROGRAM FIT_PIXCMD
   hess_err = SQRT(hess_data)
   DO i=1,nx
      DO j=1,ny
-        IF (hess_data(i,j).LE.tiny_number) hess_err(i,j)=huge_number
+        IF (hess_data(i,j).LE.tiny_number) hess_err(i,j)=1.0!huge_number
      ENDDO
   ENDDO
 
@@ -63,10 +61,27 @@ PROGRAM FIT_PIXCMD
   hess_err  = hess_err /ndat
   hess_data = hess_data/ndat
 
-
   CALL DATE_AND_TIME(TIME=time)
   WRITE(*,*) 'Start Time '//time(1:2)//':'//time(3:4)//':'//time(5:6)
- 
+
+  !-------------------------------------------------------------------!
+
+  IF (1.EQ.0) THEN
+
+     bpos=-8.0
+     k=1
+     DO j=1,nage
+        DO i=1,nz
+           bpos(k)=0.0
+           fret = func(bpos)
+           bpos(k)=-8.0
+           k=k+1
+           write(*,*) i,j,fret,LOG10(fret)
+        ENDDO
+     ENDDO
+
+  ENDIF
+
   !---------------------Run powell minimization-----------------------!
 
   IF (dopowell.EQ.1) THEN
@@ -90,18 +105,18 @@ PROGRAM FIT_PIXCMD
            bpos = pos
         ENDIF
      ENDDO
-     WRITE(*,'(F10.5)') log10(bret/(nx*ny-npar))
+     WRITE(*,'(5F10.5)') Log10(bret),log10(bret/(nx*ny-npar))
 
   ELSE
 
      !DO i=1,npar
      !   bpos(i) = LOG10(myran()/npar)
      !ENDDO
-     bpos=-6.0
+     bpos=-4.0
      k=1
-     DO i=nage-2,nage
-        DO j=nz-2,nz
-           bpos(k) = LOG10(1/5.)
+     DO i=1,nage
+        DO j=1,nz
+           IF (i.GE.(nage-2).AND.j.GE.3) bpos(k) = LOG10(1/5.)
            k=k+1
         ENDDO
      ENDDO

@@ -7,8 +7,8 @@ PROGRAM WRITE_A_MODEL
   USE nr, ONLY : locate
   IMPLICIT NONE
   
-  INTEGER  :: i,j,k
-  REAL(SP) :: mpix,wgt,zmet0,zmets,tau,tot
+  INTEGER  :: i,j,k,ii,jj
+  REAL(SP) :: mpix,wgt,zmet0,zmets,tau,tot=1.
   CHARACTER(50) :: infile
   REAL(SP), DIMENSION(nx,ny) :: onemodel
   REAL(SP), DIMENSION(npix,npix,nfil) :: f1,cf1,of1
@@ -18,11 +18,9 @@ PROGRAM WRITE_A_MODEL
 
   !------------------------------------------------------------!
 
-  infile = 'model_M2.0_t15_Z5_new'
-  mpix   = 2.0
-  zmet0  = 0.0
-  zmets  = 0.05
-  tau    = 2.0
+  infile = 'model_M2.0_t14_Z4'
+  ii = 4
+  jj = 14
 
   !setup the model grid
   CALL SETUP_MODELS()
@@ -31,21 +29,15 @@ PROGRAM WRITE_A_MODEL
   !mpixarr, zmetarr, agesarr
 
   !MDF
-  zz  = LOG10(zmetarr/0.0190)
+  !zz  = LOG10(zmetarr/0.0190)
   !mdf = EXP(-(zz-zmet0)**2/2/zmets)
-  mdf = 1.0
+  !mdf = 1.0
   
   !SFH
-  sfh = EXP(-(10**10.201-10**agesarr)/1E9/tau)
-  sfh=0.
-  sfh(15:15)=1.0
+  !sfh = EXP(-(10**10.201-10**agesarr)/1E9/tau)
+  !sfh=0.
+  !sfh(15:15)=1.0
 
-  tot=0.
-  DO i=1,nage
-     DO j=1,nz
-        tot = tot + mdf(j)*sfh(i)
-     ENDDO
-  ENDDO
 
   f1 = 0.0
   DO j=1,nage
@@ -55,7 +47,7 @@ PROGRAM WRITE_A_MODEL
      ENDDO
   ENDDO
 
-  f1 = model(:,:,:,nz,nage)
+  f1 = model(:,:,:,ii,jj)
 
   !convolve with PSF
   cf1 = -2.5*LOG10(convolve(f1))
