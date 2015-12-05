@@ -59,7 +59,7 @@ SUBROUTINE FUNCTION_PARALLEL_MAP(ndim, nk, nworkers, pos, lnpout)
           k, BEGIN, MPI_COMM_WORLD, ierr)
      
      ! Dispatch proposals to worker to figure out lnp
-     CALL MPI_SEND(pos(1,offset), ndim*npos, MPI_DOUBLE_PRECISION, &
+     CALL MPI_SEND(pos(1,offset), ndim*npos, MPI_REAL, &
           k, BEGIN, MPI_COMM_WORLD, ierr)
 
      ! now increment offset
@@ -79,7 +79,7 @@ SUBROUTINE FUNCTION_PARALLEL_MAP(ndim, nk, nworkers, pos, lnpout)
      ENDIF
      
      !get the lnps from the workers and store
-     CALL MPI_RECV(lnpout(offset), npos, MPI_DOUBLE_PRECISION, &
+     CALL MPI_RECV(lnpout(offset), npos, MPI_REAL, &
           k, MPI_ANY_TAG, MPI_COMM_WORLD, status, ierr)
      
      offset = offset + npos

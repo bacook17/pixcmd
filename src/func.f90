@@ -22,7 +22,6 @@ FUNCTION FUNC(inpos)
      ENDDO
   ENDDO
 
-
   !compute chi^2
   !func = SUM( (hess_data-imodel)**2  / (hess_err**2+model_err**2) )
   func = SUM( (hess_data-imodel)**2 / hess_err**2 )

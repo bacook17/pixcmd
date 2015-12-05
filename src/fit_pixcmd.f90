@@ -10,14 +10,14 @@ PROGRAM FIT_PIXCMD
   IMPLICIT NONE
 
   !emcee variables
-  INTEGER, PARAMETER :: nwalkers=256,nburn=10,nmcmc=1000
+  INTEGER, PARAMETER :: nwalkers=256,nburn=1000,nmcmc=200
   REAL(SP), DIMENSION(npar,nwalkers) :: pos_emcee_in,pos_emcee_out
-  REAL(SP), DIMENSION(nwalkers)      :: lp_emcee_in,lp_emcee_out
-  INTEGER,  DIMENSION(nwalkers)      :: accept_emcee,lp_mpi
+  REAL(SP), DIMENSION(nwalkers)      :: lp_emcee_in,lp_emcee_out,lp_mpi
+  INTEGER,  DIMENSION(nwalkers)      :: accept_emcee
   REAL(SP), DIMENSION(npar,nwalkers) :: mpiposarr=0.0
 
   INTEGER :: i,j,k,ndat,stat,i1,i2,iter=30,totacc=0,npos
-  REAL(SP) :: mpix,fret,bret=huge_number,wdth=0.1
+  REAL(SP) :: fret,bret=huge_number,wdth=0.1
   CHARACTER(10) :: time
   CHARACTER(50) :: infile
   REAL(SP), DIMENSION(nx,ny) :: bmodel=0.
@@ -43,7 +43,6 @@ PROGRAM FIT_PIXCMD
   CALL MPI_COMM_RANK( MPI_COMM_WORLD, taskid, ierr )
   CALL MPI_COMM_SIZE( MPI_COMM_WORLD, ntasks, ierr )
 
-
   IF (IARGC().LT.1) THEN
      infile='m31_bulge'
   ELSE
@@ -68,7 +67,7 @@ PROGRAM FIT_PIXCMD
   hess_err = SQRT(hess_data)
   DO i=1,nx
      DO j=1,ny
-        IF (hess_data(i,j).LE.tiny_number) hess_err(i,j)=1.0!huge_number
+        IF (hess_data(i,j).LE.tiny_number) hess_err(i,j)=1.0
      ENDDO
   ENDDO
 
@@ -93,7 +92,7 @@ PROGRAM FIT_PIXCMD
              masterid, MPI_ANY_TAG, MPI_COMM_WORLD, status, ierr)
         received_tag = status(MPI_TAG)
         IF ((received_tag.EQ.KILL).OR.(npos.EQ.0)) EXIT
-        CALL MPI_RECV(mpiposarr(1,1), npos*npar, MPI_DOUBLE_PRECISION, &
+        CALL MPI_RECV(mpiposarr(1,1), npos*npar, MPI_REAL, &
              masterid, MPI_ANY_TAG, MPI_COMM_WORLD, status, ierr)
    
         IF (taskid.EQ.1.AND.test_time.EQ.1) THEN
@@ -112,9 +111,9 @@ PROGRAM FIT_PIXCMD
            WRITE(*,*) '2 Time '//time(1:2)//':'//time(3:4)//':'&
                 //time(5:9),npos,taskid
         ENDIF
-             
+
         !Send it back to the master
-        CALL MPI_SEND(lp_mpi(1), npos, MPI_DOUBLE_PRECISION, &
+        CALL MPI_SEND(lp_mpi(1), npos, MPI_REAL, &
              masterid, BEGIN, MPI_COMM_WORLD, ierr)
 
      ENDDO
@@ -237,14 +236,14 @@ PROGRAM FIT_PIXCMD
         pos_emcee_in = pos_emcee_out
         lp_emcee_in  = lp_emcee_out
         totacc = totacc + SUM(accept_emcee)
-        
         !write the chain elements to file
         DO j=1,nwalkers
            WRITE(12,'(ES12.5,1x,999(F9.4,1x))') &
                 -2.0*lp_emcee_in(j),pos_emcee_in(:, j)
         ENDDO
-        
      ENDDO
+
+     CLOSE(12)
 
      WRITE(*,'("  Facc: ",F5.2)') REAL(totacc)/REAL(nmcmc*nwalkers)
      
@@ -255,8 +254,6 @@ PROGRAM FIT_PIXCMD
           recl=nx*ny*4)
      WRITE(11,rec=1) bmodel
      CLOSE(11)
-
-     CLOSE(12)
      
      CALL DATE_AND_TIME(TIME=time)
      WRITE(*,*) 'End Time '//time(1:2)//':'//time(3:4)//':'//time(5:6)
@@ -268,6 +265,5 @@ PROGRAM FIT_PIXCMD
 
   CALL MPI_FINALIZE(ierr)
  
-
 
 END PROGRAM FIT_PIXCMD

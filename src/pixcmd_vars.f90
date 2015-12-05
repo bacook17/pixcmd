@@ -53,7 +53,7 @@ MODULE PIXCMD_VARS
   !array for model grids
   REAL(SP), DIMENSION(npix,npix,nfil,nz,nage) :: model=0.
   !array for the data
-  REAL(SP), DIMENSION(nx,ny)    :: hess_data=0., hess_err=0.
+  REAL(SP), DIMENSION(nx,ny) :: hess_data=0.,hess_err=0.
 
 
 END MODULE PIXCMD_VARS
