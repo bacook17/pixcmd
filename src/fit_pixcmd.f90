@@ -10,7 +10,7 @@ PROGRAM FIT_PIXCMD
   IMPLICIT NONE
 
   !emcee variables
-  INTEGER, PARAMETER :: nwalkers=256,nburn=1000,nmcmc=200
+  INTEGER, PARAMETER :: nwalkers=512,nburn=1000,nmcmc=100
   REAL(SP), DIMENSION(npar,nwalkers) :: pos_emcee_in,pos_emcee_out
   REAL(SP), DIMENSION(nwalkers)      :: lp_emcee_in,lp_emcee_out,lp_mpi
   INTEGER,  DIMENSION(nwalkers)      :: accept_emcee
@@ -188,14 +188,19 @@ PROGRAM FIT_PIXCMD
      !-------------------------Run emcee---------------------------------!
      
      !initialize the walkers
+     WRITE(*,*) 'initializing walkers...'
      DO j=1,nwalkers
         DO i=1,npar
            pos_emcee_in(i,j) = bpos(i) + wdth*(2.*myran()-1.0)
         ENDDO
-        !Compute the initial log-probability for each walker
-        lp_emcee_in(j) = -0.5*func(pos_emcee_in(:, j))
      ENDDO
-  
+     !Compute the initial log-probability for each walker
+     CALL FUNCTION_PARALLEL_MAP(npar,nwalkers,ntasks-1,&
+          pos_emcee_in,lp_emcee_in)
+
+     CALL DATE_AND_TIME(TIME=time)
+     WRITE(*,*) 'Time '//time(1:2)//':'//time(3:4)//':'//time(5:6)
+
      !initial burn-in the chain
      WRITE(*,*) 'first burn-in...'
      DO i=1,nburn/2-1
