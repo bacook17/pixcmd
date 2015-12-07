@@ -17,9 +17,9 @@ PROGRAM FIT_PIXCMD
   REAL(SP), DIMENSION(npar,nwalkers) :: mpiposarr=0.0
 
   INTEGER :: i,j,k,ndat,stat,i1,i2,iter=30,totacc=0,npos
-  REAL(SP) :: fret,bret=huge_number,wdth=0.1
+  REAL(SP) :: fret,bret=huge_number,wdth=0.5
   CHARACTER(10) :: time
-  CHARACTER(50) :: infile
+  CHARACTER(50) :: infile,outfile
   REAL(SP), DIMENSION(nx,ny) :: bmodel=0.
 
   !Powell parameters
@@ -48,6 +48,8 @@ PROGRAM FIT_PIXCMD
   ELSE
      CALL GETARG(1,infile)
   ENDIF
+
+  outfile='fit2'
 
   !initialize the random number generator
   CALL INIT_RANDOM_SEED()
@@ -171,24 +173,25 @@ PROGRAM FIT_PIXCMD
         
      ELSE
         
-        !DO i=1,npar
-        !   bpos(i) = LOG10(myran()/npar)
-        !ENDDO
-        bpos=-4.0
-        k=1
-        DO i=1,nage
-           DO j=1,nz
-              IF (i.GE.(nage-2).AND.j.GE.3) bpos(k) = LOG10(1/5.)
-              k=k+1
-           ENDDO
+        DO i=1,npar
+           bpos(i) = LOG10(myran()/npar)
+           IF (bpos(i).LT.-7.0) pos(i)=-7.0
         ENDDO
+
+     !   bpos=-4.0
+     !   k=1
+     !   DO i=1,nage
+     !      DO j=1,nz
+     !         IF (i.GE.(nage-2).AND.j.GE.3) bpos(k) = LOG10(1/5.)
+     !         k=k+1
+     !      ENDDO
+     !   ENDDO
         
      ENDIF
      
      !-------------------------Run emcee---------------------------------!
      
      !initialize the walkers
-     WRITE(*,*) 'initializing walkers...'
      DO j=1,nwalkers
         DO i=1,npar
            pos_emcee_in(i,j) = bpos(i) + wdth*(2.*myran()-1.0)
@@ -197,9 +200,6 @@ PROGRAM FIT_PIXCMD
      !Compute the initial log-probability for each walker
      CALL FUNCTION_PARALLEL_MAP(npar,nwalkers,ntasks-1,&
           pos_emcee_in,lp_emcee_in)
-
-     CALL DATE_AND_TIME(TIME=time)
-     WRITE(*,*) 'Time '//time(1:2)//':'//time(3:4)//':'//time(5:6)
 
      !initial burn-in the chain
      WRITE(*,*) 'first burn-in...'
@@ -231,7 +231,8 @@ PROGRAM FIT_PIXCMD
      ENDDO
      
 
-     OPEN(12,FILE=TRIM(PIXCMD_HOME)//'/results2/fit.mcmc',STATUS='REPLACE')
+     OPEN(12,FILE=TRIM(PIXCMD_HOME)//'/results2/'//&
+          TRIM(outfile)//'.mcmc',STATUS='REPLACE')
 
      !production chain
      WRITE(*,*) 'production run...'       
@@ -254,9 +255,9 @@ PROGRAM FIT_PIXCMD
      
      !write the best model to a binary file
      bmodel = getmodel(bpos)
-     OPEN(11,FILE=TRIM(PIXCMD_HOME)//'/results2/fit.hess',&
-          FORM='UNFORMATTED',STATUS='REPLACE',access='DIRECT',&
-          recl=nx*ny*4)
+     OPEN(11,FILE=TRIM(PIXCMD_HOME)//'/results2/'//TRIM(outfile)&
+          //'.hess',FORM='UNFORMATTED',STATUS='REPLACE',&
+          access='DIRECT',recl=nx*ny*4)
      WRITE(11,rec=1) bmodel
      CLOSE(11)
      
