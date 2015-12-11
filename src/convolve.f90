@@ -6,7 +6,7 @@ FUNCTION CONVOLVE(arr)
   USE nrtype;  USE nr, ONLY : four2, rlft2
   IMPLICIT NONE
 
-  REAL(SP), DIMENSION(npix,npix,nfil), INTENT(in) :: arr
+  REAL(SP), DIMENSION(npix,npix,nfil), INTENT(inout) :: arr
   REAL(SP), DIMENSION(npix+2*npsf,npix+2*npsf,nfil) :: padarr
   REAL(SP), DIMENSION(npix,npix,nfil) :: convolve
   INTEGER :: i,j,k
@@ -20,6 +20,8 @@ FUNCTION CONVOLVE(arr)
   !------------------------------------------------------------!
 
   IF (fft.EQ.0) THEN
+
+     !this is the brute force do loop convolution
 
      padarr(npsf+1:npsf+npix,npsf+1:npsf+npix,:) = arr
 
@@ -42,13 +44,15 @@ FUNCTION CONVOLVE(arr)
 
   ELSE
 
+     !this is the fancy FFT version (which is much much faster)
+
      DO k=1,nfil
 
-        spec_out= 0.
-        speq_out= 0.
-        padarr2 = arr(:,:,k)
+        spec_out = 0.
+        speq_out = 0.
+        !padarr2  = arr(:,:,k)
 
-        CALL RLFT2(padarr2,spec_d,speq_d,1)
+        CALL RLFT2(arr(:,:,k),spec_d,speq_d,1)
         CALL RLFT2(psf2,spec_p,speq_p,1)
 
         DO i=1,npsf2/2
@@ -58,9 +62,8 @@ FUNCTION CONVOLVE(arr)
            ENDDO
         ENDDO
 
-        CALL RLFT2(padarr3,spec_out,speq_out,-1)
-
-        convolve(:,:,k) = padarr3
+        CALL RLFT2(convolve(:,:,k),spec_out,speq_out,-1)
+        !convolve(:,:,k) = padarr3
 
      ENDDO
 

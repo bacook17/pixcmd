@@ -10,8 +10,8 @@ PRO PIXCMD, mbin=mbin, zh=zh, ssp=ssp, sfh_tau=sfh_tau, $
 
   ;a=read_binary('../src/hess.dat',data_dims=[44,51,101],data_type=4)
 
-  nfix    = 200  ;default array size
-  nsample = 2E4  ;default number of output pixels
+  nfix    = 400  ;default array size
+  nsample = 5E4  ;default number of output pixels
   ;set the "background" flux level.  The faintest M dwarf
   ;has a flux of ~1E-7, so this is very faint.  Used to avoid NaNs
   bkgd = 1E-10
@@ -23,23 +23,23 @@ PRO PIXCMD, mbin=mbin, zh=zh, ssp=ssp, sfh_tau=sfh_tau, $
   END
 
   IF NOT(keyword_set(mbin)) THEN mbin = 1E4
-  IF NOT(keyword_set(zh))   THEN zh   = 0.0
+  IF NOT(keyword_set(zh))   THEN zh   = 5
   IF keyword_set(ssp) THEN BEGIN
      age  = float(ssp)
      IF age EQ 1.0 THEN age=10.
   ENDIF
   IF NOT(keyword_set(nbin)) THEN nbin = nfix
   IF NOT(keyword_set(tag))  THEN tag  = ''
-  IF keyword_set(more_eep)  THEN isoc_tag = 'moreEEP' $
-  ELSE isoc_tag='default'
+  IF keyword_set(more_eep)  THEN isoc_tag = '_moreEEP' $
+  ELSE isoc_tag=''
   
-  IF zh EQ 0.0 THEN zstr='p0.00'
-  IF zh GT 0.0 THEN zstr='p0.30'
-  IF zh LT 0.0 THEN zstr='m0.52'
+  zstr = ['m2.15','m1.13','m0.73','m0.52','m0.22','p0.00','p0.30',$
+          'p0.50']
 
   ;read in the model isochrone and the ACS PSF
-  a   = mrdfits('~/pixcmd/isoc/MIST_v29_Z'+zstr+'.fits',1,/sil)
-  psf = mrdfits('~/DATA/HST/psf_f814w_unbinned.fits',0,/sil)
+  a   = mrdfits('~/pixcmd/isoc/MIST_v29_Z'+zstr[zh]+$
+                isoc_tag+'.fits',1,/sil)
+  psf = mrdfits('~/DATA/HST/psf/psf_f814w_unbinned.fits',0,/sil)
   ;smooth the PSF in angle
   psf = sqrt( psf * transpose(psf) )
   psf = psf / total(psf)
@@ -88,11 +88,12 @@ PRO PIXCMD, mbin=mbin, zh=zh, ssp=ssp, sfh_tau=sfh_tau, $
   ;compactify things into a structure with fewer tags
   sub = {b:0.0,v:0.0,i:0.0,j:0.0,h:0.0,logimfweight:0.0}
   sub = replicate(sub,n_elements(tt))
-  struct_assign,tt,sub
   sub.b = tt.acs_f475w
+  sub.v = tt.acs_f555w
   sub.i = tt.acs_f814w
   sub.j = tt.wfc3_f110w
   sub.h = tt.wfc3_f160w
+  sub.logimfweight = tt.logimfweight
   tt    = sub
 
   ;convert from mags to flux (last tag is imfweight)
@@ -101,25 +102,52 @@ PRO PIXCMD, mbin=mbin, zh=zh, ssp=ssp, sfh_tau=sfh_tau, $
   ;results structure
   all = replicate({b:0.0,v:0.0,i:0.0,j:0.0,h:0.0},nbin,nbin)
 
-  spawn,'date'
+  ;spawn,'date'
+
   ;loop over each pixel
   FOR i=0,nbin-1 DO BEGIN
-     IF nbin GE 1E3 THEN IF i MOD 1E2 EQ 0 then print,i,nbin-i
+   ;  IF nbin GE 1E3 THEN IF i MOD 1E2 EQ 0 then print,i,nbin-i
      FOR j=0,nbin-1 DO BEGIN
         ;draw from a Poisson distribution
         nn = poidev(10^tt.logimfweight*mbin)
+        ;nn = drawn(10^tt.logimfweight*mbin)
         ;add all of the stars to the pixel
         FOR k=0,n_tags(all)-1 DO $
            all[i,j].(k) = total(nn*tt.(k)) + bkgd
      ENDFOR 
   ENDFOR
-  spawn,'date'
+
+  ;spawn,'date'
 
   ;convolve with ACS F814W PSF (convolve in flux space)
-  ;NB: need to convolve with each PSF separately
+  ;NB: should be convolving with each PSF separately,
+  ; but the F814W and F475W PSFs are not that different
   pall = all
-  FOR i=0,n_tags(pall)-1 DO $
-     pall.(i) = convol(all.(i),psf,/center,/nan,/edge_wrap)
+
+  ;below, accounting for the fact that the stars are not always
+  ;centered within each pixel
+  nn = 4.
+  FOR j=0,nn-1 DO BEGIN
+     FOR k=0,nn-1 DO BEGIN
+        FOR i=0,n_tags(pall)-1 DO BEGIN
+           im = all[j*nbin/nn:(j+1)*nbin/nn-1,k*nbin/nn:(k+1)*nbin/nn-1].(i)
+           pall[j*nbin/nn:(j+1)*nbin/nn-1,k*nbin/nn:(k+1)*nbin/nn-1].(i) = $
+           convol(im,fshift(psf,float(j)/nn,float(k)/nn),$
+                  /center,/nan,/edge_wrap)
+        ENDFOR
+     ENDFOR
+  ENDFOR
+
+  ;spawn,'date'
+
+
+  IF keyword_set(nosample) THEN BEGIN
+     tpall = all
+     FOR i=0,n_tags(tpall)-1 DO $
+        tpall.(i) = convol(all.(i),psf,/center,/nan,/edge_wrap)
+     FOR i=0,n_tags(tpall)-1 DO $
+        tpall.(i) = -2.5*alog10(tpall.(i))
+  ENDIF
 
   ;convert back to mags
   FOR i=0,n_tags(all)-1 DO $
@@ -127,17 +155,18 @@ PRO PIXCMD, mbin=mbin, zh=zh, ssp=ssp, sfh_tau=sfh_tau, $
   FOR i=0,n_tags(pall)-1 DO $
      pall.(i) = -2.5*alog10(pall.(i))
 
+
   ;-----------------------save results-------------------------;
 
   IF nbin NE nfix THEN nstr='_N'+strtrim(fix(nbin),2) ELSE nstr=''
 
   IF keyword_set(sfh_tau) THEN BEGIN
      file = '~/pixcmd/results/pixcmd_tau'+$
-            strmid(strtrim(sfh_tau,2),0,4)+'_'+zstr+'_Mbin'+$
+            strmid(strtrim(sfh_tau,2),0,4)+'_Z'+zstr[zh]+'_Mbin'+$
             strmid(strtrim(alog10(mbin),2),0,4)+nstr+tag+'.fits'
   ENDIF ELSE BEGIN
      file = '~/pixcmd/results/pixcmd_t'+$
-            strmid(strtrim(age,2),0,4)+'_'+zstr+'_Mbin'+$
+            strmid(strtrim(age,2),0,4)+'_Z'+zstr[zh]+'_Mbin'+$
             strmid(strtrim(alog10(mbin),2),0,4)+nstr+tag+'.fits'
   ENDELSE
 
@@ -154,6 +183,7 @@ PRO PIXCMD, mbin=mbin, zh=zh, ssp=ssp, sfh_tau=sfh_tau, $
      mwrfits,all.i,file,/silent
      mwrfits,pall.b,file,/silent
      mwrfits,pall.i,file,/silent
+     mwrfits,tpall.i,file,/silent
   ENDIF
 
   

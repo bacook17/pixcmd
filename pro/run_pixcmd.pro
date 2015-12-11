@@ -1,45 +1,47 @@
-PRO RUN_PIXCMD
+PRO RUN_PIXCMD, xx=xx
+
+  ;run models with a complex SFH (part a)
+  IF xx EQ 1 THEN BEGIN
+     FOR m=0,2 DO BEGIN
+        print,m
+        pixcmd,mbin=10^float(1+m/4.),ssp=10.
+        pixcmd,mbin=10^float(1+m/4.),sfh=1. 
+        pixcmd,mbin=10^float(1+m/4.),sfh=2. 
+        pixcmd,mbin=10^float(1+m/4.),sfh=5. 
+        pixcmd,mbin=10^float(1+m/4.),sfh=10.
+     ENDFOR
+  ENDIF
+ 
+  ;run models with a complex SFH (part b)
+  IF xx EQ 2 THEN BEGIN
+     FOR m=3,5 DO BEGIN
+        print,m
+        pixcmd,mbin=10^float(1+m/4.),ssp=10.
+        pixcmd,mbin=10^float(1+m/4.),sfh=1. 
+        pixcmd,mbin=10^float(1+m/4.),sfh=2. 
+        pixcmd,mbin=10^float(1+m/4.),sfh=5. 
+        pixcmd,mbin=10^float(1+m/4.),sfh=10.
+     ENDFOR
+  ENDIF
+ 
+  ;create large images to be used for illustration purposes
+  IF xx EQ 3 THEN BEGIN
+     FOR m=0,6 DO BEGIN
+        print,m-1
+        pixcmd,mbin=10^float(m-1),ssp=10.,nbin=1E3,$
+               /nosample,/more_eep
+     ENDFOR
+  ENDIF
 
   ;grid of metallicity and mass
-  FOR z=-1,1 DO BEGIN
-     FOR m=0,5 DO BEGIN
-        print,m,z
-        pixcmd,mbin=10^float(m),ssp=10.,zh=z
+  IF xx EQ 4 THEN BEGIN
+     FOR i=2,7 DO BEGIN
+        FOR m=1,4 DO BEGIN
+           print,m,i
+           pixcmd,mbin=10^float(m),ssp=10.,zh=i
+        ENDFOR
      ENDFOR
-  ENDFOR
+  ENDIF
 
-stop
-
-  ;run a giant image to be used for illustration purposes
-  pixcmd,mbin=1e5,ssp=10.,nbin=1E3,/nosample,/more_eep
-  pixcmd,mbin=1e4,ssp=10.,nbin=1E3,/nosample,/more_eep
-  pixcmd,mbin=1e3,ssp=10.,nbin=1E3,/nosample,/more_eep
-  pixcmd,mbin=1e2,ssp=10.,nbin=1E3,/nosample,/more_eep
-  pixcmd,mbin=1e1,ssp=10.,nbin=1E3,/nosample,/more_eep
-  pixcmd,mbin=1e0,ssp=10.,nbin=1E3,/nosample,/more_eep
-  pixcmd,mbin=1e-1,ssp=10.,nbin=1E3,/nosample,/more_eep
-
-  stop
-
-  ;run models with a complex SFH
-  FOR m=0,5 DO BEGIN
-     pixcmd,mbin=10^float(m),ssp=10.,nbin=1E3
-     pixcmd,mbin=10^float(m),sfh=1.,nbin=1E3
-     pixcmd,mbin=10^float(m),sfh=2.,nbin=1E3
-     pixcmd,mbin=10^float(m),sfh=5.,nbin=1E3
-     pixcmd,mbin=10^float(m),sfh=10.,nbin=1E3
-  ENDFOR
-
-  ;grid of age and mass
-  FOR t=0,3 DO BEGIN
-     FOR m=0,5 DO BEGIN
-        print,m,t
-        pixcmd,mbin=10^float(m),ssp=7.+t,/more_eep
-        pixcmd,mbin=10^float(m+0.3),ssp=7.+t,/more_eep
-        pixcmd,mbin=10^float(m+0.5),ssp=7.+t,/more_eep
-     ENDFOR
-  ENDFOR
-
-
-
+ 
 END

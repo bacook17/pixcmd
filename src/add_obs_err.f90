@@ -20,7 +20,7 @@ FUNCTION ADD_OBS_ERR(flux)
   DO k=1,nfil
 
      !compute total counts 
-     cts = 10**(-2./5*(flux(:,:,k)+dm-zpt(k)))*exptime(k)
+     cts = flux(:,:,k) * 10**(-2./5*(dm-zpt(k)))*exptime(k)
      
      DO j=1,npix
         CALL GASDEV(gdev)

@@ -63,6 +63,8 @@ SUBROUTINE SETUP_MODELS()
   psf2(npsf2-npsf/2+2:npsf2,1:npsf/2+2) = psf(1:npsf/2-1,npsf/2:npsf)
   psf2(npsf2-npsf/2+2:npsf2,npsf2-npsf/2+2:npsf2) = psf(1:npsf/2-1,1:npsf/2-1)
 
+ write(*,*) sum(psf),sum(psf2)
+stop
 
   !--------------read in the model Hess diagrams---------------!
 

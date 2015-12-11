@@ -50,7 +50,7 @@ PROGRAM WRITE_A_MODEL
   f1 = model(:,:,:,ii,jj)
 
   !convolve with PSF
-  cf1 = -2.5*LOG10(convolve(f1))
+  cf1 = convolve(f1)
 
   !add obs errors
   of1 = add_obs_err(cf1)

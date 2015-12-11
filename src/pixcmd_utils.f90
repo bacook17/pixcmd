@@ -11,7 +11,7 @@ MODULE PIXCMD_UTILS
   INTERFACE
      FUNCTION CONVOLVE(arr)
        USE pixcmd_vars; USE nrtype
-       REAL(SP), DIMENSION(npix,npix,nfil), INTENT(in) :: arr
+       REAL(SP), DIMENSION(npix,npix,nfil), INTENT(inout) :: arr
        REAL(SP), DIMENSION(npix,npix,nfil) :: convolve
      END FUNCTION CONVOLVE
   END INTERFACE

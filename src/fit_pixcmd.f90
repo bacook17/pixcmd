@@ -1,7 +1,6 @@
 PROGRAM FIT_PIXCMD
 
-  !To Do: 1) include E(B-V) as free parameter
-  !       2) MPI parallelize
+  !To Do: 1) include E(B-V) and Mpix as free parameters
 
   USE pixcmd_utils; USE pixcmd_vars; USE nrtype
   USE nr, ONLY : powell; USE mpi
@@ -19,7 +18,7 @@ PROGRAM FIT_PIXCMD
   INTEGER :: i,j,k,ndat,stat,i1,i2,iter=30,totacc=0,npos
   REAL(SP) :: fret,bret=huge_number,wdth=0.5
   CHARACTER(10) :: time
-  CHARACTER(50) :: infile,outfile
+  CHARACTER(50) :: infile
   REAL(SP), DIMENSION(nx,ny) :: bmodel=0.
 
   !Powell parameters
@@ -48,8 +47,6 @@ PROGRAM FIT_PIXCMD
   ELSE
      CALL GETARG(1,infile)
   ENDIF
-
-  outfile='fit2'
 
   !initialize the random number generator
   CALL INIT_RANDOM_SEED()
@@ -232,7 +229,7 @@ PROGRAM FIT_PIXCMD
      
 
      OPEN(12,FILE=TRIM(PIXCMD_HOME)//'/results2/'//&
-          TRIM(outfile)//'.mcmc',STATUS='REPLACE')
+          TRIM(infile)//'.mcmc',STATUS='REPLACE')
 
      !production chain
      WRITE(*,*) 'production run...'       
@@ -255,7 +252,7 @@ PROGRAM FIT_PIXCMD
      
      !write the best model to a binary file
      bmodel = getmodel(bpos)
-     OPEN(11,FILE=TRIM(PIXCMD_HOME)//'/results2/'//TRIM(outfile)&
+     OPEN(11,FILE=TRIM(PIXCMD_HOME)//'/results2/'//TRIM(infile)&
           //'.hess',FORM='UNFORMATTED',STATUS='REPLACE',&
           access='DIRECT',recl=nx*ny*4)
      WRITE(11,rec=1) bmodel
