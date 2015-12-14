@@ -67,27 +67,8 @@ PROGRAM SIM_PIXCMD
   !initialize the random number generator
   CALL INIT_RANDOM_SEED()
 
-  CALL GETENV('PIXCMD_HOME',PIXCMD_HOME)
-
-  !set up the Hess arrays
-  DO i=1,nx
-     xhess(i) = xmin+(i-1)*dx
-  ENDDO
-  DO i=1,ny
-     yhess(i) = ymin+(i-1)*dy
-  ENDDO
-
-  !read in the ACS F814W PSF (log PSF in the file)
-  OPEN(12,file=TRIM(PIXCMD_HOME)//'/psf/f814w.psf',&
-       STATUS='OLD',iostat=stat,ACTION='READ')
-  IF (stat.NE.0) THEN
-     WRITE(*,*) 'PIXCMD ERROR: PSF file not found'
-     STOP
-  ENDIF
-  DO i=1,npsf
-     READ(12,*) psf(:,i)
-  ENDDO
-  psf = 10**psf
+  !setup the model arrays, PSF, etc
+  CALL SETUP_MODELS(0)
 
   CALL DATE_AND_TIME(TIME=time)
   WRITE(*,*) 'Start Time '//time(1:2)//':'//time(3:4)//':'//time(5:6)

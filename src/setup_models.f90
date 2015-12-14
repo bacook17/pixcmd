@@ -1,8 +1,9 @@
-SUBROUTINE SETUP_MODELS()
+SUBROUTINE SETUP_MODELS(flag)
 
   USE pixcmd_vars; USE nrtype
   IMPLICIT NONE
 
+  INTEGER, INTENT(in) :: flag
   CHARACTER(5), DIMENSION(nz)  :: zstr
   CHARACTER(4)  :: mstr
   CHARACTER(1)  :: is,js
@@ -77,29 +78,34 @@ SUBROUTINE SETUP_MODELS()
      ENDDO
   ENDDO
 
+
   !--------------read in the model Hess diagrams---------------!
 
-  DO m=1,nm
+  IF (flag.EQ.1) THEN
+     
+     DO m=1,nm
+        
+        WRITE(mstr,'(F4.2)') mpixarr(m)
+     
+        DO i=1,nz
 
-     WRITE(mstr,'(F4.2)') mpixarr(m)
+           OPEN(11,FILE=TRIM(PIXCMD_HOME)//'/models/M'//mstr//'_Z'//zstr(i)//&
+                '.im',FORM='UNFORMATTED',STATUS='OLD',access='direct',&
+                recl=nage*npix*npix*nfil*4,ACTION='READ')
+           READ(11,rec=1) tmodel
+           CLOSE(11)
+           
+           !flip the order around to make array manipulation faster
+           !in getmodel
+           DO k=1,nage
+              model(:,:,:,i,k) = tmodel(k,:,:,:)
+           ENDDO
 
-     DO i=1,nz
-
-        OPEN(11,FILE=TRIM(PIXCMD_HOME)//'/models/M'//mstr//'_Z'//zstr(i)//&
-             '.im',FORM='UNFORMATTED',STATUS='OLD',access='direct',&
-             recl=nage*npix*npix*nfil*4,ACTION='READ')
-        READ(11,rec=1) tmodel
-        CLOSE(11)
-
-        !flip the order around to make array manipulation faster
-        !in getmodel
-        DO k=1,nage
-           model(:,:,:,i,k) = tmodel(k,:,:,:)
         ENDDO
 
      ENDDO
 
-  ENDDO
+  ENDIF
 
 
 END SUBROUTINE SETUP_MODELS

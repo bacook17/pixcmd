@@ -22,8 +22,11 @@ PROGRAM WRITE_A_MODEL
   ii = 4
   jj = 14
 
+  !initialize the random number generator
+  CALL INIT_RANDOM_SEED()
+
   !setup the model grid
-  CALL SETUP_MODELS()
+  CALL SETUP_MODELS(1)
 
   !(nm,nz,nage,nx,ny)
   !mpixarr, zmetarr, agesarr

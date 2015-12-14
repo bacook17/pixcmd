@@ -65,8 +65,8 @@ PROGRAM FIT_PIXCMD
   !initialize the random number generator
   CALL INIT_RANDOM_SEED()
 
-  !setup the model grid
-  CALL SETUP_MODELS()
+  !setup the model grid, PSF, etc.
+  CALL SETUP_MODELS(1)
 
   !read in the Hess diagram for the data
   OPEN(1,FILE=TRIM(PIXCMD_HOME)//'/data/'//TRIM(infile)//'.hess',&
