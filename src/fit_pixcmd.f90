@@ -48,6 +48,20 @@ PROGRAM FIT_PIXCMD
      CALL GETARG(1,infile)
   ENDIF
 
+  IF (taskid.EQ.masterid) THEN
+     !write some important variables to screen
+     WRITE(*,*)
+     WRITE(*,'(" ************************************")')
+     WRITE(*,'("  dopowell   = ",I5)') dopowell
+     WRITE(*,'("  Nwalkers   = ",I5)') nwalkers
+     WRITE(*,'("  Nburn      = ",I5)') nburn
+     WRITE(*,'("  Nchain     = ",I5)') nmcmc
+     WRITE(*,'("  Ntasks     = ",I5)') ntasks
+     WRITE(*,'("  filename   = ",A)') TRIM(infile)
+     WRITE(*,'(" ************************************")')
+  ENDIF
+
+
   !initialize the random number generator
   CALL INIT_RANDOM_SEED()
 
