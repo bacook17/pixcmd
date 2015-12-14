@@ -41,8 +41,8 @@ PRO PIXCMD, mbin=mbin, zh=zh, ssp=ssp, sfh_tau=sfh_tau, $
                 isoc_tag+'.fits',1,/sil)
   psf = mrdfits('~/DATA/HST/psf/psf_f814w_unbinned.fits',0,/sil)
   ;smooth the PSF in angle
-  psf = sqrt( psf * transpose(psf) )
-  psf = psf / total(psf)
+  ;psf = sqrt( psf * transpose(psf) )
+  ;psf = psf / total(psf)
 
   ;set up the isochrones
   IF keyword_set(ssp) THEN BEGIN
@@ -53,7 +53,7 @@ PRO PIXCMD, mbin=mbin, zh=zh, ssp=ssp, sfh_tau=sfh_tau, $
   ENDIF ELSE BEGIN
 
      ;create weights for a SFH
-     aa = a[uniq(a.logage)].logage
+     aa  = a[uniq(a.logage)].logage
      wha = where(aa LE 10.0,ctw)
      IF sfh_tau GE 10.0 THEN BEGIN
         ;constant SFH
@@ -70,17 +70,24 @@ PRO PIXCMD, mbin=mbin, zh=zh, ssp=ssp, sfh_tau=sfh_tau, $
         sfh = sfh / wgt
      ENDELSE
 
-     wgt=0.
+     wgt  = 0.
+     wgti = fltarr(ctw)
      FOR i=1,ctw-1 DO BEGIN
         wh  = where(a.logage EQ aa[wha[i]])
         dt  = (10^(aa[i+1]<10.)-10^aa[i-1])/2.
+        wgti[i] = sfh[i]*dt
         wgt = wgt+sfh[i]*dt
         tmp = a[wh]
         tmp.logimfweight = tmp.logimfweight+alog10(sfh[i]*dt)
         tt  = (i EQ 1) ? tmp : [tt,tmp]
      ENDFOR
 
+     ;mass-weighted average age
+     ;agrees with analytic results
+     mage = total(10^aa[wha]*wgti)
+
   ENDELSE
+
 
   ;remove Infs
   tt = tt[where(finite(tt.logimfweight) EQ 1)]
@@ -130,9 +137,11 @@ PRO PIXCMD, mbin=mbin, zh=zh, ssp=ssp, sfh_tau=sfh_tau, $
   FOR j=0,nn-1 DO BEGIN
      FOR k=0,nn-1 DO BEGIN
         FOR i=0,n_tags(pall)-1 DO BEGIN
-           im = all[j*nbin/nn:(j+1)*nbin/nn-1,k*nbin/nn:(k+1)*nbin/nn-1].(i)
-           pall[j*nbin/nn:(j+1)*nbin/nn-1,k*nbin/nn:(k+1)*nbin/nn-1].(i) = $
-           convol(im,fshift(psf,float(j)/nn,float(k)/nn),$
+           im = all[j*nbin/nn:(j+1)*nbin/nn-1,$
+                    k*nbin/nn:(k+1)*nbin/nn-1].(i)
+           pall[j*nbin/nn:(j+1)*nbin/nn-1,$
+                k*nbin/nn:(k+1)*nbin/nn-1].(i) = $
+              convol(im,fshift(psf,float(j)/nn,float(k)/nn),$
                   /center,/nan,/edge_wrap)
         ENDFOR
      ENDFOR

@@ -9,7 +9,7 @@ PROGRAM FIT_PIXCMD
   IMPLICIT NONE
 
   !emcee variables
-  INTEGER, PARAMETER :: nwalkers=512,nburn=1000,nmcmc=100
+  INTEGER, PARAMETER :: nwalkers=256,nburn=10,nmcmc=10
   REAL(SP), DIMENSION(npar,nwalkers) :: pos_emcee_in,pos_emcee_out
   REAL(SP), DIMENSION(nwalkers)      :: lp_emcee_in,lp_emcee_out,lp_mpi
   INTEGER,  DIMENSION(nwalkers)      :: accept_emcee
@@ -71,8 +71,8 @@ PROGRAM FIT_PIXCMD
   ENDDO
 
   !normalize the data to unity
-  hess_err  = hess_err /ndat
-  hess_data = hess_data/ndat
+  hess_err  = hess_err  / ndat
+  hess_data = hess_data / ndat
 
 
   ! The worker's only job is to calculate the value of a function
@@ -140,7 +140,7 @@ PROGRAM FIT_PIXCMD
               write(*,*) i,j,fret,LOG10(fret)
            ENDDO
         ENDDO
-        
+
      ENDIF
 
      !---------------------Run powell minimization-----------------------!
@@ -160,14 +160,14 @@ PROGRAM FIT_PIXCMD
            ENDDO
            fret = huge_number
            CALL POWELL(pos,xi,ftol,iter,fret)
-           WRITE(*,'(F10.5)') log10(fret/(nx*ny-npar))
+           WRITE(*,'(5F10.5)') Log10(fret),log10(fret/(nx*ny-npar))
            IF (fret.LT.bret) THEN
               bret = fret
               bpos = pos
            ENDIF
         ENDDO
         WRITE(*,'(5F10.5)') Log10(bret),log10(bret/(nx*ny-npar))
-        
+       stop 
      ELSE
         
         DO i=1,npar
@@ -227,7 +227,6 @@ PROGRAM FIT_PIXCMD
         lp_emcee_in  = lp_emcee_out
      ENDDO
      
-
      OPEN(12,FILE=TRIM(PIXCMD_HOME)//'/results2/'//&
           TRIM(infile)//'.mcmc',STATUS='REPLACE')
 

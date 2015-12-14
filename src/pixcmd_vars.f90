@@ -39,9 +39,10 @@ MODULE PIXCMD_VARS
   INTEGER, PARAMETER :: ndat_max=3000000,niso_max=5000
 
   !PSF array
-  INTEGER, PARAMETER :: npsf=59,npsf2=1024
-  REAL(SP), DIMENSION(npsf,npsf) :: psf=0.
-  REAL(SP), DIMENSION(npsf2,npsf2) :: psf2=0.
+  INTEGER, PARAMETER :: psf_step=4
+  INTEGER, PARAMETER :: npsf=59,npsf2=npix/psf_step
+  REAL(SP), DIMENSION(npsf,npsf) :: psfi=0.
+  REAL(SP), DIMENSION(npsf2,npsf2,psf_step,psf_step) :: psf=0.
 
   !define small and large numbers
   REAL(SP), PARAMETER :: huge_number = 1E33

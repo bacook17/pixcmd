@@ -8,14 +8,16 @@ FUNCTION GETMODEL(inpos)
   REAL(SP), DIMENSION(npar) :: inpos
   REAL(SP), DIMENSION(nx,ny) :: getmodel
   REAL(SP), DIMENSION(npix,npix,nfil) :: f1,cf1,of1
-  INTEGER :: ilo,i,j,k
+  INTEGER :: ilo,i,j,k, test_time=0
   REAL(SP) :: di
   CHARACTER(10) :: time
 
   !------------------------------------------------------------!
 
-  CALL DATE_AND_TIME(TIME=time)
-  WRITE(*,*) '1 Time '//time(1:2)//':'//time(3:4)//':'//time(5:9)
+  IF (test_time.EQ.1) THEN
+     CALL DATE_AND_TIME(TIME=time)
+     WRITE(*,*) '1 Time '//time(1:2)//':'//time(3:4)//':'//time(5:9)
+  ENDIF
 
   !linearly combine the model components
   f1 = 0.0
@@ -27,20 +29,26 @@ FUNCTION GETMODEL(inpos)
      ENDDO
   ENDDO
 
-  CALL DATE_AND_TIME(TIME=time)
-  WRITE(*,*) '2 Time '//time(1:2)//':'//time(3:4)//':'//time(5:9)
+  IF (test_time.EQ.1) THEN
+     CALL DATE_AND_TIME(TIME=time)
+     WRITE(*,*) '2 Time '//time(1:2)//':'//time(3:4)//':'//time(5:9)
+  ENDIF
 
   !convolve with PSF
   cf1 = convolve(f1)
 
-  CALL DATE_AND_TIME(TIME=time)
-  WRITE(*,*) '3 Time '//time(1:2)//':'//time(3:4)//':'//time(5:9)
+  IF (test_time.EQ.1) THEN
+     CALL DATE_AND_TIME(TIME=time)
+     WRITE(*,*) '3 Time '//time(1:2)//':'//time(3:4)//':'//time(5:9)
+  ENDIF
 
   !add obs errors
   of1 = add_obs_err(cf1)
 
-  CALL DATE_AND_TIME(TIME=time)
-  WRITE(*,*) '4 Time '//time(1:2)//':'//time(3:4)//':'//time(5:9)
+  IF (test_time.EQ.1) THEN
+     CALL DATE_AND_TIME(TIME=time)
+     WRITE(*,*) '4 Time '//time(1:2)//':'//time(3:4)//':'//time(5:9)
+  ENDIF
 
   !compute Hess diagram, normalize to unity
   getmodel = hist_2d(of1(:,:,1)-of1(:,:,2),of1(:,:,2),&

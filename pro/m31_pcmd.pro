@@ -221,18 +221,12 @@ PRO M31_PCMD, ir=ir, brick=brick, bias=bias
                   min1=-1.5,max1=4.5,min2=-6,max2=5)
      m2h = reverse(m2h,2)
 
-     b = read_binary('../hess/hess_M2.00_Zp0.00.dat',$
-                     data_dims=[22,121,221],data_type=4)
-     bb = reverse(reform(b[20,*,*]),2)
-
-     r = read_binary('../results/hess_best.dat',$
-                     data_dims=[121,221],data_type=4)
-     r = reverse(r,2)
-
-     b = read_binary('../data/model_tau2.0_mpix3.1_mdf0.0_0.05.hess',$
-                     data_dims=[121,221],data_type=4)
+     b=read_binary('../data/model_M2.0_t14_Z4.hess',data_type=4,$
+                   data_dims=[121,221])
      bb = reverse(b,2)
 
+     stop
+     
      d=read_binary('../data/m31_bulge.hess',data_dims=[121,221],data_type=4)
      d = reverse(d,2)
 

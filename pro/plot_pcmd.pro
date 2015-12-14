@@ -185,56 +185,116 @@ PRO PLOT_PCMD, psf=psf, age=age
   m1   = mrdfits(rdir+'pixcmd_t'+sage+'_Zp0.00_Mbin1.00.fits',pp,/sil)
   m2   = mrdfits(rdir+'pixcmd_t'+sage+'_Zp0.00_Mbin2.00.fits',pp,/sil)
   m3   = mrdfits(rdir+'pixcmd_t'+sage+'_Zp0.00_Mbin3.00.fits',pp,/sil)
+  m4   = mrdfits(rdir+'pixcmd_t'+sage+'_Zp0.00_Mbin4.00.fits',pp,/sil)
   m1zp = mrdfits(rdir+'pixcmd_t'+sage+'_Zp0.50_Mbin1.00.fits',pp,/sil)
   m2zp = mrdfits(rdir+'pixcmd_t'+sage+'_Zp0.50_Mbin2.00.fits',pp,/sil)
   m3zp = mrdfits(rdir+'pixcmd_t'+sage+'_Zp0.50_Mbin3.00.fits',pp,/sil)
+  m4zp = mrdfits(rdir+'pixcmd_t'+sage+'_Zp0.50_Mbin4.00.fits',pp,/sil)
   m1zm = mrdfits(rdir+'pixcmd_t'+sage+'_Zm0.52_Mbin1.00.fits',pp,/sil)
   m2zm = mrdfits(rdir+'pixcmd_t'+sage+'_Zm0.52_Mbin2.00.fits',pp,/sil)
   m3zm = mrdfits(rdir+'pixcmd_t'+sage+'_Zm0.52_Mbin3.00.fits',pp,/sil)
+  m4zm = mrdfits(rdir+'pixcmd_t'+sage+'_Zm0.52_Mbin4.00.fits',pp,/sil)
 
   eb = 3.268
   ei = 1.526
   ej = 0.881
   eh = 0.613
+  ev = 2.742
 
-  plot,m2.b-m2.i,m2.j-m2.h,ps=3
-  oplot,m2zm.b-m2zm.i+(eb-ei)/8,m2zm.j-m2zm.h+(ej-eh)/8,ps=3
+  av = 1.0
 
-  arrow,1.5,0.1,1.5+(eb-ei)/3,0.1+(ej-eh)/3.,/data
+  begplot,name=pdir+'mpix_vs_z.eps',/encap,/col,xsize=8,ysize=7,/quiet
 
-  stop
+    !p.multi=[0,3,3]
+    !p.charsize=1.8
+    loadct,2
+
+    xr = [-0.5,4.]
+    yr = [3.,-2.]
+    xb = (max(xr)-min(xr))/150.
+    yb = (max(yr)-min(yr))/150.
+
+    dd = hist_2d(m2.i-m2.h,m2.i,bin1=xb,bin2=yb,$
+                 min1=min(xr),max1=max(xr),min2=min(yr),max2=max(yr))
+    ddzm = hist_2d(m2zm.i-m2zm.h,m2zm.i,bin1=xb,bin2=yb,$
+                   min1=min(xr),max1=max(xr),min2=min(yr),max2=max(yr))
+    ddzp = hist_2d(m2zp.i-m2zp.h,m2zp.i,bin1=xb,bin2=yb,$
+                   min1=min(xr),max1=max(xr),min2=min(yr),max2=max(yr))
+
+    plotimage,alog10(reverse(ddzm,2)),range=[2,-3],$
+              imgxrange=xr,imgyrange=yr,xr=xr,yr=yr,xtit='I-H',ytit='H'
+    arrow,0.2,2,0.2+(ei-eh)/ev*av,2+eh/ev*av,/data,thick=4,hsize=150
+    legend,['M!Dpix!N=10!U2!N'],box=0,charsize=1.1,/right,pos=[4,-1.8]
+    legend,['[Z/H]=-0.5'],/bottom,/right,box=0,charsize=0.8,pos=[4,2.8]
+    plotimage,alog10(reverse(dd,2)),range=[2,-3],$
+              imgxrange=xr,imgyrange=yr,xr=xr,yr=yr,xtit='I-H',ytit='H'
+    arrow,0.2,2,0.2+(ei-eh)/ev*av,2+eh/ev*av,/data,thick=4,hsize=150
+    legend,['[Z/H]=+0.0'],/bottom,/right,box=0,charsize=0.8,pos=[4,2.8]
+    plotimage,alog10(reverse(ddzp,2)),range=[2,-3],$
+              imgxrange=xr,imgyrange=yr,xr=xr,yr=yr,xtit='I-H',ytit='H'
+    arrow,0.2,2,0.2+(ei-eh)/ev*av,2+eh/ev*av,/data,thick=4,hsize=150
+    legend,['[Z/H]=+0.5'],/bottom,/right,box=0,charsize=0.8,pos=[4,2.8]
   
-
-  begplot,name=pdir+'pixcmd_t'+sage+spsf+'_varyz.eps',/col,$
-          xsize=6,ysize=5,/quiet,/encap
-
-    !p.multi=[0,2,2]
-    !p.charsize=1.
-
-    plot,[0],yr=[10,-8],ys=1,xr=[-1,4],xtit='B-I',ytit='I'
-    oplot,m1.b-m1.i,m1.i,ps=8,symsize=0.2
-    oplot,m1zp.b-m1zp.i,m1zp.i,ps=8,symsize=0.2,col=!red
-    oplot,m1zm.b-m1zm.i,m1zm.i,ps=8,symsize=0.2,col=!blue
-    legend,['log(M!Dpix!N)=1'],box=0,charsize=0.7
+    xr = [-0.5,3.]
+    yr = [0.,-3.]
+    xb = (max(xr)-min(xr))/150.
+    yb = (max(yr)-min(yr))/150.
    
-    plot,[0],yr=[10,-8],ys=1,xr=[-1,4],xtit='B-I',ytit='I'
-    oplot,m1.b-m1.i,m1.i,ps=8,symsize=0.2
-    oplot,m190.b-m190.i,m190.i,ps=8,symsize=0.2,col=!red
-    oplot,m180.b-m180.i,m180.i,ps=8,symsize=0.2,col=!green
- 
-    plot,[0],yr=[10,-8],ys=1,xr=[-0.5,1],xtit='J-H',ytit='H'
-    oplot,m1.j-m1.h,m1.h,ps=8,symsize=0.2
-    oplot,m1zp.j-m1zp.h,m1zp.h,ps=8,symsize=0.2,col=!red
-    oplot,m1zm.j-m1zm.h,m1zm.h,ps=8,symsize=0.2,col=!blue
-
-    plot,[0],yr=[10,-8],ys=1,xr=[-0.5,1],xtit='J-H',ytit='H'
-    oplot,m1.j-m1.h,m1.h,ps=8,symsize=0.2
-    oplot,m190.j-m190.h,m190.h,ps=8,symsize=0.2,col=!red
-    oplot,m180.j-m180.h,m180.h,ps=8,symsize=0.2,col=!green
-
+    dd = hist_2d(m3.i-m3.h,m3.i,bin1=xb,bin2=yb,$
+                 min1=min(xr),max1=max(xr),min2=min(yr),max2=max(yr))
+    ddzm = hist_2d(m3zm.i-m3zm.h,m3zm.i,bin1=xb,bin2=yb,$
+                 min1=min(xr),max1=max(xr),min2=min(yr),max2=max(yr))
+    ddzp = hist_2d(m3zp.i-m3zp.h,m3zp.i,bin1=xb,bin2=yb,$
+                   min1=min(xr),max1=max(xr),min2=min(yr),max2=max(yr))
+    
+    plotimage,alog10(reverse(ddzm,2)),range=[2,-3],/preserve,$
+              imgxrange=xr,imgyrange=yr,xr=xr,yr=yr,xtit='I-H',ytit='H'
+    ;oplot,[0.3,0.4,0.6],[-0.9,-0.65,-0.4],ps=-8,line=2
+    arrow,0.2,-0.7,0.2+(ei-eh)/ev*av,-0.7+eh/ev*av,/data,thick=4,hsize=150
+    legend,['M!Dpix!N=10!U3!N'],box=0,charsize=1.1,/right,pos=[3,-2.8]
+    legend,['[Z/H]=-0.5'],/bottom,/right,box=0,charsize=0.8,pos=[3,-0.1]
+    plotimage,alog10(reverse(dd,2)),range=[2,-3],/preserve,$
+              imgxrange=xr,imgyrange=yr,xr=xr,yr=yr,xtit='I-H',ytit='H'
+    ;oplot,[0.3,0.4,0.6],[-0.9,-0.65,-0.4],ps=-8,line=2
+    arrow,0.2,-0.7,0.2+(ei-eh)/ev*av,-0.7+eh/ev*av,/data,thick=4,hsize=150
+    legend,['[Z/H]=0.0'],/bottom,/right,box=0,charsize=0.8,pos=[3,-0.1]
+    plotimage,alog10(reverse(ddzp,2)),range=[2,-3],/preserve,$
+              imgxrange=xr,imgyrange=yr,xr=xr,yr=yr,xtit='I-H',ytit='H'
+    ;oplot,[0.3,0.4,0.6],[-0.9,-0.65,-0.4],ps=-8,line=2
+    arrow,0.2,-0.7,0.2+(ei-eh)/ev*av,-0.7+eh/ev*av,/data,thick=4,hsize=150
+    legend,['[Z/H]=+0.5'],/bottom,/right,box=0,charsize=0.8,pos=[3,-0.1]
+    
+    xr = [-0.5,2.]
+    yr = [-2.5,-5.]
+    xb = (max(xr)-min(xr))/150.
+    yb = (max(yr)-min(yr))/150.
+   
+    dd = hist_2d(m4.i-m4.h,m4.i,bin1=xb,bin2=yb,$
+                 min1=min(xr),max1=max(xr),min2=min(yr),max2=max(yr))
+    ddzm = hist_2d(m4zm.i-m4zm.h,m4zm.i,bin1=xb,bin2=yb,$
+                 min1=min(xr),max1=max(xr),min2=min(yr),max2=max(yr))
+    ddzp = hist_2d(m4zp.i-m4zp.h,m4zp.i,bin1=xb,bin2=yb,$
+                   min1=min(xr),max1=max(xr),min2=min(yr),max2=max(yr))
+    
+    plotimage,alog10(reverse(ddzm,2)),range=[2,-3],/preserve,$
+              imgxrange=xr,imgyrange=yr,xr=xr,yr=yr,xtit='I-H',ytit='H'
+    arrow,0.2,-3.5,0.2+(ei-eh)/ev*av,-3.5+eh/ev*av,/data,thick=4,hsize=150
+    legend,['M!Dpix!N=10!U4!N'],box=0,charsize=1.1,/right,pos=[2,-4.9]
+    legend,['[Z/H]=-0.5'],/bottom,/right,box=0,charsize=0.8,pos=[2,-2.6]
+    plotimage,alog10(reverse(dd,2)),range=[2,-3],/preserve,$
+              imgxrange=xr,imgyrange=yr,xr=xr,yr=yr,xtit='I-H',ytit='H'
+    arrow,0.2,-3.5,0.2+(ei-eh)/ev*av,-3.5+eh/ev*av,/data,thick=4,hsize=150
+    legend,['[Z/H]=0.0'],/bottom,/right,box=0,charsize=0.8,pos=[2,-2.6]
+    plotimage,alog10(reverse(ddzp,2)),range=[2,-3],/preserve,$
+              imgxrange=xr,imgyrange=yr,xr=xr,yr=yr,xtit='I-H',ytit='H'
+    arrow,0.2,-3.5,0.2+(ei-eh)/ev*av,-3.5+eh/ev*av,/data,thick=4,hsize=150
+    legend,['[Z/H]=+0.5'],/bottom,/right,box=0,charsize=0.8,pos=[2,-2.6]
+    
   endplot,/quiet
+  simpctable
 
-  
+
+ 
   !P.multi=0
   stop
 

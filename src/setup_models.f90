@@ -5,6 +5,7 @@ SUBROUTINE SETUP_MODELS()
 
   CHARACTER(5), DIMENSION(nz)  :: zstr
   CHARACTER(4)  :: mstr
+  CHARACTER(1)  :: is,js
   INTEGER :: i,j,k,m,stat
   REAL(SP), DIMENSION(nage,npix,npix,nfil) :: tmodel
 
@@ -44,27 +45,37 @@ SUBROUTINE SETUP_MODELS()
      yhess(i) = ymin+(i-1)*dy
   ENDDO
 
-  !read in the ACS F814W PSF (log PSF in the file)
-  OPEN(12,file=TRIM(PIXCMD_HOME)//'/psf/f814w.psf',&
-       STATUS='OLD',iostat=stat,ACTION='READ')
-  IF (stat.NE.0) THEN
-     WRITE(*,*) 'SETUP_MODELS ERROR: PSF file not found'
-     STOP
-  ENDIF
-  DO i=1,npsf
-     READ(12,*) psf(:,i)
+  psf=0.
+
+  !read in all of the sub-pixel shifted PSFs
+  DO i=1,psf_step
+     DO j=1,psf_step
+
+        WRITE(is,'(I1)') i-1
+        WRITE(js,'(I1)') j-1
+
+        !read in the ACS F814W PSF (log PSF in the file)
+        OPEN(12,file=TRIM(PIXCMD_HOME)//'/psf/f814w_'//is//js//'.psf',&
+             STATUS='OLD',iostat=stat,ACTION='READ')
+        IF (stat.NE.0) THEN
+           WRITE(*,*) 'SETUP_MODELS ERROR: PSF file not found'
+           STOP
+        ENDIF
+        DO k=1,npsf
+           READ(12,*) psfi(:,k)
+        ENDDO
+        CLOSE(12)
+        psfi = 10**psfi
+
+        !turn the PSF inside out...
+        psf(1:npsf/2+2,1:npsf/2+2,i,j) = psfi(npsf/2:npsf,npsf/2:npsf)
+        psf(1:npsf/2+2,npsf2-npsf/2+2:npsf2,i,j) = psfi(npsf/2:npsf,1:npsf/2-1)
+        psf(npsf2-npsf/2+2:npsf2,1:npsf/2+2,i,j) = psfi(1:npsf/2-1,npsf/2:npsf)
+        psf(npsf2-npsf/2+2:npsf2,npsf2-npsf/2+2:npsf2,i,j) = &
+             psfi(1:npsf/2-1,1:npsf/2-1)
+        
+     ENDDO
   ENDDO
-  psf = 10**psf
-
-  psf2=0.
-  !turn the PSF inside out...
-  psf2(1:npsf/2+2,1:npsf/2+2)=psf(npsf/2:npsf,npsf/2:npsf)
-  psf2(1:npsf/2+2,npsf2-npsf/2+2:npsf2)=psf(npsf/2:npsf,1:npsf/2-1)
-  psf2(npsf2-npsf/2+2:npsf2,1:npsf/2+2) = psf(1:npsf/2-1,npsf/2:npsf)
-  psf2(npsf2-npsf/2+2:npsf2,npsf2-npsf/2+2:npsf2) = psf(1:npsf/2-1,1:npsf/2-1)
-
- write(*,*) sum(psf),sum(psf2)
-stop
 
   !--------------read in the model Hess diagrams---------------!
 

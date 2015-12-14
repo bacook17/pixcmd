@@ -49,8 +49,14 @@ PROGRAM WRITE_A_MODEL
 
   f1 = model(:,:,:,ii,jj)
 
+  CALL DATE_AND_TIME(TIME=time)
+  WRITE(*,*) '1 Time '//time(1:2)//':'//time(3:4)//':'//time(5:9)
+
   !convolve with PSF
   cf1 = convolve(f1)
+
+  CALL DATE_AND_TIME(TIME=time)
+  WRITE(*,*) '2 Time '//time(1:2)//':'//time(3:4)//':'//time(5:9)
 
   !add obs errors
   of1 = add_obs_err(cf1)
@@ -58,6 +64,13 @@ PROGRAM WRITE_A_MODEL
   !compute Hess diagram
   onemodel = hist_2d(of1(:,:,1)-of1(:,:,2),of1(:,:,2),&
        xhess,yhess,nx,ny,npix)
+
+  !save the PSF-convolved, obs err-included Hess diagram
+  OPEN(11,FILE=TRIM(PIXCMD_HOME)//'/data/'//TRIM(infile)//'.im',&
+       FORM='UNFORMATTED',STATUS='REPLACE',access='direct',&
+          recl=npix*npix*nfil*4)
+  WRITE(11,rec=1) of1
+  CLOSE(11)
 
   !save the Hess diagram to file
   OPEN(1,FILE=TRIM(PIXCMD_HOME)//'data/'//TRIM(infile)//'.hess',&
