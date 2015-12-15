@@ -9,20 +9,20 @@ PROGRAM FIT_PIXCMD
   IMPLICIT NONE
 
   !emcee variables
-  INTEGER, PARAMETER :: nwalkers=256,nburn=10,nmcmc=10
+  INTEGER, PARAMETER :: nwalkers=512,nburn=1000,nmcmc=100
   REAL(SP), DIMENSION(npar,nwalkers) :: pos_emcee_in,pos_emcee_out
   REAL(SP), DIMENSION(nwalkers)      :: lp_emcee_in,lp_emcee_out,lp_mpi
   INTEGER,  DIMENSION(nwalkers)      :: accept_emcee
   REAL(SP), DIMENSION(npar,nwalkers) :: mpiposarr=0.0
 
-  INTEGER :: i,j,k,ndat,stat,i1,i2,iter=30,totacc=0,npos
+  INTEGER  :: i,j,k,ndat,stat,i1,i2,iter=30,totacc=0,npos
   REAL(SP) :: fret,bret=huge_number,wdth=0.5
   CHARACTER(10) :: time
-  CHARACTER(50) :: infile
+  CHARACTER(50) :: infile,tag=''
   REAL(SP), DIMENSION(nx,ny) :: bmodel=0.
 
   !Powell parameters
-  INTEGER, PARAMETER :: dopowell=0
+  INTEGER, PARAMETER  :: dopowell=0
   REAL(SP), PARAMETER :: ftol=0.1
   REAL(SP), DIMENSION(npar,npar) :: xi=0.0
   REAL(SP), DIMENSION(npar)      :: pos=0.0,bpos=0.
@@ -48,6 +48,11 @@ PROGRAM FIT_PIXCMD
      CALL GETARG(1,infile)
   ENDIF
 
+  IF (IARGC().GT.1) THEN
+     tag(1:1)='_'
+     CALL GETARG(2,tag(2:))
+  ENDIF
+
   IF (taskid.EQ.masterid) THEN
      !write some important variables to screen
      WRITE(*,*)
@@ -57,7 +62,7 @@ PROGRAM FIT_PIXCMD
      WRITE(*,'("  Nburn      = ",I5)') nburn
      WRITE(*,'("  Nchain     = ",I5)') nmcmc
      WRITE(*,'("  Ntasks     = ",I5)') ntasks
-     WRITE(*,'("  filename   = ",A)') TRIM(infile)
+     WRITE(*,'("  filename   = ",A)') TRIM(infile)//TRIM(tag)
      WRITE(*,'(" ************************************")')
   ENDIF
 
@@ -242,7 +247,7 @@ PROGRAM FIT_PIXCMD
      ENDDO
      
      OPEN(12,FILE=TRIM(PIXCMD_HOME)//'/results2/'//&
-          TRIM(infile)//'.mcmc',STATUS='REPLACE')
+          TRIM(infile)//TRIM(tag)//'.mcmc',STATUS='REPLACE')
 
      !production chain
      WRITE(*,*) 'production run...'       
@@ -266,7 +271,7 @@ PROGRAM FIT_PIXCMD
      !write the best model to a binary file
      bmodel = getmodel(bpos)
      OPEN(11,FILE=TRIM(PIXCMD_HOME)//'/results2/'//TRIM(infile)&
-          //'.hess',FORM='UNFORMATTED',STATUS='REPLACE',&
+          //TRIM(tag)//'.hess',FORM='UNFORMATTED',STATUS='REPLACE',&
           access='DIRECT',recl=nx*ny*4)
      WRITE(11,rec=1) bmodel
      CLOSE(11)
