@@ -9,14 +9,14 @@ PROGRAM FIT_PIXCMD
   IMPLICIT NONE
 
   !emcee variables
-  INTEGER, PARAMETER :: nwalkers=512,nburn=1000,nmcmc=100
+  INTEGER, PARAMETER :: nwalkers=512,nburn=500,nmcmc=50
   REAL(SP), DIMENSION(npar,nwalkers) :: pos_emcee_in,pos_emcee_out
   REAL(SP), DIMENSION(nwalkers)      :: lp_emcee_in,lp_emcee_out,lp_mpi
   INTEGER,  DIMENSION(nwalkers)      :: accept_emcee
   REAL(SP), DIMENSION(npar,nwalkers) :: mpiposarr=0.0
 
   INTEGER  :: i,j,k,ndat,stat,i1,i2,iter=30,totacc=0,npos
-  REAL(SP) :: fret,bret=huge_number,wdth=0.5
+  REAL(SP) :: fret,bret=huge_number
   CHARACTER(10) :: time
   CHARACTER(50) :: infile,tag=''
   REAL(SP), DIMENSION(nx,ny) :: bmodel=0.
@@ -25,7 +25,7 @@ PROGRAM FIT_PIXCMD
   INTEGER, PARAMETER  :: dopowell=0
   REAL(SP), PARAMETER :: ftol=0.1
   REAL(SP), DIMENSION(npar,npar) :: xi=0.0
-  REAL(SP), DIMENSION(npar)      :: pos=0.0,bpos=0.
+  REAL(SP), DIMENSION(npar)      :: pos=0.0,bpos=0.,dum9=-9.0
 
   !variables for MPI
   INTEGER :: ierr,taskid,ntasks,received_tag,status(MPI_STATUS_SIZE)
@@ -144,10 +144,14 @@ PROGRAM FIT_PIXCMD
      CALL DATE_AND_TIME(TIME=time)
      WRITE(*,*) 'Start Time '//time(1:2)//':'//time(3:4)//':'//time(5:6)
 
-     !----------------------single value fitter--------------------------!
+
+     !----------------------Initialization--------------------------!
 
      IF (1.EQ.0) THEN
-        
+ 
+        !single age-Z minimization
+        WRITE(*,*) 'Running single age-Z minimization'
+
         bpos=-8.0
         k=1
         DO j=1,nage
@@ -160,12 +164,9 @@ PROGRAM FIT_PIXCMD
            ENDDO
         ENDDO
 
-     ENDIF
+     ELSE IF (dopowell.EQ.1) THEN
 
-     !---------------------Run powell minimization-----------------------!
-
-     IF (dopowell.EQ.1) THEN
-        
+        !Powell minimization
         WRITE(*,*) 'Running Powell minimization'
         
         DO j=1,10
@@ -186,71 +187,103 @@ PROGRAM FIT_PIXCMD
            ENDIF
         ENDDO
         WRITE(*,'(5F10.5)') Log10(bret),log10(bret/(nx*ny-npar))
-       stop 
+
      ELSE
         
+        !random initialization
+
         DO i=1,npar
            bpos(i) = LOG10(myran()/npar)
-           IF (bpos(i).LT.-7.0) pos(i)=-7.0
+           IF (bpos(i).LT.(prlo+2*wdth0)) bpos(i)=prlo+2*wdth0
         ENDDO
-
-     !   bpos=-4.0
-     !   k=1
-     !   DO i=1,nage
-     !      DO j=1,nz
-     !         IF (i.GE.(nage-2).AND.j.GE.3) bpos(k) = LOG10(1/5.)
-     !         k=k+1
-     !      ENDDO
-     !   ENDDO
         
      ENDIF
      
      !-------------------------Run emcee---------------------------------!
      
-     !initialize the walkers
+     !initialize the lp
      DO j=1,nwalkers
         DO i=1,npar
-           pos_emcee_in(i,j) = bpos(i) + wdth*(2.*myran()-1.0)
+           pos_emcee_in(i,j) = bpos(i) + wdth0*(2.*myran()-1.0)
         ENDDO
      ENDDO
      !Compute the initial log-probability for each walker
      CALL FUNCTION_PARALLEL_MAP(npar,nwalkers,ntasks-1,&
           pos_emcee_in,lp_emcee_in)
 
-     !initial burn-in the chain
-     WRITE(*,*) 'first burn-in...'
-     DO i=1,nburn/2-1
+     !initial burn-in
+     WRITE(*,'(A)',advance='no') ' first burn-in:  '
+     DO i=1,nburn
         CALL EMCEE_ADVANCE_MPI(npar,nwalkers,2.0,pos_emcee_in,&
              lp_emcee_in,pos_emcee_out,lp_emcee_out,accept_emcee,ntasks-1)
         pos_emcee_in = pos_emcee_out
         lp_emcee_in  = lp_emcee_out
+        IF (i.EQ.nburn/4.*1) THEN
+           WRITE (*,'(A)',advance='no') ' ...25%'
+           CALL FLUSH()
+        ENDIF
+        IF (i.EQ.nburn/4.*2) THEN
+           WRITE (*,'(A)',advance='no') '...50%'
+           CALL FLUSH()
+        ENDIF
+        IF (i.EQ.nburn/4.*3) THEN
+           WRITE (*,'(A)',advance='no') '...75%'
+           CALL FLUSH()
+        ENDIF
      ENDDO
+     WRITE (*,'(A)') '...100%'
+     CALL FLUSH()
+
+     WRITE(*,*) 'log(chi^2) after first-pass:'
+     WRITE(*,'(10(ES10.2,1x))') -2.0*lp_emcee_in
 
      !prune the walkers and re-initialize
-     i = MAXLOC(lp_emcee_in,1)
+     i    = MAXLOC(lp_emcee_in,1)
      bpos = pos_emcee_in(:,i)
      DO j=1,nwalkers
         DO i=1,npar
-           pos_emcee_in(i,j) = bpos(i) + wdth*(2.*myran()-1.0)
+           pos_emcee_in(i,j) = bpos(i)+wdth0/5.*(2.*myran()-1.0)
+           IF (pos_emcee_in(i,j).LT.(prlo+2*wdth0)) &
+                pos_emcee_in(i,j)=prlo+2*wdth0
+           IF (pos_emcee_in(i,j).GT.(prhi-wdth0)) &
+                pos_emcee_in(i,j)=prhi-wdth0
         ENDDO
-        !Compute the initial log-probability for each walker
-        lp_emcee_in(j) = -0.5*func(pos_emcee_in(:, j))
      ENDDO
+     !Compute the initial log-probability for each walker
+     CALL FUNCTION_PARALLEL_MAP(npar,nwalkers,ntasks-1,&
+          pos_emcee_in,lp_emcee_in)
 
-     !second-pass burn-in the chain
-     WRITE(*,*) 'second burn-in...'
-     DO i=nburn/2,nburn
+     WRITE(*,*) 'log(chi^2) for re-initialized walkers:'
+     WRITE(*,'(10(ES10.2,1x))') -2.0*lp_emcee_in
+
+     !second-pass burn-in
+     WRITE(*,'(A)',advance='no') ' second burn-in: '
+     DO i=1,nburn
         CALL EMCEE_ADVANCE_MPI(npar,nwalkers,2.0,pos_emcee_in,&
              lp_emcee_in,pos_emcee_out,lp_emcee_out,accept_emcee,ntasks-1)
         pos_emcee_in = pos_emcee_out
         lp_emcee_in  = lp_emcee_out
+        IF (i.EQ.nburn/4.*1) THEN
+           WRITE (*,'(A)',advance='no') '...25%'
+           CALL FLUSH()
+        ENDIF
+        IF (i.EQ.nburn/4.*2) THEN
+           WRITE (*,'(A)',advance='no') '...50%'
+           CALL FLUSH()
+        ENDIF
+        IF (i.EQ.nburn/4.*3) THEN
+           WRITE (*,'(A)',advance='no') '...75%'
+           CALL FLUSH()
+        ENDIF
      ENDDO
-     
+     WRITE (*,'(A)') '...100%'
+     CALL FLUSH()
+
      OPEN(12,FILE=TRIM(PIXCMD_HOME)//'/results2/'//&
           TRIM(infile)//TRIM(tag)//'.mcmc',STATUS='REPLACE')
 
      !production chain
-     WRITE(*,*) 'production run...'       
+     WRITE(*,'(A)',advance='no') ' production run: '       
      DO i=1,nmcmc
         CALL EMCEE_ADVANCE_MPI(npar,nwalkers,2.0,pos_emcee_in,&
              lp_emcee_in,pos_emcee_out,lp_emcee_out,accept_emcee,ntasks-1)
@@ -259,10 +292,29 @@ PROGRAM FIT_PIXCMD
         totacc = totacc + SUM(accept_emcee)
         !write the chain elements to file
         DO j=1,nwalkers
-           WRITE(12,'(ES12.5,1x,999(F9.4,1x))') &
-                -2.0*lp_emcee_in(j),pos_emcee_in(:, j)
+           IF (-2.0*lp_emcee_in(j).GT.1E31) THEN
+              WRITE(12,'(ES12.5,1x,999(F9.4,1x))') &
+                   -2.0*lp_emcee_in(j),dum9
+           ELSE
+              WRITE(12,'(ES12.5,1x,999(F9.4,1x))') &
+                   -2.0*lp_emcee_in(j),pos_emcee_in(:, j)
+           ENDIF
         ENDDO
+        IF (i.EQ.nburn/4.*1) THEN
+           WRITE (*,'(A)',advance='no') '...25%'
+           CALL FLUSH()
+        ENDIF
+        IF (i.EQ.nburn/4.*2) THEN
+           WRITE (*,'(A)',advance='no') '...50%'
+           CALL FLUSH()
+        ENDIF
+        IF (i.EQ.nburn/4.*3) THEN
+           WRITE (*,'(A)',advance='no') '...75%'
+           CALL FLUSH()
+        ENDIF
      ENDDO
+     WRITE (*,'(A)') '...100%'
+     CALL FLUSH()
 
      CLOSE(12)
 

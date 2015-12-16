@@ -24,6 +24,9 @@ MODULE PIXCMD_VARS
   !zero-points, B,I
   REAL(SP), DIMENSION(nfil) :: zpt=(/26.0593,25.9433/)
  
+  !upper/lower priors
+  REAL(SP), PARAMETER :: prlo=-9.0,prhi=0.75,wdth0=0.5
+
   !number of age and metallicity points in the model
   INTEGER, PARAMETER :: nage=15,nz=5,nm=1
   !parametres defining the age and mpix arrays
