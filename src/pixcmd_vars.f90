@@ -19,16 +19,17 @@ MODULE PIXCMD_VARS
 
   !data-specific parameters
   REAL(SP) :: dm=24.47  !M31 distance modulus
-  !exposure times B,I
+  !exposure times: F475W, F814W
   REAL(SP), DIMENSION(nfil) :: exptime=(/1720.+1900.,1520.+1715./)
-  !zero-points, B,I
+  !zero-points: F475W, F814W
   REAL(SP), DIMENSION(nfil) :: zpt=(/26.0593,25.9433/)
  
   !upper/lower priors
   REAL(SP), PARAMETER :: prlo=-9.0,prhi=0.75,wdth0=0.5
 
   !number of age and metallicity points in the model
-  INTEGER, PARAMETER :: nage=15,nz=5,nm=1
+!  INTEGER, PARAMETER :: nage=15,nz=5,nm=1,nzskip=2
+  INTEGER, PARAMETER :: nage=15,nz=1,nm=1,nzskip=5
   !parametres defining the age and mpix arrays
   REAL(SP) :: dage=0.2,age0=7.4,mpix0=2.0,dmpix=0.2
   REAL(SP), DIMENSION(nage) :: agesarr=0.

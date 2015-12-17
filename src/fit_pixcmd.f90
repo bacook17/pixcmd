@@ -22,7 +22,7 @@ PROGRAM FIT_PIXCMD
   REAL(SP), DIMENSION(nx,ny) :: bmodel=0.
 
   !Powell parameters
-  INTEGER, PARAMETER  :: dopowell=0
+  INTEGER, PARAMETER  :: dopowell=1
   REAL(SP), PARAMETER :: ftol=0.1
   REAL(SP), DIMENSION(npar,npar) :: xi=0.0
   REAL(SP), DIMENSION(npar)      :: pos=0.0,bpos=0.,dum9=-9.0
@@ -160,11 +160,11 @@ PROGRAM FIT_PIXCMD
               fret = func(bpos)
               bpos(k)=-8.0
               k=k+1
-              write(*,*) i,j,fret,LOG10(fret)
+              write(*,*) i,j,LOG10(fret)
            ENDDO
         ENDDO
 
-     ELSE IF (dopowell.EQ.1) THEN
+     ELSE IF (dopowell.EQ.0) THEN
 
         !Powell minimization
         WRITE(*,*) 'Running Powell minimization'
@@ -180,21 +180,20 @@ PROGRAM FIT_PIXCMD
            ENDDO
            fret = huge_number
            CALL POWELL(pos,xi,ftol,iter,fret)
-           WRITE(*,'(5F10.5)') Log10(fret),log10(fret/(nx*ny-npar))
+           WRITE(*,'(50F10.5)') LOG10(fret),pos
            IF (fret.LT.bret) THEN
               bret = fret
               bpos = pos
            ENDIF
         ENDDO
-        WRITE(*,'(5F10.5)') Log10(bret),log10(bret/(nx*ny-npar))
+        WRITE(*,'(5F10.5)') LOG10(bret),log10(bret/(nx*ny-npar))
 
      ELSE
         
         !random initialization
 
         DO i=1,npar
-           bpos(i) = LOG10(myran()/npar)
-           IF (bpos(i).LT.(prlo+2*wdth0)) bpos(i)=prlo+2*wdth0
+           bpos(i) = myran()*(prhi-prlo-3*wdth0) + (prlo+1.5*wdth0)
         ENDDO
         
      ENDIF

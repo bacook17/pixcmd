@@ -20,7 +20,7 @@ SUBROUTINE SETUP_MODELS(flag)
      WRITE(*,*) 'SETUP_MODELS ERROR: zlegend.dat file not found'
      STOP
   ENDIF
-  DO i=1,2 
+  DO i=1,nzskip
      READ(13,*)
   ENDDO
   DO i=1,nz

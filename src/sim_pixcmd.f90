@@ -88,7 +88,7 @@ PROGRAM SIM_PIXCMD
      OPEN(10,file=TRIM(PIXCMD_HOME)//'/isoc/MIST_v29_Z'//&
           zstr//'.dat',STATUS='OLD',iostat=stat,ACTION='READ')
      IF (stat.NE.0) THEN
-        WRITE(*,*) 'PIXCMD ERROR: isoc file not found'
+        WRITE(*,*) 'SIM_PIXCMD ERROR: isoc file not found'
         STOP
      ENDIF
      !READ(10,*)
@@ -111,7 +111,7 @@ PROGRAM SIM_PIXCMD
         iso%imf = -99.
         DO WHILE (ABS(iage-age).LT.1E-2) 
            IF (i.GT.niso_max) THEN
-              WRITE(*,*) 'PIXCMD ERROR niso_max reached',i
+              WRITE(*,*) 'SIM_PIXCMD ERROR niso_max reached',i
               STOP
            ENDIF
            READ(10,*,IOSTAT=stat) iage,iso(i)%imf,&
