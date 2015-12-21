@@ -8,6 +8,13 @@ PROGRAM FIT_PIXCMD
 
   IMPLICIT NONE
 
+  !Powell minimization
+  INTEGER, PARAMETER  :: dopowell=0
+  !fit for a single age-Z combination
+  INTEGER, PARAMETER  :: dosinglefit=0
+  !fit each term individually
+  INTEGER, PARAMETER  :: dooneatatime=1
+ 
   !emcee variables
   INTEGER, PARAMETER :: nwalkers=512,nburn=500,nmcmc=50
   REAL(SP), DIMENSION(npar,nwalkers) :: pos_emcee_in,pos_emcee_out
@@ -22,7 +29,6 @@ PROGRAM FIT_PIXCMD
   REAL(SP), DIMENSION(nx,ny) :: bmodel=0.
 
   !Powell parameters
-  INTEGER, PARAMETER  :: dopowell=1
   REAL(SP), PARAMETER :: ftol=0.1
   REAL(SP), DIMENSION(npar,npar) :: xi=0.0
   REAL(SP), DIMENSION(npar)      :: pos=0.0,bpos=0.,dum9=-9.0
@@ -51,6 +57,11 @@ PROGRAM FIT_PIXCMD
   IF (IARGC().GT.1) THEN
      tag(1:1)='_'
      CALL GETARG(2,tag(2:))
+  ENDIF
+
+  IF (ntasks.EQ.1) THEN
+     WRITE(*,*) 'ERROR: you are not using mpirun!'
+     STOP
   ENDIF
 
   IF (taskid.EQ.masterid) THEN
@@ -102,7 +113,7 @@ PROGRAM FIT_PIXCMD
      DO WHILE (wait)
 
         ! Look for data from the master. This call can accept up
-        ! to ``nwalkers`` paramater positions, but it expects
+        ! to nwalkers paramater positions, but it expects
         ! that the actual number of positions is smaller and is
         ! given by the MPI_TAG.  This call does not return until
         ! a set of parameter vectors is received
@@ -113,10 +124,11 @@ PROGRAM FIT_PIXCMD
         CALL MPI_RECV(mpiposarr(1,1), npos*npar, MPI_REAL, &
              masterid, MPI_ANY_TAG, MPI_COMM_WORLD, status, ierr)
    
-        IF (taskid.EQ.1.AND.test_time.EQ.1) THEN
+        IF (test_time.EQ.1) THEN
            CALL DATE_AND_TIME(TIME=time)
            WRITE(*,*) '1 Time '//time(1:2)//':'//time(3:4)//':'&
                 //time(5:9),npos,taskid
+           CALL FLUSH()
         ENDIF
 
         !Calculate the probability for these parameter positions
@@ -124,10 +136,11 @@ PROGRAM FIT_PIXCMD
            lp_mpi(k) = -0.5*func(mpiposarr(:,k))
         ENDDO
 
-         IF (taskid.EQ.1.AND.test_time.EQ.1) THEN
+         IF (test_time.EQ.1) THEN
            CALL DATE_AND_TIME(TIME=time)
            WRITE(*,*) '2 Time '//time(1:2)//':'//time(3:4)//':'&
                 //time(5:9),npos,taskid
+           CALL FLUSH()
         ENDIF
 
         !Send it back to the master
@@ -147,14 +160,14 @@ PROGRAM FIT_PIXCMD
 
      !----------------------Initialization--------------------------!
 
-     IF (1.EQ.0) THEN
+     IF (dosinglefit.EQ.1) THEN
  
         !single age-Z minimization
         WRITE(*,*) 'Running single age-Z minimization'
 
         bpos=-8.0
         k=1
-        DO j=1,nage
+        DO j=1,nage-1
            DO i=1,nz
               bpos(k)=0.0
               fret = func(bpos)
@@ -164,7 +177,7 @@ PROGRAM FIT_PIXCMD
            ENDDO
         ENDDO
 
-     ELSE IF (dopowell.EQ.0) THEN
+     ELSE IF (dopowell.EQ.1) THEN
 
         !Powell minimization
         WRITE(*,*) 'Running Powell minimization'
@@ -188,27 +201,44 @@ PROGRAM FIT_PIXCMD
         ENDDO
         WRITE(*,'(5F10.5)') LOG10(bret),log10(bret/(nx*ny-npar))
 
+     ELSE IF (dooneatatime.EQ.1) THEN
+
+        !One at a time fitter
+        WRITE(*,*) 'Running one-at-a-time fitter'
+        CALL FIT_ONEATATIME(bpos)
+        bpos = bpos - LOG10(SUM(10**bpos))
+
      ELSE
         
         !random initialization
-
         DO i=1,npar
            bpos(i) = myran()*(prhi-prlo-3*wdth0) + (prlo+1.5*wdth0)
         ENDDO
-        
+        bpos = bpos - LOG10(SUM(10**bpos))
+
      ENDIF
      
      !-------------------------Run emcee---------------------------------!
      
-     !initialize the lp
+     WRITE(*,*) 'initial parameters:'
+     WRITE(*,'(30(F7.3,1x))') bpos
+
+     !setup the starting positions
      DO j=1,nwalkers
         DO i=1,npar
            pos_emcee_in(i,j) = bpos(i) + wdth0*(2.*myran()-1.0)
         ENDDO
-     ENDDO
+        !WRITE(*,'(30(F7.3,1x))') pos_emcee_in(:,j)
+      ENDDO
+
      !Compute the initial log-probability for each walker
      CALL FUNCTION_PARALLEL_MAP(npar,nwalkers,ntasks-1,&
           pos_emcee_in,lp_emcee_in)
+
+     IF (-2.0*MAXVAL(lp_emcee_in).EQ.huge_number) THEN
+        WRITE(*,*) 'FIT_PIXCMD ERROR: initial parameters are out of bounds'
+        STOP
+     ENDIF
 
      !initial burn-in
      WRITE(*,'(A)',advance='no') ' first burn-in:  '
@@ -233,20 +263,26 @@ PROGRAM FIT_PIXCMD
      WRITE (*,'(A)') '...100%'
      CALL FLUSH()
 
-     WRITE(*,*) 'log(chi^2) after first-pass:'
+     WRITE(*,*) 'chi^2 after first-pass:'
      WRITE(*,'(10(ES10.2,1x))') -2.0*lp_emcee_in
 
      !prune the walkers and re-initialize
      i    = MAXLOC(lp_emcee_in,1)
      bpos = pos_emcee_in(:,i)
+     WRITE(*,*) 'min chi^2 after first-pass:'
+     WRITE(*,'(ES10.2)') -2.0*lp_emcee_in(i)
+     WRITE(*,*) 'parameters at min:'
+     WRITE(*,'(30(F7.3,1x))') bpos
+     WRITE(*,*) 're-initalized parameters:'
      DO j=1,nwalkers
         DO i=1,npar
            pos_emcee_in(i,j) = bpos(i)+wdth0/5.*(2.*myran()-1.0)
-           IF (pos_emcee_in(i,j).LT.(prlo+2*wdth0)) &
-                pos_emcee_in(i,j)=prlo+2*wdth0
-           IF (pos_emcee_in(i,j).GT.(prhi-wdth0)) &
-                pos_emcee_in(i,j)=prhi-wdth0
+           IF (pos_emcee_in(i,j).LT.prlo) &
+                pos_emcee_in(i,j)=prlo+wdth0/5.
+           IF (pos_emcee_in(i,j).GT.prhi) &
+                pos_emcee_in(i,j)=prhi-wdth0/5.
         ENDDO
+        WRITE(*,'(30(F7.3,1x))') pos_emcee_in(:,j)
      ENDDO
      !Compute the initial log-probability for each walker
      CALL FUNCTION_PARALLEL_MAP(npar,nwalkers,ntasks-1,&

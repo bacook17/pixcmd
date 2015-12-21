@@ -17,6 +17,13 @@ MODULE PIXCMD_UTILS
   END INTERFACE
 
   INTERFACE
+     FUNCTION DRAWN(nn)
+       USE nrtype
+       REAL(SP), INTENT(in) :: nn
+     END FUNCTION DRAWN
+  END INTERFACE
+
+  INTERFACE
      SUBROUTINE EMCEE_ADVANCE(ndim,nwalkers,a,pin,lpin,&
           pout,lpout,accept)
        USE pixcmd_vars; USE nrtype
@@ -42,6 +49,13 @@ MODULE PIXCMD_UTILS
        REAL(SP), INTENT(out), DIMENSION(nwalkers) :: lpout
        INTEGER, INTENT(out), DIMENSION(nwalkers) :: accept
      END SUBROUTINE EMCEE_ADVANCE_MPI
+  END INTERFACE
+
+  INTERFACE
+     SUBROUTINE FIT_ONEATATIME(pos)
+       USE pixcmd_vars; USE nrtype
+       REAL(SP), DIMENSION(npar), INTENT(inout) :: pos
+     END SUBROUTINE FIT_ONEATATIME
   END INTERFACE
 
   INTERFACE
@@ -97,6 +111,12 @@ MODULE PIXCMD_UTILS
      SUBROUTINE SETUP_MODELS(flag)
        INTEGER, INTENT(in) :: flag
      END SUBROUTINE SETUP_MODELS
+  END INTERFACE
+
+  INTERFACE
+     SUBROUTINE SHUFFLE(arr)
+       INTEGER, DIMENSION(:), INTENT(inout) :: arr
+     END SUBROUTINE SHUFFLE
   END INTERFACE
 
   INTERFACE

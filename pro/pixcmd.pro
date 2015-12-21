@@ -22,7 +22,7 @@ PRO PIXCMD, mbin=mbin, zh=zh, ssp=ssp, sfh_tau=sfh_tau, $
      RETURN
   END
 
-  IF NOT(keyword_set(mbin)) THEN mbin = 1E4
+  IF NOT(keyword_set(mbin)) THEN mbin = 1E2
   IF NOT(keyword_set(zh))   THEN zh   = 5
   IF keyword_set(ssp) THEN BEGIN
      age  = float(ssp)
@@ -40,9 +40,6 @@ PRO PIXCMD, mbin=mbin, zh=zh, ssp=ssp, sfh_tau=sfh_tau, $
   a   = mrdfits('~/pixcmd/isoc/MIST_v29_Z'+zstr[zh]+$
                 isoc_tag+'.fits',1,/sil)
   psf = mrdfits('~/DATA/HST/psf/psf_f814w_unbinned.fits',0,/sil)
-  ;smooth the PSF in angle
-  ;psf = sqrt( psf * transpose(psf) )
-  ;psf = psf / total(psf)
 
   ;set up the isochrones
   IF keyword_set(ssp) THEN BEGIN
@@ -88,7 +85,6 @@ PRO PIXCMD, mbin=mbin, zh=zh, ssp=ssp, sfh_tau=sfh_tau, $
 
   ENDELSE
 
-
   ;remove Infs
   tt = tt[where(finite(tt.logimfweight) EQ 1)]
 
@@ -128,7 +124,7 @@ PRO PIXCMD, mbin=mbin, zh=zh, ssp=ssp, sfh_tau=sfh_tau, $
 
   ;convolve with ACS F814W PSF (convolve in flux space)
   ;NB: should be convolving with each PSF separately,
-  ; but the F814W and F475W PSFs are not that different
+  ;but the F814W and F475W PSFs are not that different
   pall = all
 
   ;below, accounting for the fact that the stars are not always

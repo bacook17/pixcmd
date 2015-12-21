@@ -4,7 +4,7 @@ PROGRAM SIM_PIXCMD
   ! syntax: sim_pixcmd.exe log(Mpix) N_Mpix dMpix Z
 
   ! Note that the model Hess diagrams are likely not completely
-  ! converted at Npix=1E3.  Should at some point try 1E4
+  ! converged at Npix=1E3.  Should at some point try 1E4
   
   USE pixcmd_vars; USE pixcmd_utils
   USE nr, ONLY : poidev; USE nrtype 
@@ -19,7 +19,7 @@ PROGRAM SIM_PIXCMD
   END TYPE TISO
   
   INTEGER :: i,j,k,m,t,iseed,nn,niso,stat,nmpix
-  REAL(SP) :: mpix,age,iage=0.,mpx0,dmpx
+  REAL(SP) :: mpix,age,iage=0.,mpx0,dmpx,d1,d2,d3,d4
   REAL(SP), DIMENSION(nage,npix,npix,nfil)  :: flux=0.
   REAL(SP), DIMENSION(npix,npix,nfil)  :: cflux=0.,oflux=0.
   TYPE(TISO), DIMENSION(niso_max) :: iso
@@ -37,11 +37,12 @@ PROGRAM SIM_PIXCMD
 
   IF (IARGC().LT.1) THEN
      mpx0  = 3.0
-     dmpx  = 0.1
      nmpix = 1
+     dmpx  = 0.1
      zstr  = 'p0.00'
-  ELSE IF (IARGC().NE.4) THEN
-     WRITE(*,*) 'PIXCMD ERROR: incorrect syntax, returning'
+  ELSE IF (IARGC().NE.4.AND.IARGC().GT.0) THEN
+     WRITE(*,*) 'syntax: sim_pixcmd.exe Mpix0 N_Mpix dMpix zmet'
+     WRITE(*,*) '  e.g., sim_pixcmd.exe  2.0    10    0.1  p0.00'
      STOP
   ELSE
      CALL GETARG(1,file)
@@ -107,48 +108,55 @@ PROGRAM SIM_PIXCMD
         ENDDO
 
         BACKSPACE(10)
-        i=1
+        i=0
         iso%imf = -99.
         DO WHILE (ABS(iage-age).LT.1E-2) 
            IF (i.GT.niso_max) THEN
               WRITE(*,*) 'SIM_PIXCMD ERROR niso_max reached',i
               STOP
            ENDIF
-           READ(10,*,IOSTAT=stat) iage,iso(i)%imf,&
-                iso(i)%bands(1),iso(i)%bands(2)
            i=i+1
+           READ(10,*,IOSTAT=stat) iage,d1,d2,d3,iso(i)%imf,&
+                iso(i)%bands(1),d4,iso(i)%bands(2)
            IF (stat.NE.0) GOTO 20
         ENDDO
 20      CONTINUE
         
         niso = i-1
+
+        WRITE(*,'(F6.2,1x,I4,3F7.2)') age,niso!,iso(niso)%bands,iso(niso)%imf
+
         iso(1:niso)%imf   = 10**iso(1:niso)%imf
         !convert to flux
         iso(1:niso)%bands(1) = 10**(-2./5*iso(1:niso)%bands(1))
         iso(1:niso)%bands(2) = 10**(-2./5*iso(1:niso)%bands(2))
         
-        !WRITE(*,'(F6.2,1x,I4)') age,niso
 
         !----------------Compute the model at each pixel-----------------!
         
+        !write(*,*) mpix*iso(1:niso)%imf
+
+        CALL DATE_AND_TIME(TIME=time)
+        WRITE(*,*) 'Start Time '//time(1:2)//':'//time(3:4)//':'//time(5:6)
+
         !compute the model over an NxN image
-        !flux = 0.0
         DO j=1,npix
            DO i=1,npix
               DO k=1,niso
-                 nn = poidev(mpix*iso(k)%imf)
+                 !nn = poidev(mpix*iso(k)%imf)
+                 nn = drawn(mpix*iso(k)%imf)
                  flux(t,i,j,:) = flux(t,i,j,:) + nn*iso(k)%bands
               ENDDO
            ENDDO
         ENDDO
+
+        CALL DATE_AND_TIME(TIME=time)
+        WRITE(*,*) '  End Time '//time(1:2)//':'//time(3:4)//':'//time(5:6)
         
         !-------------------Convolve with the ACS PSF--------------------!
         
         cflux = convolve(flux(t,:,:,:))
-
-        !convert to mags
-        cflux = -2.5*LOG10(cflux)
-        
+       
         !--------------------Add observational errors--------------------!
         
         oflux = add_obs_err(cflux)

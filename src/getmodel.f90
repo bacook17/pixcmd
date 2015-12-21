@@ -1,14 +1,14 @@
 FUNCTION GETMODEL(inpos)
 
   USE pixcmd_vars; USE nrtype
-  USE pixcmd_utils, ONLY : convolve,hist_2d,add_obs_err
+  USE pixcmd_utils, ONLY : convolve,hist_2d,add_obs_err,myran
   USE nr, ONLY : locate
   IMPLICIT NONE
 
   REAL(SP), DIMENSION(npar) :: inpos
   REAL(SP), DIMENSION(nx,ny) :: getmodel
   REAL(SP), DIMENSION(npix,npix,nfil) :: f1,cf1,of1
-  INTEGER :: ilo,i,j,k, test_time=0
+  INTEGER :: ilo,i,j,k,m,wgti,ii,jj,test_time=0
   REAL(SP) :: di
   CHARACTER(10) :: time
 
@@ -20,14 +20,20 @@ FUNCTION GETMODEL(inpos)
   ENDIF
 
   !linearly combine the model components
-  f1 = 0.0
+  f1 = model(:,:,:,nz,nage)
   k=1
-  DO j=1,nage
+  DO j=1,nage-1
      DO i=1,nz
-        f1 = f1+10**inpos(k)*model(:,:,:,i,j)
+        wgti = INT(10**inpos(k)*npix**2)
+        DO m=1,wgti
+           ii = INT(myran()*npix)
+           jj = INT(myran()*npix)
+           f1(ii,jj,:) = model(ii,jj,:,i,j)
+        ENDDO
         k=k+1
      ENDDO
   ENDDO
+
 
   IF (test_time.EQ.1) THEN
      CALL DATE_AND_TIME(TIME=time)

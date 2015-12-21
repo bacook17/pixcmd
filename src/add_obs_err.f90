@@ -37,7 +37,7 @@ FUNCTION ADD_OBS_ERR(flux)
         ENDDO
      ENDDO
      
-     !convert counts back to abs mags
+     !convert to abs mags
      add_obs_err(:,:,k) = -2.5*LOG10(cti/exptime(k)) + zpt(k) - dm
 
   ENDDO

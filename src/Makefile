@@ -14,15 +14,16 @@ F90 = mpifort
 #  (Uncomment only one)
 #========================
 # GNU
-F90FLAGS = -O  #-mcmodel=large
+F90FLAGS = -O
 
 PROGS = sim_pixcmd fit_pixcmd dohess write_a_model
 
 COMMON = nrtype.o nr.o pixcmd_vars.o nrutil.o pixcmd_utils.o ran_state.o \
-	ran1.o gammln.o poidev.o locate.o init_random_seed.o convolve.o hist_2d.o \
-	func.o powell.o linmin.o mnbrak.o brent.o getmodel.o myran.o \
-	emcee_advance_mpi.o add_obs_err.o setup_models.o tsum.o four2.o rlft2.o \
-	fourrow.o gasdev.o function_parallel_map.o free_workers.o
+	ran1.o gammln.o poidev.o locate.o init_random_seed.o convolve.o \
+	hist_2d.o func.o powell.o linmin.o mnbrak.o brent.o getmodel.o \
+	myran.o emcee_advance_mpi.o add_obs_err.o setup_models.o tsum.o \
+	four2.o rlft2.o fourrow.o gasdev.o function_parallel_map.o \
+	free_workers.o fit_oneatatime.o shuffle.o drawn.o
 
 all : $(PROGS)
 

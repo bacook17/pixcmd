@@ -7,20 +7,22 @@ PROGRAM WRITE_A_MODEL
   USE nr, ONLY : locate
   IMPLICIT NONE
   
-  INTEGER  :: i,j,k,ii,jj
-  REAL(SP) :: mpix,wgt,zmet0,zmets,tau,tot=1.
+  INTEGER  :: i,j,k,ii,jj,wgti,ilo=1,imax,jmax
+  REAL(SP) :: mpix,zmet0,zmets,tau,tot=1.,dt,twgt=0.,wgtmax=0.
   CHARACTER(50) :: infile
   REAL(SP), DIMENSION(nx,ny) :: onemodel
   REAL(SP), DIMENSION(npix,npix,nfil) :: f1,cf1,of1
   REAL(SP), DIMENSION(nage)  :: sfh
+  REAL(SP), DIMENSION(nz,nage)  :: wgt
   REAL(SP), DIMENSION(nz)    :: mdf,zz
+  INTEGER, DIMENSION(npix,2)  :: sarr
   CHARACTER(10) :: time
 
   !------------------------------------------------------------!
 
-  infile = 'model_M2.0_t14_Z4'
-  ii = 4
-  jj = 14
+  infile = 'model_M2.0_cSFH'
+  ii = 1
+  jj = 5
 
   !initialize the random number generator
   CALL INIT_RANDOM_SEED()
@@ -28,39 +30,61 @@ PROGRAM WRITE_A_MODEL
   !setup the model grid
   CALL SETUP_MODELS(1)
 
-  !(nm,nz,nage,nx,ny)
-  !mpixarr, zmetarr, agesarr
+  !set up the random indices
+  DO i=1,npix
+     sarr(i,:) = i
+  ENDDO
+  CALL SHUFFLE(sarr(:,1))
+  CALL SHUFFLE(sarr(:,2))
 
-  !MDF
+  !-----------------------MDF-----------------------!
   !zz  = LOG10(zmetarr/0.0190)
   !mdf = EXP(-(zz-zmet0)**2/2/zmets)
   !mdf = 1.0
+  mdf = 1.0
   
-  !SFH
+  !-----------------------SFH-----------------------!
+  !tau model
   !sfh = EXP(-(10**10.201-10**agesarr)/1E9/tau)
-  !sfh=0.
-  !sfh(15:15)=1.0
-
+  !constant SFH
+  sfh = 1/10**agesarr(nage)
 
   f1 = 0.0
   DO j=1,nage
      DO i=1,nz
-        wgt = mdf(i)*sfh(j)/tot
-        f1  = f1+wgt*model(:,:,:,i,j)
+        IF (j.EQ.1) THEN
+           dt = (10**agesarr(j)-10**(agesarr(j)-dage))
+        ELSE
+           dt = (10**agesarr(j)-10**agesarr(j-1))
+        ENDIF
+        wgt(i,j) = mdf(i)*sfh(j)*dt
+        IF (wgt(i,j).GT.wgtmax) THEN
+           wgtmax = wgt(i,j)
+           imax = i
+           jmax = j
+        ENDIF
+        twgt = twgt+wgt(i,j)
      ENDDO
   ENDDO
 
-  f1 = model(:,:,:,ii,jj)
+  wgt(imax,jmax)=0.0
+  f1 = model(:,:,:,imax,jmax)
 
-  CALL DATE_AND_TIME(TIME=time)
-  WRITE(*,*) '1 Time '//time(1:2)//':'//time(3:4)//':'//time(5:9)
+  DO j=1,nage
+     DO i=1,nz
+        wgti = INT(wgt(i,j)*npix**2)
+        DO k=1,wgti
+           ii = INT(myran()*npix)
+           jj = INT(myran()*npix)
+           f1(ii,jj,:) = model(ii,jj,:,i,j)
+        ENDDO
+     ENDDO
+  ENDDO
+
 
   !convolve with PSF
   cf1 = convolve(f1)
-
-  CALL DATE_AND_TIME(TIME=time)
-  WRITE(*,*) '2 Time '//time(1:2)//':'//time(3:4)//':'//time(5:9)
-
+  
   !add obs errors
   of1 = add_obs_err(cf1)
 

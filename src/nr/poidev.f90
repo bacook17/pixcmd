@@ -7,6 +7,7 @@ FUNCTION poidev(xm)
   REAL(SP) :: poidev
   REAL(SP) :: em,harvest,t,y
   REAL(SP), SAVE :: alxm,g,oldm=-1.0_sp,sq
+
   if (xm < 12.0) then
      if (xm /= oldm) then
         oldm=xm
@@ -43,6 +44,7 @@ FUNCTION poidev(xm)
         if (harvest <= t) exit
      end do
   end if
+
   poidev=em
 
 END FUNCTION poidev
