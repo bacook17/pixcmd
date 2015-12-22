@@ -13,10 +13,10 @@ PROGRAM FIT_PIXCMD
   !fit for a single age-Z combination
   INTEGER, PARAMETER  :: dosinglefit=0
   !fit each term individually
-  INTEGER, PARAMETER  :: dooneatatime=0
+  INTEGER, PARAMETER  :: dooneatatime=1
  
   !emcee variables
-  INTEGER, PARAMETER :: nwalkers=128,nburn=40,nmcmc=20
+  INTEGER, PARAMETER :: nwalkers=128,nburn=100,nmcmc=20
   REAL(SP), DIMENSION(npar,nwalkers) :: pos_emcee_in,pos_emcee_out
   REAL(SP), DIMENSION(nwalkers)      :: lp_emcee_in,lp_emcee_out,lp_mpi
   INTEGER,  DIMENSION(nwalkers)      :: accept_emcee
@@ -240,6 +240,7 @@ PROGRAM FIT_PIXCMD
      !initial burn-in
      WRITE(*,'(A)',advance='no') ' first burn-in:  '
      DO i=1,nburn
+        IF (test_time.EQ.1) WRITE(*,'("Iteration ",I3)') i
         CALL EMCEE_ADVANCE_MPI(npar,nwalkers,2.0,pos_emcee_in,&
              lp_emcee_in,pos_emcee_out,lp_emcee_out,accept_emcee,ntasks-1)
         pos_emcee_in = pos_emcee_out
@@ -291,6 +292,7 @@ PROGRAM FIT_PIXCMD
      !second-pass burn-in
      WRITE(*,'(A)',advance='no') ' second burn-in: '
      DO i=1,nburn
+        IF (test_time.EQ.1) WRITE(*,'("Iteration ",I3)') i
         CALL EMCEE_ADVANCE_MPI(npar,nwalkers,2.0,pos_emcee_in,&
              lp_emcee_in,pos_emcee_out,lp_emcee_out,accept_emcee,ntasks-1)
         pos_emcee_in = pos_emcee_out
