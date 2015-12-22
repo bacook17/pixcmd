@@ -16,7 +16,7 @@ PROGRAM FIT_PIXCMD
   INTEGER, PARAMETER  :: dooneatatime=1
  
   !emcee variables
-  INTEGER, PARAMETER :: nwalkers=512,nburn=500,nmcmc=50
+  INTEGER, PARAMETER :: nwalkers=128,nburn=40,nmcmc=20
   REAL(SP), DIMENSION(npar,nwalkers) :: pos_emcee_in,pos_emcee_out
   REAL(SP), DIMENSION(nwalkers)      :: lp_emcee_in,lp_emcee_out,lp_mpi
   INTEGER,  DIMENSION(nwalkers)      :: accept_emcee
