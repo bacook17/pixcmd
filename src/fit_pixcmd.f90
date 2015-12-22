@@ -13,7 +13,7 @@ PROGRAM FIT_PIXCMD
   !fit for a single age-Z combination
   INTEGER, PARAMETER  :: dosinglefit=0
   !fit each term individually
-  INTEGER, PARAMETER  :: dooneatatime=1
+  INTEGER, PARAMETER  :: dooneatatime=0
  
   !emcee variables
   INTEGER, PARAMETER :: nwalkers=128,nburn=40,nmcmc=20
@@ -25,6 +25,8 @@ PROGRAM FIT_PIXCMD
   INTEGER  :: i,j,k,ndat,stat,i1,i2,iter=30,totacc=0,npos
   REAL(SP) :: fret,bret=huge_number
   CHARACTER(10) :: time
+  REAL(SP) :: time2
+  REAL(SP), DIMENSION(2) :: dumt
   CHARACTER(50) :: infile,tag=''
   REAL(SP), DIMENSION(nx,ny) :: bmodel=0.
 
@@ -38,7 +40,7 @@ PROGRAM FIT_PIXCMD
   INTEGER :: KILL=99,BEGIN=0
   LOGICAL :: wait=.TRUE.
   INTEGER, PARAMETER :: masterid=0
-  INTEGER, PARAMETER :: test_time=0
+  INTEGER, PARAMETER :: test_time=1
 
   !------------------------------------------------------------!
 
@@ -124,12 +126,7 @@ PROGRAM FIT_PIXCMD
         CALL MPI_RECV(mpiposarr(1,1), npos*npar, MPI_REAL, &
              masterid, MPI_ANY_TAG, MPI_COMM_WORLD, status, ierr)
    
-        IF (test_time.EQ.1) THEN
-           CALL DATE_AND_TIME(TIME=time)
-           WRITE(*,*) '1 Time '//time(1:2)//':'//time(3:4)//':'&
-                //time(5:9),npos,taskid
-           CALL FLUSH()
-        ENDIF
+        CALL DTIME(dumt,time2)
 
         !Calculate the probability for these parameter positions
         DO k=1,npos
@@ -137,9 +134,9 @@ PROGRAM FIT_PIXCMD
         ENDDO
 
          IF (test_time.EQ.1) THEN
-           CALL DATE_AND_TIME(TIME=time)
-           WRITE(*,*) '2 Time '//time(1:2)//':'//time(3:4)//':'&
-                //time(5:9),npos,taskid
+           CALL DTIME(dumt,time2)
+           WRITE(*,'(" Task ID ",I3": Elapsed Time: ",F6.2," s", ", N=",I3)') &
+                taskid,time2,npos
            CALL FLUSH()
         ENDIF
 

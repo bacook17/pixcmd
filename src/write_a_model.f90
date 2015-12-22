@@ -70,6 +70,9 @@ PROGRAM WRITE_A_MODEL
   wgt(imax,jmax)=0.0
   f1 = model(:,:,:,imax,jmax)
 
+  write(*,*) wgt
+
+stop
   DO j=1,nage
      DO i=1,nz
         wgti = INT(wgt(i,j)*npix**2)
