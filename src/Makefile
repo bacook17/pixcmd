@@ -16,22 +16,19 @@ F90 = mpifort
 # GNU
 F90FLAGS = -O
 
-PROGS = sim_pixcmd fit_pixcmd dohess write_a_model
+PROGS = fit_pixcmd dohess write_a_model
 
 COMMON = nrtype.o nr.o pixcmd_vars.o nrutil.o pixcmd_utils.o ran_state.o \
 	ran1.o gammln.o poidev.o locate.o init_random_seed.o convolve.o \
 	hist_2d.o func.o powell.o linmin.o mnbrak.o brent.o getmodel.o \
 	myran.o emcee_advance_mpi.o add_obs_err.o setup_models.o tsum.o \
 	four2.o rlft2.o fourrow.o gasdev.o function_parallel_map.o \
-	free_workers.o fit_oneatatime.o shuffle.o drawn.o
+	free_workers.o fit_oneatatime.o shuffle.o drawn.o mypoidev.o
 
 all : $(PROGS)
 
 clean :
 	rm -rf *.o *.mod *.MOD *~
-
-sim_pixcmd : sim_pixcmd.o $(COMMON)
-	$(F90) -o sim_pixcmd.exe sim_pixcmd.o $(COMMON)
 
 fit_pixcmd : fit_pixcmd.o $(COMMON)
 	$(F90) -o fit_pixcmd.exe fit_pixcmd.o $(COMMON)
@@ -43,8 +40,6 @@ write_a_model : write_a_model.o $(COMMON)
 	$(F90) -o write_a_model.exe write_a_model.o $(COMMON)
 
 #------------------------------------------------------------------------#
-
-sim_pixcmd.o : nrtype.o pixcmd_vars.o nr.o pixcmd_utils.o 
 
 fit_pixcmd.o : nrtype.o pixcmd_vars.o nr.o pixcmd_utils.o ran_state.o
 

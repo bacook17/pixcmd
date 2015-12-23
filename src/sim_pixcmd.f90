@@ -10,36 +10,27 @@ PROGRAM SIM_PIXCMD
   USE nr, ONLY : poidev; USE nrtype 
   IMPLICIT NONE
 
-  REAL(SP), PARAMETER :: bkgnd = 1E-10
 
-  TYPE TISO
-     !band order is BVIJH
-     REAL(SP), DIMENSION(nfil) :: bands
-     REAL(SP) :: imf=-66.
-  END TYPE TISO
   
-  INTEGER :: i,j,k,m,t,iseed,nn,niso,stat,nmpix
-  REAL(SP) :: mpix,age,iage=0.,mpx0,dmpx,d1,d2,d3,d4
+  INTEGER :: i,j,k,m,t,f,iseed,nn,niso,stat,nmpix,ct
+  REAL(SP) :: mpix,age,iage=0.,mpx0,dmpx,d1,d2,d3,d4,nnn
   REAL(SP), DIMENSION(nage,npix,npix,nfil)  :: flux=0.
   REAL(SP), DIMENSION(npix,npix,nfil)  :: cflux=0.,oflux=0.
+  REAL(SP), DIMENSION(npix,npix) :: narr
   TYPE(TISO), DIMENSION(niso_max) :: iso
   CHARACTER(10) :: time
   CHARACTER(50) :: file='',tag=''
-  CHARACTER(5)  :: zstr
+  CHARACTER(15)  :: zstr
   CHARACTER(4)  :: mstr
 
-  !variables for 2D histogram in B-I vs. I
-  REAL(SP), DIMENSION(nx) :: xarr
-  REAL(SP), DIMENSION(ny) :: yarr
-  REAL(SP), DIMENSION(nage,nx,ny) :: hess=0.
 
   !----------------------------------------------------------------!
 
   IF (IARGC().LT.1) THEN
-     mpx0  = 3.0
+     mpx0  = 2.0
      nmpix = 1
      dmpx  = 0.1
-     zstr  = 'p0.00'
+     zstr  = 'p0.00_x5FEWER'
   ELSE IF (IARGC().NE.4.AND.IARGC().GT.0) THEN
      WRITE(*,*) 'syntax: sim_pixcmd.exe Mpix0 N_Mpix dMpix zmet'
      WRITE(*,*) '  e.g., sim_pixcmd.exe  2.0    10    0.1  p0.00'
@@ -57,9 +48,9 @@ PROGRAM SIM_PIXCMD
 
   WRITE(*,*) 
   IF (zstr(1:1).EQ.'p') THEN
-     WRITE(*,'("[Z/H]=+",A4)') zstr(2:)
+     WRITE(*,'("[Z/H]=+",A4)') TRIM(zstr(2:))
   ELSE
-     WRITE(*,'("[Z/H]=-",A4)') zstr(2:)
+     WRITE(*,'("[Z/H]=-",A4)') TRIM(zstr(2:))
   ENDIF
 
   !set a background flux level
@@ -85,13 +76,6 @@ PROGRAM SIM_PIXCMD
      WRITE(mstr,'(F4.2)') LOG10(mpix)
      WRITE(*,'("   log Mpix  =",F6.2)') LOG10(mpix)
 
-     !open the isochrone file
-     OPEN(10,file=TRIM(PIXCMD_HOME)//'/isoc/MIST_v29_Z'//&
-          zstr//'.dat',STATUS='OLD',iostat=stat,ACTION='READ')
-     IF (stat.NE.0) THEN
-        WRITE(*,*) 'SIM_PIXCMD ERROR: isoc file not found'
-        STOP
-     ENDIF
      !READ(10,*)
 
      !--------------------Loop on population age--------------------!
@@ -116,7 +100,7 @@ PROGRAM SIM_PIXCMD
               STOP
            ENDIF
            i=i+1
-           READ(10,*,IOSTAT=stat) iage,d1,d2,d3,iso(i)%imf,&
+           READ(10,*,IOSTAT=stat) iage,iso(i)%mass,d2,d3,iso(i)%imf,&
                 iso(i)%bands(1),d4,iso(i)%bands(2)
            IF (stat.NE.0) GOTO 20
         ENDDO
@@ -124,34 +108,38 @@ PROGRAM SIM_PIXCMD
         
         niso = i-1
 
-        WRITE(*,'(F6.2,1x,I4,3F7.2)') age,niso!,iso(niso)%bands,iso(niso)%imf
+   !     WRITE(*,'(F6.2,1x,I4,3F7.2)') age,niso!,iso(niso)%bands,iso(niso)%imf
 
         iso(1:niso)%imf   = 10**iso(1:niso)%imf
         !convert to flux
         iso(1:niso)%bands(1) = 10**(-2./5*iso(1:niso)%bands(1))
         iso(1:niso)%bands(2) = 10**(-2./5*iso(1:niso)%bands(2))
         
-
         !----------------Compute the model at each pixel-----------------!
         
-        !write(*,*) mpix*iso(1:niso)%imf
-
-        CALL DATE_AND_TIME(TIME=time)
-        WRITE(*,*) 'Start Time '//time(1:2)//':'//time(3:4)//':'//time(5:6)
+  !      CALL DATE_AND_TIME(TIME=time)
+  !      WRITE(*,*) 'Start Time '//time(1:2)//':'//time(3:4)//':'//time(5:6)
 
         !compute the model over an NxN image
-        DO j=1,npix
-           DO i=1,npix
-              DO k=1,niso
-                 !nn = poidev(mpix*iso(k)%imf)
-                 nn = drawn(mpix*iso(k)%imf)
-                 flux(t,i,j,:) = flux(t,i,j,:) + nn*iso(k)%bands
+        DO k=1,niso
+
+           nnn = mpix*iso(k)%imf
+
+           IF (nnn.GT.1.) THEN
+              DO f=1,2
+                 flux(t,:,:,f) = flux(t,:,:,f)+nnn*iso(k)%bands(f)
               ENDDO
-           ENDDO
+           ELSE
+              narr = mypoidev(nnn)
+              DO f=1,2
+                 flux(t,:,:,f) = flux(t,:,:,f)+narr*iso(k)%bands(f)
+              ENDDO
+           ENDIF
+
         ENDDO
 
-        CALL DATE_AND_TIME(TIME=time)
-        WRITE(*,*) '  End Time '//time(1:2)//':'//time(3:4)//':'//time(5:6)
+   !     CALL DATE_AND_TIME(TIME=time)
+   !     WRITE(*,*) '  End Time '//time(1:2)//':'//time(3:4)//':'//time(5:6)
         
         !-------------------Convolve with the ACS PSF--------------------!
         
@@ -169,16 +157,16 @@ PROGRAM SIM_PIXCMD
      ENDDO
      
      CLOSE(10)
-     
+
      !save the PSF-convolved, obs err-included Hess diagram
-     OPEN(11,FILE=TRIM(PIXCMD_HOME)//'/models/M'//mstr//'_Z'//zstr//&
+     OPEN(11,FILE=TRIM(PIXCMD_HOME)//'/models/M'//mstr//'_Z'//TRIM(zstr)//&
           '.hess',FORM='UNFORMATTED',STATUS='REPLACE',access='direct',&
           recl=nage*nx*ny*4)
      WRITE(11,rec=1) hess
      CLOSE(11)
 
      !save the noise-free model image
-     OPEN(11,FILE=TRIM(PIXCMD_HOME)//'/models/M'//mstr//'_Z'//zstr//&
+     OPEN(11,FILE=TRIM(PIXCMD_HOME)//'/models/M'//mstr//'_Z'//TRIM(zstr)//&
           '.im',FORM='UNFORMATTED',STATUS='REPLACE',access='direct',&
           recl=nage*npix*npix*nfil*4)
      WRITE(11,rec=1) flux

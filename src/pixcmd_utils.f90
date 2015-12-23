@@ -82,9 +82,10 @@ MODULE PIXCMD_UTILS
   END INTERFACE
 
   INTERFACE
-     FUNCTION GETMODEL(inpos)
+     FUNCTION GETMODEL(inpos,im)
        USE pixcmd_vars; USE nrtype
-       REAL(SP), DIMENSION(npar) :: inpos
+       REAL(SP), DIMENSION(npar), INTENT(in) :: inpos
+       REAL(SP), DIMENSION(npix,npix), OPTIONAL :: im
        REAL(SP), DIMENSION(nx,ny) :: getmodel
      END FUNCTION GETMODEL
   END INTERFACE
@@ -108,8 +109,15 @@ MODULE PIXCMD_UTILS
   END INTERFACE
   
   INTERFACE
-     SUBROUTINE SETUP_MODELS(flag)
-       INTEGER, INTENT(in) :: flag
+     FUNCTION MYPOIDEV(xm)
+       USE pixcmd_vars; USE nrtype
+       REAL(SP), INTENT(IN) :: xm
+       REAL(SP), DIMENSION(npix,npix) :: mypoidev
+     END FUNCTION MYPOIDEV
+  END INTERFACE
+
+  INTERFACE
+     SUBROUTINE SETUP_MODELS()
      END SUBROUTINE SETUP_MODELS
   END INTERFACE
 

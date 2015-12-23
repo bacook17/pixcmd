@@ -26,6 +26,8 @@ MODULE PIXCMD_VARS
  
   !upper/lower priors
   REAL(SP), PARAMETER :: prlo=-9.0,prhi=0.0,wdth0=0.1
+  !stellar mass below which the IMF is assumed to be fully populated
+  REAL(SP), PARAMETER :: minmass=0.8
 
   !number of age and metallicity points in the model
 !  INTEGER, PARAMETER :: nage=15,nz=5,nm=1,nzskip=2
@@ -37,10 +39,12 @@ MODULE PIXCMD_VARS
   REAL(SP), DIMENSION(nz)   :: zmetarr=0.
 
   !number of free parameters
-  INTEGER, PARAMETER :: npar=nage*nz-1
+  INTEGER, PARAMETER :: npar=nage*nz+1
 
   !max size of array for data and isochrones
   INTEGER, PARAMETER :: ndat_max=3000000,niso_max=5000
+
+  REAL(SP), PARAMETER :: bkgnd = 1E-10
 
   !PSF array
   INTEGER, PARAMETER :: psf_step=4
@@ -54,12 +58,24 @@ MODULE PIXCMD_VARS
 
   CHARACTER(250) :: PIXCMD_HOME=''
 
+  INTEGER, PARAMETER :: nran=npix*npix*8
+  REAL(SP), DIMENSION(nran) :: ranarr
+
+
   !---------------------common arrays---------------------!
 
-  !array for model grids
-  REAL(SP), DIMENSION(npix,npix,nfil,nz,nage) :: model=0.
   !array for the data
   REAL(SP), DIMENSION(nx,ny) :: hess_data=0.,hess_err=0.
 
+  TYPE TISO
+     !band order is BVIJH
+     REAL(SP), DIMENSION(nfil) :: bands=0.0
+     REAL(SP) :: imf=-99.,mass=0.0,age=0.0
+  END TYPE TISO
+
+  TYPE(TISO), DIMENSION(niso_max) :: iso
+
+  INTEGER :: niso
+  INTEGER, DIMENSION(nage+1) :: ageind
 
 END MODULE PIXCMD_VARS

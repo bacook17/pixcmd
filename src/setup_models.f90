@@ -1,20 +1,24 @@
-SUBROUTINE SETUP_MODELS(flag)
+SUBROUTINE SETUP_MODELS()
 
   USE pixcmd_vars; USE nrtype
+  USE nr, ONLY : ran1
   IMPLICIT NONE
 
-  INTEGER, INTENT(in) :: flag
   CHARACTER(5), DIMENSION(nz)  :: zstr
+  CHARACTER(10) :: tag=''
   CHARACTER(4)  :: mstr
   CHARACTER(1)  :: is,js
-  INTEGER :: i,j,k,m,stat
+  INTEGER :: i,j,k,m,t,stat
+  REAL(SP) :: iage=0.0,age,d2,d3,d4
   REAL(SP), DIMENSION(nage,npix,npix,nfil) :: tmodel
 
   !------------------------------------------------------------!
 
+  tag = '_x5FEWER'
+
   CALL GETENV('PIXCMD_HOME',PIXCMD_HOME)
 
-  OPEN(13,FILE=TRIM(PIXCMD_HOME)//'models/zlegend.dat',&
+  OPEN(13,FILE=TRIM(PIXCMD_HOME)//'/isoc/zlegend.dat',&
        STATUS='OLD',iostat=stat,ACTION='READ')
   IF (stat.NE.0) THEN
      WRITE(*,*) 'SETUP_MODELS ERROR: zlegend.dat file not found'
@@ -45,6 +49,8 @@ SUBROUTINE SETUP_MODELS(flag)
   DO i=1,ny
      yhess(i) = ymin+(i-1)*dy
   ENDDO
+
+  !-------------------------------------------------------------------!
 
   psf=0.
 
@@ -78,34 +84,52 @@ SUBROUTINE SETUP_MODELS(flag)
      ENDDO
   ENDDO
 
+  !-------------------------------------------------------------------!
 
-  !--------------read in the model Hess diagrams---------------!
-
-  IF (flag.EQ.1) THEN
-     
-     DO m=1,nm
-        
-        WRITE(mstr,'(F4.2)') mpixarr(m)
-     
-        DO i=1,nz
-
-           OPEN(11,FILE=TRIM(PIXCMD_HOME)//'/models/M'//mstr//'_Z'//zstr(i)//&
-                '.im',FORM='UNFORMATTED',STATUS='OLD',access='direct',&
-                recl=nage*npix*npix*nfil*4,ACTION='READ')
-           READ(11,rec=1) tmodel
-           CLOSE(11)
-           
-           !flip the order around to make array manipulation faster
-           !in getmodel
-           DO k=1,nage
-              model(:,:,:,i,k) = tmodel(k,:,:,:)
-           ENDDO
-
-        ENDDO
-
-     ENDDO
-
+  !open the isochrone file
+  OPEN(10,file=TRIM(PIXCMD_HOME)//'/isoc/MIST_v29_Z'//&
+       TRIM(zstr(1))//TRIM(tag)//'.dat',STATUS='OLD',iostat=stat,&
+       ACTION='READ')
+  IF (stat.NE.0) THEN
+     WRITE(*,*) 'SIM_PIXCMD ERROR: isoc file not found'
+     STOP
   ENDIF
+
+  i=1
+  ageind(1)=0
+  DO t=1,nage
+
+     age = age0+(t-1)*dage
+     
+     !burn the young models
+     DO WHILE (iage-age.LT.-0.01) 
+        READ(10,*,IOSTAT=stat) iage
+     ENDDO
+     BACKSPACE(10)
+     i=i-1
+     DO WHILE (ABS(iage-age).LT.1E-2) 
+        IF (i.GT.niso_max) THEN
+           WRITE(*,*) 'SIM_PIXCMD ERROR niso_max reached',i
+           STOP
+        ENDIF
+        i=i+1
+        READ(10,*,IOSTAT=stat) iage,iso(i)%mass,d2,d3,iso(i)%imf,&
+             iso(i)%bands(1),d4,iso(i)%bands(2)
+        iso(i)%age = iage
+        IF (stat.NE.0) GOTO 20
+     ENDDO
+20   CONTINUE
+
+     ageind(t+1) = i-1
+
+  ENDDO
+
+  niso = i-1
+
+  iso(1:niso)%imf      = 10**iso(1:niso)%imf
+  !convert to flux
+  iso(1:niso)%bands(1) = 10**(-2./5*iso(1:niso)%bands(1))
+  iso(1:niso)%bands(2) = 10**(-2./5*iso(1:niso)%bands(2))
 
 
 END SUBROUTINE SETUP_MODELS

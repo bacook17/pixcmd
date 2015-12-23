@@ -84,7 +84,7 @@ PROGRAM FIT_PIXCMD
   CALL INIT_RANDOM_SEED()
 
   !setup the model grid, PSF, etc.
-  CALL SETUP_MODELS(1)
+  CALL SETUP_MODELS()
 
   !read in the Hess diagram for the data
   OPEN(1,FILE=TRIM(PIXCMD_HOME)//'/data/'//TRIM(infile)//'.hess',&
