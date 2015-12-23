@@ -127,11 +127,18 @@ PROGRAM FIT_PIXCMD
              masterid, MPI_ANY_TAG, MPI_COMM_WORLD, status, ierr)
    
         CALL DTIME(dumt,time2)
+        CALL DATE_AND_TIME(TIME=time)
+        WRITE(*,*) '1 Time '//time(1:2)//':'//time(3:4)//':'//time(5:6),taskid
+        CALL FLUSH()
 
         !Calculate the probability for these parameter positions
         DO k=1,npos
            lp_mpi(k) = -0.5*func(mpiposarr(:,k))
         ENDDO
+
+        CALL DATE_AND_TIME(TIME=time)
+        WRITE(*,*) '1 Time '//time(1:2)//':'//time(3:4)//':'//time(5:6),taskid
+        CALL FLUSH()
 
          IF (test_time.EQ.1) THEN
            CALL DTIME(dumt,time2)
@@ -228,7 +235,11 @@ PROGRAM FIT_PIXCMD
      !initial burn-in
      WRITE(*,'(A)',advance='no') ' first burn-in:  '
      DO i=1,nburn
-        IF (test_time.EQ.1) WRITE(*,'("Iteration ",I3)') i
+        IF (test_time.EQ.1) THEN
+           WRITE(*,'("Iteration ",I3)') i
+           CALL FLUSH()
+        ENDIF
+        
         CALL EMCEE_ADVANCE_MPI(npar,nwalkers,2.0,pos_emcee_in,&
              lp_emcee_in,pos_emcee_out,lp_emcee_out,accept_emcee,ntasks-1)
         pos_emcee_in = pos_emcee_out
