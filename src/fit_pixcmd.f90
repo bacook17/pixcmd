@@ -8,15 +8,16 @@ PROGRAM FIT_PIXCMD
 
   IMPLICIT NONE
 
+  !flag 
+  INTEGER, PARAMETER :: test_time=1
+
   !Powell minimization
   INTEGER, PARAMETER  :: dopowell=0
-  !fit for a single age-Z combination
-  INTEGER, PARAMETER  :: dosinglefit=0
   !fit each term individually
-  INTEGER, PARAMETER  :: dooneatatime=1
+  INTEGER, PARAMETER  :: dooneatatime=0
  
   !emcee variables
-  INTEGER, PARAMETER :: nwalkers=128,nburn=100,nmcmc=20
+  INTEGER, PARAMETER :: nwalkers=64,nburn=100,nmcmc=20
   REAL(SP), DIMENSION(npar,nwalkers) :: pos_emcee_in,pos_emcee_out
   REAL(SP), DIMENSION(nwalkers)      :: lp_emcee_in,lp_emcee_out,lp_mpi
   INTEGER,  DIMENSION(nwalkers)      :: accept_emcee
@@ -40,7 +41,6 @@ PROGRAM FIT_PIXCMD
   INTEGER :: KILL=99,BEGIN=0
   LOGICAL :: wait=.TRUE.
   INTEGER, PARAMETER :: masterid=0
-  INTEGER, PARAMETER :: test_time=1
 
   !------------------------------------------------------------!
 
@@ -157,31 +157,15 @@ PROGRAM FIT_PIXCMD
 
      !----------------------Initialization--------------------------!
 
-     IF (dosinglefit.EQ.1) THEN
- 
-        !single age-Z minimization
-        WRITE(*,*) 'Running single age-Z minimization'
-
-        bpos=-8.0
-        k=1
-        DO j=1,nage-1
-           DO i=1,nz
-              bpos(k)=0.0
-              fret = func(bpos)
-              bpos(k)=-8.0
-              k=k+1
-              write(*,*) i,j,LOG10(fret)
-           ENDDO
-        ENDDO
-
-     ELSE IF (dopowell.EQ.1) THEN
+     IF (dopowell.EQ.1) THEN
 
         !Powell minimization
         WRITE(*,*) 'Running Powell minimization'
         
         DO j=1,10
            !setup params
-           DO i=1,npar
+           pos(1) = myran()+2
+           DO i=2,npar
               pos(i) = LOG10(myran()/npar)
            ENDDO
            xi=0.0
@@ -202,35 +186,39 @@ PROGRAM FIT_PIXCMD
 
         !One at a time fitter
         WRITE(*,*) 'Running one-at-a-time fitter'
+        STOP  !not updated
         CALL FIT_ONEATATIME(bpos)
-        bpos = bpos - LOG10(SUM(10**bpos))
+        bpos(2:npar) = bpos(2:npar) - LOG10(SUM(10**bpos(2:npar)))
 
      ELSE
         
         !random initialization
-        DO i=1,npar
+        bpos(1) = myran()+2
+        DO i=2,npar
            bpos(i) = myran()*(prhi-prlo-3*wdth0) + (prlo+1.5*wdth0)
         ENDDO
-        bpos = bpos - LOG10(SUM(10**bpos))
+        bpos(2:npar) = bpos(2:npar) - LOG10(SUM(10**bpos(2:npar)))
 
      ENDIF
      
      !-------------------------Run emcee---------------------------------!
      
      WRITE(*,*) 'initial parameters:'
-     WRITE(*,'(30(F7.3,1x))') bpos
-
      !setup the starting positions
      DO j=1,nwalkers
         DO i=1,npar
            pos_emcee_in(i,j) = bpos(i) + wdth0*(2.*myran()-1.0)
         ENDDO
-        !WRITE(*,'(30(F7.3,1x))') pos_emcee_in(:,j)
+        WRITE(*,'(30(F5.2,1x))') pos_emcee_in(:,j)
       ENDDO
 
      !Compute the initial log-probability for each walker
      CALL FUNCTION_PARALLEL_MAP(npar,nwalkers,ntasks-1,&
           pos_emcee_in,lp_emcee_in)
+
+     WRITE(*,*) 'chi^2 for initialized walkers:'
+     WRITE(*,'(10(ES10.2,1x))') -2.0*lp_emcee_in
+
 
      IF (-2.0*MAXVAL(lp_emcee_in).EQ.huge_number) THEN
         WRITE(*,*) 'FIT_PIXCMD ERROR: initial parameters are out of bounds'
@@ -270,23 +258,24 @@ PROGRAM FIT_PIXCMD
      WRITE(*,*) 'min chi^2 after first-pass:'
      WRITE(*,'(ES10.2)') -2.0*lp_emcee_in(i)
      WRITE(*,*) 'parameters at min:'
-     WRITE(*,'(30(F7.3,1x))') bpos
+     WRITE(*,'(30(F5.2,1x))') bpos
      WRITE(*,*) 're-initalized parameters:'
      DO j=1,nwalkers
         DO i=1,npar
            pos_emcee_in(i,j) = bpos(i)+wdth0/5.*(2.*myran()-1.0)
+           IF (i.EQ.1) CYCLE
            IF (pos_emcee_in(i,j).LT.prlo) &
                 pos_emcee_in(i,j)=prlo+wdth0/5.
            IF (pos_emcee_in(i,j).GT.prhi) &
                 pos_emcee_in(i,j)=prhi-wdth0/5.
         ENDDO
-        WRITE(*,'(30(F7.3,1x))') pos_emcee_in(:,j)
+        WRITE(*,'(30(F5.2,1x))') pos_emcee_in(:,j)
      ENDDO
      !Compute the initial log-probability for each walker
      CALL FUNCTION_PARALLEL_MAP(npar,nwalkers,ntasks-1,&
           pos_emcee_in,lp_emcee_in)
 
-     WRITE(*,*) 'log(chi^2) for re-initialized walkers:'
+     WRITE(*,*) 'chi^2 for re-initialized walkers:'
      WRITE(*,'(10(ES10.2,1x))') -2.0*lp_emcee_in
 
      !second-pass burn-in

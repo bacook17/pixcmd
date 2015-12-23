@@ -10,7 +10,7 @@ FUNCTION GETMODEL(inpos,im)
   REAL(SP), DIMENSION(nx,ny) :: getmodel
   REAL(SP), DIMENSION(npix,npix,nfil) :: f1,cf1,of1
   REAL(SP), DIMENSION(npix,npix) :: narr
-  INTEGER :: ilo,i,j,k,m,f,wgti,ii,jj,test_time=1
+  INTEGER :: ilo,i,j,k,m,f,wgti,ii,jj,test_time=0
   REAL(SP) :: di,nnn
   CHARACTER(10) :: time
   REAL(SP), DIMENSION(niso_max) :: imf

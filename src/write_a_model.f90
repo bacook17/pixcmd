@@ -63,7 +63,8 @@ PROGRAM WRITE_A_MODEL
   pos(2:npar) = LOG10(wgt(1,:))
 
   !get the model hess diagram and I-band image
-  hess = getmodel(pos,im)
+  !store as the actual counts, not normalized
+  hess = getmodel(pos,im) * npix**2
 
   !save the PSF-convolved, obs err-included I-band image
   OPEN(11,FILE=TRIM(PIXCMD_HOME)//'/data/'//TRIM(outfile)//'.im',&

@@ -25,7 +25,8 @@ MODULE PIXCMD_VARS
   REAL(SP), DIMENSION(nfil) :: zpt=(/26.0593,25.9433/)
  
   !upper/lower priors
-  REAL(SP), PARAMETER :: prlo=-9.0,prhi=0.0,wdth0=0.1
+  REAL(SP), PARAMETER :: prlo=-7.0,prhi=0.3,wdth0=0.5
+  REAL(SP), PARAMETER :: prlo_m=0.5,prhi_m=5.0
   !stellar mass below which the IMF is assumed to be fully populated
   REAL(SP), PARAMETER :: minmass=0.8
 

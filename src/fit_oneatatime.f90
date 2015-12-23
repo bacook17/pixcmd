@@ -17,26 +17,25 @@ SUBROUTINE FIT_ONEATATIME(pos)
   tpos   = prlo
   chimax = func(tpos)
 
-  DO i=1,npar
+  DO i=2,npar
 
      tpos    = prlo
      bestchi = chimax
      jbest   = 1
 
      DO j=1,ns
-
         tpos(i) = prlo + j*dpp
         chi2(j) = func(tpos)
         IF (chi2(j).LT.bestchi) THEN
            bestchi = chi2(j)
            jbest = j
         ENDIF
-
      ENDDO
 
      pos(i) = prlo+jbest*dpp
 
-     write(*,'(F5.2,1x,F5.2,ES12.3)') agesarr(i),pos(i),bestchi
+     WRITE(*,'(F5.2,1x,F5.2,ES12.3)') &
+          agesarr(i),pos(i),bestchi
 
   ENDDO
   
