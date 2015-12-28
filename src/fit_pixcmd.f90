@@ -17,7 +17,7 @@ PROGRAM FIT_PIXCMD
   INTEGER, PARAMETER  :: dooneatatime=0
  
   !emcee variables
-  INTEGER, PARAMETER :: nwalkers=64,nburn=100,nmcmc=20
+  INTEGER, PARAMETER :: nwalkers=64,nburn=20,nmcmc=10
   REAL(SP), DIMENSION(npar,nwalkers) :: pos_emcee_in,pos_emcee_out
   REAL(SP), DIMENSION(nwalkers)      :: lp_emcee_in,lp_emcee_out,lp_mpi
   INTEGER,  DIMENSION(nwalkers)      :: accept_emcee
@@ -128,7 +128,7 @@ PROGRAM FIT_PIXCMD
    
         CALL DTIME(dumt,time2)
         CALL DATE_AND_TIME(TIME=time)
-        WRITE(*,*) '1 Time '//time(1:2)//':'//time(3:4)//':'//time(5:6),taskid
+        WRITE(*,*) '1 Time '//time(1:2)//':'//time(3:4)//':'//time(5:9),taskid
         CALL FLUSH()
 
         !Calculate the probability for these parameter positions
@@ -137,7 +137,7 @@ PROGRAM FIT_PIXCMD
         ENDDO
 
         CALL DATE_AND_TIME(TIME=time)
-        WRITE(*,*) '1 Time '//time(1:2)//':'//time(3:4)//':'//time(5:6),taskid
+        WRITE(*,*) '2 Time '//time(1:2)//':'//time(3:4)//':'//time(5:9),taskid
         CALL FLUSH()
 
          IF (test_time.EQ.1) THEN
