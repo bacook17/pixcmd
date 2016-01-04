@@ -4,6 +4,7 @@ PROGRAM DOHESS
   USE pixcmd_vars
   IMPLICIT NONE
 
+  INTEGER, PARAMETER :: ndat_max=3000000
   INTEGER :: i,i1,i2,stat,ndat
   CHARACTER(50) :: infile
   REAL(SP), DIMENSION(ndat_max) :: xdat=0.,ydat=0.

@@ -2,7 +2,6 @@ FUNCTION MYPOIDEV(xm)
 
   USE pixcmd_vars; USE nrtype
   USE pixcmd_utils, ONLY : myran
-  USE nr, ONLY : gammln,ran1
   IMPLICIT NONE
   
   INTEGER :: i,j,k=1
@@ -22,7 +21,7 @@ FUNCTION MYPOIDEV(xm)
            em = em+1.0
            !t  = t*myran()
            t = t*ranarr(k)
-           k= MOD((k+1),nran)
+           k = MOD((k+1),nran)
            IF (t.LE.g) EXIT
         ENDDO
         mypoidev(i,j)=em

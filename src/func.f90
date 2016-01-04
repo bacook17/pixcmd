@@ -12,11 +12,14 @@ FUNCTION FUNC(inpos)
   !------------------------------------------------------------!
 
   func = 0.0
+  nn   = SIZE(inpos)
 
   !------------------- priors----------------------!
-
+  
+  !prior on the mass per pixel
   IF (inpos(1).LT.prlo_m.OR.inpos(1).GT.prhi_m) func=huge_number
 
+  !priors on the weights for each component
   DO i=2,npar
      IF (inpos(i).LT.prlo.OR.inpos(i).GT.prhi) func=huge_number
      IF (ISNAN(inpos(i))) THEN
@@ -25,18 +28,19 @@ FUNCTION FUNC(inpos)
      ENDIF
   ENDDO
 
+  !actually compute a model and return chi^2 if within priors
   IF (func.LT.huge_number) THEN
 
      !get the model
-     imodel = getmodel(inpos(1:npar))
+     imodel = getmodel(inpos(1:nn))
 
      !Poisson uncertainty on the model
-     !model_err = SQRT(imodel*npix**2)/npix**2
-     !DO i=1,nx
-     !   DO j=1,ny
-     !      IF (model_err(i,j).LE.tiny_number) model_err(i,j)=1./npix
-     !   ENDDO
-     !ENDDO
+     model_err = SQRT(imodel*npix**2)/npix**2
+     DO i=1,nx
+        DO j=1,ny
+           IF (model_err(i,j).LE.tiny_number) model_err(i,j)=1./npix**2
+        ENDDO
+     ENDDO
 
      !compute chi^2
      !func = SUM( (hess_data-imodel)**2  / (hess_err**2+model_err**2) )
@@ -57,7 +61,7 @@ FUNCTION FUNC(inpos)
      STOP
   ENDIF
 
-  !WRITE(*,'(F10.4,100F8.3)') LOG10(func),inpos
+  !WRITE(*,'(F10.4,30(F5.2,1x))') LOG10(func),inpos
   
 
 END FUNCTION FUNC

@@ -19,6 +19,8 @@ FUNCTION CONVOLVE(arr)
 
   !------------------------------------------------------------!
 
+  convolve = 0.0
+
   IF (fft.EQ.0) THEN
 
      !this is the brute force do loop convolution

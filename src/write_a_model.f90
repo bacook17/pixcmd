@@ -7,8 +7,8 @@ PROGRAM WRITE_A_MODEL
   USE nr, ONLY : locate
   IMPLICIT NONE
   
-  INTEGER  :: i,j,k,wgti
-  REAL(SP) :: mpix,zmet0,zmets,tau,tot=1.,dt,twgt=0.,wgtmax=0.
+  INTEGER  :: i,j
+  REAL(SP) :: mpix,zmet0,zmets,tau,dt,twgt=0.
   CHARACTER(50) :: outfile
   REAL(SP), DIMENSION(npar)      :: pos
   REAL(SP), DIMENSION(nx,ny)     :: hess
@@ -16,7 +16,6 @@ PROGRAM WRITE_A_MODEL
   REAL(SP), DIMENSION(nage)      :: sfh
   REAL(SP), DIMENSION(nz,nage)   :: wgt
   REAL(SP), DIMENSION(nz)        :: mdf,zz
-  CHARACTER(10) :: time
 
   !------------------------------------------------------------!
 

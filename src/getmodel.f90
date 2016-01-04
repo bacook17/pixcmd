@@ -5,13 +5,15 @@ FUNCTION GETMODEL(inpos,im)
   USE nr, ONLY : locate,ran1
   IMPLICIT NONE
 
+  INTEGER, PARAMETER :: test_time=0
+
   REAL(SP), DIMENSION(npar), INTENT(in) :: inpos
   REAL(SP), DIMENSION(npix,npix), OPTIONAL :: im
   REAL(SP), DIMENSION(nx,ny) :: getmodel
   REAL(SP), DIMENSION(npix,npix,nfil) :: f1,cf1,of1
   REAL(SP), DIMENSION(npix,npix) :: narr
-  INTEGER :: ilo,i,j,k,m,f,wgti,ii,jj,test_time=0
-  REAL(SP) :: di,nnn
+  INTEGER  :: i,k,f
+  REAL(SP) :: nnn
   CHARACTER(10) :: time
   REAL(SP), DIMENSION(niso_max) :: imf
 
@@ -23,6 +25,7 @@ FUNCTION GETMODEL(inpos,im)
   ENDIF
 
   !push the age weights into the IMF weights
+  imf = 0.0
   DO i=1,nage
      IF (10**inpos(i+1).LT.1/(npix**2)) THEN
         imf(ageind(i)+1:ageind(i+1)) = 0.0
@@ -33,9 +36,10 @@ FUNCTION GETMODEL(inpos,im)
   ENDDO
 
   !this call takes about a second with 1E7 points
-  CALL RAN1(ranarr)
+  !CALL RAN1(ranarr)
 
   !compute the model at each pixel
+  f1 = 0.0
   DO k=1,niso
  
      IF (imf(k).LT.tiny_number) CYCLE
@@ -77,11 +81,23 @@ FUNCTION GETMODEL(inpos,im)
      WRITE(*,*) '4 Time '//time(1:2)//':'//time(3:4)//':'//time(5:9)
   ENDIF
 
+  !return the I-band image if included in the function call
   IF (PRESENT(im)) im=of1(:,:,2)
 
   !compute Hess diagram, normalize to unity
   getmodel = hist_2d(of1(:,:,1)-of1(:,:,2),of1(:,:,2),&
        xhess,yhess,nx,ny,npix) / npix**2
+
+  !throw an error if the Hess diagram has no entries
+  IF (SUM(getmodel).LT.tiny_number) THEN
+     WRITE(*,*) 'getmodel=0.0!'
+     WRITE(*,*) MINVAL(of1),MAXVAL(of1)
+     WRITE(*,*) MINVAL(cf1),MAXVAL(cf1)
+     WRITE(*,*) MINVAL(f1),MAXVAL(f1)
+     WRITE(*,*) inpos
+     STOP
+  ENDIF
+
 
 
 END FUNCTION GETMODEL

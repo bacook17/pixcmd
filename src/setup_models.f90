@@ -6,11 +6,9 @@ SUBROUTINE SETUP_MODELS()
 
   CHARACTER(5), DIMENSION(nz)  :: zstr
   CHARACTER(10) :: tag=''
-  CHARACTER(4)  :: mstr
   CHARACTER(1)  :: is,js
-  INTEGER :: i,j,k,m,t,stat
+  INTEGER :: i,j,k,t,stat
   REAL(SP) :: iage=0.0,age,d2,d3,d4
-  REAL(SP), DIMENSION(nage,npix,npix,nfil) :: tmodel
 
   !------------------------------------------------------------!
 

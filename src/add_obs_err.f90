@@ -16,12 +16,15 @@ FUNCTION ADD_OBS_ERR(flux)
 
   !------------------------------------------------------------!
 
+  add_obs_err = 0.0
+
   !convert to counts
   DO k=1,nfil
 
      !compute total counts 
      cts = flux(:,:,k) * 10**(-2./5*(dm-zpt(k)))*exptime(k)
-     
+     cti = 0.0
+
      DO j=1,npix
         CALL GASDEV(gdev)
         DO i=1,npix

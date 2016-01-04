@@ -6,11 +6,11 @@ SUBROUTINE FIT_ONEATATIME(pos)
   IMPLICIT NONE
 
   REAL(SP), DIMENSION(npar), INTENT(inout) :: pos
-  INTEGER :: i,j,im,jbest
+  INTEGER :: i,j,jbest
   INTEGER, PARAMETER :: ns=18
   REAL(SP), DIMENSION(npar) :: tpos
   REAL(SP) :: dpp=0.5,chimax, bestchi
-  REAL(SP), DIMENSION(ns) :: pp, chi2
+  REAL(SP), DIMENSION(ns) :: chi2
 
  !------------------------------------------------------------!
 

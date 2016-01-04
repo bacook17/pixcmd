@@ -65,7 +65,7 @@ SUBROUTINE EMCEE_ADVANCE_MPI (ndim, nwalkers, a, pin, lpin, &
   DO k=1,nwalkers
      
      !Compute a random stretch factor and store it
-     z = (a - 1.d0) * myran() + 1.d0
+     z = (a - 1.0) * myran() + 1.0
      z = z * z / a
      zarr(k) = z
      
@@ -76,7 +76,7 @@ SUBROUTINE EMCEE_ADVANCE_MPI (ndim, nwalkers, a, pin, lpin, &
      ENDIF
      
      !Compute the proposal position and store it
-     qarr(:,k) = (1.d0 - z) * pin(:, ri) + z * pin(:, k)
+     qarr(:,k) = (1.0 - z) * pin(:, ri) + z * pin(:, k)
      
   ENDDO
   
@@ -85,10 +85,10 @@ SUBROUTINE EMCEE_ADVANCE_MPI (ndim, nwalkers, a, pin, lpin, &
   !Now loop over walkers to accept/reject, and update
   DO k=1,nwalkers
      
-     diff = (ndim - 1.d0) * LOG(zarr(k)) + lpnew(k) - lpin(k)
+     diff = (ndim - 1.0) * LOG(zarr(k)) + lpnew(k) - lpin(k)
      
      !Accept or reject
-     IF (diff.GE.0.d0) THEN
+     IF (diff.GE.0.0) THEN
         accept(k) = 1
      ELSE
         IF (diff.GE.LOG(myran())) THEN
