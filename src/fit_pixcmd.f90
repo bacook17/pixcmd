@@ -17,7 +17,7 @@ PROGRAM FIT_PIXCMD
   INTEGER, PARAMETER  :: dooneatatime=0
  
   !emcee variables
-  INTEGER, PARAMETER :: nwalkers=16,nburn1=40,nburn2=100,nmcmc=20
+  INTEGER, PARAMETER :: nwalkers=64,nburn1=20,nburn2=400,nmcmc=20
   REAL(SP), DIMENSION(npar,nwalkers) :: pos_emcee_in,pos_emcee_out
   REAL(SP), DIMENSION(nwalkers)      :: lp_emcee_in,lp_emcee_out,lp_mpi
   INTEGER,  DIMENSION(nwalkers)      :: accept_emcee
@@ -26,7 +26,7 @@ PROGRAM FIT_PIXCMD
   INTEGER  :: i,j,k,ml,ndat,stat,iter=30,totacc=0,npos
   REAL(SP) :: fret,bret=huge_number,dt
   CHARACTER(10) :: time,is
-  REAL(SP) :: time2,time3
+  REAL(SP) :: time1,time2
   REAL(SP), DIMENSION(2) :: dumt,dumt2
   CHARACTER(50) :: infile,tag=''
   REAL(SP), DIMENSION(nx,ny) :: bmodel=0.,imodel=0.
@@ -138,10 +138,10 @@ PROGRAM FIT_PIXCMD
         CALL MPI_RECV(mpiposarr(1,1), npos*npar, MPI_REAL, &
              masterid, MPI_ANY_TAG, MPI_COMM_WORLD, status, ierr)
    
-        CALL DTIME(dumt,time2)
-        !CALL DATE_AND_TIME(TIME=time)
-        !WRITE(*,*) '1 Time '//time(1:2)//':'//time(3:4)//':'//time(5:9),taskid
-        !CALL FLUSH()
+        CALL CPU_TIME(time1)
+        CALL DATE_AND_TIME(TIME=time)
+        WRITE(*,*) '1 Time '//time(1:2)//':'//time(3:4)//':'//time(5:9),taskid
+        CALL FLUSH()
 
         !Calculate the probability for these parameter positions
         DO k=1,npos
@@ -153,14 +153,14 @@ PROGRAM FIT_PIXCMD
          !       taskid,time3,k,-2.0*lp_mpi(k)
         ENDDO
 
-        !CALL DATE_AND_TIME(TIME=time)
-        !WRITE(*,*) '2 Time '//time(1:2)//':'//time(3:4)//':'//time(5:9),taskid
-        !CALL FLUSH()
+        CALL DATE_AND_TIME(TIME=time)
+        WRITE(*,*) '2 Time '//time(1:2)//':'//time(3:4)//':'//time(5:9),taskid
+        CALL FLUSH()
 
          IF (test_time.EQ.1) THEN
-           CALL DTIME(dumt,time2)
-           WRITE(*,'(" Task ID ",I3": Elapsed Time: ",F6.2," s", ", N=",I3)') &
-                taskid,time2,npos
+           CALL CPU_TIME(time2)
+           WRITE(*,'(" Task ID ",I3": Elapsed Time: ",F6.2," s", ", N=",I2)') &
+                taskid,time2-time1,npos
            CALL FLUSH()
         ENDIF
 
@@ -236,8 +236,8 @@ PROGRAM FIT_PIXCMD
         ENDDO
 
         !transfer the parameters to the parameter array
-        !bpos(1)      = 2.0
-        !bpos(2:npar) = LOG10(wgt)
+        bpos(1)      = 2.0
+        bpos(2:npar) = LOG10(wgt)
         
 
      ENDIF
@@ -378,6 +378,10 @@ PROGRAM FIT_PIXCMD
 
      WRITE(*,'(A)',advance='no') ' production run: '       
      DO i=1,nmcmc
+       IF (test_time.EQ.1) THEN
+           WRITE(*,'("Iteration ",I3)') i
+           CALL FLUSH()
+        ENDIF
         CALL EMCEE_ADVANCE_MPI(npar,nwalkers,2.0,pos_emcee_in,&
              lp_emcee_in,pos_emcee_out,lp_emcee_out,accept_emcee,ntasks-1)
         pos_emcee_in = pos_emcee_out
