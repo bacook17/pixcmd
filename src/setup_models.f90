@@ -5,14 +5,11 @@ SUBROUTINE SETUP_MODELS()
   IMPLICIT NONE
 
   CHARACTER(5), DIMENSION(nz)  :: zstr
-  CHARACTER(10) :: tag=''
   CHARACTER(1)  :: is,js
-  INTEGER :: i,j,k,t,stat
+  INTEGER  :: i,j,k,t,stat
   REAL(SP) :: iage=0.0,age,d2,d3,d4
 
   !------------------------------------------------------------!
-
-  tag = '_x5FEWER'
 
   CALL GETENV('PIXCMD_HOME',PIXCMD_HOME)
 
@@ -33,11 +30,6 @@ SUBROUTINE SETUP_MODELS()
   !set up model ages array
   DO i=1,nage
      agesarr(i) = age0+(i-1)*dage
-  ENDDO
-
-  !set up Mpix array
-  DO i=1,nm
-     mpixarr(i) = mpix0+(i-1)*dmpix
   ENDDO
 
   !set up the Hess arrays
@@ -86,7 +78,7 @@ SUBROUTINE SETUP_MODELS()
 
   !open the isochrone file
   OPEN(10,file=TRIM(PIXCMD_HOME)//'/isoc/MIST_v29_Z'//&
-       TRIM(zstr(1))//TRIM(tag)//'.dat',STATUS='OLD',iostat=stat,&
+       TRIM(zstr(1))//TRIM(iso_tag)//'.dat',STATUS='OLD',iostat=stat,&
        ACTION='READ')
   IF (stat.NE.0) THEN
      WRITE(*,*) 'SIM_PIXCMD ERROR: isoc file not found'

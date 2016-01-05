@@ -35,9 +35,6 @@ FUNCTION GETMODEL(inpos,im)
      ENDIF
   ENDDO
 
-  !this call takes about a second with 1E7 points
-  !CALL RAN1(ranarr)
-
   !compute the model at each pixel
   f1 = 0.0
   DO k=1,niso
@@ -68,18 +65,8 @@ FUNCTION GETMODEL(inpos,im)
   !convolve with PSF
   cf1 = convolve(f1)
 
-  IF (test_time.EQ.1) THEN
-     CALL DATE_AND_TIME(TIME=time)
-     WRITE(*,*) '3 Time '//time(1:2)//':'//time(3:4)//':'//time(5:9)
-  ENDIF
-
   !add obs errors
   of1 = add_obs_err(cf1)
-
-  IF (test_time.EQ.1) THEN
-     CALL DATE_AND_TIME(TIME=time)
-     WRITE(*,*) '4 Time '//time(1:2)//':'//time(3:4)//':'//time(5:9)
-  ENDIF
 
   !return the I-band image if included in the function call
   IF (PRESENT(im)) im=of1(:,:,2)

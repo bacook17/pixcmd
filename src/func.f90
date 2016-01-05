@@ -45,19 +45,13 @@ FUNCTION FUNC(inpos)
      !compute chi^2
      !func = SUM( (hess_data-imodel)**2  / (hess_err**2+model_err**2) )
      func = SUM( (hess_data-imodel)**2 / hess_err**2 )
-     !func = SUM( (hess_data-imodel)**2 )
   
   ENDIF
 
 
   !check for NaNs
   IF (ISNAN(func)) THEN
-     WRITE(*,'("FUNC ERROR: chi^2 returned a NaN:",10F10.5)') inpos
-     DO i=1,npix
-        DO j=1,npix
-           IF (ISNAN(imodel(i,j))) WRITE(*,*) i,j
-        ENDDO
-     ENDDO
+     WRITE(*,'("FUNC ERROR: chi^2 returned a NaN:",90F10.3)') inpos
      STOP
   ENDIF
 

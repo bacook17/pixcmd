@@ -17,27 +17,6 @@ MODULE PIXCMD_UTILS
   END INTERFACE
 
   INTERFACE
-     FUNCTION DRAWN(nn)
-       USE nrtype
-       REAL(SP), INTENT(in) :: nn
-     END FUNCTION DRAWN
-  END INTERFACE
-
-  INTERFACE
-     SUBROUTINE EMCEE_ADVANCE(ndim,nwalkers,a,pin,lpin,&
-          pout,lpout,accept)
-       USE pixcmd_vars; USE nrtype
-       INTEGER, INTENT(in) :: ndim, nwalkers
-       REAL(SP), INTENT(in) :: a
-       REAL(SP), INTENT(in), DIMENSION(ndim,nwalkers) :: pin
-       REAL(SP), INTENT(in), DIMENSION(nwalkers) :: lpin
-       REAL(SP), INTENT(out), DIMENSION(ndim,nwalkers) :: pout
-       REAL(SP), INTENT(out), DIMENSION(nwalkers) :: lpout
-       INTEGER, INTENT(out), DIMENSION(nwalkers) :: accept
-     END SUBROUTINE EMCEE_ADVANCE
-  END INTERFACE
-
-  INTERFACE
      SUBROUTINE EMCEE_ADVANCE_MPI(ndim,nwalkers,a,pin,lpin,&
           pout,lpout,accept,nworkers)
        USE nrtype
@@ -73,7 +52,7 @@ MODULE PIXCMD_UTILS
   END INTERFACE
 
   INTERFACE
-     SUBROUTINE FUNCTION_PARALLEL_MAP(ndim, nk, nworkers, pos, lnpout)
+     SUBROUTINE FUNCTION_PARALLEL_MAP(ndim,nk,nworkers,pos,lnpout)
        USE nrtype
        INTEGER, INTENT(in) :: ndim, nk, nworkers
        REAL(SP), INTENT(in), DIMENSION(ndim,nk) :: pos
@@ -119,14 +98,6 @@ MODULE PIXCMD_UTILS
   INTERFACE
      SUBROUTINE SETUP_MODELS()
      END SUBROUTINE SETUP_MODELS
-  END INTERFACE
-
-  INTERFACE
-     FUNCTION TSUM(xin,yin)
-       USE nrtype
-       REAL(SP), DIMENSION(:), INTENT(in) :: xin,yin
-       REAL(SP) :: tsum
-     END FUNCTION TSUM
   END INTERFACE
 
 END MODULE PIXCMD_UTILS

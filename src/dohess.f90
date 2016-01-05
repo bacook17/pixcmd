@@ -1,5 +1,8 @@
 PROGRAM DOHESS
 
+  !routine to read in a data file consisting of flux and color
+  !and turn into a Hess diagram
+
   USE nr, ONLY : locate
   USE pixcmd_vars
   IMPLICIT NONE

@@ -14,9 +14,11 @@ PROGRAM FIT_PIXCMD
   INTEGER, PARAMETER :: dopowell=0
   !fit each term individually
   INTEGER, PARAMETER :: dooneatatime=0
- 
+  !run the first-pass burn in
+  INTEGER, PARAMETER :: doburn1=0
+
   !emcee variables
-  INTEGER, PARAMETER :: nwalkers=64,nburn1=100,nburn2=100,nmcmc=20
+  INTEGER, PARAMETER :: nwalkers=4,nburn1=100,nburn2=100,nmcmc=20
   REAL(SP), DIMENSION(npar,nwalkers) :: pos_emcee_in,pos_emcee_out
   REAL(SP), DIMENSION(nwalkers)      :: lp_emcee_in,lp_emcee_out,lp_mpi
   INTEGER,  DIMENSION(nwalkers)      :: accept_emcee
@@ -73,6 +75,8 @@ PROGRAM FIT_PIXCMD
      WRITE(*,*)
      WRITE(*,'(" ************************************")')
      WRITE(*,'("  dopowell   = ",I5)') dopowell
+     WRITE(*,'("  do1atatime = ",I5)') dooneatatime
+     WRITE(*,'("  doburn1    = ",I5)') doburn1
      WRITE(*,'("  Nwalkers   = ",I5)') nwalkers
      WRITE(*,'("  Nburn1     = ",I5)') nburn1
      WRITE(*,'("  Nburn2     = ",I5)') nburn2
@@ -138,23 +142,24 @@ PROGRAM FIT_PIXCMD
              masterid, MPI_ANY_TAG, MPI_COMM_WORLD, status, ierr)
    
         CALL CPU_TIME(time1)
-        CALL DATE_AND_TIME(TIME=time)
-        WRITE(*,*) '1 Time '//time(1:2)//':'//time(3:4)//':'//time(5:9),taskid
-        CALL FLUSH()
+        !CALL DATE_AND_TIME(TIME=time)
+        !WRITE(*,*) '1 Time '//time(1:2)//':'//time(3:4)//':'//time(5:9),taskid
+        !CALL FLUSH()
 
         !Calculate the probability for these parameter positions
         DO k=1,npos
            lp_mpi(k) = -0.5*func(mpiposarr(:,k))
         ENDDO
 
-        CALL DATE_AND_TIME(TIME=time)
         CALL CPU_TIME(time2)
-        WRITE(*,*) '2 Time '//time(1:2)//':'//time(3:4)//':'//time(5:9),taskid
-        CALL FLUSH()
+        !CALL DATE_AND_TIME(TIME=time)
+        !WRITE(*,*) '2 Time '//time(1:2)//':'//time(3:4)//':'//time(5:9),taskid
+        !CALL FLUSH()
 
          IF (test_time.EQ.1) THEN
-           WRITE(*,'(" Task ID ",I3": Elapsed Time: ",F6.2," s", ", N=",I2)') &
-                taskid,time2-time1,npos
+           WRITE(*,'(" Task ID ",I2": Elapsed Time: ",F6.2," s", '//&
+                '", N=",I2,", chi^2=",10ES11.3)') &
+                taskid,time2-time1,npos,-2.0*lp_mpi(1:npos)
            CALL FLUSH()
         ENDIF
 
@@ -219,7 +224,7 @@ PROGRAM FIT_PIXCMD
 
         sfh = 1/10**agesarr(nage)
 
-        !initialize with a constant SFH!
+        !initialize with a constant SFH
         DO j=1,nage
            IF (j.EQ.1) THEN
               dt = (10**agesarr(j)-10**(agesarr(j)-dage))
@@ -265,76 +270,69 @@ PROGRAM FIT_PIXCMD
 
      !---------------------initial burn-in---------------------!
 
-     WRITE(*,'(A)',advance='no') ' first burn-in:  '
-     DO i=1,nburn1
-        IF (test_time.EQ.1) THEN
-           WRITE(*,'("Iteration ",I3)') i
-           CALL FLUSH()
-        ENDIF
-        CALL EMCEE_ADVANCE_MPI(npar,nwalkers,2.0,pos_emcee_in,&
-             lp_emcee_in,pos_emcee_out,lp_emcee_out,accept_emcee,ntasks-1)
-        pos_emcee_in = pos_emcee_out
-        lp_emcee_in  = lp_emcee_out
-        !WRITE(*,'(10(ES10.3,1x))') -2.0*lp_emcee_in
-        IF (i.EQ.nburn1/4.*1) THEN
-           WRITE (*,'(A)',advance='no') ' ...25%'
-           CALL FLUSH()
-        ENDIF
-        IF (i.EQ.nburn1/4.*2) THEN
-           WRITE (*,'(A)',advance='no') '...50%'
-           CALL FLUSH()
-        ENDIF
-        IF (i.EQ.nburn1/4.*3) THEN
-           WRITE (*,'(A)',advance='no') '...75%'
-           CALL FLUSH()
-        ENDIF
-     ENDDO
-     WRITE (*,'(A)') '...100%'
-     CALL FLUSH()
+     IF (doburn1.EQ.1) THEN
 
-     WRITE(*,*) 'parameters after first-pass:'
-     DO j=1,nwalkers
-        WRITE(*,'(30(F5.2,1x))') pos_emcee_in(:,j)
-        !imodel = getmodel(pos_emcee_in(:,j))
-        !WRITE(is,'(I1)') j
-        !save the Hess diagram to file
-        !OPEN(1,FILE=TRIM(PIXCMD_HOME)//'tmp/'//'model_'//TRIM(is)//'.hess',&
-        !     FORM='UNFORMATTED',STATUS='REPLACE',access='direct',&
-        !     recl=nx*ny*4)
-        !WRITE(1,rec=1) imodel
-        !CLOSE(1)
-
-     ENDDO
-
-     WRITE(*,*) 'chi^2 after first-pass:'
-     WRITE(*,'(10(ES10.3,1x))') -2.0*lp_emcee_in
-
-     !prune the walkers and re-initialize
-     ml    = MAXLOC(lp_emcee_in,1)
-     bpos = pos_emcee_in(:,ml)
-     WRITE(*,*) 'min chi^2 after first-pass:'
-     WRITE(*,'(ES10.3)') -2.0*lp_emcee_in(ml)
-     WRITE(*,*) 'parameters at min:'
-     WRITE(*,'(30(F5.2,1x))') bpos
-     WRITE(*,*) 're-initalized parameters:'
-     DO j=1,nwalkers
-        DO i=1,npar
-           pos_emcee_in(i,j) = bpos(i)+wdth0/5.*(2.*myran()-1.0)
-           IF (i.EQ.1) CYCLE
-           IF (pos_emcee_in(i,j).LT.prlo) &
-                pos_emcee_in(i,j)=prlo+wdth0/5.
-           IF (pos_emcee_in(i,j).GT.prhi) &
-                pos_emcee_in(i,j)=prhi-wdth0/5.
+        WRITE(*,'(A)',advance='no') ' first burn-in:  '
+        DO i=1,nburn1
+           IF (test_time.EQ.1) THEN
+              WRITE(*,'("Iteration ",I3)') i
+              CALL FLUSH()
+           ENDIF
+           CALL EMCEE_ADVANCE_MPI(npar,nwalkers,2.0,pos_emcee_in,&
+                lp_emcee_in,pos_emcee_out,lp_emcee_out,accept_emcee,ntasks-1)
+           pos_emcee_in = pos_emcee_out
+           lp_emcee_in  = lp_emcee_out
+           IF (i.EQ.nburn1/4.*1) THEN
+              WRITE (*,'(A)',advance='no') ' ...25%'
+              CALL FLUSH()
+           ENDIF
+           IF (i.EQ.nburn1/4.*2) THEN
+              WRITE (*,'(A)',advance='no') '...50%'
+              CALL FLUSH()
+           ENDIF
+           IF (i.EQ.nburn1/4.*3) THEN
+              WRITE (*,'(A)',advance='no') '...75%'
+              CALL FLUSH()
+           ENDIF
         ENDDO
-        WRITE(*,'(30(F5.2,1x))') pos_emcee_in(:,j)
-     ENDDO
-     !Compute the initial log-probability for each walker
-     CALL FUNCTION_PARALLEL_MAP(npar,nwalkers,ntasks-1,&
-          pos_emcee_in,lp_emcee_in)
+        WRITE (*,'(A)') '...100%'
+        CALL FLUSH()
 
-     WRITE(*,*) 'chi^2 for re-initialized walkers:'
-     WRITE(*,'(10(ES10.3,1x))') -2.0*lp_emcee_in
+        WRITE(*,*) 'parameters after first-pass:'
+        DO j=1,nwalkers
+           WRITE(*,'(30(F5.2,1x))') pos_emcee_in(:,j)
+        ENDDO
+        
+        WRITE(*,*) 'chi^2 after first-pass:'
+        WRITE(*,'(10(ES10.3,1x))') -2.0*lp_emcee_in
 
+        !prune the walkers and re-initialize
+        ml    = MAXLOC(lp_emcee_in,1)
+        bpos = pos_emcee_in(:,ml)
+        WRITE(*,*) 'min chi^2 after first-pass:'
+        WRITE(*,'(ES10.3)') -2.0*lp_emcee_in(ml)
+        WRITE(*,*) 'parameters at min:'
+        WRITE(*,'(30(F5.2,1x))') bpos
+        WRITE(*,*) 're-initalized parameters:'
+        DO j=1,nwalkers
+           DO i=1,npar
+              pos_emcee_in(i,j) = bpos(i)+wdth0/5.*(2.*myran()-1.0)
+              IF (i.EQ.1) CYCLE
+              IF (pos_emcee_in(i,j).LT.prlo) &
+                   pos_emcee_in(i,j)=prlo+wdth0/5.
+              IF (pos_emcee_in(i,j).GT.prhi) &
+                   pos_emcee_in(i,j)=prhi-wdth0/5.
+           ENDDO
+           WRITE(*,'(30(F5.2,1x))') pos_emcee_in(:,j)
+        ENDDO
+        !Compute the initial log-probability for each walker
+        CALL FUNCTION_PARALLEL_MAP(npar,nwalkers,ntasks-1,&
+             pos_emcee_in,lp_emcee_in)
+
+        WRITE(*,*) 'chi^2 for re-initialized walkers:'
+        WRITE(*,'(10(ES10.3,1x))') -2.0*lp_emcee_in
+
+     ENDIF
 
      !-------------------second-pass burn-in-------------------!
 

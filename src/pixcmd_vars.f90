@@ -8,6 +8,8 @@ MODULE PIXCMD_VARS
 
   !-------------------common parameters-------------------!
 
+  CHARACTER(10) :: iso_tag='_x5FEWER'
+
   !flag for convolution (FFT=1, brute force=0)
   INTEGER, PARAMETER :: fft=1
  
@@ -32,12 +34,11 @@ MODULE PIXCMD_VARS
   REAL(SP), PARAMETER :: minmass=0.8
 
   !number of age and metallicity points in the model
-!  INTEGER, PARAMETER :: nage=15,nz=5,nm=1,nzskip=2
-  INTEGER, PARAMETER :: nage=22,nz=1,nm=1,nzskip=5
-  !parameters defining the age and mpix arrays
-  REAL(SP) :: dage=0.2,age0=6.0,mpix0=2.0,dmpix=0.2
+!  INTEGER, PARAMETER :: nage=15,nz=5,nzskip=2
+  INTEGER, PARAMETER :: nage=22,nz=1,nzskip=5
+  !parameters defining the age array
+  REAL(SP) :: dage=0.2,age0=6.0
   REAL(SP), DIMENSION(nage) :: agesarr=0.
-  REAL(SP), DIMENSION(nm)   :: mpixarr=0.
   REAL(SP), DIMENSION(nz)   :: zmetarr=0.
 
   !number of free parameters (+1 for mpix)
