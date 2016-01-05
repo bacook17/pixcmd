@@ -11,9 +11,9 @@ FUNCTION CONVOLVE(arr)
   REAL(SP), DIMENSION(npix,npix,nfil) :: convolve
   INTEGER :: i,j,k,m,n,n2
   
-  REAL(SP), DIMENSION(npix/psf_step,npix/psf_step) :: padarr2=0.,padarr3=0.
-  COMPLEX(SPC), DIMENSION(npix/psf_step/2,npix/psf_step) :: spec_d,spec_out
-  COMPLEX(SPC), DIMENSION(npix/psf_step) :: speq_d,speq_out
+  REAL(SP), DIMENSION(npsf2,npsf2) :: padarr2=0.,padarr3=0.
+  COMPLEX(SPC), DIMENSION(npsf2/2,npsf2) :: spec_d,spec_out
+  COMPLEX(SPC), DIMENSION(npsf2) :: speq_d,speq_out
   COMPLEX(SPC), DIMENSION(npsf2/2,npsf2) :: spec_p
   COMPLEX(SPC), DIMENSION(npsf2)      :: speq_p
 

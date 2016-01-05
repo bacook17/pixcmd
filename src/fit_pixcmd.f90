@@ -8,16 +8,15 @@ PROGRAM FIT_PIXCMD
 
   IMPLICIT NONE
 
-  !flag 
+  !flag for testing clock time
   INTEGER, PARAMETER :: test_time=1
-
   !Powell minimization
-  INTEGER, PARAMETER  :: dopowell=0
+  INTEGER, PARAMETER :: dopowell=0
   !fit each term individually
-  INTEGER, PARAMETER  :: dooneatatime=0
+  INTEGER, PARAMETER :: dooneatatime=0
  
   !emcee variables
-  INTEGER, PARAMETER :: nwalkers=64,nburn1=20,nburn2=400,nmcmc=20
+  INTEGER, PARAMETER :: nwalkers=64,nburn1=100,nburn2=100,nmcmc=20
   REAL(SP), DIMENSION(npar,nwalkers) :: pos_emcee_in,pos_emcee_out
   REAL(SP), DIMENSION(nwalkers)      :: lp_emcee_in,lp_emcee_out,lp_mpi
   INTEGER,  DIMENSION(nwalkers)      :: accept_emcee
@@ -145,20 +144,15 @@ PROGRAM FIT_PIXCMD
 
         !Calculate the probability for these parameter positions
         DO k=1,npos
-         !  CALL DTIME(dumt2,time3)
            lp_mpi(k) = -0.5*func(mpiposarr(:,k))
-         !  CALL DTIME(dumt2,time3)
-         !  WRITE(*,'(" Task ID ",I3": Elapsed Time: ",F6.2," s", '//&
-         !       '", k=",I1,", chi^2=",ES10.3)') &
-         !       taskid,time3,k,-2.0*lp_mpi(k)
         ENDDO
 
         CALL DATE_AND_TIME(TIME=time)
+        CALL CPU_TIME(time2)
         WRITE(*,*) '2 Time '//time(1:2)//':'//time(3:4)//':'//time(5:9),taskid
         CALL FLUSH()
 
          IF (test_time.EQ.1) THEN
-           CALL CPU_TIME(time2)
            WRITE(*,'(" Task ID ",I3": Elapsed Time: ",F6.2," s", ", N=",I2)') &
                 taskid,time2-time1,npos
            CALL FLUSH()
@@ -236,8 +230,8 @@ PROGRAM FIT_PIXCMD
         ENDDO
 
         !transfer the parameters to the parameter array
-        bpos(1)      = 2.0
-        bpos(2:npar) = LOG10(wgt)
+        !bpos(1)      = 2.0
+        !bpos(2:npar) = LOG10(wgt)
         
 
      ENDIF
@@ -415,7 +409,7 @@ PROGRAM FIT_PIXCMD
 
      CLOSE(12)
 
-     WRITE(*,'("  Facc: ",F5.2)') REAL(totacc)/REAL(nmcmc*nwalkers)
+     WRITE(*,'("  Facc: ",F6.3)') REAL(totacc)/REAL(nmcmc*nwalkers)
      
      !write the best model to a binary file
      bmodel = getmodel(bpos)

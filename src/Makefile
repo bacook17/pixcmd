@@ -23,7 +23,7 @@ COMMON = nrtype.o nr.o pixcmd_vars.o nrutil.o pixcmd_utils.o ran_state.o \
 	hist_2d.o func.o powell.o linmin.o mnbrak.o brent.o getmodel.o \
 	myran.o emcee_advance_mpi.o add_obs_err.o setup_models.o tsum.o \
 	four2.o rlft2.o fourrow.o gasdev.o function_parallel_map.o \
-	free_workers.o fit_oneatatime.o shuffle.o drawn.o mypoidev.o
+	free_workers.o fit_oneatatime.o drawn.o mypoidev.o
 
 all : $(PROGS)
 
