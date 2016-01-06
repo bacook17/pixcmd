@@ -1,6 +1,6 @@
 PROGRAM FIT_PIXCMD
 
-  !To Do: 1) include E(B-V) and Mpix as free parameters
+  !To Do: 1) include E(B-V) and Z as free parameters
 
   USE pixcmd_utils; USE pixcmd_vars; USE nrtype
   USE nr, ONLY : powell,ran1; USE mpi
@@ -17,13 +17,6 @@ PROGRAM FIT_PIXCMD
   !run the first-pass burn in
   INTEGER, PARAMETER :: doburn1=0
 
-  !emcee variables
-  INTEGER, PARAMETER :: nwalkers=4,nburn1=100,nburn2=100,nmcmc=20
-  REAL(SP), DIMENSION(npar,nwalkers) :: pos_emcee_in,pos_emcee_out
-  REAL(SP), DIMENSION(nwalkers)      :: lp_emcee_in,lp_emcee_out,lp_mpi
-  INTEGER,  DIMENSION(nwalkers)      :: accept_emcee
-  REAL(SP), DIMENSION(npar,nwalkers) :: mpiposarr=0.0
-
   INTEGER  :: i,j,k,ml,ndat,stat,iter=30,totacc=0,npos
   REAL(SP) :: fret,bret=huge_number,dt
   CHARACTER(10) :: time,is
@@ -31,15 +24,21 @@ PROGRAM FIT_PIXCMD
   REAL(SP), DIMENSION(2) :: dumt,dumt2
   CHARACTER(50) :: infile,tag=''
   REAL(SP), DIMENSION(nx,ny) :: bmodel=0.,imodel=0.
-
   REAL(SP), DIMENSION(nage) :: sfh,wgt
 
-  !Powell parameters
+  !emcee variables
+  INTEGER, PARAMETER :: nwalkers=64,nburn1=100,nburn2=10000,nmcmc=40
+  REAL(SP), DIMENSION(npar,nwalkers) :: pos_emcee_in,pos_emcee_out
+  REAL(SP), DIMENSION(nwalkers)      :: lp_emcee_in,lp_emcee_out,lp_mpi
+  INTEGER,  DIMENSION(nwalkers)      :: accept_emcee
+  REAL(SP), DIMENSION(npar,nwalkers) :: mpiposarr=0.0
+
+  !Powell variables
   REAL(SP), PARAMETER :: ftol=0.1
   REAL(SP), DIMENSION(npar,npar) :: xi=0.0
   REAL(SP), DIMENSION(npar)      :: pos=0.0,bpos=0.,dum9=-9.0
 
-  !variables for MPI
+  !MPI variables
   INTEGER :: ierr,taskid,ntasks,received_tag,status(MPI_STATUS_SIZE)
   INTEGER :: KILL=99,BEGIN=0
   LOGICAL :: wait=.TRUE.
@@ -47,11 +46,11 @@ PROGRAM FIT_PIXCMD
 
   !------------------------------------------------------------!
 
-  ! Initialize MPI, and get the total number of processes and
-  ! your process number
-  CALL MPI_INIT( ierr )
-  CALL MPI_COMM_RANK( MPI_COMM_WORLD, taskid, ierr )
-  CALL MPI_COMM_SIZE( MPI_COMM_WORLD, ntasks, ierr )
+  !Initialize MPI, and get the total number of processes and
+  !your process number
+  CALL MPI_INIT(ierr)
+  CALL MPI_COMM_RANK(MPI_COMM_WORLD,taskid,ierr)
+  CALL MPI_COMM_SIZE(MPI_COMM_WORLD,ntasks,ierr)
 
   IF (IARGC().LT.1) THEN
      !infile='m31_bulge'
@@ -74,15 +73,15 @@ PROGRAM FIT_PIXCMD
      !write some important variables to screen
      WRITE(*,*)
      WRITE(*,'(" ************************************")')
-     WRITE(*,'("  dopowell   = ",I5)') dopowell
-     WRITE(*,'("  do1atatime = ",I5)') dooneatatime
-     WRITE(*,'("  doburn1    = ",I5)') doburn1
-     WRITE(*,'("  Nwalkers   = ",I5)') nwalkers
-     WRITE(*,'("  Nburn1     = ",I5)') nburn1
-     WRITE(*,'("  Nburn2     = ",I5)') nburn2
-     WRITE(*,'("  Nchain     = ",I5)') nmcmc
-     WRITE(*,'("  Ntasks     = ",I5)') ntasks
-     WRITE(*,'("  filename   = ",A)') TRIM(infile)//TRIM(tag)
+     WRITE(*,'("   dopowell   = ",I5)') dopowell
+     WRITE(*,'("   do1atatime = ",I5)') dooneatatime
+     WRITE(*,'("   doburn1    = ",I5)') doburn1
+     WRITE(*,'("   Nwalkers   = ",I5)') nwalkers
+     WRITE(*,'("   Nburn1     = ",I5)') nburn1
+     WRITE(*,'("   Nburn2     = ",I5)') nburn2
+     WRITE(*,'("   Nchain     = ",I5)') nmcmc
+     WRITE(*,'("   Ntasks     = ",I5)') ntasks
+     WRITE(*,'("   filename   = ",A)') TRIM(infile)//TRIM(tag)
      WRITE(*,'(" ************************************")')
   ENDIF
 
@@ -275,7 +274,7 @@ PROGRAM FIT_PIXCMD
         WRITE(*,'(A)',advance='no') ' first burn-in:  '
         DO i=1,nburn1
            IF (test_time.EQ.1) THEN
-              WRITE(*,'("Iteration ",I3)') i
+              WRITE(*,'("Iteration ",I4)') i
               CALL FLUSH()
            ENDIF
            CALL EMCEE_ADVANCE_MPI(npar,nwalkers,2.0,pos_emcee_in,&
@@ -338,7 +337,7 @@ PROGRAM FIT_PIXCMD
 
      WRITE(*,'(A)',advance='no') ' second burn-in: '
      DO i=1,nburn2
-        IF (test_time.EQ.1) WRITE(*,'("Iteration ",I3)') i
+        IF (test_time.EQ.1) WRITE(*,'("Iteration ",I4)') i
         CALL EMCEE_ADVANCE_MPI(npar,nwalkers,2.0,pos_emcee_in,&
              lp_emcee_in,pos_emcee_out,lp_emcee_out,accept_emcee,ntasks-1)
         pos_emcee_in = pos_emcee_out
@@ -370,10 +369,7 @@ PROGRAM FIT_PIXCMD
 
      WRITE(*,'(A)',advance='no') ' production run: '       
      DO i=1,nmcmc
-       IF (test_time.EQ.1) THEN
-           WRITE(*,'("Iteration ",I3)') i
-           CALL FLUSH()
-        ENDIF
+        IF (test_time.EQ.1) WRITE(*,'("Iteration ",I4)') i        
         CALL EMCEE_ADVANCE_MPI(npar,nwalkers,2.0,pos_emcee_in,&
              lp_emcee_in,pos_emcee_out,lp_emcee_out,accept_emcee,ntasks-1)
         pos_emcee_in = pos_emcee_out

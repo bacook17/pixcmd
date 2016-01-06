@@ -34,17 +34,23 @@ FUNCTION FUNC(inpos)
      !get the model
      imodel = getmodel(inpos(1:nn))
 
-     !Poisson uncertainty on the model
-     model_err = SQRT(imodel*npix**2)/npix**2
-     DO i=1,nx
-        DO j=1,ny
-           IF (model_err(i,j).LE.tiny_number) model_err(i,j)=1./npix**2
-        ENDDO
-     ENDDO
+     IF (SUM(imodel).LT.tiny_number) THEN
 
-     !compute chi^2
-     !func = SUM( (hess_data-imodel)**2  / (hess_err**2+model_err**2) )
-     func = SUM( (hess_data-imodel)**2 / hess_err**2 )
+        func = huge_number
+
+     ELSE
+
+        !Poisson uncertainty on the model
+        !model_err = SQRT(imodel*npix**2)/npix**2
+        !DO i=1,nx
+        !   DO j=1,ny
+        !      IF (model_err(i,j).LE.tiny_number) model_err(i,j)=1./npix**2
+        !   ENDDO
+        !ENDDO
+
+        !compute chi^2
+        !func = SUM( (hess_data-imodel)**2  / (hess_err**2+model_err**2) )
+        func = SUM( (hess_data-imodel)**2 / hess_err**2 )
   
   ENDIF
 

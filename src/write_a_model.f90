@@ -20,7 +20,7 @@ PROGRAM WRITE_A_MODEL
   !------------------------------------------------------------!
 
   !output file name
-  outfile = 'model_M2.0_cSFH'
+  outfile = 'model_M3.0_cSFH'
 
   !initialize the random number generator
   CALL INIT_RANDOM_SEED()
@@ -30,7 +30,7 @@ PROGRAM WRITE_A_MODEL
 
 
   !-----------------mass per pixel------------------!
-  mpix = 2.0
+  mpix = 3.0
  
   !-----------------------MDF-----------------------!
   !zz  = LOG10(zmetarr/0.0190)

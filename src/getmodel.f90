@@ -76,7 +76,7 @@ FUNCTION GETMODEL(inpos,im)
        xhess,yhess,nx,ny,npix) / npix**2
 
   !throw an error if the Hess diagram has no entries
-  IF (SUM(getmodel).LT.tiny_number) THEN
+  IF (SUM(getmodel).LT.tiny_number.AND.1.EQ.0) THEN
      WRITE(*,*) 'getmodel=0.0!'
      WRITE(*,*) MINVAL(of1),MAXVAL(of1)
      WRITE(*,*) MINVAL(cf1),MAXVAL(cf1)
