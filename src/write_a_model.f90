@@ -4,7 +4,7 @@ PROGRAM WRITE_A_MODEL
   ! with an MDF, a SFH, and a P(Mpix)
 
   USE nrtype; USE pixcmd_utils; USE pixcmd_vars
-  USE nr, ONLY : locate
+  USE nr, ONLY : locate,ran1
   IMPLICIT NONE
   
   INTEGER  :: i,j
@@ -19,18 +19,18 @@ PROGRAM WRITE_A_MODEL
 
   !------------------------------------------------------------!
 
-  !output file name
-  outfile = 'model_M3.0_cSFH'
-
   !initialize the random number generator
   CALL INIT_RANDOM_SEED()
+  CALL RAN1(ranarr)
 
   !setup the model grid
   CALL SETUP_MODELS()
 
+  !output file name
+  outfile = 'model_M6.0_cSFH'
 
-  !-----------------mass per pixel------------------!
-  mpix = 3.0
+ !-----------------mass per pixel------------------!
+  mpix = 6.0
  
   !-----------------------MDF-----------------------!
   !zz  = LOG10(zmetarr/0.0190)
@@ -44,6 +44,7 @@ PROGRAM WRITE_A_MODEL
   !constant SFH
   sfh = 1/10**agesarr(nage)
 
+ 
   DO j=1,nage
      DO i=1,nz
         IF (j.EQ.1) THEN

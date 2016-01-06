@@ -8,6 +8,9 @@ PROGRAM FIT_PIXCMD
 
   IMPLICIT NONE
 
+  !key emcee parameters
+  INTEGER, PARAMETER :: nwalkers=64,nburn1=100,nburn2=10000,nmcmc=40
+
   !flag for testing clock time
   INTEGER, PARAMETER :: test_time=1
   !Powell minimization
@@ -27,7 +30,6 @@ PROGRAM FIT_PIXCMD
   REAL(SP), DIMENSION(nage) :: sfh,wgt
 
   !emcee variables
-  INTEGER, PARAMETER :: nwalkers=64,nburn1=100,nburn2=10000,nmcmc=40
   REAL(SP), DIMENSION(npar,nwalkers) :: pos_emcee_in,pos_emcee_out
   REAL(SP), DIMENSION(nwalkers)      :: lp_emcee_in,lp_emcee_out,lp_mpi
   INTEGER,  DIMENSION(nwalkers)      :: accept_emcee
