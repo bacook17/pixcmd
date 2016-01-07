@@ -41,7 +41,7 @@ MODULE PIXCMD_VARS
   REAL(SP), DIMENSION(nfil), PARAMETER :: red_per_ebv = (/3.268,1.526/)
  
   !upper/lower priors
-  REAL(SP), PARAMETER :: prlo=-7.0,prhi=0.3,wdth0=0.5
+  REAL(SP), PARAMETER :: prlo=-8.0,prhi=0.3,wdth0=0.2
   REAL(SP), PARAMETER :: prlo_m=0.5,prhi_m=7.0
   REAL(SP), PARAMETER :: prlo_lebv=-7.0,prhi_lebv=0.5
 

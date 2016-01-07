@@ -10,7 +10,7 @@ PROGRAM FIT_PIXCMD
   IMPLICIT NONE
 
   !key emcee parameters
-  INTEGER, PARAMETER :: nwalkers=64,nburn1=100,nburn2=100,nmcmc=2000
+  INTEGER, PARAMETER :: nwalkers=64,nburn1=100,nburn2=4000,nmcmc=100
 
   !starting guess for the Mpix parameter
   REAL(SP) :: mpix=2.0
@@ -20,7 +20,7 @@ PROGRAM FIT_PIXCMD
   !Powell minimization
   INTEGER, PARAMETER :: dopowell=0
   !fit each term individually
-  INTEGER, PARAMETER :: dooneatatime=0
+  INTEGER, PARAMETER :: dotaufit=1
   !run the first-pass burn in
   INTEGER, PARAMETER :: doburn1=0
 
@@ -60,7 +60,7 @@ PROGRAM FIT_PIXCMD
 
   IF (IARGC().LT.1) THEN
      !infile='m31_bulge'
-     infile='model_M2.0_cSFH'
+     infile='model_M2.0_SFH1_tau10.0'
   ELSE
      CALL GETARG(1,infile)
   ENDIF
@@ -86,7 +86,7 @@ PROGRAM FIT_PIXCMD
      WRITE(*,'(" ************************************")')
      WRITE(*,'("   Mpix_init  = ",1x,F4.1)') mpix
      WRITE(*,'("   dopowell   = ",I5)') dopowell
-     WRITE(*,'("   do1atatime = ",I5)') dooneatatime
+     WRITE(*,'("   dotaufit   = ",I5)') dotaufit
      WRITE(*,'("   doburn1    = ",I5)') doburn1
      WRITE(*,'("   Nwalkers   = ",I5)') nwalkers
      WRITE(*,'("   Nburn1     = ",I5)') nburn1
@@ -192,11 +192,14 @@ PROGRAM FIT_PIXCMD
            !setup params
            pos(1) = (myran()-0.5)+mpix
            DO i=1+nxpar,npar
-              pos(i) = LOG10(myran()/npar)
+              pos(i) = myran()*(prhi-prlo-3*wdth0) + (prlo+1.5*wdth0)
            ENDDO
+           pos(1+nxpar:npar) = pos(1+nxpar:npar) - &
+                LOG10(SUM(10**pos(1+nxpar:npar)))
            xi=0.0
-           DO i=1,npar
-              xi(i,i) = 1E-2
+           xi(1,1) = 0.2
+           DO i=1+nxpar,npar
+              xi(i,i) = 1.0
            ENDDO
            fret = huge_number
            CALL POWELL(pos,xi,ftol,iter,fret)
@@ -208,13 +211,11 @@ PROGRAM FIT_PIXCMD
         ENDDO
         WRITE(*,'(5F10.5)') LOG10(bret),log10(bret/(nx*ny-npar))
 
-     ELSE IF (dooneatatime.EQ.1) THEN
+     ELSE IF (dotaufit.EQ.1) THEN
 
-        !One at a time fitter
-        WRITE(*,*) 'Running one-at-a-time fitter'
-        STOP  !not updated
-        CALL FIT_ONEATATIME(bpos)
-        bpos(2:npar) = bpos(2:npar) - LOG10(SUM(10**bpos(2:npar)))
+        !fit in a grid of tau and Mpix
+        WRITE(*,*) 'Running tau-mpix fitter'
+        CALL FIT_TAU(bpos,mpix)
 
      ELSE
         
@@ -264,7 +265,6 @@ PROGRAM FIT_PIXCMD
 
      WRITE(*,*) 'chi^2 for initialized walkers:'
      WRITE(*,'(10(ES10.3,1x))') -2.0*lp_emcee_in
-     !WRITE(*,'(10(F6.3,1x))') -2.0*lp_emcee_in/SUM(-2.0*lp_emcee_in)*nwalkers
 
      IF (-2.0*MAXVAL(lp_emcee_in).EQ.huge_number) THEN
         WRITE(*,*) 'FIT_PIXCMD ERROR: initial parameters are out of bounds'
