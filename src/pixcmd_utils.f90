@@ -17,6 +17,14 @@ MODULE PIXCMD_UTILS
   END INTERFACE
 
   INTERFACE
+     FUNCTION DRAWN(nn)
+       USE pixcmd_vars; USE nrtype
+       REAL(SP), INTENT(in) :: nn
+       REAL(SP), DIMENSION(npix,npix) :: drawn
+     END FUNCTION DRAWN
+  END INTERFACE
+
+  INTERFACE
      SUBROUTINE EMCEE_ADVANCE_MPI(ndim,nwalkers,a,pin,lpin,&
           pout,lpout,accept,nworkers)
        USE nrtype

@@ -1,7 +1,7 @@
 FUNCTION GETMODEL(inpos,im)
 
   USE pixcmd_vars; USE nrtype
-  USE pixcmd_utils, ONLY : convolve,hist_2d,add_obs_err,myran,mypoidev
+  USE pixcmd_utils, ONLY : convolve,hist_2d,add_obs_err,myran,mypoidev,drawn
   USE nr, ONLY : locate,ran1
   IMPLICIT NONE
 
@@ -38,18 +38,18 @@ FUNCTION GETMODEL(inpos,im)
   !compute the model at each pixel
   f1 = 0.0
   DO k=1,niso
- 
+
      IF (imf(k).LT.tiny_number) CYCLE
 
      nnn = 10**inpos(1)*imf(k)
 
      !treat masses less than minmass as continuously sampled
-     IF (iso(k)%mass.LT.minmass) THEN
+     IF (iso(k)%mass.LT.minmass.OR.nnn.GT.minnum) THEN
         DO f=1,2
            f1(:,:,f) = f1(:,:,f)+nnn*iso(k)%bands(f)
         ENDDO
      ELSE
-        narr = mypoidev(nnn)
+        narr = drawn(nnn)
         DO f=1,2
            f1(:,:,f) = f1(:,:,f)+narr*iso(k)%bands(f)
         ENDDO
@@ -85,6 +85,10 @@ FUNCTION GETMODEL(inpos,im)
      STOP
   ENDIF
 
+  IF (test_time.EQ.1) THEN
+     CALL DATE_AND_TIME(TIME=time)
+     WRITE(*,*) '3 Time '//time(1:2)//':'//time(3:4)//':'//time(5:9)
+  ENDIF
 
 
 END FUNCTION GETMODEL

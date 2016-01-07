@@ -19,8 +19,11 @@ FUNCTION MYPOIDEV(xm)
         t  = 1.0
         DO
            em = em+1.0
-           !t  = t*myran()
-           t = t*ranarr(k)
+           IF (true_poisson.EQ.1) THEN
+              t  = t*myran()
+           ELSE
+              t = t*ranarr(k)
+           ENDIF
            k = MOD((k+1),nran)
            IF (t.LE.g) EXIT
         ENDDO

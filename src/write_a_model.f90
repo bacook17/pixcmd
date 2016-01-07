@@ -8,7 +8,8 @@ PROGRAM WRITE_A_MODEL
   IMPLICIT NONE
   
   INTEGER  :: i,j
-  REAL(SP) :: mpix,zmet0,zmets,tau,dt,twgt=0.
+  REAL(SP) :: mpix=2.0,zmet0,zmets,tau,dt,twgt=0.
+  CHARACTER(10) :: input
   CHARACTER(50) :: outfile
   REAL(SP), DIMENSION(npar)      :: pos
   REAL(SP), DIMENSION(nx,ny)     :: hess
@@ -19,23 +20,27 @@ PROGRAM WRITE_A_MODEL
 
   !------------------------------------------------------------!
 
+  IF (IARGC().EQ.1) THEN
+     CALL GETARG(1,input)
+     READ(input,'(F4.1)') mpix
+  ENDIF
+
+  !output file name
+  outfile = 'model_M'//TRIM(input(1:3))//'_cSFH'
+
+  WRITE(*,'("  Output File = ",A50)') outfile
+  WRITE(*,'("  log(Mpix)   =",F4.1)') mpix
+
   !initialize the random number generator
   CALL INIT_RANDOM_SEED()
   CALL RAN1(ranarr)
 
   !setup the model grid
   CALL SETUP_MODELS()
-
-  !output file name
-  outfile = 'model_M6.0_cSFH'
-
- !-----------------mass per pixel------------------!
-  mpix = 6.0
  
   !-----------------------MDF-----------------------!
   !zz  = LOG10(zmetarr/0.0190)
   !mdf = EXP(-(zz-zmet0)**2/2/zmets)
-  !mdf = 1.0
   mdf = 1.0
   
   !-----------------------SFH-----------------------!
@@ -54,7 +59,6 @@ PROGRAM WRITE_A_MODEL
         ENDIF
         wgt(i,j) = mdf(i)*sfh(j)*dt
         twgt = twgt+wgt(i,j)
-
      ENDDO
   ENDDO
 

@@ -36,7 +36,7 @@ FUNCTION FUNC(inpos)
 
      IF (SUM(imodel).LT.tiny_number) THEN
 
-        func = huge_number
+        func = huge_number / 10.
 
      ELSE
 

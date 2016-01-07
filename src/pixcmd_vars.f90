@@ -6,21 +6,33 @@ MODULE PIXCMD_VARS
   IMPLICIT NONE
   SAVE
 
+  ! If you want to make sure that the results are insensitive
+  ! to the various approximations that I have made, do the following:
+  ! 1) set true_poisson=1 
+  ! 2) set minmass=0.0
+  ! 3) set minnum=huge_number
+  ! 4) set iso_tag=''
+  ! 5) set npix=2048 
+  ! 6) set nran=1 (otherwise you'll run out of memory)
+  !
+  ! Be prepared for the code to run MUCH MUCH slower!
+
   !-------------------common parameters-------------------!
 
   CHARACTER(10) :: iso_tag='_x5FEWER'
 
   !flag for convolution (FFT=1, brute force=0)
   INTEGER, PARAMETER :: fft=1
- 
+  !if set, draw random numbers for each Poisson draw
+  !if not set, use the master random number array
+  INTEGER, PARAMETER :: true_poisson=0
+
   !variables for model image and CMD Hess diagram
-  INTEGER, PARAMETER  :: nx=121,ny=301,npix=512,nfil=2
-  REAL(SP), PARAMETER :: xmin=-1.5,ymin=-10.0,dx=0.05,dy=0.05
-  REAL(SP), DIMENSION(nx) :: xhess=0.
-  REAL(SP), DIMENSION(ny) :: yhess=0.
+  INTEGER, PARAMETER  :: nx=121,ny=351,npix=512,nfil=2
+  REAL(SP), PARAMETER :: xmin=-1.5,ymin=-12.0,dx=0.05,dy=0.05
 
   !data-specific parameters
-  REAL(SP) :: dm=24.47  !M31 distance modulus
+  REAL(SP), PARAMETER :: dm=24.47  !M31 distance modulus
   !exposure times: F475W, F814W
   REAL(SP), DIMENSION(nfil), PARAMETER :: exptime=(/3620.,3235./)
   !zero-points: F475W, F814W
@@ -35,7 +47,12 @@ MODULE PIXCMD_VARS
 
   !stellar mass below which the IMF is assumed to be fully populated
   REAL(SP), PARAMETER :: minmass=0.8
-
+  !number below which we sample an isochrone point via Poisson/Gaussian,
+  !above which we assume the pixel-to-pixel variance is 0.0
+  REAL(SP), PARAMETER :: minnum=500.
+  !N below which we use Poisson, above which we approx with a Gaussian
+  REAL(SP), PARAMETER :: maxpoidev=20.
+  
   !number of age and metallicity points in the model
   INTEGER, PARAMETER :: nage=22,nz=1,nzskip=5
   !parameters defining the age array
@@ -71,6 +88,10 @@ MODULE PIXCMD_VARS
 
 
   !---------------------common arrays---------------------!
+
+  !array for the x and y axes of the Hess diagram
+  REAL(SP), DIMENSION(nx) :: xhess=0.
+  REAL(SP), DIMENSION(ny) :: yhess=0.
 
   !array for the data
   REAL(SP), DIMENSION(nx,ny) :: hess_data=0.,hess_err=0.

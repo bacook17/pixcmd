@@ -10,7 +10,7 @@ PROGRAM FIT_PIXCMD
   IMPLICIT NONE
 
   !key emcee parameters
-  INTEGER, PARAMETER :: nwalkers=64,nburn1=100,nburn2=10000,nmcmc=40
+  INTEGER, PARAMETER :: nwalkers=64,nburn1=100,nburn2=100,nmcmc=2000
 
   !starting guess for the Mpix parameter
   REAL(SP) :: mpix=2.0
@@ -408,6 +408,7 @@ PROGRAM FIT_PIXCMD
 
      CLOSE(12)
 
+     write(*,*) totacc
      WRITE(*,'("  Facc: ",F6.3)') REAL(totacc)/REAL(nmcmc*nwalkers)
      
      !write the best model to a binary file
