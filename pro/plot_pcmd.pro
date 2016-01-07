@@ -195,13 +195,14 @@ PRO PLOT_PCMD, psf=psf, age=age
   m3zm = mrdfits(rdir+'pixcmd_t'+sage+'_Zm0.52_Mbin3.00.fits',pp,/sil)
   m4zm = mrdfits(rdir+'pixcmd_t'+sage+'_Zm0.52_Mbin4.00.fits',pp,/sil)
 
+  ;Rv=3.1, below is A_X / E(B-V)
   eb = 3.268
   ei = 1.526
   ej = 0.881
   eh = 0.613
   ev = 2.742
 
-  av = 1.0
+  ebv = 0.3
 
   begplot,name=pdir+'mpix_vs_z.eps',/encap,/col,xsize=8,ysize=7,/quiet
 
@@ -223,16 +224,16 @@ PRO PLOT_PCMD, psf=psf, age=age
 
     plotimage,alog10(reverse(ddzm,2)),range=[2,-3],$
               imgxrange=xr,imgyrange=yr,xr=xr,yr=yr,xtit='I-H',ytit='H'
-    arrow,0.2,2,0.2+(ei-eh)/ev*av,2+eh/ev*av,/data,thick=4,hsize=150
+    arrow,0.2,2,0.2+(ei-eh)*ebv,2+eh*ebv,/data,thick=4,hsize=150
     legend,['M!Dpix!N=10!U2!N'],box=0,charsize=1.1,/right,pos=[4,-1.8]
     legend,['[Z/H]=-0.5'],/bottom,/right,box=0,charsize=0.8,pos=[4,2.8]
     plotimage,alog10(reverse(dd,2)),range=[2,-3],$
               imgxrange=xr,imgyrange=yr,xr=xr,yr=yr,xtit='I-H',ytit='H'
-    arrow,0.2,2,0.2+(ei-eh)/ev*av,2+eh/ev*av,/data,thick=4,hsize=150
+    arrow,0.2,2,0.2+(ei-eh)*ebv,2+eh*ebv,/data,thick=4,hsize=150
     legend,['[Z/H]=+0.0'],/bottom,/right,box=0,charsize=0.8,pos=[4,2.8]
     plotimage,alog10(reverse(ddzp,2)),range=[2,-3],$
               imgxrange=xr,imgyrange=yr,xr=xr,yr=yr,xtit='I-H',ytit='H'
-    arrow,0.2,2,0.2+(ei-eh)/ev*av,2+eh/ev*av,/data,thick=4,hsize=150
+    arrow,0.2,2,0.2+(ei-eh)*ebv,2+eh*ebv,/data,thick=4,hsize=150
     legend,['[Z/H]=+0.5'],/bottom,/right,box=0,charsize=0.8,pos=[4,2.8]
   
     xr = [-0.5,3.]
@@ -250,18 +251,18 @@ PRO PLOT_PCMD, psf=psf, age=age
     plotimage,alog10(reverse(ddzm,2)),range=[2,-3],/preserve,$
               imgxrange=xr,imgyrange=yr,xr=xr,yr=yr,xtit='I-H',ytit='H'
     ;oplot,[0.3,0.4,0.6],[-0.9,-0.65,-0.4],ps=-8,line=2
-    arrow,0.2,-0.7,0.2+(ei-eh)/ev*av,-0.7+eh/ev*av,/data,thick=4,hsize=150
+    arrow,0.2,-0.7,0.2+(ei-eh)*ebv,-0.7+eh*ebv,/data,thick=4,hsize=150
     legend,['M!Dpix!N=10!U3!N'],box=0,charsize=1.1,/right,pos=[3,-2.8]
     legend,['[Z/H]=-0.5'],/bottom,/right,box=0,charsize=0.8,pos=[3,-0.1]
     plotimage,alog10(reverse(dd,2)),range=[2,-3],/preserve,$
               imgxrange=xr,imgyrange=yr,xr=xr,yr=yr,xtit='I-H',ytit='H'
     ;oplot,[0.3,0.4,0.6],[-0.9,-0.65,-0.4],ps=-8,line=2
-    arrow,0.2,-0.7,0.2+(ei-eh)/ev*av,-0.7+eh/ev*av,/data,thick=4,hsize=150
+    arrow,0.2,-0.7,0.2+(ei-eh)*ebv,-0.7+eh*ebv,/data,thick=4,hsize=150
     legend,['[Z/H]=0.0'],/bottom,/right,box=0,charsize=0.8,pos=[3,-0.1]
     plotimage,alog10(reverse(ddzp,2)),range=[2,-3],/preserve,$
               imgxrange=xr,imgyrange=yr,xr=xr,yr=yr,xtit='I-H',ytit='H'
     ;oplot,[0.3,0.4,0.6],[-0.9,-0.65,-0.4],ps=-8,line=2
-    arrow,0.2,-0.7,0.2+(ei-eh)/ev*av,-0.7+eh/ev*av,/data,thick=4,hsize=150
+    arrow,0.2,-0.7,0.2+(ei-eh)*ebv,-0.7+eh*ebv,/data,thick=4,hsize=150
     legend,['[Z/H]=+0.5'],/bottom,/right,box=0,charsize=0.8,pos=[3,-0.1]
     
     xr = [-0.5,2.]
@@ -278,16 +279,16 @@ PRO PLOT_PCMD, psf=psf, age=age
     
     plotimage,alog10(reverse(ddzm,2)),range=[2,-3],/preserve,$
               imgxrange=xr,imgyrange=yr,xr=xr,yr=yr,xtit='I-H',ytit='H'
-    arrow,0.2,-3.5,0.2+(ei-eh)/ev*av,-3.5+eh/ev*av,/data,thick=4,hsize=150
+    arrow,0.2,-3.5,0.2+(ei-eh)*ebv,-3.5+eh*ebv,/data,thick=4,hsize=150
     legend,['M!Dpix!N=10!U4!N'],box=0,charsize=1.1,/right,pos=[2,-4.9]
     legend,['[Z/H]=-0.5'],/bottom,/right,box=0,charsize=0.8,pos=[2,-2.6]
     plotimage,alog10(reverse(dd,2)),range=[2,-3],/preserve,$
               imgxrange=xr,imgyrange=yr,xr=xr,yr=yr,xtit='I-H',ytit='H'
-    arrow,0.2,-3.5,0.2+(ei-eh)/ev*av,-3.5+eh/ev*av,/data,thick=4,hsize=150
+    arrow,0.2,-3.5,0.2+(ei-eh)*ebv,-3.5+eh*ebv,/data,thick=4,hsize=150
     legend,['[Z/H]=0.0'],/bottom,/right,box=0,charsize=0.8,pos=[2,-2.6]
     plotimage,alog10(reverse(ddzp,2)),range=[2,-3],/preserve,$
               imgxrange=xr,imgyrange=yr,xr=xr,yr=yr,xtit='I-H',ytit='H'
-    arrow,0.2,-3.5,0.2+(ei-eh)/ev*av,-3.5+eh/ev*av,/data,thick=4,hsize=150
+    arrow,0.2,-3.5,0.2+(ei-eh)*ebv,-3.5+eh*ebv,/data,thick=4,hsize=150
     legend,['[Z/H]=+0.5'],/bottom,/right,box=0,charsize=0.8,pos=[2,-2.6]
     
   endplot,/quiet

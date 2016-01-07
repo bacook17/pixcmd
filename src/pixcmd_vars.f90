@@ -22,27 +22,30 @@ MODULE PIXCMD_VARS
   !data-specific parameters
   REAL(SP) :: dm=24.47  !M31 distance modulus
   !exposure times: F475W, F814W
-  REAL(SP), DIMENSION(nfil) :: exptime=(/1720.+1900.,1520.+1715./)
+  REAL(SP), DIMENSION(nfil), PARAMETER :: exptime=(/3620.,3235./)
   !zero-points: F475W, F814W
-  REAL(SP), DIMENSION(nfil) :: zpt=(/26.0593,25.9433/)
+  REAL(SP), DIMENSION(nfil), PARAMETER :: zpt=(/26.0593,25.9433/)
+  !Reddening values from Schalfly & Finkbeiner 2011 for F475W, F814W
+  REAL(SP), DIMENSION(nfil), PARAMETER :: red_per_ebv = (/3.268,1.526/)
  
   !upper/lower priors
   REAL(SP), PARAMETER :: prlo=-7.0,prhi=0.3,wdth0=0.5
-  REAL(SP), PARAMETER :: prlo_m=0.5,prhi_m=5.0
+  REAL(SP), PARAMETER :: prlo_m=0.5,prhi_m=7.0
+  REAL(SP), PARAMETER :: prlo_lebv=-7.0,prhi_lebv=0.5
 
   !stellar mass below which the IMF is assumed to be fully populated
   REAL(SP), PARAMETER :: minmass=0.8
 
   !number of age and metallicity points in the model
-!  INTEGER, PARAMETER :: nage=15,nz=5,nzskip=2
   INTEGER, PARAMETER :: nage=22,nz=1,nzskip=5
   !parameters defining the age array
   REAL(SP) :: dage=0.2,age0=6.0
   REAL(SP), DIMENSION(nage) :: agesarr=0.
   REAL(SP), DIMENSION(nz)   :: zmetarr=0.
 
-  !number of free parameters (+1 for mpix)
-  INTEGER, PARAMETER :: npar=nage*nz+1
+  !number of free parameters 
+  INTEGER, PARAMETER :: nxpar = 1 !mpix
+  INTEGER, PARAMETER :: npar=nage*nz+nxpar
 
   !max size of array for data and isochrones
   INTEGER, PARAMETER :: niso_max=5000

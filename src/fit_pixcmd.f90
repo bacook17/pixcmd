@@ -1,6 +1,7 @@
 PROGRAM FIT_PIXCMD
 
   !To Do: 1) include E(B-V) and Z as free parameters
+  !syntax: mpirun -np XX fit_pixcmd.exe input_data Mpix_init tag
 
   USE pixcmd_utils; USE pixcmd_vars; USE nrtype
   USE nr, ONLY : powell,ran1; USE mpi
@@ -10,6 +11,9 @@ PROGRAM FIT_PIXCMD
 
   !key emcee parameters
   INTEGER, PARAMETER :: nwalkers=64,nburn1=100,nburn2=10000,nmcmc=40
+
+  !starting guess for the Mpix parameter
+  REAL(SP) :: mpix=2.0
 
   !flag for testing clock time
   INTEGER, PARAMETER :: test_time=1
@@ -22,7 +26,7 @@ PROGRAM FIT_PIXCMD
 
   INTEGER  :: i,j,k,ml,ndat,stat,iter=30,totacc=0,npos
   REAL(SP) :: fret,bret=huge_number,dt
-  CHARACTER(10) :: time,is
+  CHARACTER(10) :: time,is,tmpstr
   REAL(SP) :: time1,time2
   REAL(SP), DIMENSION(2) :: dumt,dumt2
   CHARACTER(50) :: infile,tag=''
@@ -61,7 +65,12 @@ PROGRAM FIT_PIXCMD
      CALL GETARG(1,infile)
   ENDIF
 
-  IF (IARGC().GT.1) THEN
+  IF (IARGC().GE.2) THEN
+     CALL GETARG(2,tmpstr)
+     READ(tmpstr,'(F4.1)') mpix
+  ENDIF
+
+  IF (IARGC().EQ.3) THEN
      tag(1:1)='_'
      CALL GETARG(2,tag(2:))
   ENDIF
@@ -75,6 +84,7 @@ PROGRAM FIT_PIXCMD
      !write some important variables to screen
      WRITE(*,*)
      WRITE(*,'(" ************************************")')
+     WRITE(*,'("   Mpix_init  = ",1x,F4.1)') mpix
      WRITE(*,'("   dopowell   = ",I5)') dopowell
      WRITE(*,'("   do1atatime = ",I5)') dooneatatime
      WRITE(*,'("   doburn1    = ",I5)') doburn1
@@ -143,21 +153,13 @@ PROGRAM FIT_PIXCMD
              masterid, MPI_ANY_TAG, MPI_COMM_WORLD, status, ierr)
    
         CALL CPU_TIME(time1)
-        !CALL DATE_AND_TIME(TIME=time)
-        !WRITE(*,*) '1 Time '//time(1:2)//':'//time(3:4)//':'//time(5:9),taskid
-        !CALL FLUSH()
-
         !Calculate the probability for these parameter positions
         DO k=1,npos
            lp_mpi(k) = -0.5*func(mpiposarr(:,k))
         ENDDO
-
         CALL CPU_TIME(time2)
-        !CALL DATE_AND_TIME(TIME=time)
-        !WRITE(*,*) '2 Time '//time(1:2)//':'//time(3:4)//':'//time(5:9),taskid
-        !CALL FLUSH()
 
-         IF (test_time.EQ.1) THEN
+        IF (test_time.EQ.1) THEN
            WRITE(*,'(" Task ID ",I2": Elapsed Time: ",F6.2," s", '//&
                 '", N=",I2,", chi^2=",10ES11.3)') &
                 taskid,time2-time1,npos,-2.0*lp_mpi(1:npos)
@@ -188,8 +190,8 @@ PROGRAM FIT_PIXCMD
         
         DO j=1,10
            !setup params
-           pos(1) = myran()+1.5
-           DO i=2,npar
+           pos(1) = (myran()-0.5)+mpix
+           DO i=1+nxpar,npar
               pos(i) = LOG10(myran()/npar)
            ENDDO
            xi=0.0
@@ -217,11 +219,12 @@ PROGRAM FIT_PIXCMD
      ELSE
         
         !random initialization
-        bpos(1) = myran()+1.5
-        DO i=2,npar
+        bpos(1) = (myran()-0.5)+mpix
+        DO i=1+nxpar,npar
            bpos(i) = myran()*(prhi-prlo-3*wdth0) + (prlo+1.5*wdth0)
         ENDDO
-        bpos(2:npar) = bpos(2:npar) - LOG10(SUM(10**bpos(2:npar)))
+        bpos(1+nxpar:npar) = bpos(1+nxpar:npar) - &
+             LOG10(SUM(10**bpos(1+nxpar:npar)))
 
         sfh = 1/10**agesarr(nage)
 
@@ -237,7 +240,7 @@ PROGRAM FIT_PIXCMD
 
         !transfer the parameters to the parameter array
         !bpos(1)      = 2.0
-        !bpos(2:npar) = LOG10(wgt)
+        !bpos(1+nxpar:npar) = LOG10(wgt)
         
 
      ENDIF

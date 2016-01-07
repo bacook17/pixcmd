@@ -27,7 +27,7 @@ FUNCTION GETMODEL(inpos,im)
   !push the age weights into the IMF weights
   imf = 0.0
   DO i=1,nage
-     IF (10**inpos(i+1).LT.1/(npix**2)) THEN
+     IF (10**inpos(i+nxpar).LT.1/(npix**2)) THEN
         imf(ageind(i)+1:ageind(i+1)) = 0.0
      ELSE
         imf(ageind(i)+1:ageind(i+1)) = &
