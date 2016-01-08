@@ -83,7 +83,7 @@ MODULE PIXCMD_VARS
   CHARACTER(250) :: PIXCMD_HOME=''
 
   !define the random number array
-  INTEGER, PARAMETER :: nran=npix*npix*256
+  INTEGER, PARAMETER :: nran=512*512*256
   REAL(SP), DIMENSION(nran) :: ranarr
 
 

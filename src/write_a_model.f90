@@ -118,9 +118,7 @@ PROGRAM WRITE_A_MODEL
 
   ENDIF
 
-
-  !transfer the parameters to the parameter array
-  
+  !transfer the parameters to the parameter array  
   pos(1+nxpar:npar) = LOG10(wgt(1,:))
 
   !get the model hess diagram and I-band image
