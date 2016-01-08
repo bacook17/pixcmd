@@ -5,21 +5,28 @@ SUBROUTINE FIT_TAU(pos,mpix)
 
   IMPLICIT NONE
 
+  INTEGER, PARAMETER :: ifprint=1
+
   REAL(SP), INTENT(in) :: mpix
   REAL(SP), DIMENSION(npar), INTENT(inout) :: pos
   INTEGER :: i,j
-  INTEGER, PARAMETER :: ntau=15,nmpix=10
+  INTEGER, PARAMETER :: ntau=7,nmpix=10
   REAL(SP), DIMENSION(npar) :: tpos
   REAL(SP), DIMENSION(nage) :: sfh,wgt
   REAL(SP) :: bestchi2,chi2,tau,twgt,dt,btau
+  REAL(SP), DIMENSION(ntau) :: tauarr
 
  !------------------------------------------------------------!
 
   bestchi2 = huge_number
 
+  tauarr = (/1.0,2.0,3.0,5.0,7.0,10.0,20.0/)
+
+  IF (ifprint.EQ.1) WRITE(*,*) '   chi2  tau  Mpix'
+
   DO i=1,ntau
 
-     tau = REAL(i)
+     tau = tauarr(i)
 
      sfh = EXP(-(10**10.201-10**agesarr)/1E9/tau) / tau/1E9
 
@@ -55,12 +62,14 @@ SUBROUTINE FIT_TAU(pos,mpix)
            btau     = tau
         ENDIF
 
-        !WRITE(*,'(ES10.3,50F6.2)') chi2,tau,tpos(1)
+        IF (ifprint.EQ.1) &
+             WRITE(*,'(ES10.3,50F6.2)') chi2,tau,tpos(1)
 
      ENDDO
 
   ENDDO
 
+  
   WRITE(*,'("fit_tau: tau=",F4.1,", Mpix=",F4.1)') btau,pos(1)
 
 

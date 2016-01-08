@@ -10,17 +10,17 @@ PROGRAM FIT_PIXCMD
   IMPLICIT NONE
 
   !key emcee parameters
-  INTEGER, PARAMETER :: nwalkers=64,nburn=1,nmcmc=300
+  INTEGER, PARAMETER :: nwalkers=64,nburn=10,nmcmc=300
 
   !starting guess for the Mpix parameter
   REAL(SP) :: mpix=2.0
 
   !flag for testing clock time
-  INTEGER, PARAMETER :: test_time=1
+  INTEGER, PARAMETER :: test_time=0
   !Powell minimization
   INTEGER, PARAMETER :: dopowell=0
   !fit each term individually
-  INTEGER, PARAMETER :: dotaufit=0
+  INTEGER, PARAMETER :: dotaufit=1
 
   INTEGER  :: i,j,k,ml,ndat,stat,iter=30,totacc=0,npos
   REAL(SP) :: fret,bret=huge_number,dt,cmin,cmean,cstd,minchi2=huge_number
