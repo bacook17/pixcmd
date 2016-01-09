@@ -19,8 +19,10 @@ PROGRAM FIT_PIXCMD
   INTEGER, PARAMETER :: test_time=0
   !Powell minimization
   INTEGER, PARAMETER :: dopowell=0
-  !fit each term individually
-  INTEGER, PARAMETER :: dotaufit=1
+  !fit for tau-Mpix
+  INTEGER, PARAMETER :: dotaufit=0
+  !fix the SFH=const
+  INTEGER, PARAMETER :: doinitsfh=0
 
   INTEGER  :: i,j,k,ml,ndat,stat,iter=30,totacc=0,npos
   REAL(SP) :: fret,bret=huge_number,dt,cmin,cmean,cstd,minchi2=huge_number
@@ -85,6 +87,7 @@ PROGRAM FIT_PIXCMD
      WRITE(*,'("   Mpix_init  = ",1x,F4.1)') mpix
      WRITE(*,'("   dopowell   = ",I5)') dopowell
      WRITE(*,'("   dotaufit   = ",I5)') dotaufit
+     WRITE(*,'("   doinitsfh  = ",I5)') doinitsfh
      WRITE(*,'("   Nwalkers   = ",I5)') nwalkers
      WRITE(*,'("   Nburn      = ",I5)') nburn
      WRITE(*,'("   Nchain     = ",I5)') nmcmc
@@ -214,19 +217,10 @@ PROGRAM FIT_PIXCMD
         WRITE(*,*) 'Running tau-mpix fitter'
         CALL FIT_TAU(bpos,mpix)
 
-     ELSE
-        
-        !random initialization
-        bpos(1) = (myran()-0.5)+mpix
-        DO i=1+nxpar,npar
-           bpos(i) = myran()*(prhi-prlo-3*wdth0) + (prlo+1.5*wdth0)
-        ENDDO
-        bpos(1+nxpar:npar) = bpos(1+nxpar:npar) - &
-             LOG10(SUM(10**bpos(1+nxpar:npar)))
-
-        sfh = 1/10**agesarr(nage)
+     ELSE IF (doinitsfh.EQ.1) THEN
 
         !initialize with a constant SFH
+        sfh = 1/10**agesarr(nage)
         DO j=1,nage
            IF (j.EQ.1) THEN
               dt = (10**agesarr(j)-10**(agesarr(j)-dage))
@@ -236,9 +230,12 @@ PROGRAM FIT_PIXCMD
            wgt(j) = sfh(j)*dt
         ENDDO
         !transfer the parameters to the parameter array
-        !bpos(1)      = mpix
-        !bpos(1+nxpar:npar) = LOG10(wgt)
-        
+        bpos(1)      = mpix
+        bpos(1+nxpar:npar) = LOG10(wgt)
+
+     ELSE
+
+        bpos = -99.
 
      ENDIF
      
@@ -248,12 +245,26 @@ PROGRAM FIT_PIXCMD
 
      !setup the starting positions
      WRITE(*,*) 'initial parameters:'
-     DO j=1,nwalkers
-        DO i=1,npar
-           pos_emcee_in(i,j) = bpos(i) + wdth0*(2.*myran()-1.0)
+
+     IF (dotaufit.EQ.1.OR.dopowell.EQ.1.OR.doinitsfh.EQ.1) THEN
+        !initialize parameters near the best-fit intializer
+        DO j=1,nwalkers
+           DO i=1,npar
+              pos_emcee_in(i,j) = bpos(i) + wdth0*(2.*myran()-1.0)
+           ENDDO
+           WRITE(*,'(30(F5.2,1x))') pos_emcee_in(:,j)
         ENDDO
-        WRITE(*,'(30(F5.2,1x))') pos_emcee_in(:,j)
-      ENDDO
+     ELSE
+        !initialize randomly across parameter space
+        DO j=1,nwalkers
+           pos_emcee_in(1,j) = (myran()-0.5)+mpix
+           DO i=1+nxpar,npar
+              pos_emcee_in(i,j) = myran()*(prhi-prlo-3*wdth0) + &
+                   (prlo+1.5*wdth0)
+           ENDDO
+           WRITE(*,'(30(F5.2,1x))') pos_emcee_in(:,j)
+        ENDDO
+     ENDIF
 
      !Compute the initial log-probability for each walker
      CALL FUNCTION_PARALLEL_MAP(npar,nwalkers,ntasks-1,&
@@ -405,7 +416,6 @@ PROGRAM FIT_PIXCMD
 
      CLOSE(12)
 
-     WRITE(*,*) totacc
      WRITE(*,'("  Facc: ",F6.3)') REAL(totacc)/REAL(nmcmc*nwalkers)
      
      !write the best model to a binary file

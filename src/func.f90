@@ -41,6 +41,7 @@ FUNCTION FUNC(inpos)
      ELSE
 
         !Poisson uncertainty on the model
+        !this still needs some teaking...
         model_err = SQRT(imodel*npix**2)/npix**2
         DO i=1,nx
            DO j=1,ny

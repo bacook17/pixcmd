@@ -80,6 +80,7 @@ SUBROUTINE EMCEE_ADVANCE_MPI (ndim, nwalkers, a, pin, lpin, &
      
   ENDDO
   
+  !get the lnp's
   CALL FUNCTION_PARALLEL_MAP(ndim,nwalkers,nworkers,qarr,lpnew)
 
   !Now loop over walkers to accept/reject, and update

@@ -5,7 +5,7 @@ SUBROUTINE FIT_TAU(pos,mpix)
 
   IMPLICIT NONE
 
-  INTEGER, PARAMETER :: ifprint=1
+  INTEGER, PARAMETER :: ifprint=0
 
   REAL(SP), INTENT(in) :: mpix
   REAL(SP), DIMENSION(npar), INTENT(inout) :: pos
@@ -22,7 +22,7 @@ SUBROUTINE FIT_TAU(pos,mpix)
 
   tauarr = (/1.0,2.0,3.0,5.0,7.0,10.0,20.0/)
 
-  IF (ifprint.EQ.1) WRITE(*,*) '   chi2  tau  Mpix'
+  IF (ifprint.EQ.1) WRITE(*,*) '   chi2    tau  Mpix'
 
   DO i=1,ntau
 
