@@ -40,7 +40,7 @@ SUBROUTINE EMCEE_ADVANCE_MPI (ndim, nwalkers, a, pin, lpin, &
   !   A binary list indicating whether or not each proposal was
   !   accepted.
   
-  USE mpi; USE nrtype
+  USE mpi; USE nrtype; USE pixcmd_vars
   USE pixcmd_utils, ONLY : func, myran, function_parallel_map
   IMPLICIT NONE
 
@@ -86,7 +86,7 @@ SUBROUTINE EMCEE_ADVANCE_MPI (ndim, nwalkers, a, pin, lpin, &
   !Now loop over walkers to accept/reject, and update
   DO k=1,nwalkers
      
-     diff = (ndim - 1.0) * LOG(zarr(k)) + lpnew(k) - lpin(k)
+     diff = (ndim - 1.0) * LOG(zarr(k)) + lpnew(k) - lpin(k) + abc
      
      !Accept or reject
      IF (diff.GE.0.0) THEN

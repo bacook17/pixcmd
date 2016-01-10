@@ -10,7 +10,7 @@ PROGRAM FIT_PIXCMD
   IMPLICIT NONE
 
   !key emcee parameters
-  INTEGER, PARAMETER :: nwalkers=64,nburn=10,nmcmc=300
+  INTEGER, PARAMETER :: nwalkers=64,nburn=10000,nmcmc=100
 
   !starting guess for the Mpix parameter
   REAL(SP) :: mpix=2.0
@@ -318,7 +318,7 @@ PROGRAM FIT_PIXCMD
      bpos  = pos_emcee_in(:,ml) !params at min chi^2
      k=0
      DO j=1,nwalkers
-        !if Chi^2 > min+stddev, then re-initialize
+        !if chi^2 > min+stddev, then re-initialize
         IF (tchi2(j).GT.(cmin+cstd)) THEN
            DO i=1,npar
               pos_emcee_in(i,j) = bpos(i)+wdth0/5.*(2.*myran()-1.0)

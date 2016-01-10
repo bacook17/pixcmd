@@ -55,10 +55,10 @@ PROGRAM WRITE_A_MODEL
   !output file name
   IF (sfhflag.EQ.1) THEN
      outfile = 'model_M'//TRIM(char_mpix(1:3))//'_SFH'//&
-          TRIM(char_flag(1:1))//'_tau'//TRIM(char_tau(1:4))
+          TRIM(char_flag(1:1))//'_tau'//TRIM(char_tau(1:4))!//'_N256'
   ELSE
      outfile = 'model_M'//TRIM(char_mpix(1:3))//'_SFH'//&
-          TRIM(char_flag(1:1))//'_t'//TRIM(char_tau(1:4))
+          TRIM(char_flag(1:1))//'_t'//TRIM(char_tau(1:4))!//'_N128'
   ENDIF
 
   WRITE(*,'("  Output File =  ",A50)') outfile

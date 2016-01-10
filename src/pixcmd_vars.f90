@@ -27,6 +27,9 @@ MODULE PIXCMD_VARS
   !if not set, use the master random number array
   INTEGER, PARAMETER :: true_poisson=0
 
+  !epsilon parameter for Approx Bayesian Computation
+  REAL(SP) :: abc=100.0
+
   !variables for model image and CMD Hess diagram
   INTEGER, PARAMETER  :: nx=121,ny=351,npix=512,nfil=2
   REAL(SP), PARAMETER :: xmin=-1.5,ymin=-12.0,dx=0.05,dy=0.05
