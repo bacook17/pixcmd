@@ -10,19 +10,19 @@ PROGRAM FIT_PIXCMD
   IMPLICIT NONE
 
   !key emcee parameters
-  INTEGER, PARAMETER :: nwalkers=64,nburn=10000,nmcmc=100
+  INTEGER, PARAMETER :: nwalkers=64,nburn=1000,nmcmc=100
 
   !starting guess for the Mpix parameter
   REAL(SP) :: mpix=2.0
 
   !flag for testing clock time
-  INTEGER, PARAMETER :: test_time=0
+  INTEGER, PARAMETER :: test_time=1
   !Powell minimization
   INTEGER, PARAMETER :: dopowell=0
   !fit for tau-Mpix
   INTEGER, PARAMETER :: dotaufit=0
   !fix the SFH=const
-  INTEGER, PARAMETER :: doinitsfh=0
+  INTEGER, PARAMETER :: doinitsfh=1
 
   INTEGER  :: i,j,k,ml,ndat,stat,iter=30,totacc=0,npos
   REAL(SP) :: fret,bret=huge_number,dt,cmin,cmean,cstd,minchi2=huge_number
@@ -100,9 +100,13 @@ PROGRAM FIT_PIXCMD
   !initialize the random number generator
   !set each task to sleep for a different length of time
   !so that each task has its own unique random number seed
-  CALL SLEEP(taskid)
+  IF (fix_seed.EQ.0) THEN
+     CALL SLEEP(taskid)
+  ENDIF
   CALL INIT_RANDOM_SEED()
-  CALL RAN1(ranarr)
+  DO i=1,niso_max
+     CALL RAN1(ranarr(:,i))
+  ENDDO
 
   !setup the model grid, PSF, etc.
   CALL SETUP_MODELS()
@@ -160,7 +164,7 @@ PROGRAM FIT_PIXCMD
         CALL CPU_TIME(time2)
 
         IF (test_time.EQ.1) THEN
-           WRITE(*,'(" Task ID ",I2": Elapsed Time: ",F6.2," s", '//&
+           WRITE(*,'(" Task ID ",I3": Elapsed Time: ",F6.2," s", '//&
                 '", N=",I2,", chi^2=",20ES11.3)') &
                 taskid,time2-time1,npos,-2.0*lp_mpi(1:npos)
            CALL FLUSH()
@@ -250,7 +254,7 @@ PROGRAM FIT_PIXCMD
         !initialize parameters near the best-fit intializer
         DO j=1,nwalkers
            DO i=1,npar
-              pos_emcee_in(i,j) = bpos(i) + wdth0*(2.*myran()-1.0)
+              pos_emcee_in(i,j) = bpos(i) !+ wdth0*(2.*myran()-1.0)
            ENDDO
            WRITE(*,'(30(F5.2,1x))') pos_emcee_in(:,j)
         ENDDO
@@ -271,11 +275,13 @@ PROGRAM FIT_PIXCMD
           pos_emcee_in,lp_emcee_in)
 
      WRITE(*,*) 'chi^2 for initialized walkers:'
-     WRITE(*,'(10(ES10.3,1x))') -2.0*lp_emcee_in
+     WRITE(*,'(10(ES12.5,1x))') -2.0*lp_emcee_in
 
-     !tchi2 = LOG10(-2.0*lp_emcee_in)
-     !cstd  = SQRT(SUM( (tchi2-SUM(tchi2)/nwalkers)**2 )/(nwalkers-1))
-     !write(*,*) cstd
+     tchi2 = -2.0*lp_emcee_in !LOG10(-2.0*lp_emcee_in)
+     cstd  = SQRT(SUM( (tchi2-SUM(tchi2)/nwalkers)**2 )/(nwalkers-1))
+     write(*,*) cstd
+
+     stop
 
      IF (-2.0*MAXVAL(lp_emcee_in).EQ.huge_number) THEN
         WRITE(*,*) 'FIT_PIXCMD ERROR: initial parameters are out of bounds'

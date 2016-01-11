@@ -41,16 +41,18 @@ FUNCTION GETMODEL(inpos,im)
   DO k=1,niso
 
      IF (imf(k).LT.tiny_number) CYCLE
+     kran=1
 
      nnn = 10**inpos(1)*imf(k)
-
+ 
      !treat masses less than minmass as continuously sampled
      IF (iso(k)%mass.LT.minmass.OR.nnn.GT.minnum) THEN
         DO f=1,2
            f1(:,:,f) = f1(:,:,f)+nnn*iso(k)%bands(f)
         ENDDO
      ELSE
-        narr = drawn(nnn)
+        !narr = drawn(nnn)
+        narr = mypoidev(nnn,k)
         DO f=1,2
            f1(:,:,f) = f1(:,:,f)+narr*iso(k)%bands(f)
         ENDDO
@@ -67,7 +69,9 @@ FUNCTION GETMODEL(inpos,im)
   cf1 = convolve(f1)
 
   !add obs errors
-  of1 = add_obs_err(cf1)
+  !of1 = add_obs_err(cf1)
+  !no errors!
+  of1 = -2.5*LOG10(cf1)
 
   !return the I-band image if included in the function call
   IF (PRESENT(im)) im=of1(:,:,2)

@@ -12,7 +12,7 @@ MODULE PIXCMD_VARS
   ! 2) set minmass=0.0
   ! 3) set minnum=huge_number
   ! 4) set iso_tag=''
-  ! 5) set npix=2048 
+  ! 5) set npix=2048 (or larger!)
   ! 6) set nran=1 (otherwise you'll run out of memory)
   !
   ! Be prepared for the code to run MUCH MUCH slower!
@@ -26,12 +26,14 @@ MODULE PIXCMD_VARS
   !if set, draw random numbers for each Poisson draw
   !if not set, use the master random number array
   INTEGER, PARAMETER :: true_poisson=0
+  !if >0, then set the random seed to fix_seed
+  INTEGER, PARAMETER :: fix_seed=500
 
   !epsilon parameter for Approx Bayesian Computation
-  REAL(SP) :: abc=100.0
+  REAL(SP), PARAMETER :: abc=100.0
 
   !variables for model image and CMD Hess diagram
-  INTEGER, PARAMETER  :: nx=121,ny=351,npix=512,nfil=2
+  INTEGER, PARAMETER  :: nx=121,ny=351,npix=256,nfil=2
   REAL(SP), PARAMETER :: xmin=-1.5,ymin=-12.0,dx=0.05,dy=0.05
 
   !data-specific parameters
@@ -44,7 +46,7 @@ MODULE PIXCMD_VARS
   REAL(SP), DIMENSION(nfil), PARAMETER :: red_per_ebv = (/3.268,1.526/)
  
   !upper/lower priors
-  REAL(SP), PARAMETER :: prlo=-8.0,prhi=0.3,wdth0=0.2
+  REAL(SP), PARAMETER :: prlo=-9.0,prhi=0.3,wdth0=0.2
   REAL(SP), PARAMETER :: prlo_m=0.5,prhi_m=7.0
   REAL(SP), PARAMETER :: prlo_lebv=-7.0,prhi_lebv=0.5
 
@@ -54,7 +56,7 @@ MODULE PIXCMD_VARS
   !above which we assume the pixel-to-pixel variance is 0.0
   REAL(SP), PARAMETER :: minnum=500.
   !N below which we use Poisson, above which we approx with a Gaussian
-  REAL(SP), PARAMETER :: maxpoidev=20.
+  REAL(SP), PARAMETER :: maxpoidev=100.
   
   !number of age and metallicity points in the model
   INTEGER, PARAMETER :: nage=22,nz=1,nzskip=5
@@ -68,7 +70,7 @@ MODULE PIXCMD_VARS
   INTEGER, PARAMETER :: npar=nage*nz+nxpar
 
   !max size of array for data and isochrones
-  INTEGER, PARAMETER :: niso_max=5000
+  INTEGER, PARAMETER :: niso_max=4000
 
   !background flux level (less than 1 dM per pixel)
   REAL(SP), PARAMETER :: bkgnd = 1E-10
@@ -86,8 +88,9 @@ MODULE PIXCMD_VARS
   CHARACTER(250) :: PIXCMD_HOME=''
 
   !define the random number array
-  INTEGER, PARAMETER :: nran=512*512*256
-  REAL(SP), DIMENSION(nran) :: ranarr
+  !INTEGER, PARAMETER :: nran=512*512*256
+  INTEGER :: kran=1
+  REAL(SP), DIMENSION(npix*npix,niso_max) :: ranarr
 
 
   !---------------------common arrays---------------------!

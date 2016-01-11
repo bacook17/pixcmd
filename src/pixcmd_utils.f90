@@ -79,6 +79,15 @@ MODULE PIXCMD_UTILS
   END INTERFACE
 
   INTERFACE
+     FUNCTION GETMODEL_MDF(inpos,im)
+       USE pixcmd_vars; USE nrtype
+       REAL(SP), DIMENSION(npar), INTENT(in) :: inpos
+       REAL(SP), DIMENSION(npix,npix), OPTIONAL :: im
+       REAL(SP), DIMENSION(nx,ny) :: getmodel_mdf
+     END FUNCTION GETMODEL_MDF
+  END INTERFACE
+
+  INTERFACE
      FUNCTION HIST_2D(xx,yy,xarr,yarr,nx,ny,npix)
        USE nrtype
        INTEGER, INTENT(in) :: nx,ny,npix
@@ -97,8 +106,9 @@ MODULE PIXCMD_UTILS
   END INTERFACE
   
   INTERFACE
-     FUNCTION MYPOIDEV(xm)
+     FUNCTION MYPOIDEV(xm,n)
        USE pixcmd_vars; USE nrtype
+       INTEGER, INTENT(in) :: n
        REAL(SP), INTENT(IN) :: xm
        REAL(SP), DIMENSION(npix,npix) :: mypoidev
      END FUNCTION MYPOIDEV

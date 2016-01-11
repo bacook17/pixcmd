@@ -78,7 +78,7 @@ PRO PIXCMD, mbin=mbin, zh=zh, ssp=ssp, sfh_tau=sfh_tau, $
         tmp.logimfweight = tmp.logimfweight+alog10(sfh[i]*dt)
         tt  = (i EQ 1) ? tmp : [tt,tmp]
      ENDFOR
-stop
+
      ;mass-weighted average age
      ;agrees with analytic results
      mage = total(10^aa[wha]*wgti)

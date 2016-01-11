@@ -1,10 +1,11 @@
-FUNCTION MYPOIDEV(xm)
+FUNCTION MYPOIDEV(xm,n)
 
   USE pixcmd_vars; USE nrtype
   USE pixcmd_utils, ONLY : myran
   IMPLICIT NONE
   
-  INTEGER :: i,j,k=1
+  INTEGER :: i,j
+  INTEGER, INTENT(in) :: n
   REAL(SP), INTENT(IN) :: xm
   REAL(SP) :: em,t,g
   REAL(SP), DIMENSION(npix,npix) :: mypoidev
@@ -22,9 +23,10 @@ FUNCTION MYPOIDEV(xm)
            IF (true_poisson.EQ.1) THEN
               t  = t*myran()
            ELSE
-              t = t*ranarr(k)
+              t = t*ranarr(kran,n)
            ENDIF
-           k = MOD((k+1),nran)
+           !kran = MOD((kran+1),nran)
+           kran = MOD((kran+1),npix*npix)
            IF (t.LE.g) EXIT
         ENDDO
         mypoidev(i,j)=em
