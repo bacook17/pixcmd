@@ -30,10 +30,10 @@ MODULE PIXCMD_VARS
   INTEGER, PARAMETER :: fix_seed=500
 
   !epsilon parameter for Approx Bayesian Computation
-  REAL(SP), PARAMETER :: abc=100.0
+  REAL(SP), PARAMETER :: abc=0.0
 
   !variables for model image and CMD Hess diagram
-  INTEGER, PARAMETER  :: nx=121,ny=351,npix=256,nfil=2
+  INTEGER, PARAMETER  :: nx=121,ny=351,npix=512,nfil=2
   REAL(SP), PARAMETER :: xmin=-1.5,ymin=-12.0,dx=0.05,dy=0.05
 
   !data-specific parameters
@@ -56,7 +56,7 @@ MODULE PIXCMD_VARS
   !above which we assume the pixel-to-pixel variance is 0.0
   REAL(SP), PARAMETER :: minnum=500.
   !N below which we use Poisson, above which we approx with a Gaussian
-  REAL(SP), PARAMETER :: maxpoidev=100.
+  REAL(SP), PARAMETER :: maxpoidev=20.
   
   !number of age and metallicity points in the model
   INTEGER, PARAMETER :: nage=22,nz=1,nzskip=5
@@ -88,9 +88,9 @@ MODULE PIXCMD_VARS
   CHARACTER(250) :: PIXCMD_HOME=''
 
   !define the random number array
-  !INTEGER, PARAMETER :: nran=512*512*256
+  INTEGER, PARAMETER :: nran=256*256 !512*512*256
   INTEGER :: kran=1
-  REAL(SP), DIMENSION(npix*npix,niso_max) :: ranarr
+  REAL(SP), DIMENSION(nran,niso_max) :: ranarr
 
 
   !---------------------common arrays---------------------!

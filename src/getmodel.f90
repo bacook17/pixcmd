@@ -2,7 +2,7 @@ FUNCTION GETMODEL(inpos,im)
 
   USE pixcmd_vars; USE nrtype
   USE pixcmd_utils, ONLY : convolve,hist_2d,add_obs_err,myran,mypoidev,drawn
-  USE nr, ONLY : locate,ran1
+  USE nr, ONLY : locate,ran1,gasdev
   IMPLICIT NONE
 
   INTEGER, PARAMETER :: test_time=0
@@ -12,6 +12,7 @@ FUNCTION GETMODEL(inpos,im)
   REAL(SP), DIMENSION(nx,ny) :: getmodel
   REAL(SP), DIMENSION(npix,npix,nfil) :: f1,cf1,of1
   REAL(SP), DIMENSION(npix,npix) :: narr
+  REAL(SP), DIMENSION(npix) :: gdev
   INTEGER  :: i,k,f
   REAL(SP) :: nnn
   CHARACTER(10) :: time
@@ -51,8 +52,16 @@ FUNCTION GETMODEL(inpos,im)
            f1(:,:,f) = f1(:,:,f)+nnn*iso(k)%bands(f)
         ENDDO
      ELSE
-        !narr = drawn(nnn)
-        narr = mypoidev(nnn,k)
+        !narr = drawn(nnn,k)
+      !  IF (nnn.LE.maxpoidev) THEN
+           narr = mypoidev(nnn,k)
+      !  ELSE
+      !     DO i=1,npix
+      !        CALL GASDEV(gdev)
+      !        narr(i,:) = gdev*SQRT(nnn)+nnn
+      !     ENDDO
+      !  ENDIF
+        !narr = mypoidev(nnn,k)
         DO f=1,2
            f1(:,:,f) = f1(:,:,f)+narr*iso(k)%bands(f)
         ENDDO

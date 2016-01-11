@@ -25,8 +25,7 @@ FUNCTION MYPOIDEV(xm,n)
            ELSE
               t = t*ranarr(kran,n)
            ENDIF
-           !kran = MOD((kran+1),nran)
-           kran = MOD((kran+1),npix*npix)
+           kran = MOD((kran+1),nran)
            IF (t.LE.g) EXIT
         ENDDO
         mypoidev(i,j)=em
