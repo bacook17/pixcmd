@@ -64,9 +64,9 @@ MODULE PIXCMD_VARS
   REAL(SP), PARAMETER :: maxpoidev=20.
   
   !number of age and metallicity points in the model
-  INTEGER, PARAMETER :: nage=22,nz=1,nzskip=5
+  INTEGER, PARAMETER :: nage=11,nz=1,nzskip=5
   !parameters defining the age array
-  REAL(SP) :: dage=0.2,age0=6.0
+  REAL(SP) :: dage=0.4,age0=6.0
   REAL(SP), DIMENSION(nage) :: agesarr=0.
   REAL(SP), DIMENSION(nz)   :: zmetarr=0.
 

@@ -10,7 +10,7 @@ PROGRAM FIT_PIXCMD
   IMPLICIT NONE
 
   !key emcee parameters
-  INTEGER, PARAMETER :: nwalkers=64,nburn=10,nmcmc=400
+  INTEGER, PARAMETER :: nwalkers=64,nburn=500,nmcmc=50
 
   !starting guess for the Mpix parameter
   REAL(SP) :: mpix=2.0
