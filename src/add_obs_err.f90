@@ -11,7 +11,7 @@ FUNCTION ADD_OBS_ERR(flux)
   REAL(SP), DIMENSION(npix,npix,nfil), INTENT(in) :: flux
   REAL(SP), DIMENSION(npix,npix,nfil) :: add_obs_err
   REAL(SP), DIMENSION(npix,npix) :: cts,cti
-  REAL(SP), DIMENSION(npix) :: gdev
+  REAL(SP), DIMENSION(npix) :: gdev2
   INTEGER :: i,j,k
 
   !------------------------------------------------------------!
@@ -26,7 +26,7 @@ FUNCTION ADD_OBS_ERR(flux)
      cti = 0.0
 
      DO j=1,npix
-        CALL GASDEV(gdev)
+        CALL GASDEV(gdev2)
         DO i=1,npix
            IF (cts(i,j).LT.0.) CYCLE
            IF (cts(i,j).LT.100.) THEN
@@ -35,7 +35,7 @@ FUNCTION ADD_OBS_ERR(flux)
            ELSE
               !draw from a Guassian distribution
               !this is much faster and OK for N>>1
-              cti(i,j) = cts(i,j) + gdev(i)*SQRT(cts(i,j))
+              cti(i,j) = cts(i,j) + gdev2(i)*SQRT(cts(i,j))
            ENDIF
         ENDDO
      ENDDO

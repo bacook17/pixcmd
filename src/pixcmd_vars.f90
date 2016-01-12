@@ -61,7 +61,7 @@ MODULE PIXCMD_VARS
   !above which we assume the pixel-to-pixel variance is 0.0
   REAL(SP), PARAMETER :: minnum=500.
   !N below which we use Poisson, above which we approx with a Gaussian
-  REAL(SP), PARAMETER :: maxpoidev=20.
+  REAL(SP), PARAMETER :: maxpoidev=40.
   
   !number of age and metallicity points in the model
   INTEGER, PARAMETER :: nage=11,nz=1,nzskip=5
@@ -96,7 +96,7 @@ MODULE PIXCMD_VARS
   INTEGER, PARAMETER :: nran=256*256
   INTEGER :: kran=1
   REAL(SP), DIMENSION(nran,niso_max) :: ranarr
-
+  REAL(SP), DIMENSION(npix,npix) :: gdev
 
   !---------------------common arrays---------------------!
 

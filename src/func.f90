@@ -66,7 +66,7 @@ FUNCTION FUNC(inpos)
      STOP
   ENDIF
 
-  !WRITE(*,'(F10.4,30(F6.3,1x))') LOG10(func),inpos
+  WRITE(*,'(F10.6,30(F6.3,1x))') LOG10(func),inpos
   
 
 END FUNCTION FUNC

@@ -4,13 +4,13 @@ PROGRAM FIT_PIXCMD
   !syntax: mpirun -np XX fit_pixcmd.exe input_data Mpix_init tag
 
   USE pixcmd_utils; USE pixcmd_vars; USE nrtype
-  USE nr, ONLY : powell,ran1; USE mpi
+  USE nr, ONLY : powell,ran1,gasdev; USE mpi
   USE ran_state, ONLY : ran_seed,ran_init
 
   IMPLICIT NONE
 
   !key emcee parameters
-  INTEGER, PARAMETER :: nwalkers=64,nburn=500,nmcmc=50
+  INTEGER, PARAMETER :: nwalkers=128,nburn=1000,nmcmc=50
 
   !starting guess for the Mpix parameter
   REAL(SP) :: mpix=2.0
@@ -20,7 +20,7 @@ PROGRAM FIT_PIXCMD
   !Powell minimization
   INTEGER, PARAMETER :: dopowell=0
   !fit for tau-Mpix
-  INTEGER, PARAMETER :: dotaufit=1
+  INTEGER, PARAMETER :: dotaufit=0
   !fix the SFH=const
   INTEGER, PARAMETER :: doinitsfh=0
 
@@ -106,6 +106,9 @@ PROGRAM FIT_PIXCMD
   CALL INIT_RANDOM_SEED()
   DO i=1,niso_max
      CALL RAN1(ranarr(:,i))
+  ENDDO
+  DO i=1,npix
+     CALL GASDEV(gdev(:,i))
   ENDDO
 
 
