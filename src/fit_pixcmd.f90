@@ -288,10 +288,10 @@ PROGRAM FIT_PIXCMD
      ELSE
         !initialize randomly across parameter space
         DO j=1,nwalkers
-           pos_emcee_in(1,j) = (myran()-0.5)+mpix
+           pos_emcee_in(1,j) = (0.4*myran()-0.2)+mpix
            DO i=1+nxpar,npar
-              pos_emcee_in(i,j) = myran()*(prhi-prlo-3*wdth0) + &
-                   (prlo+1.5*wdth0)
+              pos_emcee_in(i,j) = myran()*(prhi-prlo-6*wdth0) + &
+                   (prlo+3*wdth0)
            ENDDO
            WRITE(*,'(30(F5.2,1x))') pos_emcee_in(:,j)
         ENDDO
