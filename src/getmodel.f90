@@ -28,13 +28,14 @@ FUNCTION GETMODEL(inpos,im)
   !push the age weights into the IMF weights
   imf = 0.0
   DO i=1,nage
-     IF (10**inpos(i+nxpar).LT.1./(npix**2).OR.&
+     IF (10**inpos(i+nxpar).LT.0.2/(npix**2).OR.&
           inpos(i+nxpar).LE.prlo) THEN
         imf(ageind(i)+1:ageind(i+1)) = 0.0
      ELSE
         imf(ageind(i)+1:ageind(i+1)) = &
              10**inpos(i+1)*iso(ageind(i)+1:ageind(i+1))%imf
      ENDIF
+
   ENDDO
 
   !compute the model at each pixel
@@ -48,7 +49,7 @@ FUNCTION GETMODEL(inpos,im)
  
      !treat masses less than minmass as continuously sampled
      IF (iso(k)%mass.LT.minmass.OR.nnn.GT.minnum) THEN
-        DO f=1,2
+       DO f=1,2
            f1(:,:,f) = f1(:,:,f)+nnn*iso(k)%bands(f)
         ENDDO
      ELSE

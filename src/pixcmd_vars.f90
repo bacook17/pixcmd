@@ -20,7 +20,7 @@ MODULE PIXCMD_VARS
   !-------------------common parameters-------------------!
 
   !number of pixels for the model image.  computation time
-  !scales as npix^2 !
+  !scales as npix^2
   INTEGER, PARAMETER :: npix=256
 
   !isochrone flag.  default to using 5x fewer points
@@ -32,7 +32,7 @@ MODULE PIXCMD_VARS
   !if not set, use the master random number array
   INTEGER, PARAMETER :: true_poisson=0
   !if >0, then set the random seed to fix_seed
-  INTEGER, PARAMETER :: fix_seed=500
+  INTEGER :: fix_seed=4000
 
   !epsilon parameter for Approx Bayesian Computation
   REAL(SP), PARAMETER :: abc=0.0

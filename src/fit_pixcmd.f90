@@ -10,7 +10,7 @@ PROGRAM FIT_PIXCMD
   IMPLICIT NONE
 
   !key emcee parameters
-  INTEGER, PARAMETER :: nwalkers=4,nburn=200,nmcmc=20
+  INTEGER, PARAMETER :: nwalkers=64,nburn=10,nmcmc=400
 
   !starting guess for the Mpix parameter
   REAL(SP) :: mpix=2.0
@@ -20,14 +20,14 @@ PROGRAM FIT_PIXCMD
   !Powell minimization
   INTEGER, PARAMETER :: dopowell=0
   !fit for tau-Mpix
-  INTEGER, PARAMETER :: dotaufit=0
+  INTEGER, PARAMETER :: dotaufit=1
   !fix the SFH=const
-  INTEGER, PARAMETER :: doinitsfh=1
+  INTEGER, PARAMETER :: doinitsfh=0
 
   INTEGER  :: i,j,k,ml,ndat,stat,iter=30,totacc=0,npos
   REAL(SP) :: fret,bret=huge_number,dt,cmin,cmean,cstd,minchi2=huge_number
   CHARACTER(10) :: time,is,tmpstr
-  REAL(SP) :: time1,time2
+  REAL(SP) :: time1,time2,wdth1
   REAL(SP), DIMENSION(2) :: dumt,dumt2
   CHARACTER(50) :: infile,tag=''
   REAL(SP), DIMENSION(nx,ny) :: bmodel=0.,imodel=0.
@@ -40,7 +40,7 @@ PROGRAM FIT_PIXCMD
   REAL(SP), DIMENSION(npar,nwalkers) :: mpiposarr=0.0
 
   !Powell variables
-  REAL(SP), PARAMETER :: ftol=10.
+  REAL(SP), PARAMETER :: ftol=1000.
   REAL(SP), DIMENSION(npar,npar) :: xi=0.0
   REAL(SP), DIMENSION(npar)      :: pos=0.0,bpos=0.,dum9=-9.0
 
@@ -107,6 +107,15 @@ PROGRAM FIT_PIXCMD
   DO i=1,niso_max
      CALL RAN1(ranarr(:,i))
   ENDDO
+
+
+  !now that the ranarr is identically initialized,
+  !re-set the seed or each taskid for the emcee steps
+  IF (fix_seed.NE.0) THEN
+     fix_seed=0
+     CALL SLEEP(taskid)
+     CALL INIT_RANDOM_SEED()
+  ENDIF
 
   !setup the model grid, PSF, etc.
   CALL SETUP_MODELS()
@@ -194,7 +203,7 @@ PROGRAM FIT_PIXCMD
         
         DO j=1,10
            !setup params
-           pos(1) = (myran()-0.5)+mpix
+           pos(1) = (0.2*myran()-0.1)+mpix
            DO i=1+nxpar,npar
               pos(i) = myran()*(prhi-prlo-3*wdth0) + (prlo+1.5*wdth0)
            ENDDO
@@ -243,13 +252,19 @@ PROGRAM FIT_PIXCMD
 
      ENDIF
      
+     !bpos(1) = (0.2*myran()-0.1)+mpix
+     !DO i=1+nxpar,npar
+     !   bpos(i) = myran()*(prhi-prlo-3*wdth0) + (prlo+1.5*wdth0)
+     !ENDDO
      !test smoothness of chi^2 surface
-     DO i=1,20
-        bpos(20) = LOG10(wgt(20-1)) + 0.01*i-0.1
-        fret = func(bpos)
-        write(*,*) bpos(20),fret
-     ENDDO
-     STOP
+   !  bpos(1)=4.5
+   !  DO i=1,20
+   !     bpos(23) = LOG10(wgt(22)) + 0.2*i-3.
+   !     !bpos(1) = mpix + 0.2*i-1.
+   !     fret = func(bpos)
+   !     write(*,*) bpos(23),fret
+   !  ENDDO
+   !  STOP
 
 
      !-------------------------------------------------------------------!
@@ -284,7 +299,7 @@ PROGRAM FIT_PIXCMD
           pos_emcee_in,lp_emcee_in)
 
      WRITE(*,*) 'chi^2 for initialized walkers:'
-     WRITE(*,'(10(ES12.5,1x))') -2.0*lp_emcee_in
+     WRITE(*,'(10(ES10.3,1x))') -2.0*lp_emcee_in
 
      !tchi2 = -2.0*lp_emcee_in !LOG10(-2.0*lp_emcee_in)
      !cstd  = SQRT(SUM( (tchi2-SUM(tchi2)/nwalkers)**2 )/(nwalkers-1))
@@ -308,12 +323,7 @@ PROGRAM FIT_PIXCMD
              lp_emcee_in,pos_emcee_out,lp_emcee_out,accept_emcee,ntasks-1)
         pos_emcee_in = pos_emcee_out
         lp_emcee_in  = lp_emcee_out
-        IF (i.EQ.nburn/4.*1) WRITE (*,'(A)',advance='no') ' ...25%'
-        IF (i.EQ.nburn/4.*2) WRITE (*,'(A)',advance='no') '...50%'
-        IF (i.EQ.nburn/4.*3) WRITE (*,'(A)',advance='no') '...75%'
      ENDDO
-     WRITE (*,'(A)') '...100%'
-     CALL FLUSH()
 
      WRITE(*,*) 'parameters after first-pass:'
      DO j=1,nwalkers
@@ -330,11 +340,16 @@ PROGRAM FIT_PIXCMD
      ml    = MINLOC(tchi2,1) !location of min chi^2
      bpos  = pos_emcee_in(:,ml) !params at min chi^2
      k=0
+     IF (nburn.GT.100) THEN
+        wdth1 = wdth0/5.
+     ELSE
+        wdth1 = wdth0
+     ENDIF
      DO j=1,nwalkers
         !if chi^2 > min+2stddev, then re-initialize
         IF (tchi2(j).GT.(cmin+2*cstd)) THEN
            DO i=1,npar
-              pos_emcee_in(i,j) = bpos(i)+wdth0/5.*(2.*myran()-1.0)
+              pos_emcee_in(i,j) = bpos(i)+wdth1*(2.*myran()-1.0)
               IF (i.EQ.1) CYCLE
               IF (pos_emcee_in(i,j).LT.prlo) &
                    pos_emcee_in(i,j)=prlo+wdth0/5.

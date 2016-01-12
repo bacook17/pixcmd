@@ -72,8 +72,7 @@ PROGRAM WRITE_A_MODEL
 
   !initialize the random number generator
   CALL INIT_RANDOM_SEED()
-  !CALL RAN1(ranarr)
-  DO i=1,niso
+  DO i=1,niso_max
      CALL RAN1(ranarr(:,i))
   ENDDO
 
