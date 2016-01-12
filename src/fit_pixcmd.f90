@@ -10,19 +10,19 @@ PROGRAM FIT_PIXCMD
   IMPLICIT NONE
 
   !key emcee parameters
-  INTEGER, PARAMETER :: nwalkers=64,nburn=200,nmcmc=20
+  INTEGER, PARAMETER :: nwalkers=4,nburn=200,nmcmc=20
 
   !starting guess for the Mpix parameter
   REAL(SP) :: mpix=2.0
 
   !flag for testing clock time
-  INTEGER, PARAMETER :: test_time=0
+  INTEGER, PARAMETER :: test_time=1
   !Powell minimization
   INTEGER, PARAMETER :: dopowell=0
   !fit for tau-Mpix
-  INTEGER, PARAMETER :: dotaufit=1
+  INTEGER, PARAMETER :: dotaufit=0
   !fix the SFH=const
-  INTEGER, PARAMETER :: doinitsfh=0
+  INTEGER, PARAMETER :: doinitsfh=1
 
   INTEGER  :: i,j,k,ml,ndat,stat,iter=30,totacc=0,npos
   REAL(SP) :: fret,bret=huge_number,dt,cmin,cmean,cstd,minchi2=huge_number
@@ -244,12 +244,12 @@ PROGRAM FIT_PIXCMD
      ENDIF
      
      !test smoothness of chi^2 surface
-     !DO i=1,20
-     !   bpos(23) = -0.53 + 0.01*i
-     !   fret = func(bpos)
-     !   write(*,*) bpos(23),fret
-     !ENDDO
-     !STOP
+     DO i=1,20
+        bpos(20) = LOG10(wgt(20-1)) + 0.01*i-0.1
+        fret = func(bpos)
+        write(*,*) bpos(20),fret
+     ENDDO
+     STOP
 
 
      !-------------------------------------------------------------------!

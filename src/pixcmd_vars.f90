@@ -19,6 +19,11 @@ MODULE PIXCMD_VARS
 
   !-------------------common parameters-------------------!
 
+  !number of pixels for the model image.  computation time
+  !scales as npix^2 !
+  INTEGER, PARAMETER :: npix=256
+
+  !isochrone flag.  default to using 5x fewer points
   CHARACTER(10) :: iso_tag='_x5FEWER'
 
   !flag for convolution (FFT=1, brute force=0)
@@ -33,7 +38,7 @@ MODULE PIXCMD_VARS
   REAL(SP), PARAMETER :: abc=0.0
 
   !variables for model image and CMD Hess diagram
-  INTEGER, PARAMETER  :: nx=121,ny=351,npix=512,nfil=2
+  INTEGER, PARAMETER  :: nx=121,ny=351,nfil=2
   REAL(SP), PARAMETER :: xmin=-1.5,ymin=-12.0,dx=0.05,dy=0.05
 
   !data-specific parameters
@@ -70,7 +75,7 @@ MODULE PIXCMD_VARS
   INTEGER, PARAMETER :: npar=nage*nz+nxpar
 
   !max size of array for data and isochrones
-  INTEGER, PARAMETER :: niso_max=4000
+  INTEGER, PARAMETER :: niso_max=4096
 
   !background flux level (less than 1 dM per pixel)
   REAL(SP), PARAMETER :: bkgnd = 1E-10
@@ -88,7 +93,7 @@ MODULE PIXCMD_VARS
   CHARACTER(250) :: PIXCMD_HOME=''
 
   !define the random number array
-  INTEGER, PARAMETER :: nran=256*256 !512*512*256
+  INTEGER, PARAMETER :: nran=256*256
   INTEGER :: kran=1
   REAL(SP), DIMENSION(nran,niso_max) :: ranarr
 

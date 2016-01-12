@@ -42,7 +42,7 @@ FUNCTION GETMODEL(inpos,im)
   DO k=1,niso
 
      IF (imf(k).LT.tiny_number) CYCLE
-     kran=1
+     !kran=1
 
      nnn = 10**inpos(1)*imf(k)
  
@@ -54,14 +54,13 @@ FUNCTION GETMODEL(inpos,im)
      ELSE
         !narr = drawn(nnn,k)
       !  IF (nnn.LE.maxpoidev) THEN
-           narr = mypoidev(nnn,k)
+        narr = mypoidev(nnn,k)
       !  ELSE
       !     DO i=1,npix
       !        CALL GASDEV(gdev)
       !        narr(i,:) = gdev*SQRT(nnn)+nnn
       !     ENDDO
       !  ENDIF
-        !narr = mypoidev(nnn,k)
         DO f=1,2
            f1(:,:,f) = f1(:,:,f)+narr*iso(k)%bands(f)
         ENDDO

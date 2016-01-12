@@ -16,12 +16,13 @@ FUNCTION MYPOIDEV(xm,n)
 
   DO i=1,npix
      DO j=1,npix
+        kran=i*j
         em = -1.0
         t  = 1.0
         DO
            em = em+1.0
            IF (true_poisson.EQ.1) THEN
-              t  = t*myran()
+              t = t*myran()
            ELSE
               t = t*ranarr(kran,n)
            ENDIF
