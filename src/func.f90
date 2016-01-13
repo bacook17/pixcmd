@@ -17,11 +17,11 @@ FUNCTION FUNC(inpos)
   !------------------- priors----------------------!
   
   !prior on the mass per pixel
-  IF (inpos(1).LT.prlo_m.OR.inpos(1).GT.prhi_m) func=huge_number
+  !IF (inpos(1).LT.prlo_m.OR.inpos(1).GT.prhi_m) func=huge_number
 
   !priors on the weights for each component
   DO i=1+nxpar,npar
-     IF (inpos(i).LT.prlo.OR.inpos(i).GT.prhi) func=huge_number
+     IF ((inpos(i)-mpix0).LT.prlo.OR.(inpos(i)-mpix0).GT.prhi) func=huge_number
      IF (ISNAN(inpos(i))) THEN
         WRITE(*,'("FUNC ERROR: inpos returned a NaN:",10F18.2)') inpos
         STOP

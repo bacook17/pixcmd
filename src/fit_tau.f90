@@ -1,19 +1,18 @@
-SUBROUTINE FIT_TAU(pos,mpix)
+SUBROUTINE FIT_TAU(pos)
 
   USE pixcmd_vars; USE nrtype
   USE pixcmd_utils, ONLY : func
 
   IMPLICIT NONE
 
-  INTEGER, PARAMETER :: ifprint=0
+  INTEGER, PARAMETER :: ifprint=1
 
-  REAL(SP), INTENT(in) :: mpix
   REAL(SP), DIMENSION(npar), INTENT(inout) :: pos
   INTEGER :: i,j
   INTEGER, PARAMETER :: ntau=7,nmpix=10
   REAL(SP), DIMENSION(npar) :: tpos
   REAL(SP), DIMENSION(nage) :: sfh,wgt
-  REAL(SP) :: bestchi2,chi2,tau,twgt,dt,btau
+  REAL(SP) :: bestchi2,chi2,tau,twgt,dt,btau,tmpix,bmpix
   REAL(SP), DIMENSION(ntau) :: tauarr
 
  !------------------------------------------------------------!
@@ -49,28 +48,28 @@ SUBROUTINE FIT_TAU(pos,mpix)
         wgt(j) = MAX(wgt(j),10**prlo)
      ENDDO
 
-     tpos(1+nxpar:npar) = LOG10(wgt)
-
      DO j=1,nmpix
 
-        tpos(1) = mpix+(real(j)-1.)/nmpix-0.5
-
+        tmpix = mpix0+(real(j)-1.)/nmpix-0.5
+        tpos(1+nxpar:npar) = LOG10(wgt)+tmpix
+        
         chi2 = func(tpos)
         IF (chi2.LT.bestchi2) THEN
            bestchi2 = chi2
            pos      = tpos
            btau     = tau
+           bmpix    = tmpix
         ENDIF
 
         IF (ifprint.EQ.1) &
-             WRITE(*,'(ES10.3,50F6.2)') chi2,tau,tpos(1)
+             WRITE(*,'(ES10.3,50F6.2)') chi2,tau,tmpix
 
      ENDDO
 
   ENDDO
 
   
-  WRITE(*,'("fit_tau: tau=",F4.1,", Mpix=",F4.1)') btau,pos(1)
+  WRITE(*,'("fit_tau: tau=",F4.1,", Mpix=",F4.1)') btau,bmpix
 
 
 END SUBROUTINE FIT_TAU

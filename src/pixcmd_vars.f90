@@ -53,7 +53,7 @@ MODULE PIXCMD_VARS
   REAL(SP), DIMENSION(nfil), PARAMETER :: red_per_ebv = (/3.268,1.526/)
  
   !upper/lower priors
-  REAL(SP), PARAMETER :: prlo=-9.0,prhi=0.3,wdth0=1E-3 !0.2
+  REAL(SP), PARAMETER :: prlo=-9.0,prhi=0.5,wdth0=0.1
   REAL(SP), PARAMETER :: prlo_m=0.5,prhi_m=7.0
   REAL(SP), PARAMETER :: prlo_lebv=-7.0,prhi_lebv=0.5
 
@@ -74,7 +74,7 @@ MODULE PIXCMD_VARS
   REAL(SP), DIMENSION(nz)     :: zmetarr=0.
 
   !number of free parameters 
-  INTEGER, PARAMETER :: nxpar = 1 !mpix
+  INTEGER, PARAMETER :: nxpar = 0 !mpix
   INTEGER, PARAMETER :: npar=nage*nz+nxpar
 
   !max size of array for data and isochrones
@@ -109,6 +109,9 @@ MODULE PIXCMD_VARS
 
   !array for the data
   REAL(SP), DIMENSION(nx,ny) :: hess_data=0.,hess_err=0.
+
+  !first guess for Mpix
+  REAL(SP) :: mpix0=2.0
 
   !type structure for the isochrones
   TYPE TISO

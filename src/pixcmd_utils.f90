@@ -39,9 +39,8 @@ MODULE PIXCMD_UTILS
   END INTERFACE
 
   INTERFACE
-     SUBROUTINE FIT_TAU(pos,mpix)
+     SUBROUTINE FIT_TAU(pos)
        USE pixcmd_vars; USE nrtype
-       REAL(SP), INTENT(in) :: mpix
        REAL(SP), DIMENSION(npar), INTENT(inout) :: pos
      END SUBROUTINE FIT_TAU
   END INTERFACE

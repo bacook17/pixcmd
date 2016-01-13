@@ -10,19 +10,16 @@ PROGRAM FIT_PIXCMD
   IMPLICIT NONE
 
   !key emcee parameters
-  INTEGER, PARAMETER :: nwalkers=64,nburn=10,nmcmc=200
-
-  !starting guess for the Mpix parameter
-  REAL(SP) :: mpix=2.0
+  INTEGER, PARAMETER :: nwalkers=64,nburn=10,nmcmc=10000
 
   !flag for testing clock time
   INTEGER, PARAMETER :: test_time=1
   !Powell minimization
   INTEGER, PARAMETER :: dopowell=0
   !fit for tau-Mpix
-  INTEGER, PARAMETER :: dotaufit=0
+  INTEGER, PARAMETER :: dotaufit=1
   !fix the SFH=const
-  INTEGER, PARAMETER :: doinitsfh=1
+  INTEGER, PARAMETER :: doinitsfh=0
 
   INTEGER  :: i,j,k,ml,ndat,stat,iter=30,totacc=0,npos
   REAL(SP) :: fret,bret=huge_number,dt,cmin,cmean,cstd,minchi2=huge_number
@@ -67,7 +64,7 @@ PROGRAM FIT_PIXCMD
 
   IF (IARGC().GE.2) THEN
      CALL GETARG(2,tmpstr)
-     READ(tmpstr,'(F4.1)') mpix
+     READ(tmpstr,'(F4.1)') mpix0
   ENDIF
 
   IF (IARGC().EQ.3) THEN
@@ -84,7 +81,7 @@ PROGRAM FIT_PIXCMD
      !write some important variables to screen
      WRITE(*,*)
      WRITE(*,'(" ************************************")')
-     WRITE(*,'("   Mpix_init  = ",1x,F4.1)') mpix
+     WRITE(*,'("   Mpix_init  = ",1x,F4.1)') mpix0
      WRITE(*,'("   dopowell   = ",I5)') dopowell
      WRITE(*,'("   dotaufit   = ",I5)') dotaufit
      WRITE(*,'("   doinitsfh  = ",I5)') doinitsfh
@@ -176,7 +173,7 @@ PROGRAM FIT_PIXCMD
 
         IF (test_time.EQ.1) THEN
            WRITE(*,'(" Task ID ",I3": Elapsed Time: ",F6.2," s", '//&
-                '", N=",I2,", chi^2=",20ES11.3)') &
+                '", N=",I2,", chi^2=",99ES11.3)') &
                 taskid,time2-time1,npos,-2.0*lp_mpi(1:npos)
            CALL FLUSH()
         ENDIF
@@ -205,12 +202,12 @@ PROGRAM FIT_PIXCMD
         
         DO j=1,10
            !setup params
-           pos(1) = (0.2*myran()-0.1)+mpix
            DO i=1+nxpar,npar
               pos(i) = myran()*(prhi-prlo-3*wdth0) + (prlo+1.5*wdth0)
            ENDDO
            pos(1+nxpar:npar) = pos(1+nxpar:npar) - &
                 LOG10(SUM(10**pos(1+nxpar:npar)))
+           pos = pos+mpix0
            xi=0.0
            xi(1,1) = 0.2
            DO i=1+nxpar,npar
@@ -230,7 +227,7 @@ PROGRAM FIT_PIXCMD
 
         !fit in a grid of tau and Mpix
         WRITE(*,*) 'Running tau-mpix fitter'
-        CALL FIT_TAU(bpos,mpix)
+        CALL FIT_TAU(bpos)
 
      ELSE IF (doinitsfh.EQ.1) THEN
 
@@ -243,8 +240,7 @@ PROGRAM FIT_PIXCMD
         ENDDO
         wgt = wgt/twgt
         !transfer the parameters to the parameter array
-        bpos(1)      = mpix
-        bpos(1+nxpar:npar) = LOG10(wgt)
+        bpos(1+nxpar:npar) = LOG10(wgt)+mpix0
 
      ELSE
 
@@ -252,9 +248,8 @@ PROGRAM FIT_PIXCMD
 
      ENDIF
      
-     !bpos(1) = (0.2*myran()-0.1)+mpix
      !DO i=1+nxpar,npar
-     !   bpos(i) = myran()*(prhi-prlo-3*wdth0) + (prlo+1.5*wdth0)
+     !   bpos(i) = myran()*(prhi-prlo-3*wdth0) + (prlo+1.5*wdth0) + mpix0
      !ENDDO
      !test smoothness of chi^2 surface
     ! DO i=1,20
@@ -283,10 +278,9 @@ PROGRAM FIT_PIXCMD
      ELSE
         !initialize randomly across parameter space
         DO j=1,nwalkers
-           pos_emcee_in(1,j) = (0.4*myran()-0.2)+mpix
            DO i=1+nxpar,npar
               pos_emcee_in(i,j) = myran()*(prhi-prlo-6*wdth0) + &
-                   (prlo+3*wdth0)
+                   (prlo+3*wdth0) + mpix0
            ENDDO
            WRITE(*,'(30(F5.2,1x))') pos_emcee_in(:,j)
         ENDDO

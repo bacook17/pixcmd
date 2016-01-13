@@ -31,7 +31,7 @@ FUNCTION GETMODEL(inpos,im)
 
      IF (tt.LE.prlo.OR.10**tt.LT.0.2/(npix**2)) CYCLE
 
-     nnn = 10**inpos(1)*10**tt*iso(k)%imf
+     nnn = 10**tt*iso(k)%imf
  
      !treat masses less than minmass as continuously sampled
      IF (iso(k)%mass.LT.minmass.OR.nnn.GT.minnum) THEN
