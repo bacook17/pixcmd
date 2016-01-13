@@ -5,7 +5,7 @@ SUBROUTINE FIT_TAU(pos)
 
   IMPLICIT NONE
 
-  INTEGER, PARAMETER :: ifprint=1
+  INTEGER, PARAMETER :: ifprint=0
 
   REAL(SP), DIMENSION(npar), INTENT(inout) :: pos
   INTEGER :: i,j

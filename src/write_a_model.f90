@@ -49,9 +49,6 @@ PROGRAM WRITE_A_MODEL
      char_tau(1:1)='0'
   ENDIF
 
-  !transfer Mpix to the parameter array
-  pos(1) = mpix
-
   !output file name
   IF (sfhflag.EQ.1) THEN
      outfile = 'model_M'//TRIM(char_mpix(1:3))//'_SFH'//&
@@ -121,7 +118,7 @@ PROGRAM WRITE_A_MODEL
   ENDIF
 
   !transfer the parameters to the parameter array  
-  pos(1+nxpar:npar) = LOG10(wgt(1,:))
+  pos(1+nxpar:npar) = LOG10(wgt(1,:)) + mpix
 
   !get the model hess diagram and I-band image
   !store as the actual counts, not normalized

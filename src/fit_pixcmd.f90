@@ -10,16 +10,16 @@ PROGRAM FIT_PIXCMD
   IMPLICIT NONE
 
   !key emcee parameters
-  INTEGER, PARAMETER :: nwalkers=64,nburn=10,nmcmc=10000
+  INTEGER, PARAMETER :: nwalkers=64,nburn=10,nmcmc=2000
 
   !flag for testing clock time
   INTEGER, PARAMETER :: test_time=1
   !Powell minimization
   INTEGER, PARAMETER :: dopowell=0
   !fit for tau-Mpix
-  INTEGER, PARAMETER :: dotaufit=1
+  INTEGER, PARAMETER :: dotaufit=0
   !fix the SFH=const
-  INTEGER, PARAMETER :: doinitsfh=0
+  INTEGER, PARAMETER :: doinitsfh=1
 
   INTEGER  :: i,j,k,ml,ndat,stat,iter=30,totacc=0,npos
   REAL(SP) :: fret,bret=huge_number,dt,cmin,cmean,cstd,minchi2=huge_number
@@ -37,7 +37,7 @@ PROGRAM FIT_PIXCMD
   REAL(SP), DIMENSION(npar,nwalkers) :: mpiposarr=0.0
 
   !Powell variables
-  REAL(SP), PARAMETER :: ftol=1000.
+  REAL(SP), PARAMETER :: ftol=100.
   REAL(SP), DIMENSION(npar,npar) :: xi=0.0
   REAL(SP), DIMENSION(npar)      :: pos=0.0,bpos=0.,dum9=-9.0
 
@@ -209,7 +209,6 @@ PROGRAM FIT_PIXCMD
                 LOG10(SUM(10**pos(1+nxpar:npar)))
            pos = pos+mpix0
            xi=0.0
-           xi(1,1) = 0.2
            DO i=1+nxpar,npar
               xi(i,i) = 1.0
            ENDDO
@@ -352,7 +351,7 @@ PROGRAM FIT_PIXCMD
         ENDIF
      ENDDO
 
-     WRITE(*,'("Reinitialized ",I2," out of ",I3," walkers")') k,nwalkers
+     WRITE(*,'("Reinitialized ",I3," out of ",I3," walkers")') k,nwalkers
 
      !Compute the initial log-probability for each walker
      CALL FUNCTION_PARALLEL_MAP(npar,nwalkers,ntasks-1,&
