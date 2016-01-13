@@ -6,8 +6,8 @@ SUBROUTINE SETUP_MODELS()
 
   CHARACTER(5), DIMENSION(nz)  :: zstr
   CHARACTER(1)  :: is,js
-  INTEGER  :: i,j,k,t,stat
-  REAL(SP) :: iage=0.0,age,d2,d3,d4
+  INTEGER  :: i,j,k,m,n,t,f,stat
+  REAL(SP) :: iage=0.0,age,d2,d3,d4,mass,imf,b1,b2,tage
 
   !------------------------------------------------------------!
 
@@ -85,34 +85,54 @@ SUBROUTINE SETUP_MODELS()
      STOP
   ENDIF
 
+
+  !--> This needs to be cleaned up at some point...
+
+  agesarr2 = (/6.0,7.0,8.0,8.5,9.0,9.5,10.0,10.2/)
+  agesarr  = (/6.5,7.5,8.25,8.75,9.25,9.75,10.1/)
+
+  ! nz=22
+  !agesarr2 = (/6.0,6.2,6.4,6.6,6.8,7.0,7.2,7.4,7.6,7.8,8.0,8.2,8.4,&
+  !     8.6,8.8,9.0,9.2,9.4,9.6,9.8,10.0,10.2,10.4/)
+  !agesarr  = (/6.1,6.3,6.5,6.7,6.9,7.1,7.2,7.3,7.5,7.7,7.9,8.1,8.3,&
+  !     8.5,8.7,8.9,9.1,9.3,9.5,9.7,9.9,10.1/)
+
   i=1
-  ageind(1)=0
-  DO t=1,nage
+  nisoage=0
+  tage=0.
+  DO j=1,1000000
 
-     age = age0+(t-1)*dage
-     
-     !burn the young models
-     DO WHILE (iage-age.LT.-0.01) 
-        READ(10,*,IOSTAT=stat) iage
-     ENDDO
-     BACKSPACE(10)
-     i=i-1
-     DO WHILE (ABS(iage-age).LT.1E-2) 
-        IF (i.GT.niso_max) THEN
-           WRITE(*,*) 'SIM_PIXCMD ERROR niso_max reached',i
-           STOP
+     READ(10,'(F6.2,7F10.4)',IOSTAT=stat) iage,mass,d2,d3,imf,b1,d4,b2
+     IF (stat.NE.0) GOTO 21
+
+     DO f=1,22
+
+        age = (f-1)*0.2+age0
+        n=0
+
+        IF ( ABS(iage-age).LT.0.01.AND.iage.GE.age0 ) THEN
+           iso(i)%age  = iage
+           iso(i)%mass = mass
+           iso(i)%imf  = imf
+           iso(i)%bands(1) = b1
+           iso(i)%bands(2) = b2
+           DO m=1,nage
+              IF (iage.GE.agesarr2(m).AND.iage.LT.agesarr2(m+1)) k=m
+              IF (iage.EQ.agesarr2(nage+1)) k=m
+           ENDDO
+           !WRITE(9,'(F5.2,1x,I2)') iage,k
+           iso(i)%aind = k
+           i=i+1
+           IF (iage.NE.tage) THEN
+              nisoage(k) = nisoage(k)+1
+              tage=iage
+           ENDIF
         ENDIF
-        i=i+1
-        READ(10,*,IOSTAT=stat) iage,iso(i)%mass,d2,d3,iso(i)%imf,&
-             iso(i)%bands(1),d4,iso(i)%bands(2)
-        iso(i)%age = iage
-        IF (stat.NE.0) GOTO 20
-     ENDDO
-20   CONTINUE
 
-     ageind(t+1) = i-1
+     ENDDO
 
   ENDDO
+21 CONTINUE
 
   niso = i-1
 
@@ -120,6 +140,11 @@ SUBROUTINE SETUP_MODELS()
   !convert to flux
   iso(1:niso)%bands(1) = 10**(-2./5*iso(1:niso)%bands(1))
   iso(1:niso)%bands(2) = 10**(-2./5*iso(1:niso)%bands(2))
+
+  !need to renormalize the weights since we now lump things togehter
+  DO i=1,niso
+     iso(i)%imf = iso(i)%imf / nisoage(iso(i)%aind)
+  ENDDO
 
 
 END SUBROUTINE SETUP_MODELS

@@ -31,8 +31,10 @@ MODULE PIXCMD_VARS
   !if set, draw random numbers for each Poisson draw
   !if not set, use the master random number array
   INTEGER, PARAMETER :: true_poisson=0
+  !if set, include observational errors
+  INTEGER, PARAMETER :: incl_obs_err=0
   !if >0, then set the random seed to fix_seed
-  INTEGER :: fix_seed=4000
+  INTEGER :: fix_seed=2000
 
   !epsilon parameter for Approx Bayesian Computation
   REAL(SP), PARAMETER :: abc=0.0
@@ -51,7 +53,7 @@ MODULE PIXCMD_VARS
   REAL(SP), DIMENSION(nfil), PARAMETER :: red_per_ebv = (/3.268,1.526/)
  
   !upper/lower priors
-  REAL(SP), PARAMETER :: prlo=-9.0,prhi=0.3,wdth0=0.2
+  REAL(SP), PARAMETER :: prlo=-9.0,prhi=0.3,wdth0=1E-3 !0.2
   REAL(SP), PARAMETER :: prlo_m=0.5,prhi_m=7.0
   REAL(SP), PARAMETER :: prlo_lebv=-7.0,prhi_lebv=0.5
 
@@ -64,11 +66,12 @@ MODULE PIXCMD_VARS
   REAL(SP), PARAMETER :: maxpoidev=40.
   
   !number of age and metallicity points in the model
-  INTEGER, PARAMETER :: nage=11,nz=1,nzskip=5
+  INTEGER, PARAMETER :: nage=7,nz=1,nzskip=5
   !parameters defining the age array
-  REAL(SP) :: dage=0.4,age0=6.0
-  REAL(SP), DIMENSION(nage) :: agesarr=0.
-  REAL(SP), DIMENSION(nz)   :: zmetarr=0.
+  REAL(SP) :: dage=0.5,age0=6.0
+  REAL(SP), DIMENSION(nage)   :: agesarr=0.
+  REAL(SP), DIMENSION(nage+1) :: agesarr2=0.
+  REAL(SP), DIMENSION(nz)     :: zmetarr=0.
 
   !number of free parameters 
   INTEGER, PARAMETER :: nxpar = 1 !mpix
@@ -109,9 +112,10 @@ MODULE PIXCMD_VARS
 
   !type structure for the isochrones
   TYPE TISO
-     !band order is BVIJH
+     !band order is BI
      REAL(SP), DIMENSION(nfil) :: bands=0.0
      REAL(SP) :: imf=-99.,mass=0.0,age=0.0
+     INTEGER  :: aind=1
   END TYPE TISO
 
   !array holding the actual isochrones
@@ -119,7 +123,7 @@ MODULE PIXCMD_VARS
 
   !actual number of isochrone points
   INTEGER :: niso
-  !location of age breaks in the isochrone file
-  INTEGER, DIMENSION(nage+1) :: ageind
+  !number of isochrones per age bin
+  INTEGER, DIMENSION(nage) :: nisoage=1
 
 END MODULE PIXCMD_VARS

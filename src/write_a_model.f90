@@ -10,7 +10,7 @@ PROGRAM WRITE_A_MODEL
   !   defaults: Mpix=2.0, constant SFH
 
   USE nrtype; USE pixcmd_utils; USE pixcmd_vars
-  USE nr, ONLY : locate,ran1
+  USE nr, ONLY : locate,ran1,gasdev
   IMPLICIT NONE
   
   INTEGER  :: i,j,sfhflag=1,ii
@@ -75,6 +75,9 @@ PROGRAM WRITE_A_MODEL
   DO i=1,niso_max
      CALL RAN1(ranarr(:,i))
   ENDDO
+  DO i=1,npix
+     CALL GASDEV(gdev(:,i))
+  ENDDO
 
   !setup the model grid
   CALL SETUP_MODELS()
@@ -93,16 +96,12 @@ PROGRAM WRITE_A_MODEL
         sfh = EXP(-(10**10.201-10**agesarr)/1E9/tau) / tau/1E9
      ELSE
         !constant SFH
-        sfh = 1/10**agesarr(nage)
+        sfh = 1/10**agesarr2(nage+1)
      ENDIF
 
      DO j=1,nage
         DO i=1,nz
-           IF (j.EQ.1) THEN
-              dt = (10**agesarr(j)-10**(agesarr(j)-dage))
-           ELSE
-              dt = (10**agesarr(j)-10**agesarr(j-1))
-           ENDIF
+           dt = (10**agesarr2(j+1)-10**agesarr2(j))
            wgt(i,j) = mdf(i)*sfh(j)*dt
            twgt = twgt+wgt(i,j)
         ENDDO
@@ -116,7 +115,7 @@ PROGRAM WRITE_A_MODEL
 
      !SSP at age=tau
      ii = locate(agesarr,tau)
-     wgt(1,:) = 1E-8
+     wgt(1,:)  = 10**prlo
      wgt(1,ii) = 1.0
 
   ENDIF

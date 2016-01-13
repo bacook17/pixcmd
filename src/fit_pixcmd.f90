@@ -10,7 +10,7 @@ PROGRAM FIT_PIXCMD
   IMPLICIT NONE
 
   !key emcee parameters
-  INTEGER, PARAMETER :: nwalkers=128,nburn=1000,nmcmc=50
+  INTEGER, PARAMETER :: nwalkers=64,nburn=10,nmcmc=200
 
   !starting guess for the Mpix parameter
   REAL(SP) :: mpix=2.0
@@ -22,12 +22,12 @@ PROGRAM FIT_PIXCMD
   !fit for tau-Mpix
   INTEGER, PARAMETER :: dotaufit=0
   !fix the SFH=const
-  INTEGER, PARAMETER :: doinitsfh=0
+  INTEGER, PARAMETER :: doinitsfh=1
 
   INTEGER  :: i,j,k,ml,ndat,stat,iter=30,totacc=0,npos
   REAL(SP) :: fret,bret=huge_number,dt,cmin,cmean,cstd,minchi2=huge_number
   CHARACTER(10) :: time,is,tmpstr
-  REAL(SP) :: time1,time2,wdth1
+  REAL(SP) :: time1,time2,wdth1,twgt
   REAL(SP), DIMENSION(2) :: dumt,dumt2
   CHARACTER(50) :: infile,tag=''
   REAL(SP), DIMENSION(nx,ny) :: bmodel=0.,imodel=0.
@@ -110,7 +110,6 @@ PROGRAM FIT_PIXCMD
   DO i=1,npix
      CALL GASDEV(gdev(:,i))
   ENDDO
-
 
   !now that the ranarr is identically initialized,
   !re-set the seed or each taskid for the emcee steps
@@ -236,15 +235,13 @@ PROGRAM FIT_PIXCMD
      ELSE IF (doinitsfh.EQ.1) THEN
 
         !initialize with a constant SFH
-        sfh = 1/10**agesarr(nage)
+        sfh = 1/10**agesarr2(nage+1)
         DO j=1,nage
-           IF (j.EQ.1) THEN
-              dt = (10**agesarr(j)-10**(agesarr(j)-dage))
-           ELSE
-              dt = (10**agesarr(j)-10**agesarr(j-1))
-           ENDIF
+           dt = (10**agesarr2(j+1)-10**agesarr2(j))
            wgt(j) = sfh(j)*dt
+           twgt = twgt+wgt(j)
         ENDDO
+        wgt = wgt/twgt
         !transfer the parameters to the parameter array
         bpos(1)      = mpix
         bpos(1+nxpar:npar) = LOG10(wgt)
@@ -260,14 +257,12 @@ PROGRAM FIT_PIXCMD
      !   bpos(i) = myran()*(prhi-prlo-3*wdth0) + (prlo+1.5*wdth0)
      !ENDDO
      !test smoothness of chi^2 surface
-   !  bpos(1)=4.5
-   !  DO i=1,20
-   !     bpos(23) = LOG10(wgt(22)) + 0.2*i-3.
-   !     !bpos(1) = mpix + 0.2*i-1.
-   !     fret = func(bpos)
-   !     write(*,*) bpos(23),fret
-   !  ENDDO
-   !  STOP
+    ! DO i=1,20
+    !    bpos(5) = LOG10(wgt(4)) + 0.2*i-2.
+    !    fret = func(bpos)
+    !    write(*,*) bpos(5),fret
+    ! ENDDO
+    ! STOP
 
 
      !-------------------------------------------------------------------!

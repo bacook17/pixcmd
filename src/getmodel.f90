@@ -13,9 +13,8 @@ FUNCTION GETMODEL(inpos,im)
   REAL(SP), DIMENSION(npix,npix,nfil) :: f1,cf1,of1
   REAL(SP), DIMENSION(npix,npix) :: narr
   INTEGER  :: i,k,f
-  REAL(SP) :: nnn
+  REAL(SP) :: nnn,tt
   CHARACTER(10) :: time
-  REAL(SP), DIMENSION(niso_max) :: imf
 
   !------------------------------------------------------------!
 
@@ -24,26 +23,15 @@ FUNCTION GETMODEL(inpos,im)
      WRITE(*,*) '1 Time '//time(1:2)//':'//time(3:4)//':'//time(5:9)
   ENDIF
 
-  !push the age weights into the IMF weights
-  imf = 0.0
-  DO i=1,nage
-     IF (10**inpos(i+nxpar).LT.0.2/(npix**2).OR.&
-          inpos(i+nxpar).LE.prlo) THEN
-        imf(ageind(i)+1:ageind(i+1)) = 0.0
-     ELSE
-        imf(ageind(i)+1:ageind(i+1)) = &
-             10**inpos(i+1)*iso(ageind(i)+1:ageind(i+1))%imf
-     ENDIF
-
-  ENDDO
-
   !compute the model at each pixel
   f1 = 0.0
   DO k=1,niso
 
-     IF (imf(k).LT.tiny_number) CYCLE
+     tt = inpos(nxpar+iso(k)%aind)
 
-     nnn = 10**inpos(1)*imf(k)
+     IF (tt.LE.prlo.OR.10**tt.LT.0.2/(npix**2)) CYCLE
+
+     nnn = 10**inpos(1)*10**tt*iso(k)%imf
  
      !treat masses less than minmass as continuously sampled
      IF (iso(k)%mass.LT.minmass.OR.nnn.GT.minnum) THEN
@@ -72,9 +60,12 @@ FUNCTION GETMODEL(inpos,im)
   cf1 = convolve(f1)
 
   !add obs errors
-  !of1 = add_obs_err(cf1)
-  !no errors!
-  of1 = -2.5*LOG10(cf1)
+  IF (incl_obs_err.EQ.1) THEN
+     of1 = add_obs_err(cf1)
+  ELSE
+     !no errors!
+     of1 = -2.5*LOG10(cf1)
+  ENDIF
 
   !return the I-band image if included in the function call
   IF (PRESENT(im)) im=of1(:,:,2)
