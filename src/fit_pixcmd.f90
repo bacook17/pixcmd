@@ -10,7 +10,7 @@ PROGRAM FIT_PIXCMD
   IMPLICIT NONE
 
   !key emcee parameters
-  INTEGER, PARAMETER :: nwalkers=128,nburn=10,nmcmc=5000
+  INTEGER, PARAMETER :: nwalkers=128,nburn=10,nmcmc=2000
 
   !flag for testing clock time
   INTEGER, PARAMETER :: test_time=1
@@ -338,8 +338,8 @@ PROGRAM FIT_PIXCMD
         wdth1 = wdth0
      ENDIF
      DO j=1,nwalkers
-        !if chi^2 > min+2stddev, then re-initialize
-        IF (tchi2(j).GT.(cmin+2*cstd)) THEN
+        !if chi^2 > min+stddev, then re-initialize
+        IF (tchi2(j).GT.(cmin+cstd)) THEN
            DO i=1,npar
               pos_emcee_in(i,j) = bpos(i)+wdth1*(2.*myran()-1.0)
               IF (i.EQ.1) CYCLE

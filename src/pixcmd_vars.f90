@@ -32,7 +32,7 @@ MODULE PIXCMD_VARS
   !if not set, use the master random number array
   INTEGER, PARAMETER :: true_poisson=0
   !if set, include observational errors
-  INTEGER, PARAMETER :: incl_obs_err=0
+  INTEGER, PARAMETER :: incl_obs_err=1
   !if >0, then set the random seed to fix_seed
   INTEGER :: fix_seed=500
 
