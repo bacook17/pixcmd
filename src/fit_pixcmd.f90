@@ -10,7 +10,7 @@ PROGRAM FIT_PIXCMD
   IMPLICIT NONE
 
   !key emcee parameters
-  INTEGER, PARAMETER :: nwalkers=128,nburn=10,nmcmc=2000
+  INTEGER, PARAMETER :: nwalkers=64,nburn=10,nmcmc=2000
 
   !flag for testing clock time
   INTEGER, PARAMETER :: test_time=1
