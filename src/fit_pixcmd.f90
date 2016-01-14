@@ -17,9 +17,9 @@ PROGRAM FIT_PIXCMD
   !Powell minimization
   INTEGER, PARAMETER :: dopowell=0
   !fit for tau-Mpix
-  INTEGER, PARAMETER :: dotaufit=0
+  INTEGER, PARAMETER :: dotaufit=1
   !fix the SFH=const
-  INTEGER, PARAMETER :: doinitsfh=1
+  INTEGER, PARAMETER :: doinitsfh=0
 
   INTEGER  :: i,j,k,ml,ndat,stat,iter=30,totacc=0,npos
   REAL(SP) :: fret,bret=huge_number,dt,cmin,cmean,cstd,minchi2=huge_number

@@ -34,7 +34,7 @@ MODULE PIXCMD_VARS
   !if set, include observational errors
   INTEGER, PARAMETER :: incl_obs_err=1
   !if >0, then set the random seed to fix_seed
-  INTEGER :: fix_seed=500
+  INTEGER :: fix_seed=3000
 
   !epsilon parameter for Approx Bayesian Computation
   REAL(SP), PARAMETER :: abc=0.0
