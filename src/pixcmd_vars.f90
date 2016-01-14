@@ -34,10 +34,7 @@ MODULE PIXCMD_VARS
   !if set, include observational errors
   INTEGER, PARAMETER :: incl_obs_err=1
   !if >0, then set the random seed to fix_seed
-  INTEGER :: fix_seed=3000
-
-  !epsilon parameter for Approx Bayesian Computation
-  REAL(SP), PARAMETER :: abc=0.0
+  INTEGER :: fix_seed=9000
 
   !variables for model image and CMD Hess diagram
   INTEGER, PARAMETER  :: nx=121,ny=351,nfil=2
@@ -53,7 +50,7 @@ MODULE PIXCMD_VARS
   REAL(SP), DIMENSION(nfil), PARAMETER :: red_per_ebv = (/3.268,1.526/)
  
   !upper/lower priors
-  REAL(SP), PARAMETER :: prlo=-9.0,prhi=0.5,wdth0=0.1
+  REAL(SP), PARAMETER :: prlo=-10.0,prhi=0.5,wdth0=0.1
   REAL(SP), PARAMETER :: prlo_m=0.5,prhi_m=7.0
   REAL(SP), PARAMETER :: prlo_lebv=-7.0,prhi_lebv=0.5
 
@@ -99,7 +96,7 @@ MODULE PIXCMD_VARS
   INTEGER, PARAMETER :: nran=256*256
   INTEGER :: kran=1
   REAL(SP), DIMENSION(nran,niso_max) :: ranarr
-  REAL(SP), DIMENSION(npix,npix) :: gdev
+  REAL(SP), DIMENSION(npix,npix) :: gdev,gdev2
 
   !---------------------common arrays---------------------!
 

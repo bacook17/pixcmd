@@ -86,7 +86,7 @@ SUBROUTINE EMCEE_ADVANCE_MPI (ndim, nwalkers, a, pin, lpin, &
   !Now loop over walkers to accept/reject, and update
   DO k=1,nwalkers
      
-     diff = (ndim - 1.0) * LOG(zarr(k)) + lpnew(k) - lpin(k) + abc
+     diff = (ndim - 1.0) * LOG(zarr(k)) + lpnew(k) - lpin(k)
      
      !Accept or reject
      IF (diff.GE.0.0) THEN

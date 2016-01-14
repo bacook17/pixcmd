@@ -17,7 +17,7 @@ PROGRAM FIT_PIXCMD
   !Powell minimization
   INTEGER, PARAMETER :: dopowell=0
   !fit for tau-Mpix
-  INTEGER, PARAMETER :: dotaufit=1
+  INTEGER, PARAMETER :: dotaufit=0
   !fix the SFH=const
   INTEGER, PARAMETER :: doinitsfh=0
 
@@ -83,6 +83,7 @@ PROGRAM FIT_PIXCMD
      WRITE(*,*)
      WRITE(*,'(" ************************************")')
      WRITE(*,'("   Mpix_init  = ",1x,F4.1)') mpix0
+     WRITE(*,'("   Npix       = ",I5)') npix
      WRITE(*,'("   dopowell   = ",I5)') dopowell
      WRITE(*,'("   dotaufit   = ",I5)') dotaufit
      WRITE(*,'("   doinitsfh  = ",I5)') doinitsfh
@@ -107,6 +108,7 @@ PROGRAM FIT_PIXCMD
   ENDDO
   DO i=1,npix
      CALL GASDEV(gdev(:,i))
+     CALL GASDEV(gdev2(:,i))
   ENDDO
 
   !now that the ranarr is identically initialized,
@@ -399,6 +401,20 @@ PROGRAM FIT_PIXCMD
 
      OPEN(12,FILE=TRIM(PIXCMD_HOME)//'/results2/'//&
           TRIM(infile)//TRIM(tag)//'.mcmc',STATUS='REPLACE')
+
+     WRITE(12,'("#   Mpix_init  = ",1x,F4.1)') mpix0
+     WRITE(12,'("#   Npix       = ",I5)') npix
+     WRITE(12,'("#   dopowell   = ",I5)') dopowell
+     WRITE(12,'("#   dotaufit   = ",I5)') dotaufit
+     WRITE(12,'("#   doinitsfh  = ",I5)') doinitsfh
+     WRITE(12,'("#   Nwalkers   = ",I5)') nwalkers
+     WRITE(12,'("#   Nburn      = ",I5)') nburn
+     WRITE(12,'("#   Nchain     = ",I5)') nmcmc
+     WRITE(12,'("#   Ntasks     = ",I5)') ntasks
+
+     WRITE(12,'(2I3)') nage, nz
+     WRITE(12,'(20(F5.2,1x))') agesarr
+
 
      WRITE(*,'(A)',advance='no') ' production run: '       
      DO i=1,nmcmc
