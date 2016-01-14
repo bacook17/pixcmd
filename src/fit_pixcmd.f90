@@ -10,7 +10,7 @@ PROGRAM FIT_PIXCMD
   IMPLICIT NONE
 
   !key emcee parameters
-  INTEGER, PARAMETER :: nwalkers=64,nburn=10,nmcmc=2000
+  INTEGER, PARAMETER :: nwalkers=128,nburn=10,nmcmc=5000
 
   !flag for testing clock time
   INTEGER, PARAMETER :: test_time=1
@@ -58,6 +58,7 @@ PROGRAM FIT_PIXCMD
   IF (IARGC().LT.1) THEN
      !infile='m31_bulge'
      infile='model_M2.0_SFH1_tau10.0'
+     mpix0=2.0
   ELSE
      CALL GETARG(1,infile)
   ENDIF
@@ -332,7 +333,7 @@ PROGRAM FIT_PIXCMD
      bpos  = pos_emcee_in(:,ml) !params at min chi^2
      k=0
      IF (nburn.GT.100) THEN
-        wdth1 = wdth0/5.
+        wdth1 = 1E-3
      ELSE
         wdth1 = wdth0
      ENDIF
@@ -342,16 +343,21 @@ PROGRAM FIT_PIXCMD
            DO i=1,npar
               pos_emcee_in(i,j) = bpos(i)+wdth1*(2.*myran()-1.0)
               IF (i.EQ.1) CYCLE
-              IF (pos_emcee_in(i,j).LT.prlo) &
-                   pos_emcee_in(i,j)=prlo+wdth0/5.
-              IF (pos_emcee_in(i,j).GT.prhi) &
-                   pos_emcee_in(i,j)=prhi-wdth0/5.
+              IF ((pos_emcee_in(i,j)-mpix0).LT.prlo) &
+                   pos_emcee_in(i,j)=prlo+2*wdth1
+              IF ((pos_emcee_in(i,j)-mpix0).GT.prhi) &
+                   pos_emcee_in(i,j)=prhi-2*wdth1
            ENDDO
            k=k+1
         ENDIF
      ENDDO
 
-     WRITE(*,'("Reinitialized ",I3," out of ",I3," walkers")') k,nwalkers
+     WRITE(*,'("Re-initialized ",I3," out of ",I3," walkers")') k,nwalkers
+
+     WRITE(*,*) 're-initialized parameters:'
+     DO j=1,nwalkers
+        WRITE(*,'(30(F5.2,1x))') pos_emcee_in(:,j)
+     ENDDO
 
      !Compute the initial log-probability for each walker
      CALL FUNCTION_PARALLEL_MAP(npar,nwalkers,ntasks-1,&
