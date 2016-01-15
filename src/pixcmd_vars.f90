@@ -34,7 +34,7 @@ MODULE PIXCMD_VARS
   !if set, include observational errors
   INTEGER, PARAMETER :: incl_obs_err=1
   !if >0, then set the random seed to fix_seed
-  INTEGER :: fix_seed=9000
+  INTEGER :: fix_seed=3300
 
   !variables for model image and CMD Hess diagram
   INTEGER, PARAMETER  :: nx=121,ny=351,nfil=2
