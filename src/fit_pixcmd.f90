@@ -4,7 +4,7 @@ PROGRAM FIT_PIXCMD
   !syntax: mpirun -np XX fit_pixcmd.exe input_data Mpix_init tag
 
   USE pixcmd_utils; USE pixcmd_vars; USE nrtype
-  USE nr, ONLY : powell,ran1,gasdev; USE mpi
+  USE nr, ONLY : ran1,gasdev; USE mpi
   USE ran_state, ONLY : ran_seed,ran_init
 
   IMPLICIT NONE
@@ -14,8 +14,6 @@ PROGRAM FIT_PIXCMD
 
   !flag for testing clock time
   INTEGER, PARAMETER :: test_time=1
-  !Powell minimization
-  INTEGER, PARAMETER :: dopowell=0
   !fit for tau-Mpix
   INTEGER, PARAMETER :: dotaufit=0
   !fix the SFH=const
@@ -35,11 +33,6 @@ PROGRAM FIT_PIXCMD
   REAL(SP), DIMENSION(nwalkers)      :: lp_emcee_in,lp_emcee_out,lp_mpi,tchi2
   INTEGER,  DIMENSION(nwalkers)      :: accept_emcee
   REAL(SP), DIMENSION(npar,nwalkers) :: mpiposarr=0.0
-
-  !Powell variables
-  REAL(SP), PARAMETER :: ftol=100.
-  REAL(SP), DIMENSION(npar,npar) :: xi=0.0
-  REAL(SP), DIMENSION(npar)      :: pos=0.0,bpos=0.,dum9=-9.0
 
   !MPI variables
   INTEGER :: ierr,taskid,ntasks,received_tag,status(MPI_STATUS_SIZE)
@@ -84,7 +77,6 @@ PROGRAM FIT_PIXCMD
      WRITE(*,'(" ************************************")')
      WRITE(*,'("   Mpix_init  = ",1x,F4.1)') mpix0
      WRITE(*,'("   Npix       = ",I5)') npix
-     WRITE(*,'("   dopowell   = ",I5)') dopowell
      WRITE(*,'("   dotaufit   = ",I5)') dotaufit
      WRITE(*,'("   doinitsfh  = ",I5)') doinitsfh
      WRITE(*,'("   Nwalkers   = ",I5)') nwalkers
@@ -198,34 +190,7 @@ PROGRAM FIT_PIXCMD
 
      !----------------------Initialization--------------------------!
 
-     IF (dopowell.EQ.1) THEN
-
-        !Powell minimization
-        WRITE(*,*) 'Running Powell minimization'
-        
-        DO j=1,10
-           !setup params
-           DO i=1+nxpar,npar
-              pos(i) = myran()*(prhi-prlo-3*wdth0) + (prlo+1.5*wdth0)
-           ENDDO
-           pos(1+nxpar:npar) = pos(1+nxpar:npar) - &
-                LOG10(SUM(10**pos(1+nxpar:npar)))
-           pos = pos+mpix0
-           xi=0.0
-           DO i=1+nxpar,npar
-              xi(i,i) = 1.0
-           ENDDO
-           fret = huge_number
-           CALL POWELL(pos,xi,ftol,iter,fret)
-           WRITE(*,'(50F10.5)') LOG10(fret),pos
-           IF (fret.LT.bret) THEN
-              bret = fret
-              bpos = pos
-           ENDIF
-        ENDDO
-        WRITE(*,'(5F10.5)') LOG10(bret),log10(bret/(nx*ny-npar))
-
-     ELSE IF (dotaufit.EQ.1) THEN
+     IF (dotaufit.EQ.1) THEN
 
         !fit in a grid of tau and Mpix
         WRITE(*,*) 'Running tau-mpix fitter'
@@ -327,34 +292,25 @@ PROGRAM FIT_PIXCMD
      WRITE(*,*) 'chi^2 after first-pass:'
      WRITE(*,'(10(ES10.3,1x))') -2.0*lp_emcee_in
 
-     tchi2 = LOG10(-2.0*lp_emcee_in)
-     cmin  = MINVAL(tchi2) !min chi^2
-     cmean = SUM(tchi2)/nwalkers !mean chi^2
-     cstd  = SQRT( SUM( (tchi2-cmean)**2 )/(nwalkers-1) ) !stddev chi^2
-     ml    = MINLOC(tchi2,1) !location of min chi^2
-     bpos  = pos_emcee_in(:,ml) !params at min chi^2
-     k=0
+     !take the min(chi^2) and re-initialize a ball around
+     !the minimum
+     ml    = MINLOC(tchi2,1)    
+     bpos  = pos_emcee_in(:,ml) 
      IF (nburn.GT.100) THEN
         wdth1 = 1E-3
      ELSE
         wdth1 = wdth0
      ENDIF
      DO j=1,nwalkers
-        !if chi^2 > min+stddev, then re-initialize
-        IF (tchi2(j).GT.(cmin+cstd)) THEN
-           DO i=1,npar
-              pos_emcee_in(i,j) = bpos(i)+wdth1*(2.*myran()-1.0)
-              IF (i.EQ.1) CYCLE
-              IF ((pos_emcee_in(i,j)-mpix0).LT.prlo) &
-                   pos_emcee_in(i,j)=prlo+2*wdth1
-              IF ((pos_emcee_in(i,j)-mpix0).GT.prhi) &
-                   pos_emcee_in(i,j)=prhi-2*wdth1
-           ENDDO
-           k=k+1
-        ENDIF
+        DO i=1,npar
+           pos_emcee_in(i,j) = bpos(i)+wdth1*(2.*myran()-1.0)
+           IF (i.EQ.1) CYCLE
+           IF ((pos_emcee_in(i,j)-mpix0).LT.prlo) &
+                pos_emcee_in(i,j)=prlo+2*wdth1
+           IF ((pos_emcee_in(i,j)-mpix0).GT.prhi) &
+                pos_emcee_in(i,j)=prhi-2*wdth1
+        ENDDO
      ENDDO
-
-     WRITE(*,'("Re-initialized ",I3," out of ",I3," walkers")') k,nwalkers
 
      WRITE(*,*) 're-initialized parameters:'
      DO j=1,nwalkers
