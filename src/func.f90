@@ -16,12 +16,9 @@ FUNCTION FUNC(inpos)
 
   !------------------- priors----------------------!
   
-  !prior on the mass per pixel
-  !IF (inpos(1).LT.prlo_m.OR.inpos(1).GT.prhi_m) func=huge_number
-
-  !priors on the weights for each component
-  DO i=1+nxpar,npar
-     IF ((inpos(i)-mpix0).LT.prlo.OR.(inpos(i)-mpix0).GT.prhi) func=huge_number
+  !priors for each parameter
+  DO i=1,npar
+     IF (inpos(i).LT.prlo(i).OR.inpos(i).GT.prhi(i)) func=huge_number
      IF (ISNAN(inpos(i))) THEN
         WRITE(*,'("FUNC ERROR: inpos returned a NaN:",10F18.2)') inpos
         STOP
@@ -36,6 +33,8 @@ FUNCTION FUNC(inpos)
 
      IF (SUM(imodel).LT.tiny_number) THEN
 
+        !this means that the model is out of bounds of the 
+        !Hess diagram.
         func = huge_number / 10.
 
      ELSE

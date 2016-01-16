@@ -1,7 +1,7 @@
 PROGRAM FIT_PIXCMD
 
   !To Do: 1) include E(B-V) and Z as free parameters
-  !syntax: mpirun -np XX fit_pixcmd.exe input_data Mpix_init tag
+  !syntax: mpirun -np XX fit_pixcmd.exe input_data Mpix_init lebv_init tag
 
   USE pixcmd_utils; USE pixcmd_vars; USE nrtype
   USE nr, ONLY : ran1,gasdev; USE mpi
@@ -10,25 +10,25 @@ PROGRAM FIT_PIXCMD
   IMPLICIT NONE
 
   !key emcee parameters
-  INTEGER, PARAMETER :: nwalkers=64,nburn=10,nmcmc=2000
-
+  INTEGER, PARAMETER :: nwalkers=64,nburn=10,nmcmc=1000
   !flag for testing clock time
   INTEGER, PARAMETER :: test_time=1
   !fit for tau-Mpix
   INTEGER, PARAMETER :: dotaufit=0
   !fix the SFH=const
-  INTEGER, PARAMETER :: doinitsfh=0
+  INTEGER, PARAMETER :: doinitsfh=1
 
   INTEGER  :: i,j,k,ml,ndat,stat,iter=30,totacc=0,npos
-  REAL(SP) :: fret,bret=huge_number,dt,cmin,cmean,cstd,minchi2=huge_number
+  REAL(SP) :: dt,cmin,cstd,minchi2=huge_number
+  REAL(SP) :: time1,time2,wdth1=1E-3,twgt=0.0
   CHARACTER(10) :: time,is,tmpstr
-  REAL(SP) :: time1,time2,wdth1,twgt
-  REAL(SP), DIMENSION(2) :: dumt,dumt2
   CHARACTER(50) :: infile,tag=''
+  REAL(SP), DIMENSION(2) :: dumt,dumt2
   REAL(SP), DIMENSION(nx,ny) :: bmodel=0.,imodel=0.
   REAL(SP), DIMENSION(nage) :: sfh,wgt
 
   !emcee variables
+  REAL(SP), DIMENSION(npar) :: bpos=-99.,dumpos=-99.
   REAL(SP), DIMENSION(npar,nwalkers) :: pos_emcee_in,pos_emcee_out
   REAL(SP), DIMENSION(nwalkers)      :: lp_emcee_in,lp_emcee_out,lp_mpi,tchi2
   INTEGER,  DIMENSION(nwalkers)      :: accept_emcee
@@ -61,9 +61,14 @@ PROGRAM FIT_PIXCMD
      READ(tmpstr,'(F4.1)') mpix0
   ENDIF
 
-  IF (IARGC().EQ.3) THEN
+  IF (IARGC().GE.3) THEN
+     CALL GETARG(3,tmpstr)
+     READ(tmpstr,'(F4.1)') lebv0
+  ENDIF
+
+  IF (IARGC().EQ.4) THEN
      tag(1:1)='_'
-     CALL GETARG(3,tag(2:))
+     CALL GETARG(4,tag(2:))
   ENDIF
 
   IF (ntasks.EQ.1) THEN
@@ -76,6 +81,7 @@ PROGRAM FIT_PIXCMD
      WRITE(*,*)
      WRITE(*,'(" ************************************")')
      WRITE(*,'("   Mpix_init  = ",1x,F4.1)') mpix0
+     WRITE(*,'("   lebv_init  = ",1x,F4.1)') lebv0
      WRITE(*,'("   Npix       = ",I5)') npix
      WRITE(*,'("   dotaufit   = ",I5)') dotaufit
      WRITE(*,'("   doinitsfh  = ",I5)') doinitsfh
@@ -87,6 +93,11 @@ PROGRAM FIT_PIXCMD
      WRITE(*,'(" ************************************")')
   ENDIF
 
+  !transfer the priors to the prior array
+  prlo(1)            = prlo_lebv
+  prlo(1+nxpar:npar) = prlo_sfh+mpix0
+  prhi(1)            = prhi_lebv
+  prhi(1+nxpar:npar) = prhi_sfh+mpix0
 
   !initialize the random number generator
   !set each task to sleep for a different length of time
@@ -104,7 +115,7 @@ PROGRAM FIT_PIXCMD
   ENDDO
 
   !now that the ranarr is identically initialized,
-  !re-set the seed or each taskid for the emcee steps
+  !re-set the seed on each taskid for the emcee steps
   IF (fix_seed.NE.0) THEN
      fix_seed=0
      CALL SLEEP(taskid)
@@ -187,8 +198,7 @@ PROGRAM FIT_PIXCMD
      CALL DATE_AND_TIME(TIME=time)
      WRITE(*,*) 'Start Time '//time(1:2)//':'//time(3:4)//':'//time(5:6)
 
-
-     !----------------------Initialization--------------------------!
+     !----------------------Intial Best-Fit--------------------------!
 
      IF (dotaufit.EQ.1) THEN
 
@@ -207,6 +217,7 @@ PROGRAM FIT_PIXCMD
         ENDDO
         wgt = wgt/twgt
         !transfer the parameters to the parameter array
+        bpos(1) = lebv0   ! log(EBV)
         bpos(1+nxpar:npar) = LOG10(wgt)+mpix0
 
      ELSE
@@ -215,14 +226,10 @@ PROGRAM FIT_PIXCMD
 
      ENDIF
      
-     !DO i=1+nxpar,npar
-     !   bpos(i) = myran()*(prhi-prlo-3*wdth0) + (prlo+1.5*wdth0) + mpix0
-     !ENDDO
      !test smoothness of chi^2 surface
     ! DO i=1,20
     !    bpos(5) = LOG10(wgt(4)) + 0.2*i-2.
-    !    fret = func(bpos)
-    !    write(*,*) bpos(5),fret
+    !    write(*,*) bpos(5),func(bpos)
     ! ENDDO
     ! STOP
 
@@ -234,7 +241,7 @@ PROGRAM FIT_PIXCMD
      !setup the starting positions
      WRITE(*,*) 'initial parameters:'
 
-     IF (dotaufit.EQ.1.OR.dopowell.EQ.1.OR.doinitsfh.EQ.1) THEN
+     IF (dotaufit.EQ.1.OR.doinitsfh.EQ.1) THEN
         !initialize parameters near the best-fit intializer
         DO j=1,nwalkers
            DO i=1,npar
@@ -245,11 +252,11 @@ PROGRAM FIT_PIXCMD
      ELSE
         !initialize randomly across parameter space
         DO j=1,nwalkers
-           DO i=1+nxpar,npar
-              pos_emcee_in(i,j) = myran()*(prhi-prlo-6*wdth0) + &
-                   (prlo+3*wdth0) + mpix0
+           DO i=1,npar
+              pos_emcee_in(i,j) = myran()*(prhi(i)-prlo(i)-6*wdth0) + &
+                   (prlo(i)+3*wdth0)
            ENDDO
-           WRITE(*,'(30(F5.2,1x))') pos_emcee_in(:,j)
+           WRITE(*,'(30(F6.2,1x))') pos_emcee_in(:,j)
         ENDDO
      ENDIF
 
@@ -264,7 +271,7 @@ PROGRAM FIT_PIXCMD
      !cstd  = SQRT(SUM( (tchi2-SUM(tchi2)/nwalkers)**2 )/(nwalkers-1))
      !write(*,*) cstd
 
-     IF (-2.0*MAXVAL(lp_emcee_in).EQ.huge_number) THEN
+     IF (-2.0*MAXVAL(lp_emcee_in).GE.huge_number) THEN
         WRITE(*,*) 'FIT_PIXCMD ERROR: initial parameters are out of bounds'
         STOP
      ENDIF
@@ -293,36 +300,35 @@ PROGRAM FIT_PIXCMD
      WRITE(*,'(10(ES10.3,1x))') -2.0*lp_emcee_in
 
      !take the min(chi^2) and re-initialize a ball around
-     !the minimum
-     ml    = MINLOC(tchi2,1)    
-     bpos  = pos_emcee_in(:,ml) 
+     !the minimum, if nburn>100
      IF (nburn.GT.100) THEN
-        wdth1 = 1E-3
-     ELSE
-        wdth1 = wdth0
-     ENDIF
-     DO j=1,nwalkers
-        DO i=1,npar
-           pos_emcee_in(i,j) = bpos(i)+wdth1*(2.*myran()-1.0)
-           IF (i.EQ.1) CYCLE
-           IF ((pos_emcee_in(i,j)-mpix0).LT.prlo) &
-                pos_emcee_in(i,j)=prlo+2*wdth1
-           IF ((pos_emcee_in(i,j)-mpix0).GT.prhi) &
-                pos_emcee_in(i,j)=prhi-2*wdth1
+
+        ml    = MINLOC(tchi2,1)    
+        bpos  = pos_emcee_in(:,ml) 
+
+        DO j=1,nwalkers
+           DO i=1,npar
+              pos_emcee_in(i,j) = bpos(i)+wdth1*(2.*myran()-1.0)
+              IF (pos_emcee_in(i,j).LT.prlo(i)) &
+                   pos_emcee_in(i,j)=prlo(i)+2*wdth1
+              IF (pos_emcee_in(i,j).GT.prhi(i)) &
+                   pos_emcee_in(i,j)=prhi(i)-2*wdth1
+           ENDDO
         ENDDO
-     ENDDO
 
-     WRITE(*,*) 're-initialized parameters:'
-     DO j=1,nwalkers
-        WRITE(*,'(30(F5.2,1x))') pos_emcee_in(:,j)
-     ENDDO
+        WRITE(*,*) 're-initialized parameters:'
+        DO j=1,nwalkers
+           WRITE(*,'(30(F5.2,1x))') pos_emcee_in(:,j)
+        ENDDO
 
-     !Compute the initial log-probability for each walker
-     CALL FUNCTION_PARALLEL_MAP(npar,nwalkers,ntasks-1,&
-          pos_emcee_in,lp_emcee_in)
+        !Compute the initial log-probability for each walker
+        CALL FUNCTION_PARALLEL_MAP(npar,nwalkers,ntasks-1,&
+             pos_emcee_in,lp_emcee_in)
 
-     WRITE(*,*) 'chi^2 for re-initialized walkers:'
-     WRITE(*,'(10(ES10.3,1x))') -2.0*lp_emcee_in
+        WRITE(*,*) 'chi^2 for re-initialized walkers:'
+        WRITE(*,'(10(ES10.3,1x))') -2.0*lp_emcee_in
+
+     ENDIF
 
      !-------------------second-pass burn-in-------------------!
 
@@ -352,22 +358,21 @@ PROGRAM FIT_PIXCMD
      WRITE(*,*) 'chi^2 after second-pass:'
      WRITE(*,'(10(ES10.3,1x))') -2.0*lp_emcee_in
 
-
      !-------------------production chain--------------------!
 
      OPEN(12,FILE=TRIM(PIXCMD_HOME)//'/results2/'//&
           TRIM(infile)//TRIM(tag)//'.mcmc',STATUS='REPLACE')
 
+     !write a file header
      WRITE(12,'("#   Mpix_init  = ",1x,F4.1)') mpix0
+     WRITE(12,'("#   lebv_init  = ",1x,F4.1)') lebv0
      WRITE(12,'("#   Npix       = ",I5)') npix
-     WRITE(12,'("#   dopowell   = ",I5)') dopowell
      WRITE(12,'("#   dotaufit   = ",I5)') dotaufit
      WRITE(12,'("#   doinitsfh  = ",I5)') doinitsfh
      WRITE(12,'("#   Nwalkers   = ",I5)') nwalkers
      WRITE(12,'("#   Nburn      = ",I5)') nburn
      WRITE(12,'("#   Nchain     = ",I5)') nmcmc
      WRITE(12,'("#   Ntasks     = ",I5)') ntasks
-
      WRITE(12,'(2I3)') nage, nz
      WRITE(12,'(20(F5.2,1x))') agesarr
 
@@ -389,7 +394,7 @@ PROGRAM FIT_PIXCMD
            !write the chain elements to file
            IF (-2.0*lp_emcee_in(j).EQ.huge_number) THEN
               WRITE(12,'(F10.6,1x,999(F7.4,1x))') &
-                   LOG10(-2.0*lp_emcee_in(j)),dum9
+                   LOG10(-2.0*lp_emcee_in(j)),dumpos
            ELSE
               WRITE(12,'(F10.6,1x,999(F7.4,1x))') &
                    LOG10(-2.0*lp_emcee_in(j)),pos_emcee_in(:, j)

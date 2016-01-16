@@ -6,7 +6,7 @@ SUBROUTINE SETUP_MODELS()
 
   CHARACTER(5), DIMENSION(nz)  :: zstr
   CHARACTER(1)  :: is,js
-  INTEGER  :: i,j,k,m,n,t,f,stat
+  INTEGER  :: i,j,k=1,m,n,t,f,stat
   REAL(SP) :: iage=0.0,age,d2,d3,d4,mass,imf,b1,b2,tage
 
   !------------------------------------------------------------!
@@ -40,7 +40,8 @@ SUBROUTINE SETUP_MODELS()
      yhess(i) = ymin+(i-1)*dy
   ENDDO
 
-  !-------------------------------------------------------------------!
+
+  !----------------------------Set up the PSF--------------------------------!
 
   psf=0.
 
@@ -74,7 +75,7 @@ SUBROUTINE SETUP_MODELS()
      ENDDO
   ENDDO
 
-  !-------------------------------------------------------------------!
+  !------------------------Set up the isochrones-----------------------------!
 
   !open the isochrone file
   OPEN(10,file=TRIM(PIXCMD_HOME)//'/isoc/MIST_v29_Z'//&
@@ -97,9 +98,10 @@ SUBROUTINE SETUP_MODELS()
   !agesarr  = (/6.1,6.3,6.5,6.7,6.9,7.1,7.2,7.3,7.5,7.7,7.9,8.1,8.3,&
   !     8.5,8.7,8.9,9.1,9.3,9.5,9.7,9.9,10.1/)
 
-  i=1
-  nisoage=0
-  tage=0.
+  i       = 1
+  nisoage = 0
+  tage    = 0.
+
   DO j=1,1000000
 
      READ(10,'(F6.2,7F10.4)',IOSTAT=stat) iage,mass,d2,d3,imf,b1,d4,b2
@@ -108,7 +110,7 @@ SUBROUTINE SETUP_MODELS()
      DO f=1,22
 
         age = (f-1)*0.2+age0
-        n=0
+        !n=0
 
         IF ( ABS(iage-age).LT.0.01.AND.iage.GE.age0 ) THEN
            iso(i)%age  = iage
@@ -132,6 +134,10 @@ SUBROUTINE SETUP_MODELS()
      ENDDO
 
   ENDDO
+
+  WRITE(*,*) 'SETUP ERROR: did not finish reading in the isochrone file'
+  STOP
+
 21 CONTINUE
 
   niso = i-1
@@ -145,6 +151,7 @@ SUBROUTINE SETUP_MODELS()
   DO i=1,niso
      iso(i)%imf = iso(i)%imf / nisoage(iso(i)%aind)
   ENDDO
+
 
 
 END SUBROUTINE SETUP_MODELS

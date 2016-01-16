@@ -47,13 +47,13 @@ MODULE PIXCMD_VARS
   !zero-points: F475W, F814W
   REAL(SP), DIMENSION(nfil), PARAMETER :: zpt=(/26.0593,25.9433/)
   !Reddening values from Schalfly & Finkbeiner 2011 for F475W, F814W
+  !should double check that this is the correct implementation
   REAL(SP), DIMENSION(nfil), PARAMETER :: red_per_ebv = (/3.268,1.526/)
  
   !upper/lower priors
-  REAL(SP), PARAMETER :: prlo=-10.0,prhi=0.5,wdth0=0.1
-  REAL(SP), PARAMETER :: prlo_m=0.5,prhi_m=7.0
-  REAL(SP), PARAMETER :: prlo_lebv=-7.0,prhi_lebv=0.5
-
+  REAL(SP), PARAMETER :: prlo_sfh=-10.0,prhi_sfh=0.5,wdth0=1E-3
+  REAL(SP), PARAMETER :: prlo_lebv=-5.0,prhi_lebv=0.1
+  
   !stellar mass below which the IMF is assumed to be fully populated
   REAL(SP), PARAMETER :: minmass=0.8
   !number below which we sample an isochrone point via Poisson/Gaussian,
@@ -71,7 +71,7 @@ MODULE PIXCMD_VARS
   REAL(SP), DIMENSION(nz)     :: zmetarr=0.
 
   !number of free parameters 
-  INTEGER, PARAMETER :: nxpar = 0 !mpix
+  INTEGER, PARAMETER :: nxpar = 1 !mpix
   INTEGER, PARAMETER :: npar=nage*nz+nxpar
 
   !max size of array for data and isochrones
@@ -104,11 +104,14 @@ MODULE PIXCMD_VARS
   REAL(SP), DIMENSION(nx) :: xhess=0.
   REAL(SP), DIMENSION(ny) :: yhess=0.
 
+  !array holding the final priors
+  REAL(SP), DIMENSION(npar) :: prlo=-99.,prhi=99.
+
   !array for the data
   REAL(SP), DIMENSION(nx,ny) :: hess_data=0.,hess_err=0.
 
-  !first guess for Mpix
-  REAL(SP) :: mpix0=2.0
+  !first guess for Mpix, log(EBV)
+  REAL(SP) :: mpix0=2.0,lebv0=-2.0
 
   !type structure for the isochrones
   TYPE TISO

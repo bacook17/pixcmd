@@ -45,11 +45,12 @@ SUBROUTINE FIT_TAU(pos)
      !a tau model b/c of numerical errors in the integrals
      wgt = wgt/twgt
      DO j=1,nage
-        wgt(j) = MAX(wgt(j),10**(prlo+1))
+        wgt(j) = MAX(wgt(j),10**(prlo_sfh+1))
      ENDDO
 
      DO j=1,nmpix
 
+        tpos(1) = lebv0
         tmpix = mpix0+(REAL(j)-1.)/nmpix-0.5
         tpos(1+nxpar:npar) = LOG10(wgt)+tmpix
         

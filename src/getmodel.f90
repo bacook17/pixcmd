@@ -13,7 +13,7 @@ FUNCTION GETMODEL(inpos,im)
   REAL(SP), DIMENSION(npix,npix,nfil) :: f1,cf1,of1
   REAL(SP), DIMENSION(npix,npix) :: narr
   INTEGER  :: i,k,f
-  REAL(SP) :: nnn,tt
+  REAL(SP) :: nnn,tt,red
   CHARACTER(10) :: time
 
   !------------------------------------------------------------!
@@ -26,17 +26,18 @@ FUNCTION GETMODEL(inpos,im)
   !compute the model at each pixel
   f1 = 0.0
   DO k=1,niso
-
+     
      tt = inpos(nxpar+iso(k)%aind)
 
-     IF (tt.LE.prlo.OR.10**tt.LT.0.2/(npix**2)) CYCLE
-
+     IF (tt.LE.prlo_sfh.OR.10**tt.LT.0.2/(npix**2)) CYCLE
+     
      nnn = 10**tt*iso(k)%imf
- 
+     
      !treat masses less than minmass as continuously sampled
      IF (iso(k)%mass.LT.minmass.OR.nnn.GT.minnum) THEN
-       DO f=1,2
-           f1(:,:,f) = f1(:,:,f)+nnn*iso(k)%bands(f)
+        DO f=1,2
+           red = 10**(-2./5*(red_per_ebv(f)*10**inpos(1)))
+           f1(:,:,f) = f1(:,:,f)+nnn*iso(k)%bands(f)*red
         ENDDO
      ELSE
         IF (nnn.LE.maxpoidev) THEN
@@ -45,7 +46,8 @@ FUNCTION GETMODEL(inpos,im)
            narr = gdev*SQRT(nnn)+nnn
         ENDIF
         DO f=1,2
-           f1(:,:,f) = f1(:,:,f)+narr*iso(k)%bands(f)
+           red = 10**(-2./5*(red_per_ebv(f)*10**inpos(1)))
+           f1(:,:,f) = f1(:,:,f)+narr*iso(k)%bands(f)*red
         ENDDO
      ENDIF
 
