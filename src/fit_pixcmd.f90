@@ -14,9 +14,9 @@ PROGRAM FIT_PIXCMD
   !flag for testing clock time
   INTEGER, PARAMETER :: test_time=1
   !fit for tau-Mpix
-  INTEGER, PARAMETER :: dotaufit=0
+  INTEGER, PARAMETER :: dotaufit=1
   !fix the SFH=const
-  INTEGER, PARAMETER :: doinitsfh=1
+  INTEGER, PARAMETER :: doinitsfh=0
 
   INTEGER  :: i,j,k,ml,ndat,stat,iter=30,totacc=0,npos
   REAL(SP) :: dt,cmin,cstd,minchi2=huge_number
@@ -223,7 +223,7 @@ PROGRAM FIT_PIXCMD
         bpos(1) = lebv0   ! log(EBV)
         bpos(1+nxpar:nxpar+nage) = LOG10(wgt)+mpix0
         mdf = -2.0
-        mdf(3)=-0.2
+        mdf(3)=-0.05
         bpos(1+nxpar+nage:npar) = mdf
 
      ELSE

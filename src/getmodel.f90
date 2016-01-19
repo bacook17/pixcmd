@@ -24,6 +24,7 @@ FUNCTION GETMODEL(inpos,im)
      WRITE(*,*) '1 Time '//time(1:2)//':'//time(3:4)//':'//time(5:9)
   ENDIF
 
+  !set up the MDF
   mdf(1:nz-1) = inpos(1+nage+nxpar:npar)
   mdf(nz)     = 1.0-SUM(10**(mdf(1:nz-1)))
   IF (mdf(nz).LT.0.0) THEN
@@ -32,7 +33,6 @@ FUNCTION GETMODEL(inpos,im)
   ELSE
      mdf(nz) = LOG10(mdf(nz)+tiny_number)
   ENDIF
-
 
   !compute the model at each pixel
   f1 = 0.0

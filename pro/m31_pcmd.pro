@@ -114,7 +114,7 @@ PRO M31_PCMD, ir=ir, brick=brick, bias=bias
      m2 = add_phot_err(m2,whm1,whm2,dm,zpt,exptime)
      m3 = add_phot_err(m3,whm1,whm2,dm,zpt,exptime)
      m4 = add_phot_err(m4,whm1,whm2,dm,zpt,exptime)
-
+     nn   = n_elements(m2)
      tm2  = mrdfits(dir+'pixcmd_t'+sage+'_Zp0.00_Mbin2.00.fits',2,/sil)
      m2zp = mrdfits(dir+'pixcmd_t'+sage+'_Zp0.30_Mbin2.00.fits',2,/sil)
      m2zm = mrdfits(dir+'pixcmd_t'+sage+'_Zm0.52_Mbin2.00.fits',2,/sil)
@@ -122,14 +122,33 @@ PRO M31_PCMD, ir=ir, brick=brick, bias=bias
      ct   = n_elements(mzz)
      mzz  = mzz[(sort(randomu(seed,ct)))[0:nn-1]]
      mzz  = add_phot_err(mzz,whm1,whm2,dm,zpt,exptime)
- 
+
+     ;print files for the fitting routine
+     wh = where(rr GE 1000 AND rr LE 1150 AND finite(im1) EQ 1 $
+                AND xx GT xc AND yy LT yc,ct)
+     x1 = im1[wh]-im2[wh]
+     y1 = im2[wh]
+     openw,1,'~/pixcmd/data/m31_bulge_M3.dat'
+     FOR i=0l,ct-1 do printf,1,x1[i],y1[i]
+     close,1
+
+     wh = where(rr GE 6200 AND rr LE 6250 AND finite(im1) EQ 1 $
+                AND xx LE xc AND yy GT 12000 AND $
+                xx LT 9000, complement=whc,ct)
+     x1 = im1[wh]-im2[wh]
+     y1 = im2[wh]
+     openw,1,'~/pixcmd/data/m31_bulge_M2.dat'
+     FOR i=0l,ct-1 do printf,1,x1[i],y1[i]
+     close,1
+
      begplot,name=pdir+'pixcmd_m31_bulge'+str+'.eps',/col,xsize=10,$
              ysize=6,/quiet,/encap
      
        !p.multi=[0,3,2]
        !p.charsize=1.8
      
-       wh = where(rr GE 1000 AND rr LE 1300,ct)
+       wh = where(rr GE 1000 AND rr LE 1300 AND finite(im1) EQ 1 $
+                  AND xx GT xc AND yy LT yc,ct)
        IF ct GT nn THEN wh = wh[(sort(randomu(seed,ct)))[0:nn-1]]
        plot,im1[wh]-im2[wh],im2[wh],ps=8,yr=yr,xr=xr,ys=1,xs=1,$
             xtit=xtit,ytit=ytit,symsize=0.2
@@ -139,7 +158,8 @@ PRO M31_PCMD, ir=ir, brick=brick, bias=bias
        legend,['M31 Bulge'],box=0,/bottom,/right,charsize=0.9
 
        wh = where(rr GE 6200 AND rr LE 6250 AND finite(im1) EQ 1 $
-                  AND xx LE xc,ct)
+                  AND xx LE xc AND yy GT 11000 AND $
+                  xx LT 9000, complement=whc,ct)
        IF ct GT nn THEN wh = wh[(sort(randomu(seed,ct)))[0:nn-1]]
        plot,im1[wh]-im2[wh],im2[wh],ps=8,yr=yr,xr=xr,ys=1,xs=1,$
             xtit=xtit,ytit=ytit,symsize=0.2

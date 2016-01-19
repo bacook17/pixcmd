@@ -100,7 +100,7 @@ PROGRAM WRITE_A_MODEL
   !zz  = LOG10(zmetarr/0.0190)
   !mdf = EXP(-(zz-zmet0)**2/2/zmets)
   mdf = -10.
-  mdf(1)=0.0
+  mdf(3)=0.0
  ! mdf=0.0
 
   !normalize the MDF weights to unity
