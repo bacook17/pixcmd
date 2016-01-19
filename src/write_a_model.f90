@@ -22,8 +22,8 @@ PROGRAM WRITE_A_MODEL
   REAL(SP), DIMENSION(nx,ny)     :: hess
   REAL(SP), DIMENSION(npix,npix) :: im
   REAL(SP), DIMENSION(nage)      :: sfh
-  REAL(SP), DIMENSION(nz,nage)   :: wgt
-  REAL(SP), DIMENSION(nz)        :: mdf,zz
+  REAL(SP), DIMENSION(nage)      :: swgt
+  REAL(SP), DIMENSION(nzi)        :: mdf,zz
 
   !------------------------------------------------------------!
 
@@ -99,8 +99,13 @@ PROGRAM WRITE_A_MODEL
   !-----------------------MDF-----------------------!
   !zz  = LOG10(zmetarr/0.0190)
   !mdf = EXP(-(zz-zmet0)**2/2/zmets)
-  mdf = 1.0
-  
+  mdf = -10.
+  mdf(1)=0.0
+ ! mdf=0.0
+
+  !normalize the MDF weights to unity
+ ! mdf = mdf - LOG10(SUM(10**mdf))
+
   !-----------------------SFH-----------------------!
 
   IF (sfhflag.EQ.1) THEN
@@ -114,29 +119,28 @@ PROGRAM WRITE_A_MODEL
      ENDIF
 
      DO j=1,nage
-        DO i=1,nz
-           dt = (10**agesarr2(j+1)-10**agesarr2(j))
-           wgt(i,j) = mdf(i)*sfh(j)*dt
-           twgt = twgt+wgt(i,j)
-        ENDDO
+        dt = (10**agesarr2(j+1)-10**agesarr2(j))
+        swgt(j) = sfh(j)*dt
+        twgt = twgt+swgt(j)
      ENDDO
      !ensure the weights sum to unity.  This is 
      !automatically the case for a constant SFH but not for
      !a tau model b/c of numerical errors in the integrals
-     wgt = wgt/twgt
+     swgt = swgt/twgt
 
   ELSE
 
      !SSP at age=tau
      ii = locate(agesarr,tau)
-     wgt(1,:)  = 10**prlo_sfh
-     wgt(1,ii) = 1.0
+     swgt     = 10**prlo_sfh
+     swgt(ii) = 1.0
 
   ENDIF
 
   !transfer the parameters to the parameter array 
   pos(1) = lebv
-  pos(1+nxpar:npar) = LOG10(wgt(1,:)) + mpix
+  pos(1+nxpar:nxpar+nage) = LOG10(swgt) + mpix
+  pos(1+nxpar+nage:npar)    = mdf
 
   !get the model hess diagram and I-band image
   !store as the actual counts, not normalized

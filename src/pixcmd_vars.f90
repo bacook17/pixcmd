@@ -52,7 +52,8 @@ MODULE PIXCMD_VARS
  
   !upper/lower priors
   REAL(SP), PARAMETER :: prlo_sfh=-10.0,prhi_sfh=0.5,wdth0=1E-3
-  REAL(SP), PARAMETER :: prlo_lebv=-5.0,prhi_lebv=0.1
+  REAL(SP), PARAMETER :: prlo_lebv=-5.0,prhi_lebv=0.0
+  REAL(SP), PARAMETER :: prlo_zmet=-5.0,prhi_zmet=0.0
   
   !stellar mass below which the IMF is assumed to be fully populated
   REAL(SP), PARAMETER :: minmass=0.8
@@ -63,7 +64,7 @@ MODULE PIXCMD_VARS
   REAL(SP), PARAMETER :: maxpoidev=40.
   
   !number of age and metallicity points in the model
-  INTEGER, PARAMETER :: nage=7,nz=1,nzskip=5
+  INTEGER, PARAMETER :: nage=7,nz=5,nzskip=3,nzi=4
   !parameters defining the age array
   REAL(SP) :: dage=0.5,age0=6.0
   REAL(SP), DIMENSION(nage)   :: agesarr=0.
@@ -71,8 +72,8 @@ MODULE PIXCMD_VARS
   REAL(SP), DIMENSION(nz)     :: zmetarr=0.
 
   !number of free parameters 
-  INTEGER, PARAMETER :: nxpar = 1 !mpix
-  INTEGER, PARAMETER :: npar=nage*nz+nxpar
+  INTEGER, PARAMETER :: nxpar = 1 !lebv
+  INTEGER, PARAMETER :: npar=nage+nxpar+nz-1
 
   !max size of array for data and isochrones
   INTEGER, PARAMETER :: niso_max=4096
@@ -122,10 +123,10 @@ MODULE PIXCMD_VARS
   END TYPE TISO
 
   !array holding the actual isochrones
-  TYPE(TISO), DIMENSION(niso_max) :: iso
+  TYPE(TISO), DIMENSION(nz,niso_max) :: iso
 
   !actual number of isochrone points
-  INTEGER :: niso
+  INTEGER, DIMENSION(nz) :: niso=1
   !number of isochrones per age bin
   INTEGER, DIMENSION(nage) :: nisoage=1
 

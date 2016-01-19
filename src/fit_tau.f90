@@ -14,10 +14,13 @@ SUBROUTINE FIT_TAU(pos)
   REAL(SP), DIMENSION(nage) :: sfh,wgt
   REAL(SP) :: bestchi2,chi2,tau,twgt,dt,btau,tmpix,bmpix
   REAL(SP), DIMENSION(ntau) :: tauarr
-
+  REAL(SP), DIMENSION(nzi)   :: mdf
  !------------------------------------------------------------!
 
   bestchi2 = huge_number
+
+  mdf    = -2.0
+  mdf(3) = -0.2
 
   tauarr = (/1.0,2.0,3.0,5.0,7.0,10.0,20.0/)
 
@@ -52,8 +55,9 @@ SUBROUTINE FIT_TAU(pos)
 
         tpos(1) = lebv0
         tmpix = mpix0+(REAL(j)-1.)/nmpix-0.5
-        tpos(1+nxpar:npar) = LOG10(wgt)+tmpix
-        
+        tpos(1+nxpar:nxpar+nage) = LOG10(wgt)+tmpix
+        tpos(1+nxpar+nage:npar)  = mdf
+
         chi2 = func(tpos)
         IF (chi2.LT.bestchi2) THEN
            bestchi2 = chi2

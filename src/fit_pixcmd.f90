@@ -10,7 +10,7 @@ PROGRAM FIT_PIXCMD
   IMPLICIT NONE
 
   !key emcee parameters
-  INTEGER, PARAMETER :: nwalkers=64,nburn=10,nmcmc=1000
+  INTEGER, PARAMETER :: nwalkers=128,nburn=10,nmcmc=1000
   !flag for testing clock time
   INTEGER, PARAMETER :: test_time=1
   !fit for tau-Mpix
@@ -25,7 +25,8 @@ PROGRAM FIT_PIXCMD
   CHARACTER(50) :: infile,tag=''
   REAL(SP), DIMENSION(2) :: dumt,dumt2
   REAL(SP), DIMENSION(nx,ny) :: bmodel=0.,imodel=0.
-  REAL(SP), DIMENSION(nage) :: sfh,wgt
+  REAL(SP), DIMENSION(nage)  :: sfh,wgt
+  REAL(SP), DIMENSION(nzi)   :: mdf
 
   !emcee variables
   REAL(SP), DIMENSION(npar) :: bpos=-99.,dumpos=-99.
@@ -94,10 +95,12 @@ PROGRAM FIT_PIXCMD
   ENDIF
 
   !transfer the priors to the prior array
-  prlo(1)            = prlo_lebv
-  prlo(1+nxpar:npar) = prlo_sfh+mpix0
-  prhi(1)            = prhi_lebv
-  prhi(1+nxpar:npar) = prhi_sfh+mpix0
+  prlo(1)                  = prlo_lebv
+  prlo(1+nxpar:nxpar+nage) = prlo_sfh+mpix0
+  prlo(1+nxpar+nage:npar)  = prlo_zmet
+  prhi(1)                  = prhi_lebv
+  prhi(1+nxpar:nxpar+nage) = prhi_sfh+mpix0
+  prhi(1+nxpar+nage:npar)  = prhi_zmet
 
   !initialize the random number generator
   !set each task to sleep for a different length of time
@@ -218,7 +221,10 @@ PROGRAM FIT_PIXCMD
         wgt = wgt/twgt
         !transfer the parameters to the parameter array
         bpos(1) = lebv0   ! log(EBV)
-        bpos(1+nxpar:npar) = LOG10(wgt)+mpix0
+        bpos(1+nxpar:nxpar+nage) = LOG10(wgt)+mpix0
+        mdf = -2.0
+        mdf(3)=-0.2
+        bpos(1+nxpar+nage:npar) = mdf
 
      ELSE
 
@@ -279,7 +285,7 @@ PROGRAM FIT_PIXCMD
 
      !---------------------initial burn-in---------------------!
 
-     WRITE(*,'(A)',advance='no') ' initial burn-in:  '
+     WRITE(*,'(A)') ' initial burn-in...  '
      DO i=1,nburn/10
         IF (test_time.EQ.1) THEN
            WRITE(*,'("Iteration ",I4)') i
