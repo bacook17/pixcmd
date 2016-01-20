@@ -34,7 +34,7 @@ MODULE PIXCMD_VARS
   !if set, include observational errors
   INTEGER, PARAMETER :: incl_obs_err=1
   !if >0, then set the random seed to fix_seed
-  INTEGER :: fix_seed=3300
+  INTEGER :: fix_seed=3230
 
   !variables for model image and CMD Hess diagram
   INTEGER, PARAMETER  :: nx=121,ny=351,nfil=2
@@ -113,7 +113,9 @@ MODULE PIXCMD_VARS
 
   !first guess for Mpix, log(EBV)
   REAL(SP) :: mpix0=2.0,lebv0=-2.0
-
+  !variable for the median of the image flux
+  REAL(SP) :: immed=0.0
+  
   !type structure for the isochrones
   TYPE TISO
      !band order is BI

@@ -96,6 +96,8 @@ PROGRAM WRITE_A_MODEL
   !setup the model grid
   CALL SETUP_MODELS()
  
+  write(*,*) "Setup Complete"
+  
   !-----------------------MDF-----------------------!
   !zz  = LOG10(zmetarr/0.0190)
   !mdf = EXP(-(zz-zmet0)**2/2/zmets)
@@ -144,6 +146,10 @@ PROGRAM WRITE_A_MODEL
 
   !get the model hess diagram and I-band image
   !store as the actual counts, not normalized
+  hess = getmodel(pos,im) * npix**2
+
+  immed = SUM(10**(-2./5*im))/npix**2
+
   hess = getmodel(pos,im) * npix**2
 
   !save the PSF-convolved, obs err-included I-band image

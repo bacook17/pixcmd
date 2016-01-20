@@ -55,6 +55,12 @@ FUNCTION GETMODEL(inpos,im)
         ELSE
            IF (nnn.LE.maxpoidev) THEN
               narr = mypoidev(nnn,k)
+
+              !remove stars that would likely count as "resolved"
+              !IF (SUM(narr).LE.10.AND.iso(z,k)%bands(1).GT.1000.*immed) THEN
+              !   narr=0.0
+              !ENDIF
+
            ELSE
               narr = gdev*SQRT(nnn)+nnn
            ENDIF
