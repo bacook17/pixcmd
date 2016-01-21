@@ -42,7 +42,7 @@ FUNCTION GETMODEL(inpos,im)
         sfh = inpos(nxpar+iso(z,k)%aind)
 
         IF (sfh.LE.prlo_sfh.OR.10**sfh.LT.0.1/(npix**2).OR.&
-             mdf(z).LT.prlo_zmet) CYCLE
+             mdf(z).LT.zmet_min) CYCLE
      
         nnn = 10**sfh*10**mdf(z)*iso(z,k)%imf
      

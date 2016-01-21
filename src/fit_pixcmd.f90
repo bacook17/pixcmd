@@ -18,8 +18,11 @@ PROGRAM FIT_PIXCMD
   !fix the SFH=const
   INTEGER, PARAMETER :: doinitsfh=0
 
-  INTEGER  :: i,j,k,ml,ndat,stat,iter=30,totacc=0,npos
-  REAL(SP) :: dt,cmin,cstd,minchi2=huge_number
+  !down-sample the data by this factor
+  REAL(SP), PARAMETER :: subsample=1.0
+
+  INTEGER  :: i,j,k,ml,stat,iter=30,totacc=0,npos
+  REAL(SP) :: dt,cmin,cstd,minchi2=huge_number,ndat
   REAL(SP) :: time1,time2,wdth1=1E-3,twgt=0.0
   CHARACTER(10) :: time,is,tmpstr
   CHARACTER(50) :: infile,tag=''
@@ -139,13 +142,25 @@ PROGRAM FIT_PIXCMD
   ENDIF
   READ(1,rec=1) hess_data
   CLOSE(1)
-  ndat = INT(SUM(hess_data))
+
+  !down-sample the data
+  IF (subsample.LT.1.0) THEN
+     hess_data = hess_data * subsample
+  ENDIF
+
+  ndat = SUM(hess_data)
 
   !Poisson error at each CMD pixel
   hess_err = SQRT(hess_data)
+
+  !test for bad values and inflate errors as needed
   DO i=1,nx
      DO j=1,ny
         IF (hess_data(i,j).LE.tiny_number) hess_err(i,j)=1.0
+        IF (hess_data(i,j).LT.0.0) THEN
+           WRITE(*,*) 'ERROR: input data has negative Hess entry'
+           STOP
+        ENDIF
      ENDDO
   ENDDO
 

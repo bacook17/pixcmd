@@ -96,14 +96,13 @@ PROGRAM WRITE_A_MODEL
   !setup the model grid
   CALL SETUP_MODELS()
  
-  write(*,*) "Setup Complete"
-  
   !-----------------------MDF-----------------------!
   !zz  = LOG10(zmetarr/0.0190)
   !mdf = EXP(-(zz-zmet0)**2/2/zmets)
   mdf = -10.
-  mdf(3)=0.0
- ! mdf=0.0
+  mdf(2)=0.0 !LOG10(1-1E-4)
+
+  !mdf = LOG10(0.2)
 
   !normalize the MDF weights to unity
  ! mdf = mdf - LOG10(SUM(10**mdf))
@@ -148,9 +147,8 @@ PROGRAM WRITE_A_MODEL
   !store as the actual counts, not normalized
   hess = getmodel(pos,im) * npix**2
 
-  immed = SUM(10**(-2./5*im))/npix**2
-
-  hess = getmodel(pos,im) * npix**2
+  !immed = SUM(10**(-2./5*im))/npix**2
+  !hess = getmodel(pos,im) * npix**2
 
   !save the PSF-convolved, obs err-included I-band image
   OPEN(11,FILE=TRIM(PIXCMD_HOME)//'/data/'//TRIM(outfile)//'.im',&

@@ -54,7 +54,10 @@ MODULE PIXCMD_VARS
   REAL(SP), PARAMETER :: prlo_sfh=-10.0,prhi_sfh=0.5,wdth0=1E-3
   REAL(SP), PARAMETER :: prlo_lebv=-5.0,prhi_lebv=0.0
   REAL(SP), PARAMETER :: prlo_zmet=-5.0,prhi_zmet=0.0
-  
+  !skip the metallicity when weight drops below this value.  Smaller values
+  !have little influence on the Hess diagram at least for Mpix=2.0
+  REAL(SP), PARAMETER :: zmet_min=-4.0
+
   !stellar mass below which the IMF is assumed to be fully populated
   REAL(SP), PARAMETER :: minmass=0.8
   !number below which we sample an isochrone point via Poisson/Gaussian,

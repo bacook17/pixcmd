@@ -2,7 +2,7 @@ PRO M31_PCMD, ir=ir, brick=brick, bias=bias
   
   IF NOT(keyword_set(brick)) THEN brick = '01'
   IF NOT(keyword_set(bias))  THEN bias=0.0
- 
+
   IF keyword_set(ir) THEN BEGIN
      magsol = 4.65 ;M_H_sol
      i1     = 'f110w'
@@ -141,8 +141,8 @@ PRO M31_PCMD, ir=ir, brick=brick, bias=bias
      FOR i=0l,ct-1 do printf,1,x1[i],y1[i]
      close,1
 
-     begplot,name=pdir+'pixcmd_m31_bulge'+str+'.eps',/col,xsize=10,$
-             ysize=6,/quiet,/encap
+     file = 'pixcmd_m31_bulge'+str
+     begplot,name=pdir+file+'.eps',/col,xsize=10,ysize=6,/quiet,/encap
      
        !p.multi=[0,3,2]
        !p.charsize=1.8
@@ -169,6 +169,7 @@ PRO M31_PCMD, ir=ir, brick=brick, bias=bias
        legend,['M31 Bulge'],box=0,/bottom,/right,charsize=0.9
        
        wh = where(rr GE max(rr)-200,ct)
+
        IF ct GT nn THEN wh = wh[(sort(randomu(seed,ct)))[0:nn-1]]
        plot,im1[wh]-im2[wh],im2[wh],ps=8,yr=yr,xr=xr,ys=1,xs=1,$
             xtit=xtit,ytit=ytit,symsize=0.2
@@ -196,6 +197,7 @@ PRO M31_PCMD, ir=ir, brick=brick, bias=bias
        legend,['model'],box=0,/bottom,/right,charsize=0.9
 
     endplot,/quiet
+    spawn,'convert -density 500 '+pdir+file+'.eps '+pdir+file+'.png'
 
     begplot,name=pdir+'pixcmd_m31_bulge'+str+'_zmix.eps',/col,xsize=9,$
              ysize=3,/quiet,/encap
@@ -226,6 +228,8 @@ PRO M31_PCMD, ir=ir, brick=brick, bias=bias
  
      endplot,/quiet
  
+     stop
+
      wh = where(rr GE 6200 AND rr LE 6250 AND finite(im1) EQ 1 $
                 AND xx LE xc AND im2 GT -2*(im1-im2)+1.7,ct)
 
@@ -328,7 +332,7 @@ PRO M31_PCMD, ir=ir, brick=brick, bias=bias
      t2   = mrdfits(dir+'pixcmd_tau2.00_Zp0.00_Mbin2.00.fits',2,/sil)
      m2   = add_phot_err(m2,whm1,whm2,dm,zpt,exptime)
      cs   = add_phot_err(cs,whm1,whm2,dm,zpt,exptime)
-     t22   = add_phot_err(t22,whm1,whm2,dm,zpt,exptime)
+     t22  = add_phot_err(t22,whm1,whm2,dm,zpt,exptime)
      t2   = add_phot_err(t2,whm1,whm2,dm,zpt,exptime)
      nn   = n_elements(m1)
      IF ct GT nn THEN wh = wh[(sort(randomu(seed,ct)))[0:nn-1]]
@@ -372,6 +376,12 @@ PRO M31_PCMD, ir=ir, brick=brick, bias=bias
      ;wh   = where(xx GE 15000 AND xx LE 16000 AND $
      ;             yy GE 11000 AND yy LE 12000 AND finite(mpix) EQ 1,ct)
 
+     x1 = im1[wh]-im2[wh]
+     y1 = im2[wh]
+     openw,1,'~/pixcmd/data/m31_b06_M1.5.dat'
+     FOR i=0l,ct-1 do printf,1,x1[i],y1[i]
+     close,1
+
      m2   = mrdfits(dir+'pixcmd_t10.0_Zp0.00_Mbin1.60.fits',2,/sil)
      cs   = mrdfits(dir+'pixcmd_tau10.0_Zp0.00_Mbin1.50.fits',2,/sil)
      t2   = mrdfits(dir+'pixcmd_tau2.00_Zp0.00_Mbin1.60.fits',2,/sil)
@@ -387,7 +397,7 @@ PRO M31_PCMD, ir=ir, brick=brick, bias=bias
        plot,im1[wh]-im2[wh],im2[wh],ps=8,xr=[-1,4],yr=[6,-4],$
             xtit='B-I',ytit='I',symsize=0.2
        oplot,t1.(wht1)-t1.(wht2),t1.(wht2),col=!red,thick=2       
-       legend,['M31 B5'],box=0,charsize=0.9,/right
+       legend,['M31 B6'],box=0,charsize=0.9,/right
        plot,m2.b-m2.i,m2.i,ps=8,xr=[-1,4],yr=[6,-4],xtit='B-I',$
             ytit='I',symsize=0.2
        oplot,t1.(wht1)-t1.(wht2),t1.(wht2),col=!red,thick=2

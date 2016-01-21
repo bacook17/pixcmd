@@ -10,7 +10,7 @@ PRO PIXCMD, mbin=mbin, zh=zh, ssp=ssp, sfh_tau=sfh_tau, $
 
   ;a=read_binary('../src/hess.dat',data_dims=[44,51,101],data_type=4)
 
-  nfix    = 400  ;default array size
+  nfix    = 512  ;default array size
   nsample = 5E4  ;default number of output pixels
   ;set the "background" flux level.  The faintest M dwarf
   ;has a flux of ~1E-7, so this is very faint.  Used to avoid NaNs
