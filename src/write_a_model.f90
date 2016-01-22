@@ -100,7 +100,7 @@ PROGRAM WRITE_A_MODEL
   !zz  = LOG10(zmetarr/0.0190)
   !mdf = EXP(-(zz-zmet0)**2/2/zmets)
   mdf = -10.
-  mdf(2)=0.0 !LOG10(1-1E-4)
+  mdf(3)=0.0 !LOG10(1-1E-4)
 
   !mdf = LOG10(0.2)
 
@@ -128,6 +128,9 @@ PROGRAM WRITE_A_MODEL
      !automatically the case for a constant SFH but not for
      !a tau model b/c of numerical errors in the integrals
      swgt = swgt/twgt
+
+     write(*,'(10ES10.3)') swgt
+     stop
 
   ELSE
 

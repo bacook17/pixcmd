@@ -109,19 +109,20 @@ PRO M31_PCMD, ir=ir, brick=brick, bias=bias
 
      m2   = mrdfits(dir+'pixcmd_t'+sage+'_Zp0.00_Mbin2.00.fits',2,/sil)
      m3   = mrdfits(dir+'pixcmd_t'+sage+'_Zp0.00_Mbin3.00.fits',2,/sil)
-     m4   = mrdfits(dir+'pixcmd_t'+sage+'_Zp0.00_Mbin4.00.fits',2,/sil)
+     m4   = mrdfits(dir+'pixcmd_t'+sage+'_Zp0.00_Mbin3.50.fits',2,/sil)
      m1 = add_phot_err(m1,whm1,whm2,dm,zpt,exptime)
      m2 = add_phot_err(m2,whm1,whm2,dm,zpt,exptime)
      m3 = add_phot_err(m3,whm1,whm2,dm,zpt,exptime)
      m4 = add_phot_err(m4,whm1,whm2,dm,zpt,exptime)
      nn   = n_elements(m2)
-     tm2  = mrdfits(dir+'pixcmd_t'+sage+'_Zp0.00_Mbin2.00.fits',2,/sil)
-     m2zp = mrdfits(dir+'pixcmd_t'+sage+'_Zp0.30_Mbin2.00.fits',2,/sil)
-     m2zm = mrdfits(dir+'pixcmd_t'+sage+'_Zm0.52_Mbin2.00.fits',2,/sil)
-     mzz  = [tm2,m2zp,m2zp,m2zm]
-     ct   = n_elements(mzz)
-     mzz  = mzz[(sort(randomu(seed,ct)))[0:nn-1]]
-     mzz  = add_phot_err(mzz,whm1,whm2,dm,zpt,exptime)
+
+     ;print files for the fitting routine
+     wh = where(rr GE 180 AND rr LE 200 AND finite(im1) EQ 1,ct)
+     x1 = im1[wh]-im2[wh]
+     y1 = im2[wh]
+     openw,1,'~/pixcmd/data/m31_bulge_M3.5.dat'
+     FOR i=0l,ct-1 do printf,1,x1[i],y1[i]
+     close,1
 
      ;print files for the fitting routine
      wh = where(rr GE 1000 AND rr LE 1150 AND finite(im1) EQ 1 $
@@ -147,6 +148,15 @@ PRO M31_PCMD, ir=ir, brick=brick, bias=bias
        !p.multi=[0,3,2]
        !p.charsize=1.8
      
+       wh = where(rr GE 180 AND rr LE 220 AND finite(im1) EQ 1,ct)
+       IF ct GT nn THEN wh = wh[(sort(randomu(seed,ct)))[0:nn-1]]
+       plot,im1[wh]-im2[wh],im2[wh],ps=8,yr=yr,xr=xr,ys=1,xs=1,$
+            xtit=xtit,ytit=ytit,symsize=0.2
+       oplot,t1.(wht1)-t1.(wht2),t1.(wht2),col=!red,thick=2
+       ss = strmid(strtrim(round(median(mpix[wh])*10)/10.,2),0,3)
+       legend,['log N!Dpix!N='+ss],box=0,/right,charsize=0.9
+       legend,['M31 Bulge'],box=0,/bottom,/right,charsize=0.9
+
        wh = where(rr GE 1000 AND rr LE 1300 AND finite(im1) EQ 1 $
                   AND xx GT xc AND yy LT yc,ct)
        IF ct GT nn THEN wh = wh[(sort(randomu(seed,ct)))[0:nn-1]]
@@ -154,7 +164,7 @@ PRO M31_PCMD, ir=ir, brick=brick, bias=bias
             xtit=xtit,ytit=ytit,symsize=0.2
        oplot,t1.(wht1)-t1.(wht2),t1.(wht2),col=!red,thick=2
        ss = strmid(strtrim(round(median(mpix[wh])*10)/10.,2),0,3)
-       legend,['log M!Dpix!N='+ss],box=0,/right,charsize=0.9
+       legend,['log N!Dpix!N='+ss],box=0,/right,charsize=0.9
        legend,['M31 Bulge'],box=0,/bottom,/right,charsize=0.9
 
        wh = where(rr GE 6200 AND rr LE 6250 AND finite(im1) EQ 1 $
@@ -165,70 +175,42 @@ PRO M31_PCMD, ir=ir, brick=brick, bias=bias
             xtit=xtit,ytit=ytit,symsize=0.2
        oplot,t1.(wht1)-t1.(wht2),t1.(wht2),col=!red,thick=2
        ss = strmid(strtrim(round(median(mpix[wh])*10)/10.,2),0,3)
-       legend,['log M!Dpix!N='+ss],box=0,/right,charsize=0.9
+       legend,['log N!Dpix!N='+ss],box=0,/right,charsize=0.9
        legend,['M31 Bulge'],box=0,/bottom,/right,charsize=0.9
        
-       wh = where(rr GE max(rr)-200,ct)
+       ;wh = where(rr GE max(rr)-200,ct)
+       ;IF ct GT nn THEN wh = wh[(sort(randomu(seed,ct)))[0:nn-1]]
+       ;plot,im1[wh]-im2[wh],im2[wh],ps=8,yr=yr,xr=xr,ys=1,xs=1,$
+       ;     xtit=xtit,ytit=ytit,symsize=0.2
+       ;oplot,t1.(wht1)-t1.(wht2),t1.(wht2),col=!red,thick=2
+       ;ss = strmid(strtrim(round(median(mpix[wh])*10)/10.,2),0,3)
+       ;legend,['log M!Dpix!N='+ss],box=0,/right,charsize=0.9
+       ;legend,['M31 Bulge'],box=0,/bottom,/right,charsize=0.9
 
-       IF ct GT nn THEN wh = wh[(sort(randomu(seed,ct)))[0:nn-1]]
-       plot,im1[wh]-im2[wh],im2[wh],ps=8,yr=yr,xr=xr,ys=1,xs=1,$
+       plot,m4.(whm1)-m4.(whm2),m4.(whm2),ps=8,yr=yr,xr=xr,ys=1,xs=1,$
             xtit=xtit,ytit=ytit,symsize=0.2
        oplot,t1.(wht1)-t1.(wht2),t1.(wht2),col=!red,thick=2
-       ss = strmid(strtrim(round(median(mpix[wh])*10)/10.,2),0,3)
-       legend,['log M!Dpix!N='+ss],box=0,/right,charsize=0.9
-       legend,['M31 Bulge'],box=0,/bottom,/right,charsize=0.9
+       legend,['log N!Dpix!N=3.5'],box=0,/right,charsize=0.9
+       legend,['model SSP'],box=0,/bottom,/right,charsize=0.9
 
        plot,m3.(whm1)-m3.(whm2),m3.(whm2),ps=8,yr=yr,xr=xr,ys=1,xs=1,$
             xtit=xtit,ytit=ytit,symsize=0.2
        oplot,t1.(wht1)-t1.(wht2),t1.(wht2),col=!red,thick=2
-       legend,['log M!Dpix!N=3.0'],box=0,/right,charsize=0.9
-       legend,['model'],box=0,/bottom,/right,charsize=0.9
+       legend,['log N!Dpix!N=3.0'],box=0,/right,charsize=0.9
+       legend,['model SSP'],box=0,/bottom,/right,charsize=0.9
 
        plot,m2.(whm1)-m2.(whm2),m2.(whm2),ps=8,yr=yr,xr=xr,ys=1,xs=1,$
             xtit=xtit,ytit=ytit,symsize=0.2
        oplot,t1.(wht1)-t1.(wht2),t1.(wht2),col=!red,thick=2
-       legend,['log M!Dpix!N=2.0'],box=0,/right,charsize=0.9
-       legend,['model'],box=0,/bottom,/right,charsize=0.9
+       legend,['log N!Dpix!N=2.0'],box=0,/right,charsize=0.9
+       legend,['model SSP'],box=0,/bottom,/right,charsize=0.9
        
-       plot,m1.(whm1)-m1.(whm2),m1.(whm2),ps=8,yr=yr,xr=xr,ys=1,xs=1,$
-            xtit=xtit,ytit=ytit,symsize=0.2
-       oplot,t1.(wht1)-t1.(wht2),t1.(wht2),col=!red,thick=2
-       legend,['log M!Dpix!N=1.6'],box=0,/right,charsize=0.9
-       legend,['model'],box=0,/bottom,/right,charsize=0.9
 
     endplot,/quiet
     spawn,'convert -density 500 '+pdir+file+'.eps '+pdir+file+'.png'
+    
 
-    begplot,name=pdir+'pixcmd_m31_bulge'+str+'_zmix.eps',/col,xsize=9,$
-             ysize=3,/quiet,/encap
-     
-       !p.multi=[0,3,1]
-       !p.charsize=1.8
- 
-       wh = where(rr GE 6200 AND rr LE 6250 AND finite(im1) EQ 1 $
-                AND xx LE xc,ct)
-       IF ct GT nn THEN wh = wh[(sort(randomu(seed,ct)))[0:nn-1]]
-       plot,im1[wh]-im2[wh],im2[wh],ps=8,yr=yr,xr=xr,ys=1,xs=1,$
-            xtit=xtit,ytit=ytit,symsize=0.2,pos=[0.07,0.15,0.32,0.9]
-       oplot,t1.(wht1)-t1.(wht2),t1.(wht2),col=!red,thick=2
-       ss = strmid(strtrim(round(median(mpix[wh])*10)/10.,2),0,4)
-       legend,['M31 Bulge'],box=0,/right,charsize=0.9
- 
-       plot,m2.(whm1)-m2.(whm2),m2.(whm2),ps=8,yr=yr,xr=xr,ys=1,xs=1,$
-            xtit=xtit,ytit=ytit,symsize=0.2,pos=[0.4,0.15,0.65,0.9]
-       oplot,t1.(wht1)-t1.(wht2),t1.(wht2),col=!red,thick=2
-       legend,['10 Gyr'],box=0,/left,charsize=0.9
-       legend,['[Z/H]=0.0'],box=0,/right,charsize=0.9
- 
-       plot,mzz.(whm1)-mzz.(whm2),mzz.(whm2),ps=8,yr=yr,xr=xr,ys=1,xs=1,$
-            xtit=xtit,ytit=ytit,symsize=0.2,pos=[0.73,0.15,0.98,0.9]
-       oplot,t1.(wht1)-t1.(wht2),t1.(wht2),col=!red,thick=2
-       legend,['10 Gyr'],box=0,/left,charsize=0.9
-       legend,['-0.5<[Z/H]<0.5'],box=0,/right,charsize=0.9
- 
-     endplot,/quiet
- 
-     stop
+    stop
 
      wh = where(rr GE 6200 AND rr LE 6250 AND finite(im1) EQ 1 $
                 AND xx LE xc AND im2 GT -2*(im1-im2)+1.7,ct)
@@ -269,13 +251,13 @@ PRO M31_PCMD, ir=ir, brick=brick, bias=bias
   ENDIF
 
   ;--------------------------------------------------------------;
-  ;--------------------------brick 02----------------------------;
+  ;--------------------------brick 03----------------------------;
   ;--------------------------------------------------------------;
 
-  IF brick EQ '02' THEN BEGIN
+  IF brick EQ '03' THEN BEGIN
 
-     wh   = where(xx GE 14000 AND xx LE 15000 AND $
-                  yy GE 13000 AND yy LE 14000 AND finite(mpix) EQ 1,ct)
+     wh   = where(xx GE 2500 AND xx LE 2800 AND $
+                  yy GE 10000 AND yy LE 10500 AND finite(mpix) EQ 1,ct)
 
      cs   = mrdfits(dir+'pixcmd_tau10.0_Zp0.00_Mbin2.00.fits',2,/sil)
      t01  = mrdfits(dir+'pixcmd_tau1.00_Zp0.00_Mbin1.75.fits',2,/sil)
@@ -288,7 +270,7 @@ PRO M31_PCMD, ir=ir, brick=brick, bias=bias
      nn   = n_elements(cs)
      IF ct GT nn THEN wh = wh[(sort(randomu(seed,ct)))[0:nn-1]]
 
-    begplot,name=pdir+'brick2.eps',/col,xsize=7,ysize=6,/quiet,/encap
+    begplot,name=pdir+'brick3.eps',/col,xsize=7,ysize=6,/quiet,/encap
        !p.multi=[0,2,2]
        !p.charsize=1.0
        plot,im1[wh]-im2[wh],im2[wh],ps=8,xr=[-1,4],yr=[6,-4],$
@@ -318,53 +300,6 @@ PRO M31_PCMD, ir=ir, brick=brick, bias=bias
   ENDIF
 
   ;--------------------------------------------------------------;
-  ;--------------------------brick 05----------------------------;
-  ;--------------------------------------------------------------;
-
-  IF brick EQ '05' THEN BEGIN
-
-     wh   = where(xx GE 11500 AND xx LE 12000 AND $
-                  yy GE 9500 AND yy LE 10000 AND finite(mpix) EQ 1,ct)
-
-     m2   = mrdfits(dir+'pixcmd_t10.0_Zp0.00_Mbin2.00.fits',2,/sil)
-     cs   = mrdfits(dir+'pixcmd_tau10.0_Zp0.00_Mbin2.00.fits',2,/sil)
-     t22  = mrdfits(dir+'pixcmd_tau1.00_Zp0.00_Mbin1.75.fits',2,/sil)
-     t2   = mrdfits(dir+'pixcmd_tau2.00_Zp0.00_Mbin2.00.fits',2,/sil)
-     m2   = add_phot_err(m2,whm1,whm2,dm,zpt,exptime)
-     cs   = add_phot_err(cs,whm1,whm2,dm,zpt,exptime)
-     t22  = add_phot_err(t22,whm1,whm2,dm,zpt,exptime)
-     t2   = add_phot_err(t2,whm1,whm2,dm,zpt,exptime)
-     nn   = n_elements(m1)
-     IF ct GT nn THEN wh = wh[(sort(randomu(seed,ct)))[0:nn-1]]
-
-     begplot,name=pdir+'brick5.eps',/col,xsize=7,ysize=6,/quiet,/encap
-       !p.multi=[0,2,2]
-       !p.charsize=1.0
-       plot,im1[wh]-im2[wh],im2[wh],ps=8,xr=[-1,4],yr=[6,-4],$
-            xtit='B-I',ytit='I',symsize=0.2
-       oplot,t1.(wht1)-t1.(wht2),t1.(wht2),col=!red,thick=2       
-       legend,['M31 B5'],box=0,charsize=0.9,/right
-       plot,m2.b-m2.i,m2.i,ps=8,xr=[-1,4],yr=[6,-4],xtit='B-I',$
-            ytit='I',symsize=0.2
-       oplot,t1.(wht1)-t1.(wht2),t1.(wht2),col=!red,thick=2
-       legend,[textoidl('SSP')],box=0,charsize=0.9,/right
-       plot,t22.b-t22.i,t22.i,ps=8,xr=[-1,4],yr=[6,-4],xtit='B-I',$
-            ytit='I',symsize=0.2
-       oplot,t1.(wht1)-t1.(wht2),t1.(wht2),col=!red,thick=2
-       legend,[textoidl('\tau_{SF}=2 Gyr')],box=0,charsize=0.9,/right
-       plot,t2.b-t2.i,t2.i,ps=8,xr=[-1,4],yr=[6,-4],xtit='B-I',$
-            ytit='I',symsize=0.2
-       oplot,t1.(wht1)-t1.(wht2),t1.(wht2),col=!red,thick=2
-       legend,[textoidl('\tau_{SF}=2 Gyr')],box=0,charsize=0.9,/right
-     endplot,/quiet
-     spawn,'convert -density 500 '+pdir+'brick5.eps '+pdir+'brick5.png'
-
-     !p.multi=0
-     stop
-
-  ENDIF
-
-  ;--------------------------------------------------------------;
   ;--------------------------brick 06----------------------------;
   ;--------------------------------------------------------------;
 
@@ -382,9 +317,10 @@ PRO M31_PCMD, ir=ir, brick=brick, bias=bias
      FOR i=0l,ct-1 do printf,1,x1[i],y1[i]
      close,1
 
-     m2   = mrdfits(dir+'pixcmd_t10.0_Zp0.00_Mbin1.60.fits',2,/sil)
+     m2   = mrdfits(dir+'pixcmd_t10.0_Zp0.00_Mbin1.50.fits',2,/sil)
      cs   = mrdfits(dir+'pixcmd_tau10.0_Zp0.00_Mbin1.50.fits',2,/sil)
-     t2   = mrdfits(dir+'pixcmd_tau2.00_Zp0.00_Mbin1.60.fits',2,/sil)
+     t2   = mrdfits(dir+'pixcmd_tau2.00_Zp0.00_Mbin1.50.fits',2,/sil)
+     t5   = mrdfits(dir+'pixcmd_tau5.00_Zp0.00_Mbin1.50.fits',2,/sil)
      m2   = add_phot_err(m2,whm1,whm2,dm,zpt,exptime)
      cs   = add_phot_err(cs,whm1,whm2,dm,zpt,exptime)
      t2   = add_phot_err(t2,whm1,whm2,dm,zpt,exptime)
@@ -397,21 +333,21 @@ PRO M31_PCMD, ir=ir, brick=brick, bias=bias
        plot,im1[wh]-im2[wh],im2[wh],ps=8,xr=[-1,4],yr=[6,-4],$
             xtit='B-I',ytit='I',symsize=0.2
        oplot,t1.(wht1)-t1.(wht2),t1.(wht2),col=!red,thick=2       
-       legend,['M31 B6'],box=0,charsize=0.9,/right
-       plot,m2.b-m2.i,m2.i,ps=8,xr=[-1,4],yr=[6,-4],xtit='B-I',$
-            ytit='I',symsize=0.2
-       oplot,t1.(wht1)-t1.(wht2),t1.(wht2),col=!red,thick=2
-       legend,[textoidl('SSP')],box=0,charsize=0.9,/right
-       plot,cs.b-cs.i,cs.i,ps=8,xr=[-1,4],yr=[6,-4],xtit='B-I',$
-            ytit='I',symsize=0.2
-       oplot,t1.(wht1)-t1.(wht2),t1.(wht2),col=!red,thick=2
-       legend,[textoidl('\tau_{SF}=2 Gyr')],box=0,charsize=0.9,/right
+       legend,['M31 disk'],box=0,charsize=0.9,/right,/bottom
        plot,t2.b-t2.i,t2.i,ps=8,xr=[-1,4],yr=[6,-4],xtit='B-I',$
             ytit='I',symsize=0.2
        oplot,t1.(wht1)-t1.(wht2),t1.(wht2),col=!red,thick=2
-       legend,[textoidl('\tau_{SF}=2 Gyr')],box=0,charsize=0.9,/right
-     endplot,/quiet
-     spawn,'convert -density 500 '+pdir+'brick6.eps '+pdir+'brick6.png'
+       legend,[textoidl('\tau_{SF}=2 Gyr')],box=0,charsize=0.9,/right,/bottom
+       plot,t5.b-t5.i,t5.i,ps=8,xr=[-1,4],yr=[6,-4],xtit='B-I',$
+            ytit='I',symsize=0.2
+       oplot,t1.(wht1)-t1.(wht2),t1.(wht2),col=!red,thick=2
+       legend,[textoidl('\tau_{SF}=5 Gyr')],box=0,charsize=0.9,/right,/bottom
+       plot,cs.b-cs.i,cs.i,ps=8,xr=[-1,4],yr=[6,-4],xtit='B-I',$
+            ytit='I',symsize=0.2
+       oplot,t1.(wht1)-t1.(wht2),t1.(wht2),col=!red,thick=2
+       legend,[textoidl('SFH=constant')],box=0,charsize=0.9,/right,/bottom
+    endplot,/quiet
+    spawn,'convert -density 500 '+pdir+'brick6.eps '+pdir+'brick6.png'
 
      !p.multi=0
      stop

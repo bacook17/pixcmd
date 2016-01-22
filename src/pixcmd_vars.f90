@@ -51,7 +51,7 @@ MODULE PIXCMD_VARS
   REAL(SP), DIMENSION(nfil), PARAMETER :: red_per_ebv = (/3.268,1.526/)
  
   !upper/lower priors
-  REAL(SP), PARAMETER :: prlo_sfh=-10.0,prhi_sfh=0.5,wdth0=1E-3
+  REAL(SP), PARAMETER :: prlo_sfh=-10.0,prhi_sfh=0.5,wdth0=1E-2
   REAL(SP), PARAMETER :: prlo_lebv=-5.0,prhi_lebv=0.0
   REAL(SP), PARAMETER :: prlo_zmet=-5.0,prhi_zmet=0.0
   !skip the metallicity when weight drops below this value.  Smaller values

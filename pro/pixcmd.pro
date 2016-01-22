@@ -32,7 +32,7 @@ PRO PIXCMD, mbin=mbin, zh=zh, ssp=ssp, sfh_tau=sfh_tau, $
   IF NOT(keyword_set(tag))  THEN tag  = ''
   IF keyword_set(more_eep)  THEN isoc_tag = '_moreEEP' $
   ELSE isoc_tag=''
-  
+
   zstr = ['m2.15','m1.13','m0.73','m0.52','m0.22','p0.00','p0.30',$
           'p0.50']
 
@@ -40,6 +40,7 @@ PRO PIXCMD, mbin=mbin, zh=zh, ssp=ssp, sfh_tau=sfh_tau, $
   a   = mrdfits('~/pixcmd/isoc/MIST_v29_Z'+zstr[zh]+$
                 isoc_tag+'.fits',1,/sil)
   psf = mrdfits('~/DATA/HST/psf/psf_f814w_unbinned.fits',0,/sil)
+
 
   ;set up the isochrones
   IF keyword_set(ssp) THEN BEGIN
@@ -105,7 +106,7 @@ PRO PIXCMD, mbin=mbin, zh=zh, ssp=ssp, sfh_tau=sfh_tau, $
   ;results structure
   all = replicate({b:0.0,v:0.0,i:0.0,j:0.0,h:0.0},nbin,nbin)
 
-  ;spawn,'date'
+  spawn,'date'
 
   ;loop over each pixel
   FOR i=0,nbin-1 DO BEGIN
@@ -120,7 +121,7 @@ PRO PIXCMD, mbin=mbin, zh=zh, ssp=ssp, sfh_tau=sfh_tau, $
      ENDFOR 
   ENDFOR
 
-  ;spawn,'date'
+  spawn,'date'
 
   ;convolve with ACS F814W PSF (convolve in flux space)
   ;NB: should be convolving with each PSF separately,

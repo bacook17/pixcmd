@@ -24,19 +24,31 @@ PRO RUN_PIXCMD, xx=xx
      ENDFOR
   ENDIF
  
-  ;create large images to be used for illustration purposes
+  ;run models with a complex SFH (part c)
   IF xx EQ 3 THEN BEGIN
-     FOR m=0,6 DO BEGIN
+     FOR i=1,4 DO BEGIN
+        pixcmd,mbin=10^float(m),ssp=10.
+        pixcmd,mbin=10^float(m),sfh=1. 
+        pixcmd,mbin=10^float(m),sfh=2. 
+        pixcmd,mbin=10^float(m),sfh=5. 
+        pixcmd,mbin=10^float(m),sfh=10.
+     ENDFOR
+  ENDIF
+
+
+  ;create large images to be used for illustration purposes
+  IF xx EQ 4 THEN BEGIN
+     FOR m=0,7 DO BEGIN
         print,m-1
-        pixcmd,mbin=10^float(m-1),ssp=10.,nbin=1E3,$
+        pixcmd,mbin=10^float(m-1),ssp=10.,nbin=1024,$
                /nosample,/more_eep
      ENDFOR
   ENDIF
 
   ;grid of metallicity and mass
-  IF xx EQ 4 THEN BEGIN
+  IF xx EQ 5 THEN BEGIN
      FOR i=2,7 DO BEGIN
-        FOR m=1,4 DO BEGIN
+        FOR m=0,5 DO BEGIN
            print,m,i
            pixcmd,mbin=10^float(m),ssp=10.,zh=i
         ENDFOR
@@ -44,4 +56,11 @@ PRO RUN_PIXCMD, xx=xx
   ENDIF
 
  
+  ;run tailored model for comparison to data
+  IF xx EQ 6 THEN BEGIN
+     pixcmd,mbin=10^1.3,ssp=10.0
+     pixcmd,mbin=10^1.5,ssp=10.0
+  ENDIF
+
+
 END

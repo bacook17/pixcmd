@@ -147,7 +147,7 @@ PRO PLOT_PCMD, psf=psf, age=age
        oplot,mt0.b-mt0.i,mt0.i,ps=8,symsize=0.2
        oplot,t10.acs_f475w-t10.acs_f814w,t10.acs_f814w,col=!red,thick=2
        oplot,t8.acs_f475w-t8.acs_f814w,t8.acs_f814w,col=!red,thick=2
-       legend,['M!Dpix!N='+mbs2],box=0,charsize=1.0
+       legend,['N!Dpix!N='+mbs2],box=0,charsize=1.0
        oplot,[-10,10],[1,1]*flt0,line=2,col=!dodgerblue
        legend,['10 Gyr (SSP)'],box=0,charsize=0.8,/right
        
@@ -225,7 +225,7 @@ PRO PLOT_PCMD, psf=psf, age=age
     plotimage,alog10(reverse(ddzm,2)),range=[2,-3],$
               imgxrange=xr,imgyrange=yr,xr=xr,yr=yr,xtit='I-H',ytit='H'
     arrow,0.2,2,0.2+(ei-eh)*ebv,2+eh*ebv,/data,thick=4,hsize=150
-    legend,['M!Dpix!N=10!U2!N'],box=0,charsize=1.1,/right,pos=[4,-1.8]
+    legend,['N!Dpix!N=10!U2!N'],box=0,charsize=0.9,/right,pos=[4,-1.8]
     legend,['[Z/H]=-0.5'],/bottom,/right,box=0,charsize=0.8,pos=[4,2.8]
     plotimage,alog10(reverse(dd,2)),range=[2,-3],$
               imgxrange=xr,imgyrange=yr,xr=xr,yr=yr,xtit='I-H',ytit='H'
@@ -252,7 +252,7 @@ PRO PLOT_PCMD, psf=psf, age=age
               imgxrange=xr,imgyrange=yr,xr=xr,yr=yr,xtit='I-H',ytit='H'
     ;oplot,[0.3,0.4,0.6],[-0.9,-0.65,-0.4],ps=-8,line=2
     arrow,0.2,-0.7,0.2+(ei-eh)*ebv,-0.7+eh*ebv,/data,thick=4,hsize=150
-    legend,['M!Dpix!N=10!U3!N'],box=0,charsize=1.1,/right,pos=[3,-2.8]
+    legend,['N!Dpix!N=10!U3!N'],box=0,charsize=0.9,/right,pos=[3,-2.8]
     legend,['[Z/H]=-0.5'],/bottom,/right,box=0,charsize=0.8,pos=[3,-0.1]
     plotimage,alog10(reverse(dd,2)),range=[2,-3],/preserve,$
               imgxrange=xr,imgyrange=yr,xr=xr,yr=yr,xtit='I-H',ytit='H'
@@ -280,7 +280,7 @@ PRO PLOT_PCMD, psf=psf, age=age
     plotimage,alog10(reverse(ddzm,2)),range=[2,-3],/preserve,$
               imgxrange=xr,imgyrange=yr,xr=xr,yr=yr,xtit='I-H',ytit='H'
     arrow,0.2,-3.5,0.2+(ei-eh)*ebv,-3.5+eh*ebv,/data,thick=4,hsize=150
-    legend,['M!Dpix!N=10!U4!N'],box=0,charsize=1.1,/right,pos=[2,-4.9]
+    legend,['N!Dpix!N=10!U4!N'],box=0,charsize=0.9,/right,pos=[2,-4.9]
     legend,['[Z/H]=-0.5'],/bottom,/right,box=0,charsize=0.8,pos=[2,-2.6]
     plotimage,alog10(reverse(dd,2)),range=[2,-3],/preserve,$
               imgxrange=xr,imgyrange=yr,xr=xr,yr=yr,xtit='I-H',ytit='H'
@@ -344,14 +344,14 @@ PRO PLOT_PCMD_OVERVIEW
 
   dir  = '~/pixcmd/results/'
   pdir = '~/pixcmd/plots/'
-  imm1 = read_pcmdim(dir+'pixcmd_t10.0_Zp0.00_Mbin-1.0_N1000.fits')
-  im0  = read_pcmdim(dir+'pixcmd_t10.0_Zp0.00_Mbin0.00_N1000.fits')
-  im1  = read_pcmdim(dir+'pixcmd_t10.0_Zp0.00_Mbin1.00_N1000.fits')
-  im2  = read_pcmdim(dir+'pixcmd_t10.0_Zp0.00_Mbin2.00_N1000.fits')
-  im3  = read_pcmdim(dir+'pixcmd_t10.0_Zp0.00_Mbin3.00_N1000.fits')
-  im4  = read_pcmdim(dir+'pixcmd_t10.0_Zp0.00_Mbin4.00_N1000.fits')
-  im5  = read_pcmdim(dir+'pixcmd_t10.0_Zp0.00_Mbin5.00_N1000.fits')
-  im6  = read_pcmdim(dir+'pixcmd_t10.0_Zp0.00_Mbin6.00_N1000.fits')
+  imm1 = read_pcmdim(dir+'pixcmd_t10.0_Zp0.00_Mbin-1.0_N1024.fits')
+  im0  = read_pcmdim(dir+'pixcmd_t10.0_Zp0.00_Mbin0.00_N1024.fits')
+  im1  = read_pcmdim(dir+'pixcmd_t10.0_Zp0.00_Mbin1.00_N1024.fits')
+  im2  = read_pcmdim(dir+'pixcmd_t10.0_Zp0.00_Mbin2.00_N1024.fits')
+  im3  = read_pcmdim(dir+'pixcmd_t10.0_Zp0.00_Mbin3.00_N1024.fits')
+  im4  = read_pcmdim(dir+'pixcmd_t10.0_Zp0.00_Mbin4.00_N1024.fits')
+  im5  = read_pcmdim(dir+'pixcmd_t10.0_Zp0.00_Mbin5.00_N1024.fits')
+  im6  = read_pcmdim(dir+'pixcmd_t10.0_Zp0.00_Mbin6.00_N1024.fits')
  
   write_pixcmd_gif,-2.5*imm1.ip,pdir+'Mbin-1.',ndim=nc
   write_pixcmd_gif,-2.5*im0.ip,pdir+'Mbin0.',ndim=nc
@@ -392,7 +392,7 @@ PRO PLOT_PCMD_OVERVIEW
     simpctable
     plot,imm1.bi-imm1.ii,imm1.ii,ps=3,xr=[0,4],yr=[10,-8],xs=1,ys=1,$
          xtit='B-I',ytit='I'
-    legend,['M!Dpix!N=0.1'],box=0,charsize=1.,pos=[0.0,-7]
+    legend,['N!Dpix!N=0.1'],box=0,charsize=1.,pos=[0.0,-7]
     legend,['no PSF'],box=0,/right,charsize=0.9
     oplot,t1.acs_f475w-t1.acs_f814w,t1.acs_f814w,col=!red,thick=2
     plot,imm1.bp-imm1.ip,imm1.ip,ps=3,xr=[0,4],yr=[10,-8],xs=1,ys=1,$
@@ -414,7 +414,7 @@ PRO PLOT_PCMD_OVERVIEW
     plot,im0.bi-im0.ii,im0.ii,ps=3,xr=[0,4],yr=[10,-8],xs=1,ys=1,$
          xtit='B-I',ytit='I'
     oplot,t1.acs_f475w-t1.acs_f814w,t1.acs_f814w,col=!red,thick=2
-    legend,['M!Dpix!N=1'],box=0,charsize=1.,pos=[0.0,-7]
+    legend,['N!Dpix!N=1'],box=0,charsize=1.,pos=[0.0,-7]
     legend,['no PSF'],box=0,/right,charsize=0.9
     plot,im0.bp-im0.ip,im0.ip,ps=3,xr=[0,4],yr=[10,-8],xs=1,ys=1,$
          xtit='B-I',ytit='I'
@@ -436,7 +436,7 @@ PRO PLOT_PCMD_OVERVIEW
     plot,im1.bi-im1.ii,im1.ii,ps=3,xr=[0,4],yr=[10,-8],xs=1,ys=1,$
          xtit='B-I',ytit='I'
     oplot,t1.acs_f475w-t1.acs_f814w,t1.acs_f814w,col=!red,thick=2
-    legend,['M!Dpix!N=10'],box=0,charsize=1.,pos=[0.0,-7]
+    legend,['N!Dpix!N=10'],box=0,charsize=1.,pos=[0.0,-7]
     legend,['no PSF'],box=0,/right,charsize=0.9
     plot,im1.bp-im1.ip,im1.ip,ps=3,xr=[0,4],yr=[10,-8],xs=1,ys=1,$
          xtit='B-I',ytit='I'
@@ -457,7 +457,7 @@ PRO PLOT_PCMD_OVERVIEW
     plot,im2.bi-im2.ii,im2.ii,ps=3,xr=[0,4],yr=[10,-8],xs=1,ys=1,$
          xtit='B-I',ytit='I'
     oplot,t1.acs_f475w-t1.acs_f814w,t1.acs_f814w,col=!red,thick=2
-    legend,['M!Dpix!N=10!U2!N'],box=0,charsize=1.,pos=[0.0,-7]
+    legend,['N!Dpix!N=10!U2!N'],box=0,charsize=1.,pos=[0.0,-7]
     legend,['no PSF'],box=0,/right,charsize=0.9
     plot,im2.bp-im2.ip,im2.ip,ps=3,xr=[0,4],yr=[10,-8],xs=1,ys=1,$
          xtit='B-I',ytit='I'
@@ -478,7 +478,7 @@ PRO PLOT_PCMD_OVERVIEW
     plot,im3.bi-im3.ii,im3.ii,ps=3,xr=[0,4],yr=[10,-8],xs=1,ys=1,$
          xtit='B-I',ytit='I'
     oplot,t1.acs_f475w-t1.acs_f814w,t1.acs_f814w,col=!red,thick=2
-    legend,['M!Dpix!N=10!U3!N'],box=0,charsize=1.,pos=[0.0,-7]
+    legend,['N!Dpix!N=10!U3!N'],box=0,charsize=1.,pos=[0.0,-7]
     legend,['no PSF'],box=0,/right,charsize=0.9
     plot,im3.bp-im3.ip,im3.ip,ps=3,xr=[0,4],yr=[10,-8],xs=1,ys=1,$
          xtit='B-I',ytit='I'
@@ -499,7 +499,7 @@ PRO PLOT_PCMD_OVERVIEW
     plot,im4.bi-im4.ii,im4.ii,ps=3,xr=[0,4],yr=[10,-8],xs=1,ys=1,$
          xtit='B-I',ytit='I'
     oplot,t1.acs_f475w-t1.acs_f814w,t1.acs_f814w,col=!red,thick=2
-    legend,['M!Dpix!N=10!U4!N'],box=0,charsize=1.,pos=[0.0,-7]
+    legend,['N!Dpix!N=10!U4!N'],box=0,charsize=1.,pos=[0.0,-7]
     legend,['no PSF'],box=0,/right,charsize=0.9
     plot,im4.bp-im4.ip,im4.ip,ps=3,xr=[0,4],yr=[10,-8],xs=1,ys=1,$
          xtit='B-I',ytit='I'
@@ -519,7 +519,7 @@ PRO PLOT_PCMD_OVERVIEW
     simpctable
     plot,im5.bi-im5.ii,im5.ii,ps=3,xr=[0,4],yr=[10,-8],xs=1,ys=1,$
          xtit='B-I',ytit='I'
-    legend,['M!Dpix!N=10!U5!N'],box=0,charsize=1.,pos=[0.0,-7]
+    legend,['N!Dpix!N=10!U5!N'],box=0,charsize=1.,pos=[0.0,-7]
     legend,['no PSF'],box=0,/right,charsize=0.9
     oplot,t1.acs_f475w-t1.acs_f814w,t1.acs_f814w,col=!red,thick=2
     plot,im5.bp-im5.ip,im5.ip,ps=3,xr=[0,4],yr=[10,-8],xs=1,ys=1,$
@@ -539,7 +539,7 @@ PRO PLOT_PCMD_OVERVIEW
     simpctable
     plot,im6.bi-im6.ii,im6.ii,ps=3,xr=[0,4],yr=[10,-8],xs=1,ys=1,$
          xtit='B-I',ytit='I'
-    legend,['M!Dpix!N=10!U5!N'],box=0,charsize=1.,pos=[0.0,-7]
+    legend,['N!Dpix!N=10!U5!N'],box=0,charsize=1.,pos=[0.0,-7]
     legend,['no PSF'],box=0,/right,charsize=0.9
     oplot,t1.acs_f475w-t1.acs_f814w,t1.acs_f814w,col=!red,thick=2
     plot,im6.bp-im6.ip,im6.ip,ps=3,xr=[0,4],yr=[10,-8],xs=1,ys=1,$

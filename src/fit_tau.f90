@@ -20,7 +20,7 @@ SUBROUTINE FIT_TAU(pos)
   bestchi2 = huge_number
 
   mdf    = -2.0
-  mdf(3) = -0.05
+  mdf(4) = -0.05
 
   tauarr = (/1.0,2.0,3.0,5.0,7.0,10.0,20.0/)
 
