@@ -43,9 +43,9 @@ FUNCTION FUNC(inpos)
         model_err = SQRT(imodel*npix**2)/npix**2
         DO i=1,nx
            DO j=1,ny
-              IF (imodel(i,j)*npix**2.EQ.1) THEN
-                 model_err(i,j)=model_err(i,j)*100
-              ENDIF
+              !IF (imodel(i,j)*npix**2.EQ.1) THEN
+              !   model_err(i,j)=model_err(i,j)*100
+              !ENDIF
               IF (model_err(i,j).LE.tiny_number) model_err(i,j)=1./npix**2
            ENDDO
         ENDDO
