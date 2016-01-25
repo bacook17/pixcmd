@@ -1,7 +1,8 @@
 FUNCTION GETMODEL(inpos,im)
 
   USE pixcmd_vars; USE nrtype
-  USE pixcmd_utils, ONLY : convolve,hist_2d,add_obs_err,myran,mypoidev,drawn
+  USE pixcmd_utils, ONLY : convolve,hist_2d,add_obs_err,&
+       myran,mypoidev,drawn,interp_iso
   USE nr, ONLY : locate,ran1
   IMPLICIT NONE
 
@@ -13,9 +14,10 @@ FUNCTION GETMODEL(inpos,im)
   REAL(SP), DIMENSION(npix,npix,nfil) :: f1,cf1,of1
   REAL(SP), DIMENSION(npix,npix) :: narr
   REAL(SP), DIMENSION(nz) :: mdf
-  INTEGER  :: i,k,f,z
+  INTEGER  :: i,k,f,z,zniso
   REAL(SP) :: nnn,sfh,red
   CHARACTER(10) :: time
+  TYPE(TISO), DIMENSION(niso_max) :: ziso
 
   !------------------------------------------------------------!
 
@@ -24,53 +26,44 @@ FUNCTION GETMODEL(inpos,im)
      WRITE(*,*) '1 Time '//time(1:2)//':'//time(3:4)//':'//time(5:9)
   ENDIF
 
-  !set up the MDF
-  mdf(1:nz-1) = inpos(1+nage+nxpar:npar)
-  mdf(nz)     = 1.0-SUM(10**(mdf(1:nz-1)))
-  IF (mdf(nz).LT.0.0) THEN
-     WRITE(*,*) 'ERROR: MDF(nz)<0.0!',mdf(nz)
-     STOP
-  ELSE
-     mdf(nz) = LOG10(mdf(nz)+tiny_number)
-  ENDIF
+  !interpolate the isochrones to the input metallicity
+  CALL INTERP_ISO(inpos(npar),ziso,zniso)
 
+ 
   !compute the model at each pixel
   f1 = 0.0
-  DO z=1,nz
-     DO k=1,niso(z)
-     
-        sfh = inpos(nxpar+iso(z,k)%aind)
+  DO k=1,zniso
 
-        IF (sfh.LE.prlo_sfh.OR.10**sfh.LT.0.1/(npix**2).OR.&
-             mdf(z).LT.zmet_min) CYCLE
+     sfh = inpos(nxpar+ziso(k)%aind)
+
+     IF (sfh.LE.prlo_sfh.OR.10**sfh.LT.0.1/(npix**2)) CYCLE
      
-        nnn = 10**sfh*10**mdf(z)*iso(z,k)%imf
+     nnn = 10**sfh*ziso(k)%imf
      
-        !treat masses less than minmass as continuously sampled
-        IF (iso(z,k)%mass.LT.minmass.OR.nnn.GT.minnum) THEN
-           DO f=1,2
-              red = 10**(-2./5*(red_per_ebv(f)*10**inpos(1)))
-              f1(:,:,f) = f1(:,:,f)+nnn*iso(z,k)%bands(f)*red
-           ENDDO
+     !treat masses less than minmass as continuously sampled
+     IF (ziso(k)%mass.LT.minmass.OR.nnn.GT.minnum) THEN
+        DO f=1,2
+           red = 10**(-2./5*(red_per_ebv(f)*10**inpos(1)))
+           f1(:,:,f) = f1(:,:,f)+nnn*ziso(k)%bands(f)*red
+        ENDDO
+     ELSE
+        IF (nnn.LE.maxpoidev) THEN
+           narr = mypoidev(nnn,k)
+           
+           !remove stars that would likely count as "resolved"
+           !IF (SUM(narr).LE.10.AND.ziso(k)%bands(1).GT.1000.*immed) THEN
+           !   narr=0.0
+           !ENDIF
+           
         ELSE
-           IF (nnn.LE.maxpoidev) THEN
-              narr = mypoidev(nnn,k)
-
-              !remove stars that would likely count as "resolved"
-              !IF (SUM(narr).LE.10.AND.iso(z,k)%bands(1).GT.1000.*immed) THEN
-              !   narr=0.0
-              !ENDIF
-
-           ELSE
-              narr = gdev*SQRT(nnn)+nnn
-           ENDIF
-           DO f=1,2
-              red = 10**(-2./5*(red_per_ebv(f)*10**inpos(1)))
-              f1(:,:,f) = f1(:,:,f)+narr*iso(z,k)%bands(f)*red
-           ENDDO
+           narr = gdev*SQRT(nnn)+nnn
         ENDIF
-
-     ENDDO
+        DO f=1,2
+           red = 10**(-2./5*(red_per_ebv(f)*10**inpos(1)))
+           f1(:,:,f) = f1(:,:,f)+narr*ziso(k)%bands(f)*red
+        ENDDO
+     ENDIF
+     
   ENDDO
 
   IF (test_time.EQ.1) THEN

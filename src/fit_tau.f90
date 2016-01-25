@@ -1,4 +1,4 @@
-SUBROUTINE FIT_TAU(pos)
+SUBROUTINE FIT_TAU(pos,zmet0)
 
   USE pixcmd_vars; USE nrtype
   USE pixcmd_utils, ONLY : func
@@ -8,19 +8,17 @@ SUBROUTINE FIT_TAU(pos)
   INTEGER, PARAMETER :: ifprint=0
 
   REAL(SP), DIMENSION(npar), INTENT(inout) :: pos
+  REAL(SP), INTENT(in) :: zmet0
   INTEGER :: i,j
   INTEGER, PARAMETER :: ntau=7,nmpix=10
   REAL(SP), DIMENSION(npar) :: tpos
   REAL(SP), DIMENSION(nage) :: sfh,wgt
-  REAL(SP) :: bestchi2,chi2,tau,twgt,dt,btau,tmpix,bmpix
+  REAL(SP) :: bestchi2,chi2,tau,twgt,dt,btau,tmpix,bmpix,zmet
   REAL(SP), DIMENSION(ntau) :: tauarr
-  REAL(SP), DIMENSION(nzi)   :: mdf
+
  !------------------------------------------------------------!
 
   bestchi2 = huge_number
-
-  mdf    = -2.0
-  mdf(4) = -0.05
 
   tauarr = (/1.0,2.0,3.0,5.0,7.0,10.0,20.0/)
 
@@ -56,7 +54,7 @@ SUBROUTINE FIT_TAU(pos)
         tpos(1) = lebv0
         tmpix = mpix0+(REAL(j)-1.)/nmpix-0.5
         tpos(1+nxpar:nxpar+nage) = LOG10(wgt)+tmpix
-        tpos(1+nxpar+nage:npar)  = mdf
+        tpos(1+nxpar+nage:npar)  = zmet0
 
         chi2 = func(tpos)
         IF (chi2.LT.bestchi2) THEN

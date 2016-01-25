@@ -39,9 +39,10 @@ MODULE PIXCMD_UTILS
   END INTERFACE
 
   INTERFACE
-     SUBROUTINE FIT_TAU(pos)
+     SUBROUTINE FIT_TAU(pos,zmet0)
        USE pixcmd_vars; USE nrtype
        REAL(SP), DIMENSION(npar), INTENT(inout) :: pos
+       REAL(SP), INTENT(in) :: zmet0
      END SUBROUTINE FIT_TAU
   END INTERFACE
 
@@ -78,15 +79,6 @@ MODULE PIXCMD_UTILS
   END INTERFACE
 
   INTERFACE
-     FUNCTION GETMODEL_MDF(inpos,im)
-       USE pixcmd_vars; USE nrtype
-       REAL(SP), DIMENSION(npar), INTENT(in) :: inpos
-       REAL(SP), DIMENSION(npix,npix), OPTIONAL :: im
-       REAL(SP), DIMENSION(nx,ny) :: getmodel_mdf
-     END FUNCTION GETMODEL_MDF
-  END INTERFACE
-
-  INTERFACE
      FUNCTION HIST_2D(xx,yy,xarr,yarr,nx,ny,npix)
        USE nrtype
        INTEGER, INTENT(in) :: nx,ny,npix
@@ -95,6 +87,15 @@ MODULE PIXCMD_UTILS
        REAL(SP), DIMENSION(ny), INTENT(in) :: yarr
        REAL(SP), DIMENSION(nx,ny) :: hist_2d
      END FUNCTION HIST_2D
+  END INTERFACE
+
+  INTERFACE
+     SUBROUTINE INTERP_ISO(zmet,ziso,zniso)
+       USE nrtype; USE pixcmd_vars
+       REAL(SP), INTENT(in) :: zmet
+       INTEGER, INTENT(inout) :: zniso
+       TYPE(TISO), DIMENSION(niso_max) :: ziso
+     END SUBROUTINE INTERP_ISO
   END INTERFACE
 
   INTERFACE

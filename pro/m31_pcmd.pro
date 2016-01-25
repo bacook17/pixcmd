@@ -308,8 +308,15 @@ PRO M31_PCMD, ir=ir, brick=brick, bias=bias
 
      wh   = where(xx GE 13500 AND xx LE 14500 AND $
                   yy GE 11000 AND yy LE 12000 AND finite(mpix) EQ 1,ct)
-     ;wh   = where(xx GE 15000 AND xx LE 16000 AND $
-     ;             yy GE 11000 AND yy LE 12000 AND finite(mpix) EQ 1,ct)
+     im2i = -1.0*im2[13500:14500,11000:12000]
+
+     begplot,name=pdir+'brick6_im.eps',/col,xsize=7,ysize=6,/quiet,/encap
+     arr = bytscl(im2i-min(im2i))
+     ;arr = arr[0:400-1,0:400-1]
+     loadct,0
+     plotimage,arr,xs=4,ys=4,/preserve_aspect
+     simpctable
+     endplot,/quiet
 
      x1 = im1[wh]-im2[wh]
      y1 = im2[wh]

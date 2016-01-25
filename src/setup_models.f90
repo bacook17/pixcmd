@@ -23,7 +23,7 @@ SUBROUTINE SETUP_MODELS()
      READ(13,*)
   ENDDO
   DO i=1,nz
-     READ(13,'(A5,3x,F6.4)') zstr(i),zmetarr(i)
+     READ(13,'(A5,F6.2)') zstr(i),zmetarr(i)
   ENDDO
   CLOSE(13)
 
@@ -110,11 +110,11 @@ SUBROUTINE SETUP_MODELS()
         READ(10,'(F6.2,7F10.4)',IOSTAT=stat) iage,mass,d2,d3,imf,b1,d4,b2
         IF (stat.NE.0) GOTO 21
 
-        DO f=1,22
+        DO f=1,niso_age
 
            age = (f-1)*0.2+age0
 
-           IF ( ABS(iage-age).LT.0.01.AND.iage.GE.age0 ) THEN
+           IF ( ABS(iage-age).LT.0.01.AND.iage.GE.age0.AND.mass.GE.0.1 ) THEN
               iso(z,i)%age  = iage
               iso(z,i)%mass = mass
               iso(z,i)%imf  = imf
@@ -124,7 +124,6 @@ SUBROUTINE SETUP_MODELS()
                  IF (iage.GE.agesarr2(m).AND.iage.LT.agesarr2(m+1)) k=m
                  IF (iage.EQ.agesarr2(nage+1)) k=m
               ENDDO
-              !WRITE(9,'(F5.2,1x,I2)') iage,k
               iso(z,i)%aind = k
               i=i+1
               IF (iage.NE.tage) THEN

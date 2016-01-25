@@ -10,7 +10,7 @@ PROGRAM FIT_PIXCMD
   IMPLICIT NONE
 
   !key emcee parameters
-  INTEGER, PARAMETER :: nwalkers=128,nburn=10,nmcmc=10000
+  INTEGER, PARAMETER :: nwalkers=64,nburn=10,nmcmc=10000
   !flag for testing clock time
   INTEGER, PARAMETER :: test_time=1
   !fit for tau-Mpix
@@ -23,13 +23,12 @@ PROGRAM FIT_PIXCMD
 
   INTEGER  :: i,j,k,ml,stat,iter=30,totacc=0,npos
   REAL(SP) :: dt,cmin,cstd,minchi2=huge_number,ndat
-  REAL(SP) :: time1,time2,wdth1=1E-3,twgt=0.0
+  REAL(SP) :: time1,time2,wdth1=1E-3,twgt=0.0,zmet0
   CHARACTER(10) :: time,is,tmpstr
   CHARACTER(50) :: infile,tag=''
   REAL(SP), DIMENSION(2) :: dumt,dumt2
   REAL(SP), DIMENSION(nx,ny) :: bmodel=0.,imodel=0.
   REAL(SP), DIMENSION(nage)  :: sfh,wgt
-  REAL(SP), DIMENSION(nzi)   :: mdf
 
   !emcee variables
   REAL(SP), DIMENSION(npar) :: bpos=-99.,dumpos=-99.
@@ -70,9 +69,14 @@ PROGRAM FIT_PIXCMD
      READ(tmpstr,'(F4.1)') lebv0
   ENDIF
 
-  IF (IARGC().EQ.4) THEN
+  IF (IARGC().GE.4) THEN
+     CALL GETARG(4,tmpstr)
+     READ(tmpstr,'(F4.1)') zmet0
+  ENDIF
+
+  IF (IARGC().EQ.5) THEN
      tag(1:1)='_'
-     CALL GETARG(4,tag(2:))
+     CALL GETARG(5,tag(2:))
   ENDIF
 
   IF (ntasks.EQ.1) THEN
@@ -86,6 +90,7 @@ PROGRAM FIT_PIXCMD
      WRITE(*,'(" ************************************")')
      WRITE(*,'("   Mpix_init  = ",1x,F4.1)') mpix0
      WRITE(*,'("   lebv_init  = ",1x,F4.1)') lebv0
+     WRITE(*,'("   [Z/H]_init = ",1x,F4.1)') zmet0
      WRITE(*,'("   Npix       = ",I5)') npix
      WRITE(*,'("   dotaufit   = ",I5)') dotaufit
      WRITE(*,'("   doinitsfh  = ",I5)') doinitsfh
@@ -104,6 +109,7 @@ PROGRAM FIT_PIXCMD
   prhi(1)                  = prhi_lebv
   prhi(1+nxpar:nxpar+nage) = prhi_sfh+mpix0
   prhi(1+nxpar+nage:npar)  = prhi_zmet
+
 
   !initialize the random number generator
   !set each task to sleep for a different length of time
@@ -222,7 +228,7 @@ PROGRAM FIT_PIXCMD
 
         !fit in a grid of tau and Mpix
         WRITE(*,*) 'Running tau-mpix fitter'
-        CALL FIT_TAU(bpos)
+        CALL FIT_TAU(bpos,zmet0)
 
      ELSE IF (doinitsfh.EQ.1) THEN
 
@@ -235,11 +241,9 @@ PROGRAM FIT_PIXCMD
         ENDDO
         wgt = wgt/twgt
         !transfer the parameters to the parameter array
-        bpos(1) = lebv0   ! log(EBV)
+        bpos(1) = lebv0
         bpos(1+nxpar:nxpar+nage) = LOG10(wgt)+mpix0
-        mdf = -2.0
-        mdf(3)=-0.05
-        bpos(1+nxpar+nage:npar) = mdf
+        bpos(1+nxpar+nage:npar)  = zmet0
 
      ELSE
 
@@ -394,7 +398,7 @@ PROGRAM FIT_PIXCMD
      WRITE(12,'("#   Nburn      = ",I5)') nburn
      WRITE(12,'("#   Nchain     = ",I5)') nmcmc
      WRITE(12,'("#   Ntasks     = ",I5)') ntasks
-     WRITE(12,'(2I3)') nage, nz
+     WRITE(12,'(2I3)') nage, nzi
      WRITE(12,'(20(F5.2,1x))') agesarr
 
 

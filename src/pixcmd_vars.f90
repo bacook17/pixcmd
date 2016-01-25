@@ -51,12 +51,9 @@ MODULE PIXCMD_VARS
   REAL(SP), DIMENSION(nfil), PARAMETER :: red_per_ebv = (/3.268,1.526/)
  
   !upper/lower priors
-  REAL(SP), PARAMETER :: prlo_sfh=-10.0,prhi_sfh=0.5,wdth0=1E-2
-  REAL(SP), PARAMETER :: prlo_lebv=-5.0,prhi_lebv=0.0
-  REAL(SP), PARAMETER :: prlo_zmet=-5.0,prhi_zmet=0.0
-  !skip the metallicity when weight drops below this value.  Smaller values
-  !have little influence on the Hess diagram at least for Mpix=2.0
-  REAL(SP), PARAMETER :: zmet_min=-4.0
+  REAL(SP), PARAMETER :: prlo_sfh=-10.0,prhi_sfh=1.0,wdth0=1E-2
+  REAL(SP), PARAMETER :: prlo_lebv=-6.0,prhi_lebv=0.0
+  REAL(SP), PARAMETER :: prlo_zmet=-1.1,prhi_zmet=0.5
 
   !stellar mass below which the IMF is assumed to be fully populated
   REAL(SP), PARAMETER :: minmass=0.8
@@ -67,7 +64,8 @@ MODULE PIXCMD_VARS
   REAL(SP), PARAMETER :: maxpoidev=40.
   
   !number of age and metallicity points in the model
-  INTEGER, PARAMETER :: nage=7,nz=5,nzskip=3,nzi=4
+  INTEGER, PARAMETER :: nage=7,nz=7,nzskip=1,nzi=1
+  INTEGER, PARAMETER :: niso_age=22
   !parameters defining the age array
   REAL(SP) :: dage=0.5,age0=6.0
   REAL(SP), DIMENSION(nage)   :: agesarr=0.
@@ -76,7 +74,7 @@ MODULE PIXCMD_VARS
 
   !number of free parameters 
   INTEGER, PARAMETER :: nxpar = 1 !lebv
-  INTEGER, PARAMETER :: npar=nage+nxpar+nz-1
+  INTEGER, PARAMETER :: npar=nage+nxpar+nzi
 
   !max size of array for data and isochrones
   INTEGER, PARAMETER :: niso_max=4096

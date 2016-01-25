@@ -322,10 +322,10 @@ FUNCTION READ_PCMDIM, file
   bi = mrdfits(file,3,/sil)
   nn = n_elements(bi[*,0])
   im = replicate({bi:0.0,ii:0.0,bp:0.0,ip:0.0,ip0:0.0},nn,nn)
-  im.bi = bi
-  im.ii = mrdfits(file,4,/sil)
-  im.bp = mrdfits(file,5,/sil)
-  im.ip = mrdfits(file,6,/sil)
+  im.bi  = bi
+  im.ii  = mrdfits(file,4,/sil)
+  im.bp  = mrdfits(file,5,/sil)
+  im.ip  = mrdfits(file,6,/sil)
   im.ip0 = mrdfits(file,7,/sil)
 
   RETURN,im
@@ -353,13 +353,13 @@ PRO PLOT_PCMD_OVERVIEW
   im5  = read_pcmdim(dir+'pixcmd_t10.0_Zp0.00_Mbin5.00_N1024.fits')
   im6  = read_pcmdim(dir+'pixcmd_t10.0_Zp0.00_Mbin6.00_N1024.fits')
  
-  write_pixcmd_gif,-2.5*imm1.ip,pdir+'Mbin-1.',ndim=nc
-  write_pixcmd_gif,-2.5*im0.ip,pdir+'Mbin0.',ndim=nc
-  write_pixcmd_gif,-2.5*im1.ip,pdir+'Mbin1.',ndim=nc
-  write_pixcmd_gif,-2.5*im2.ip,pdir+'Mbin2.',ndim=nc
-  write_pixcmd_gif,-2.5*im3.ip,pdir+'Mbin3.',ndim=nc
-  write_pixcmd_gif,-2.5*im4.ip,pdir+'Mbin4.',ndim=nc
-  write_pixcmd_gif,-2.5*im5.ip,pdir+'Mbin5.',ndim=nc
+  write_pixcmd_gif,-1.0*imm1.ip,pdir+'Mbin-1.',ndim=nc
+  write_pixcmd_gif,-1.0*im0.ip,pdir+'Mbin0.',ndim=nc
+  write_pixcmd_gif,-1.0*im1.ip,pdir+'Mbin1.',ndim=nc
+  write_pixcmd_gif,-1.0*im2.ip,pdir+'Mbin2.',ndim=nc
+  write_pixcmd_gif,-1.0*im3.ip,pdir+'Mbin3.',ndim=nc
+  write_pixcmd_gif,-1.0*im4.ip,pdir+'Mbin4.',ndim=nc
+  write_pixcmd_gif,-1.0*im5.ip,pdir+'Mbin5.',ndim=nc
  
   ;source spread out over 30 resolution elements (Hogg 2001)
   ;HST ACS PSF contains ~60% of the power within 10 pixels
@@ -384,7 +384,7 @@ PRO PLOT_PCMD_OVERVIEW
   begplot,name=pdir+'pixvar_M-1.eps',/encap,xsize=9,ysize=2.8,/col,/quiet
     !p.multi=[0,3,1]
     !p.charsize=1.7
-    inarr = -2.5*imm1.ip0
+    inarr = -1.0*imm1.ip0
     arr = bytscl(inarr-min(inarr))
     arr = arr[0:nc-1,0:nc-1]
     loadct,0
@@ -405,7 +405,7 @@ PRO PLOT_PCMD_OVERVIEW
   begplot,name=pdir+'pixvar_M0.eps',/encap,xsize=9,ysize=2.8,/col,/quiet
     !p.multi=[0,3,1]
     !p.charsize=1.7
-    inarr = -2.5*im0.ip0
+    inarr = -1.0*im0.ip0
     arr = bytscl(inarr-min(inarr))
     arr = arr[0:nc-1,0:nc-1]
     loadct,0
@@ -427,7 +427,7 @@ PRO PLOT_PCMD_OVERVIEW
   begplot,name=pdir+'pixvar_M1.eps',/encap,xsize=9,ysize=2.8,/col,/quiet
     !p.multi=[0,3,1]
     !p.charsize=1.7
-    inarr = -2.5*im1.ip0
+    inarr = -1.0*im1.ip0
     arr = bytscl(inarr-min(inarr))
     arr = arr[0:nc-1,0:nc-1]
     loadct,0
@@ -448,7 +448,7 @@ PRO PLOT_PCMD_OVERVIEW
   begplot,name=pdir+'pixvar_M2.eps',/encap,xsize=9,ysize=2.8,/col,/quiet
     !p.multi=[0,3,1]
     !p.charsize=1.7
-    inarr = -2.5*im2.ip0
+    inarr = -1.0*im2.ip0
     arr = bytscl(inarr-min(inarr))
     arr = arr[0:nc-1,0:nc-1]
     loadct,0
@@ -469,7 +469,7 @@ PRO PLOT_PCMD_OVERVIEW
   begplot,name=pdir+'pixvar_M3.eps',/encap,xsize=9,ysize=2.8,/col,/quiet
     !p.multi=[0,3,1]
     !p.charsize=1.7
-    inarr = -2.5*im3.ip0
+    inarr = -1.0*im3.ip0
     arr = bytscl(inarr-min(inarr))
     arr = arr[0:nc-1,0:nc-1]
     loadct,0
@@ -490,7 +490,7 @@ PRO PLOT_PCMD_OVERVIEW
   begplot,name=pdir+'pixvar_M4.eps',/encap,xsize=9,ysize=2.8,/col,/quiet
     !p.multi=[0,3,1]
     !p.charsize=1.7
-    inarr = -2.5*im4.ip0
+    inarr = -1.0*im4.ip0
     arr = bytscl(inarr-min(inarr))
     arr = arr[0:nc-1,0:nc-1]
     loadct,0
@@ -511,7 +511,7 @@ PRO PLOT_PCMD_OVERVIEW
   begplot,name=pdir+'pixvar_M5.eps',/encap,xsize=9,ysize=2.8,/col,/quiet
     !p.multi=[0,3,1]
     !p.charsize=1.7
-    inarr = -2.5*im5.ip0
+    inarr = -1.0*im5.ip0
     arr = bytscl(inarr-min(inarr))
     arr = arr[0:nc-1,0:nc-1]
     loadct,0
@@ -531,7 +531,7 @@ PRO PLOT_PCMD_OVERVIEW
   begplot,name=pdir+'pixvar_M6.eps',/encap,xsize=9,ysize=2.8,/col,/quiet
     !p.multi=[0,3,1]
     !p.charsize=1.7
-    inarr = -2.5*im6.ip0
+    inarr = -1.0*im6.ip0
     arr = bytscl(inarr-min(inarr))
     arr = arr[0:nc-1,0:nc-1]
     loadct,0

@@ -25,9 +25,6 @@ FUNCTION FUNC(inpos)
      ENDIF
   ENDDO
 
-  !sum of MDF components cannot be >1.0
-  IF (SUM(10**inpos(1+nxpar+nage:npar)).GT.1.0) func=huge_number
-
   !actually compute a model and return chi^2 if within priors
   IF (func.LT.huge_number) THEN
 

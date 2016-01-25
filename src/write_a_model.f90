@@ -14,23 +14,22 @@ PROGRAM WRITE_A_MODEL
   IMPLICIT NONE
   
   INTEGER  :: i,j,sfhflag=1,ii
-  REAL(SP) :: mpix=2.0,lebv=-5.0,zmet0,zmets,tau=10.,dt,twgt=0.
+  REAL(SP) :: mpix=2.0,lebv=-5.0,zmet,tau=10.,dt,twgt=0.
   CHARACTER(10) :: char_mpix='2.0',char_flag='1',char_tau='10.0'
-  CHARACTER(10) :: char_lebv='-5.0'
+  CHARACTER(10) :: char_lebv='-5.0',char_zmet='0.0'
   CHARACTER(50) :: outfile='',tag=''
   REAL(SP), DIMENSION(npar)      :: pos
   REAL(SP), DIMENSION(nx,ny)     :: hess
   REAL(SP), DIMENSION(npix,npix) :: im
   REAL(SP), DIMENSION(nage)      :: sfh
   REAL(SP), DIMENSION(nage)      :: swgt
-  REAL(SP), DIMENSION(nzi)        :: mdf,zz
 
   !------------------------------------------------------------!
 
   IF (IARGC().GT.0) THEN
      IF (IARGC().LT.4) THEN
         WRITE(*,*) 'ERROR: syntax: write_a_model.exe Mpix '//&
-             'SFH_type tau/log_age log(EBV) [tag]'
+             'SFH_type tau/log_age log(EBV) [Z/H] [tag]'
         STOP
      ENDIF
      CALL GETARG(1,char_mpix)
@@ -41,11 +40,13 @@ PROGRAM WRITE_A_MODEL
      READ(char_tau,'(F4.1)') tau
      CALL GETARG(4,char_lebv)
      READ(char_lebv,'(F4.1)') lebv
+     CALL GETARG(5,char_zmet)
+     READ(char_zmet,'(F4.1)') zmet
   ENDIF
 
-  IF (IARGC().EQ.5) THEN
+  IF (IARGC().EQ.6) THEN
      tag(1:1)='_'
-     CALL GETARG(5,tag(2:))
+     CALL GETARG(6,tag(2:))
   ENDIF
 
   IF (tau.LT.6.0.AND.sfhflag.EQ.0) THEN
@@ -58,25 +59,33 @@ PROGRAM WRITE_A_MODEL
      char_tau(1:1)='0'
   ENDIF
 
-  IF (lebv.GT.0.0) THEN
+  IF (lebv.GE.0.0) THEN
      char_lebv(2:4)=char_lebv(1:3)
      char_lebv(1:1)='+'
+  ENDIF
+
+  IF (zmet.GE.0.0) THEN
+     char_zmet(2:4)=char_zmet(1:3)
+     char_zmet(1:1)='+'
   ENDIF
 
   !output file name
   IF (sfhflag.EQ.1) THEN
      outfile = 'model_M'//TRIM(char_mpix(1:3))//'_SFH'//&
           TRIM(char_flag(1:1))//'_tau'//TRIM(char_tau(1:4))//&
-          '_lebv'//TRIM(char_lebv(1:4))//TRIM(tag)
+          '_lebv'//TRIM(char_lebv(1:4))//'_Z'//&
+          TRIM(char_zmet(1:4))//TRIM(tag)
   ELSE
      outfile = 'model_M'//TRIM(char_mpix(1:3))//'_SFH'//&
           TRIM(char_flag(1:1))//'_t'//TRIM(char_tau(1:4))//&
-          '_lebv'//TRIM(char_lebv(1:4))//TRIM(tag)
+          '_lebv'//TRIM(char_lebv(1:4))//'_Z'//&
+          TRIM(char_zmet(1:4))//TRIM(tag)
   ENDIF
 
   WRITE(*,'("  Output File =  ",A50)') outfile
   WRITE(*,'("  log(Mpix)   = ",F4.1)') mpix
   WRITE(*,'("  log(EBV)    = ",F4.1)') lebv
+  WRITE(*,'("  [Z/H]       = ",F4.1)') zmet
   WRITE(*,'("  SFH flag    =  ",I1)') sfhflag
   IF (sfhflag.EQ.1) THEN
      WRITE(*,'("  tau         = ",F4.1)') tau
@@ -96,16 +105,6 @@ PROGRAM WRITE_A_MODEL
   !setup the model grid
   CALL SETUP_MODELS()
  
-  !-----------------------MDF-----------------------!
-  !zz  = LOG10(zmetarr/0.0190)
-  !mdf = EXP(-(zz-zmet0)**2/2/zmets)
-  mdf = -10.
-  mdf(3)=0.0 !LOG10(1-1E-4)
-
-  !mdf = LOG10(0.2)
-
-  !normalize the MDF weights to unity
- ! mdf = mdf - LOG10(SUM(10**mdf))
 
   !-----------------------SFH-----------------------!
 
@@ -129,9 +128,6 @@ PROGRAM WRITE_A_MODEL
      !a tau model b/c of numerical errors in the integrals
      swgt = swgt/twgt
 
-     write(*,'(10ES10.3)') swgt
-     stop
-
   ELSE
 
      !SSP at age=tau
@@ -144,14 +140,11 @@ PROGRAM WRITE_A_MODEL
   !transfer the parameters to the parameter array 
   pos(1) = lebv
   pos(1+nxpar:nxpar+nage) = LOG10(swgt) + mpix
-  pos(1+nxpar+nage:npar)    = mdf
+  pos(1+nxpar+nage:npar)  = zmet
 
   !get the model hess diagram and I-band image
   !store as the actual counts, not normalized
   hess = getmodel(pos,im) * npix**2
-
-  !immed = SUM(10**(-2./5*im))/npix**2
-  !hess = getmodel(pos,im) * npix**2
 
   !save the PSF-convolved, obs err-included I-band image
   OPEN(11,FILE=TRIM(PIXCMD_HOME)//'/data/'//TRIM(outfile)//'.im',&
