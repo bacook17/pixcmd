@@ -350,20 +350,20 @@ PRO M31_PCMD, ir=ir, brick=brick, bias=bias
        plot,t2.b-t2.i,t2.i,ps=8,xr=[-1,4],yr=[6,-4],xtit='B-I',$
             ytit='I',symsize=0.2
        oplot,t1.(wht1)-t1.(wht2),t1.(wht2),col=!red,thick=2
-       legend,[textoidl('\tau_{SF}=2 Gyr')],box=0,charsize=0.9,/right,/bottom
+       legend,[textoidl('model \tau_{SF}=2 Gyr')],box=0,charsize=0.9,/right,/bottom
        plot,t5.b-t5.i,t5.i,ps=8,xr=[-1,4],yr=[6,-4],xtit='B-I',$
             ytit='I',symsize=0.2
        oplot,t1.(wht1)-t1.(wht2),t1.(wht2),col=!red,thick=2
-       legend,[textoidl('\tau_{SF}=5 Gyr')],box=0,charsize=0.9,/right,/bottom
+       legend,[textoidl('model \tau_{SF}=5 Gyr')],box=0,charsize=0.9,/right,/bottom
        plot,cs.b-cs.i,cs.i,ps=8,xr=[-1,4],yr=[6,-4],xtit='B-I',$
             ytit='I',symsize=0.2
        oplot,t1.(wht1)-t1.(wht2),t1.(wht2),col=!red,thick=2
-       legend,[textoidl('SFH=constant')],box=0,charsize=0.9,/right,/bottom
+       legend,['model',textoidl('SFH=constant')],box=0,charsize=0.9,/right,/bottom
     endplot,/quiet
     spawn,'convert -density 500 '+pdir+'brick6.eps '+pdir+'brick6.png'
 
-     !p.multi=0
-     stop
+    !p.multi=0
+    stop
 
   ENDIF
 
