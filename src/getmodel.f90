@@ -6,7 +6,7 @@ FUNCTION GETMODEL(inpos,im)
   USE nr, ONLY : locate,ran1
   IMPLICIT NONE
 
-  INTEGER, PARAMETER :: test_time=0
+  INTEGER, PARAMETER :: test_time=1
 
   REAL(SP), DIMENSION(npar), INTENT(in) :: inpos
   REAL(SP), DIMENSION(npix,npix), OPTIONAL :: im

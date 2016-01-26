@@ -51,17 +51,17 @@ MODULE PIXCMD_VARS
   REAL(SP), DIMENSION(nfil), PARAMETER :: red_per_ebv = (/3.268,1.526/)
  
   !upper/lower priors
-  REAL(SP), PARAMETER :: prlo_sfh=-10.0,prhi_sfh=1.0,wdth0=1E-2
+  REAL(SP), PARAMETER :: prlo_sfh=-10.0,prhi_sfh=0.2,wdth0=1E-2
   REAL(SP), PARAMETER :: prlo_lebv=-6.0,prhi_lebv=0.0
   REAL(SP), PARAMETER :: prlo_zmet=-1.1,prhi_zmet=0.5
 
   !stellar mass below which the IMF is assumed to be fully populated
-  REAL(SP), PARAMETER :: minmass=0.8
+  REAL(SP), PARAMETER :: minmass=0.70
   !number below which we sample an isochrone point via Poisson/Gaussian,
   !above which we assume the pixel-to-pixel variance is 0.0
-  REAL(SP), PARAMETER :: minnum=500.
+  REAL(SP), PARAMETER :: minnum=1000.
   !N below which we use Poisson, above which we approx with a Gaussian
-  REAL(SP), PARAMETER :: maxpoidev=40.
+  REAL(SP), PARAMETER :: maxpoidev=100.
   
   !number of age and metallicity points in the model
   INTEGER, PARAMETER :: nage=7,nz=7,nzskip=1,nzi=1

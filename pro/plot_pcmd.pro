@@ -371,12 +371,18 @@ PRO PLOT_PCMD_OVERVIEW
   fl4  = -2.5*alog10(median(10^(-2./5*im4.ip))*30*10)
   
   ;SB_I mag/arcsec^2 at DM=18.5
-  sbi = median(im0.ip)+18.5+2.5*alog10(0.05^2)
-  vmi = 1.0
+  vmi = 0.8  ;AB, FSPS, Zsol, 10 Gyr
+  sbi = median(im0.ip)+18.5+2.5*alog10(0.05^2*10)
   sbv  = sbi+vmi
   limv = fl0+vmi
 
-  
+  sbi = median(im1.ip)+18.5+2.5*alog10(0.05^2*10)
+  sbv  = sbi+vmi
+  limv = fl1+vmi
+
+stop  
+
+
   ;read in model isochrone
   a  = mrdfits('~/pixcmd/isoc/MIST_v29_Zp0.00.fits',1,/sil)
   t1 = a[where(a.logage EQ 10.0,cta)]
@@ -558,6 +564,41 @@ PRO PLOT_PCMD_OVERVIEW
   spawn,'convert -density 500 '+pdir+'pixvar_M6.eps '+pdir+'pixvar_M6.png'
 
   stop
+
+END
+
+PRO CROWDING_LIMIT
+
+  dir  = '~/pixcmd/results/'
+  im1 = read_pcmdim(dir+'pixcmd_t10.0_Zp0.00_Mbin-0.6test.fits')
+  im2 = read_pcmdim(dir+'pixcmd_t10.0_Zp0.00_Mbin-0.3test.fits')
+  im3 = read_pcmdim(dir+'pixcmd_t10.0_Zp0.00_Mbin0.00test.fits')
+  im4 = read_pcmdim(dir+'pixcmd_t10.0_Zp0.00_Mbin0.30test.fits')
+  im5 = read_pcmdim(dir+'pixcmd_t10.0_Zp0.00_Mbin0.69test.fits')
+  im6 = read_pcmdim(dir+'pixcmd_t10.0_Zp0.00_Mbin1.00test.fits')
+  im7 = read_pcmdim(dir+'pixcmd_t10.0_Zp0.00_Mbin1.30test.fits')
+  
+  ;source spread out over 30 resolution elements (Hogg 2001)
+  ;HST ACS PSF contains ~60% of the power within 10 pixels
+  fl1 = -2.5*alog10(median(10^(-2./5*im1.ip))*30*10)
+  fl2 = -2.5*alog10(median(10^(-2./5*im2.ip))*30*10)
+  fl3 = -2.5*alog10(median(10^(-2./5*im3.ip))*30*10)
+  fl4 = -2.5*alog10(median(10^(-2./5*im4.ip))*30*10)
+  fl5 = -2.5*alog10(median(10^(-2./5*im5.ip))*30*10)
+  fl6 = -2.5*alog10(median(10^(-2./5*im6.ip))*30*10)
+  fl7 = -2.5*alog10(median(10^(-2./5*im7.ip))*30*10)
+  
+  ff = [fl1,fl2,fl3,fl4,fl5,fl6,fl7]
+
+  ;read in model isochrone
+  a  = mrdfits('~/pixcmd/isoc/MIST_v29_Zp0.00.fits',1,/sil)
+  t1 = a[where(a.logage EQ 10.0,cta)]
+
+
+  plot,t1.acs_f475w-t1.acs_f814w,t1.acs_f814w,xr=[0,4],yr=[10,-5],xs=1,ys=1
+  oplot,[0,5],[0,0]+fl4,line=2
+  oplot,[0,5],[0,0]+fl1,line=2
+  oplot,[0,5],[0,0]+fl7,line=2
 
 END
 

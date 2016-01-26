@@ -10,7 +10,7 @@ PROGRAM FIT_PIXCMD
   IMPLICIT NONE
 
   !key emcee parameters
-  INTEGER, PARAMETER :: nwalkers=256,nburn=100,nmcmc=1000
+  INTEGER, PARAMETER :: nwalkers=256,nburn=1000,nmcmc=100
   !flag for testing clock time
   INTEGER, PARAMETER :: test_time=1
   !fit for tau-Mpix
@@ -323,7 +323,7 @@ PROGRAM FIT_PIXCMD
      !---------------------initial burn-in---------------------!
 
      WRITE(*,'(A)') ' initial burn-in...  '
-     DO i=1,nburn/10
+     DO i=1,nburn/5
         IF (test_time.EQ.1) THEN
            WRITE(*,'("Iteration ",I4)') i
            CALL FLUSH()
@@ -376,7 +376,7 @@ PROGRAM FIT_PIXCMD
      !-------------------second-pass burn-in-------------------!
 
      WRITE(*,'(A)',advance='no') ' second burn-in: '
-     DO i=1,nburn
+     DO i=nburn/5,nburn
         IF (test_time.EQ.1) WRITE(*,'("Iteration ",I4)') i
         CALL EMCEE_ADVANCE_MPI(npar,nwalkers,2.0,pos_emcee_in,&
              lp_emcee_in,pos_emcee_out,lp_emcee_out,accept_emcee,ntasks-1)
