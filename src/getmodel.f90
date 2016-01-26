@@ -51,9 +51,10 @@ FUNCTION GETMODEL(inpos,im)
            narr = mypoidev(nnn,k)
            
            !remove stars that would likely count as "resolved"
-           !IF (SUM(narr).LE.10.AND.ziso(k)%bands(1).GT.1000.*immed) THEN
-           !   narr=0.0
-           !ENDIF
+       !    IF (immed.LE.tiny_number) WRITE(*,*) 'GETMODEL ERROR, immed=0.0!'
+       !    IF (SUM(narr).LE.10.AND.ziso(k)%bands(1).GT.100.*immed) THEN
+       !       narr=0.0
+       !    ENDIF
            
         ELSE
            narr = gdev*SQRT(nnn)+nnn

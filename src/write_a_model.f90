@@ -26,6 +26,9 @@ PROGRAM WRITE_A_MODEL
 
   !------------------------------------------------------------!
 
+  !generate truly random models if fix_seed=0
+  fix_seed = 0
+
   IF (IARGC().GT.0) THEN
      IF (IARGC().LT.4) THEN
         WRITE(*,*) 'ERROR: syntax: write_a_model.exe Mpix '//&
@@ -105,7 +108,6 @@ PROGRAM WRITE_A_MODEL
   !setup the model grid
   CALL SETUP_MODELS()
  
-
   !-----------------------SFH-----------------------!
 
   IF (sfhflag.EQ.1) THEN
@@ -123,6 +125,7 @@ PROGRAM WRITE_A_MODEL
         swgt(j) = sfh(j)*dt
         twgt = twgt+swgt(j)
      ENDDO
+
      !ensure the weights sum to unity.  This is 
      !automatically the case for a constant SFH but not for
      !a tau model b/c of numerical errors in the integrals

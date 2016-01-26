@@ -116,6 +116,9 @@ PRO M31_PCMD, ir=ir, brick=brick, bias=bias
      m4 = add_phot_err(m4,whm1,whm2,dm,zpt,exptime)
      nn   = n_elements(m2)
 
+     ;the blue nuclear cluster in M31 starts to appear around 3",
+     ;or within ~60 pixels from the center
+
      ;print files for the fitting routine
      wh = where(rr GE 180 AND rr LE 200 AND finite(im1) EQ 1,ct)
      x1 = im1[wh]-im2[wh]
@@ -310,6 +313,9 @@ PRO M31_PCMD, ir=ir, brick=brick, bias=bias
                   yy GE 11000 AND yy LE 12000 AND finite(mpix) EQ 1,ct)
      im2i = -1.0*im2[13500:14500,11000:12000]
 
+     ;wh   = where(xx GE 11000 AND xx LE 12000 AND $
+     ;             yy GE 10500 AND yy LE 11500 AND finite(mpix) EQ 1,ct)
+ 
      begplot,name=pdir+'brick6_im.eps',/col,xsize=7,ysize=6,/quiet,/encap
      arr = bytscl(im2i-min(im2i))
      ;arr = arr[0:400-1,0:400-1]

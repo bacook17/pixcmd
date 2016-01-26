@@ -10,7 +10,7 @@ PROGRAM FIT_PIXCMD
   IMPLICIT NONE
 
   !key emcee parameters
-  INTEGER, PARAMETER :: nwalkers=64,nburn=10,nmcmc=10000
+  INTEGER, PARAMETER :: nwalkers=256,nburn=100,nmcmc=1000
   !flag for testing clock time
   INTEGER, PARAMETER :: test_time=1
   !fit for tau-Mpix
@@ -21,14 +21,16 @@ PROGRAM FIT_PIXCMD
   !down-sample the data by this factor
   REAL(SP), PARAMETER :: subsample=1.0
 
-  INTEGER  :: i,j,k,ml,stat,iter=30,totacc=0,npos
-  REAL(SP) :: dt,cmin,cstd,minchi2=huge_number,ndat
+  INTEGER  :: i,j,k,ml,stat,iter=30,totacc=0,npos,ii
+  REAL(SP) :: dt,cmin,cstd,minchi2=huge_number,ndat,tmp
   REAL(SP) :: time1,time2,wdth1=1E-3,twgt=0.0,zmet0
   CHARACTER(10) :: time,is,tmpstr
+  CHARACTER(2) :: tis
   CHARACTER(50) :: infile,tag=''
   REAL(SP), DIMENSION(2) :: dumt,dumt2
   REAL(SP), DIMENSION(nx,ny) :: bmodel=0.,imodel=0.
   REAL(SP), DIMENSION(nage)  :: sfh,wgt
+  REAL(SP), DIMENSION(npix,npix) :: im
 
   !emcee variables
   REAL(SP), DIMENSION(npar) :: bpos=-99.,dumpos=-99.
@@ -167,6 +169,8 @@ PROGRAM FIT_PIXCMD
            WRITE(*,*) 'ERROR: input data has negative Hess entry'
            STOP
         ENDIF
+        IF (hess_data(i,j).EQ.1.0.OR.hess_data(i,j).EQ.2.0) &
+             hess_err(i,j)=hess_err(i,j)*10
      ENDDO
   ENDDO
 
@@ -251,12 +255,26 @@ PROGRAM FIT_PIXCMD
 
      ENDIF
      
-     !test smoothness of chi^2 surface
-    ! DO i=1,20
-    !    bpos(5) = LOG10(wgt(4)) + 0.2*i-2.
-    !    write(*,*) bpos(5),func(bpos)
-    ! ENDDO
-    ! STOP
+     !!test smoothness of chi^2 surface
+     !immed  = 1E9
+     !imodel = getmodel(bpos,im)
+     !immed  = SUM(10**(-2./5*im))/npix**2
+     !write(*,*) immed
+     !ii = 1
+     !tmp = bpos(ii)
+     !write(*,*) tmp
+     !DO i=1,20
+     !   bpos(ii) = tmp + 0.01*i-0.1
+     !   write(*,*) bpos(ii),func(bpos)
+     !   write(tis,'(I2)') i+10
+     ! !  bmodel = getmodel(bpos)
+     ! !  OPEN(11,FILE=TRIM(PIXCMD_HOME)//'/results2/test'//TRIM(tis)&
+     ! !       //'.hess',FORM='UNFORMATTED',STATUS='REPLACE',&
+     ! !       access='DIRECT',recl=nx*ny*4)
+     ! !  WRITE(11,rec=1) bmodel
+     ! !  CLOSE(11)
+     !ENDDO
+     !STOP
 
 
      !-------------------------------------------------------------------!
