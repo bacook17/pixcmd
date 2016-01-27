@@ -1,7 +1,7 @@
 PROGRAM FIT_PIXCMD
 
   !To Do: 1) include E(B-V) and Z as free parameters
-  !syntax: mpirun -np XX fit_pixcmd.exe input_data Mpix_init lebv_init tag
+  !syntax: mpirun -np XX fit_pixcmd.exe input_data Mpix0 lebv0 [Z/H] seed tag
 
   USE pixcmd_utils; USE pixcmd_vars; USE nrtype
   USE nr, ONLY : ran1,gasdev; USE mpi
@@ -12,7 +12,7 @@ PROGRAM FIT_PIXCMD
   !key emcee parameters
   INTEGER, PARAMETER :: nwalkers=256,nburn=1000,nmcmc=100
   !flag for testing clock time
-  INTEGER, PARAMETER :: test_time=1
+  INTEGER, PARAMETER :: test_time=0
   !fit for tau-Mpix
   INTEGER, PARAMETER :: dotaufit=1
   !fix the SFH=const
@@ -76,10 +76,16 @@ PROGRAM FIT_PIXCMD
      READ(tmpstr,'(F4.1)') zmet0
   ENDIF
 
-  IF (IARGC().EQ.5) THEN
-     tag(1:1)='_'
-     CALL GETARG(5,tag(2:))
+  IF (IARGC().GE.5) THEN
+     CALL GETARG(5,tmpstr)
+     READ(tmpstr,'(I5)') fix_seed
   ENDIF
+
+  IF (IARGC().EQ.6) THEN
+     tag(1:1)='_'
+     CALL GETARG(6,tag(2:))
+  ENDIF
+
 
   IF (ntasks.EQ.1) THEN
      WRITE(*,*) 'ERROR: you are not using mpirun!'
@@ -100,6 +106,7 @@ PROGRAM FIT_PIXCMD
      WRITE(*,'("   Nburn      = ",I5)') nburn
      WRITE(*,'("   Nchain     = ",I5)') nmcmc
      WRITE(*,'("   Ntasks     = ",I5)') ntasks
+     WRITE(*,'("   Rseed      = ",I5)') fix_seed
      WRITE(*,'("   filename   = ",A)') TRIM(infile)//TRIM(tag)
      WRITE(*,'(" ************************************")')
   ENDIF
