@@ -109,7 +109,6 @@ PROGRAM WRITE_A_MODEL
         CALL RAN1(ebv_ran(i,j,:))
      ENDDO
   ENDDO
-  ebv_ran = 10**ebv_ran
 
   !setup the model grid
   CALL SETUP_MODELS()

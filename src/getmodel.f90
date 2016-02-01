@@ -40,7 +40,7 @@ FUNCTION GETMODEL(inpos,im)
      
      nnn = 10**sfh*ziso(k)%imf
 
-     ebv = ebv_ran(:,:,k) * (10**inpos(2)-10**inpos(1)) + 10**inpos(1)
+     ebv = ebv_ran(:,:,MOD(k,niso_max/4)) * (10**inpos(2)-10**inpos(1)) + 10**inpos(1)
      
      !treat masses less than minmass as continuously sampled
      IF (ziso(k)%mass.LT.minmass.OR.nnn.GT.minnum) THEN

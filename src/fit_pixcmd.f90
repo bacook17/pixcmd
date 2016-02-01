@@ -28,7 +28,7 @@ PROGRAM FIT_PIXCMD
   REAL(SP) :: dt,cmin,cstd,minchi2=huge_number,ndat,tmp
   REAL(SP) :: time1,time2,twgt=0.0,zmet0
   CHARACTER(10) :: time,is,tmpstr
-  CHARACTER(2) :: tis
+  CHARACTER(2)  :: tis
   CHARACTER(50) :: infile,tag=''
   REAL(SP), DIMENSION(2) :: dumt,dumt2
   REAL(SP), DIMENSION(nx,ny) :: bmodel=0.,imodel=0.
