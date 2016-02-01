@@ -40,7 +40,7 @@ FUNCTION GETMODEL(inpos,im)
      
      nnn = 10**sfh*ziso(k)%imf
 
-     ebv =  myran() * (0.23-10**inpos(1)) + 10**inpos(1)
+     ebv =  myran() * (10**inpos(npar)-10**inpos(1)) + 10**inpos(1)
      
      !treat masses less than minmass as continuously sampled
      IF (ziso(k)%mass.LT.minmass.OR.nnn.GT.minnum) THEN

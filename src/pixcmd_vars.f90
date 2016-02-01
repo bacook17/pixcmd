@@ -66,9 +66,9 @@ MODULE PIXCMD_VARS
   !upper/lower priors
   REAL(SP), PARAMETER :: prlo_sfh=-10.0,prhi_sfh=0.2
   REAL(SP), PARAMETER :: prlo_lebv=-6.0,prhi_lebv=0.0
+  REAL(SP), PARAMETER :: prlo_lebvw=-3.0,prhi_lebvw=0.5
   REAL(SP), PARAMETER :: prlo_zmet=-1.1,prhi_zmet=0.5
   
-
   !stellar mass below which the IMF is assumed to be fully populated
   REAL(SP), PARAMETER :: minmass=0.70
   !number below which we sample an isochrone point via Poisson/Gaussian,
@@ -87,7 +87,7 @@ MODULE PIXCMD_VARS
   REAL(SP), DIMENSION(nz)     :: zmetarr=0.
 
   !number of free parameters 
-  INTEGER, PARAMETER :: nxpar = 1 !lebv
+  INTEGER, PARAMETER :: nxpar = 1+1 !lebv+lebvw
   INTEGER, PARAMETER :: npar=nage+nxpar+nzi
 
   !max size of array for data and isochrones
@@ -113,7 +113,7 @@ MODULE PIXCMD_VARS
   INTEGER :: kran=1
   REAL(SP), DIMENSION(nran,niso_max) :: ranarr
   REAL(SP), DIMENSION(npix,npix) :: gdev,gdev2
-  REAL(SP), DIMENSION(niso_mas)  :: ebv_ran
+  REAL(SP), DIMENSION(niso_max)  :: ebv_ran
 
   !---------------------common arrays---------------------!
 

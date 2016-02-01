@@ -11,6 +11,7 @@ PROGRAM FIT_PIXCMD
 
   !key emcee parameters
   INTEGER, PARAMETER :: nwalkers=256,nburn=1000,nmcmc=100
+  !INTEGER, PARAMETER :: nwalkers=4,nburn=1,nmcmc=100
   !flag for testing clock time
   INTEGER, PARAMETER :: test_time=0
   !fit for tau-Mpix
@@ -115,12 +116,14 @@ PROGRAM FIT_PIXCMD
 
   !transfer the priors to the prior array
   prlo(1)                  = prlo_lebv
+  prlo(2)                  = prlo_lebvw
   prlo(1+nxpar:nxpar+nage) = prlo_sfh+mpix0
-  prlo(1+nxpar+nage:npar)  = prlo_zmet
-  prhi(1)                  = prhi_lebv
-  prhi(1+nxpar:nxpar+nage) = prhi_sfh+mpix0
-  prhi(1+nxpar+nage:npar)  = prhi_zmet
+  prlo(1+nxpar+nage)       = prlo_zmet
 
+  prhi(1)                  = prhi_lebv
+  prhi(2)                  = prhi_lebvw
+  prhi(1+nxpar:nxpar+nage) = prhi_sfh+mpix0
+  prhi(1+nxpar+nage)       = prhi_zmet
 
   !initialize the random number generator
   !set each task to sleep for a different length of time
@@ -256,8 +259,9 @@ PROGRAM FIT_PIXCMD
         wgt = wgt/twgt
         !transfer the parameters to the parameter array
         bpos(1) = lebv0
+        bpos(2) = 1E-2
         bpos(1+nxpar:nxpar+nage) = LOG10(wgt)+mpix0
-        bpos(1+nxpar+nage:npar)  = zmet0
+        bpos(1+nxpar+nage)  = zmet0
 
      ELSE
 
