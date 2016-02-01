@@ -142,19 +142,21 @@ PROGRAM WRITE_A_MODEL
 
   !transfer the parameters to the parameter array 
   pos(1) = lebv
+  pos(2) = 1E-3
   pos(1+nxpar:nxpar+nage) = LOG10(swgt) + mpix
-  pos(1+nxpar+nage:npar)  = zmet
+  pos(1+nxpar+nage)  = zmet
 
   IF (1.EQ.1) THEN
      pos(1) = -2.34+1
-     pos(2) = -3.05
-     pos(3) = -1.91
-     pos(4) = -1.48
-     pos(5) = -0.87
-     pos(6) = -0.33
-     pos(7) =  0.86
-     pos(8) =  1.48
-     pos(9) = -0.05
+     pos(2) = -0.3
+     pos(3) = -3.05
+     pos(4) = -1.91
+     pos(5) = -1.48
+     pos(6) = -0.87
+     pos(7) = -0.33
+     pos(8) =  0.86
+     pos(9) =  1.48
+     pos(10) = -0.05
   ENDIF
 
   !get the model hess diagram and I-band image

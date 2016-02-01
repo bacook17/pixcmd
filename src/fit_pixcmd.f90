@@ -10,9 +10,10 @@ PROGRAM FIT_PIXCMD
   IMPLICIT NONE
 
   !key emcee parameters
-  INTEGER, PARAMETER :: nwalkers=256,nburn=1000,nmcmc=100
+  INTEGER, PARAMETER :: nwalkers=256,nburn=1,nmcmc=1000
+  !INTEGER, PARAMETER :: nwalkers=4,nburn=1,nmcmc=100
   !flag for testing clock time
-  INTEGER, PARAMETER :: test_time=0
+  INTEGER, PARAMETER :: test_time=1
   !fit for tau-Mpix
   INTEGER, PARAMETER :: dotaufit=1
   !fix the SFH=const
@@ -27,7 +28,7 @@ PROGRAM FIT_PIXCMD
   REAL(SP) :: dt,cmin,cstd,minchi2=huge_number,ndat,tmp
   REAL(SP) :: time1,time2,twgt=0.0,zmet0
   CHARACTER(10) :: time,is,tmpstr
-  CHARACTER(2) :: tis
+  CHARACTER(2)  :: tis
   CHARACTER(50) :: infile,tag=''
   REAL(SP), DIMENSION(2) :: dumt,dumt2
   REAL(SP), DIMENSION(nx,ny) :: bmodel=0.,imodel=0.
@@ -115,12 +116,14 @@ PROGRAM FIT_PIXCMD
 
   !transfer the priors to the prior array
   prlo(1)                  = prlo_lebv
+  prlo(2)                  = prlo_lebvw
   prlo(1+nxpar:nxpar+nage) = prlo_sfh+mpix0
-  prlo(1+nxpar+nage:npar)  = prlo_zmet
-  prhi(1)                  = prhi_lebv
-  prhi(1+nxpar:nxpar+nage) = prhi_sfh+mpix0
-  prhi(1+nxpar+nage:npar)  = prhi_zmet
+  prlo(1+nxpar+nage)       = prlo_zmet
 
+  prhi(1)                  = prhi_lebv
+  prhi(2)                  = prhi_lebvw
+  prhi(1+nxpar:nxpar+nage) = prhi_sfh+mpix0
+  prhi(1+nxpar+nage)       = prhi_zmet
 
   !initialize the random number generator
   !set each task to sleep for a different length of time
@@ -136,6 +139,14 @@ PROGRAM FIT_PIXCMD
      CALL GASDEV(gdev(:,i))
      CALL GASDEV(gdev2(:,i))
   ENDDO
+<<<<<<< HEAD
+=======
+  DO i=1,npix
+     DO j=1,npix
+        CALL RAN1(ebv_ran(i,j,:))
+     ENDDO
+  ENDDO
+>>>>>>> master
 
   !now that the ranarr is identically initialized,
   !re-set the seed on each taskid for the emcee steps
@@ -255,8 +266,9 @@ PROGRAM FIT_PIXCMD
         wgt = wgt/twgt
         !transfer the parameters to the parameter array
         bpos(1) = lebv0
+        bpos(2) = -2.0
         bpos(1+nxpar:nxpar+nage) = LOG10(wgt)+mpix0
-        bpos(1+nxpar+nage:npar)  = zmet0
+        bpos(1+nxpar+nage)  = zmet0
 
      ELSE
 

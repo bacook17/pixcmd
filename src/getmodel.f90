@@ -11,7 +11,7 @@ FUNCTION GETMODEL(inpos,im)
   REAL(SP), DIMENSION(npix,npix), OPTIONAL :: im
   REAL(SP), DIMENSION(nx,ny) :: getmodel
   REAL(SP), DIMENSION(npix,npix,nfil) :: f1,cf1,of1
-  REAL(SP), DIMENSION(npix,npix) :: narr
+  REAL(SP), DIMENSION(npix,npix) :: narr ,ebv
   REAL(SP), DIMENSION(nz) :: mdf
   INTEGER  :: i,k,f,z,zniso
   REAL(SP) :: nnn,sfh,red
@@ -48,7 +48,6 @@ FUNCTION GETMODEL(inpos,im)
      ELSE
         IF (nnn.LE.maxpoidev) THEN
            narr = mypoidev(nnn,k)
-           
            !remove stars that would likely count as "resolved"
        !    IF (immed.LE.tiny_number) WRITE(*,*) 'GETMODEL ERROR, immed=0.0!'
        !    IF (SUM(narr).LE.10.AND.ziso(k)%bands(1).GT.100.*immed) THEN

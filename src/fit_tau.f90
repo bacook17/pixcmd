@@ -27,7 +27,6 @@ SUBROUTINE FIT_TAU(pos,zmet0)
   DO i=1,ntau
 
      tau = tauarr(i)
-
      sfh = EXP(-(10**10.201-10**agesarr)/1E9/tau) / tau/1E9
 
      twgt=0.
@@ -52,9 +51,10 @@ SUBROUTINE FIT_TAU(pos,zmet0)
      DO j=1,nmpix
 
         tpos(1) = lebv0
+        tpos(2) = -2.0
         tmpix = mpix0+(REAL(j)-1.)/nmpix-0.5
         tpos(1+nxpar:nxpar+nage) = LOG10(wgt)+tmpix
-        tpos(1+nxpar+nage:npar)  = zmet0
+        tpos(1+nxpar+nage)  = zmet0
 
         chi2 = func(tpos)
         IF (chi2.LT.bestchi2) THEN
