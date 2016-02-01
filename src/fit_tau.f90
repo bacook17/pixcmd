@@ -51,7 +51,7 @@ SUBROUTINE FIT_TAU(pos,zmet0)
      DO j=1,nmpix
 
         tpos(1) = lebv0
-        tpos(2) = 1E-2
+        tpos(2) = -2.0
         tmpix = mpix0+(REAL(j)-1.)/nmpix-0.5
         tpos(1+nxpar:nxpar+nage) = LOG10(wgt)+tmpix
         tpos(1+nxpar+nage)  = zmet0

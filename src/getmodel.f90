@@ -11,10 +11,10 @@ FUNCTION GETMODEL(inpos,im)
   REAL(SP), DIMENSION(npix,npix), OPTIONAL :: im
   REAL(SP), DIMENSION(nx,ny) :: getmodel
   REAL(SP), DIMENSION(npix,npix,nfil) :: f1,cf1,of1
-  REAL(SP), DIMENSION(npix,npix) :: narr
+  REAL(SP), DIMENSION(npix,npix) :: narr ,ebv
   REAL(SP), DIMENSION(nz) :: mdf
-  INTEGER  :: i,k,f,z,zniso
-  REAL(SP) :: nnn,sfh,ebv
+  INTEGER  :: i,j,k,f,z,zniso
+  REAL(SP) :: nnn,sfh
   CHARACTER(10) :: time
   TYPE(TISO), DIMENSION(niso_max) :: ziso
   REAL(SP), DIMENSION(nfil) :: red
@@ -40,7 +40,7 @@ FUNCTION GETMODEL(inpos,im)
      
      nnn = 10**sfh*ziso(k)%imf
 
-     ebv =  myran() * (10**inpos(npar)-10**inpos(1)) + 10**inpos(1)
+     ebv = ebv_ran(:,:,k) * (10**inpos(2)-10**inpos(1)) + 10**inpos(1)
      
      !treat masses less than minmass as continuously sampled
      IF (ziso(k)%mass.LT.minmass.OR.nnn.GT.minnum) THEN
@@ -51,7 +51,6 @@ FUNCTION GETMODEL(inpos,im)
      ELSE
         IF (nnn.LE.maxpoidev) THEN
            narr = mypoidev(nnn,k)
-           
            !remove stars that would likely count as "resolved"
        !    IF (immed.LE.tiny_number) WRITE(*,*) 'GETMODEL ERROR, immed=0.0!'
        !    IF (SUM(narr).LE.10.AND.ziso(k)%bands(1).GT.100.*immed) THEN

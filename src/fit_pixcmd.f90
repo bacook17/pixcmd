@@ -10,10 +10,10 @@ PROGRAM FIT_PIXCMD
   IMPLICIT NONE
 
   !key emcee parameters
-  INTEGER, PARAMETER :: nwalkers=256,nburn=1000,nmcmc=100
+  INTEGER, PARAMETER :: nwalkers=256,nburn=1,nmcmc=1000
   !INTEGER, PARAMETER :: nwalkers=4,nburn=1,nmcmc=100
   !flag for testing clock time
-  INTEGER, PARAMETER :: test_time=0
+  INTEGER, PARAMETER :: test_time=1
   !fit for tau-Mpix
   INTEGER, PARAMETER :: dotaufit=1
   !fix the SFH=const
@@ -139,7 +139,11 @@ PROGRAM FIT_PIXCMD
      CALL GASDEV(gdev(:,i))
      CALL GASDEV(gdev2(:,i))
   ENDDO
- CALL RAN1(ebv_ran)
+  DO i=1,npix
+     DO j=1,npix
+        CALL RAN1(ebv_ran(i,j,:))
+     ENDDO
+  ENDDO
 
   !now that the ranarr is identically initialized,
   !re-set the seed on each taskid for the emcee steps
@@ -259,7 +263,7 @@ PROGRAM FIT_PIXCMD
         wgt = wgt/twgt
         !transfer the parameters to the parameter array
         bpos(1) = lebv0
-        bpos(2) = 1E-2
+        bpos(2) = -2.0
         bpos(1+nxpar:nxpar+nage) = LOG10(wgt)+mpix0
         bpos(1+nxpar+nage)  = zmet0
 
