@@ -220,6 +220,47 @@ PRO M31_PCMD, ir=ir,uv=uv,brick=brick,bias=bias
     endplot,/quiet
     spawn,'convert -density 500 '+pdir+file+'.eps '+pdir+file+'.png'
     
+    file = 'pixcmd_m31_bulge'+str+'_2x2'
+    begplot,name=pdir+file+'.eps',/col,xsize=7,ysize=6,/quiet,/encap
+     
+       !p.multi=[0,2,2]
+       !p.charsize=1.0
+     
+       wh = where(rr GE 1000 AND rr LE 1300 AND finite(im1) EQ 1 $
+                  AND xx GT xc AND yy LT yc,ct)
+       IF ct GT nn THEN wh = wh[(sort(randomu(seed,ct)))[0:nn-1]]
+       plot,im1[wh]-im2[wh],im2[wh],ps=8,yr=yr,xr=xr,ys=1,xs=1,$
+            xtit=xtit,ytit=ytit,symsize=0.2
+       oplot,t1.(wht1)-t1.(wht2),t1.(wht2),col=!red,thick=2
+       ss = strmid(strtrim(round(median(mpix[wh])*10)/10.,2),0,3)
+       legend,['M31 Bulge','r=0.2 kpc'],box=0,/bottom,/right,charsize=0.9
+
+       wh = where(rr GE 6200 AND rr LE 6250 AND finite(im1) EQ 1 $
+                  AND xx LE xc AND yy GT 11000 AND $
+                  xx LT 9000, complement=whc,ct)
+       IF ct GT nn THEN wh = wh[(sort(randomu(seed,ct)))[0:nn-1]]
+       plot,im1[wh]-im2[wh],im2[wh],ps=8,yr=yr,xr=xr,ys=1,xs=1,$
+            xtit=xtit,ytit=ytit,symsize=0.2
+       oplot,t1.(wht1)-t1.(wht2),t1.(wht2),col=!red,thick=2
+       ss = strmid(strtrim(round(median(mpix[wh])*10)/10.,2),0,3)
+       legend,['M31 Bulge','r=1.0 kpc'],box=0,/bottom,/right,charsize=0.9
+       
+       plot,m3.(whm1)-m3.(whm2),m3.(whm2),ps=8,yr=yr,xr=xr,ys=1,xs=1,$
+            xtit=xtit,ytit=ytit,symsize=0.2
+       oplot,t1.(wht1)-t1.(wht2),t1.(wht2),col=!red,thick=2
+       legend,['log N!Dpix!N=3.0'],box=0,/right,charsize=0.9
+       legend,['10 Gyr model'],box=0,/bottom,/right,charsize=0.9
+
+       plot,m2.(whm1)-m2.(whm2),m2.(whm2),ps=8,yr=yr,xr=xr,ys=1,xs=1,$
+            xtit=xtit,ytit=ytit,symsize=0.2
+       oplot,t1.(wht1)-t1.(wht2),t1.(wht2),col=!red,thick=2
+       legend,['log N!Dpix!N=2.0'],box=0,/right,charsize=0.9
+       legend,['10 Gyr model'],box=0,/bottom,/right,charsize=0.9
+       
+
+    endplot,/quiet
+    spawn,'convert -density 500 '+pdir+file+'.eps '+pdir+file+'.png'
+    
 
     stop
 
@@ -290,6 +331,16 @@ PRO M31_PCMD, ir=ir,uv=uv,brick=brick,bias=bias
                 dec GT ((dec4[i]-dec3[i])/(ra4[i]-ra3[i])*(ra-ra3[i])+dec3[i]) AND $
                 dec GT ((dec1[i]-dec4[i])/(ra1[i]-ra4[i])*(ra-ra4[i])+dec4[i]), $
                 complement=whc,ct)
+
+     tmp1 = im1
+     tmp1[whc] = 0.0
+     tmp2 = im2
+     tmp2[whc] = 0.0
+
+     mwrfits,tmp1[min(xx[wh]):max(xx[wh]),min(yy[wh]):max(yy[wh])],$
+             '~/pixcmd/phat_sfh/m31_b06-263.fits',/create
+     mwrfits,tmp2[min(xx[wh]):max(xx[wh]),min(yy[wh]):max(yy[wh])],$
+             '~/pixcmd/phat_sfh/m31_b06-263.fits'
 
      x1 = im1[wh]-im2[wh]
      y1 = im2[wh]

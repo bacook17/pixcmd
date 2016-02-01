@@ -136,7 +136,6 @@ PROGRAM FIT_PIXCMD
      CALL GASDEV(gdev(:,i))
      CALL GASDEV(gdev2(:,i))
   ENDDO
- CALL RAN1(ebv_ran)
 
   !now that the ranarr is identically initialized,
   !re-set the seed on each taskid for the emcee steps

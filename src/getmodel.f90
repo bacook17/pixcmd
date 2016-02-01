@@ -14,10 +14,9 @@ FUNCTION GETMODEL(inpos,im)
   REAL(SP), DIMENSION(npix,npix) :: narr
   REAL(SP), DIMENSION(nz) :: mdf
   INTEGER  :: i,k,f,z,zniso
-  REAL(SP) :: nnn,sfh,ebv
+  REAL(SP) :: nnn,sfh,red
   CHARACTER(10) :: time
   TYPE(TISO), DIMENSION(niso_max) :: ziso
-  REAL(SP), DIMENSION(nfil) :: red
 
   !------------------------------------------------------------!
 
@@ -40,13 +39,11 @@ FUNCTION GETMODEL(inpos,im)
      
      nnn = 10**sfh*ziso(k)%imf
 
-     ebv =  myran() * (0.23-10**inpos(1)) + 10**inpos(1)
-     
      !treat masses less than minmass as continuously sampled
      IF (ziso(k)%mass.LT.minmass.OR.nnn.GT.minnum) THEN
         DO f=1,nfil
-           f1(:,:,f) = f1(:,:,f)+&
-                nnn*ziso(k)%bands(f)*10**(-2./5*red_per_ebv(f)*ebv)
+           red = 10**(-2./5*(red_per_ebv(f)*10**inpos(1)))
+           f1(:,:,f) = f1(:,:,f)+nnn*ziso(k)%bands(f)*red
         ENDDO
      ELSE
         IF (nnn.LE.maxpoidev) THEN
@@ -62,8 +59,8 @@ FUNCTION GETMODEL(inpos,im)
            narr = gdev*SQRT(nnn)+nnn
         ENDIF
         DO f=1,nfil
-           f1(:,:,f) = f1(:,:,f)+&
-                narr*ziso(k)%bands(f)*10**(-2./5*red_per_ebv(f)*ebv)
+           red = 10**(-2./5*(red_per_ebv(f)*10**inpos(1)))
+           f1(:,:,f) = f1(:,:,f)+narr*ziso(k)%bands(f)*red
         ENDDO
      ENDIF
      

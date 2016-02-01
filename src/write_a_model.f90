@@ -104,7 +104,6 @@ PROGRAM WRITE_A_MODEL
   DO i=1,npix
      CALL GASDEV(gdev(:,i))
   ENDDO
-  CALL RAN1(ebv_ran)
 
   !setup the model grid
   CALL SETUP_MODELS()

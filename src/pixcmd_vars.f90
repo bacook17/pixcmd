@@ -113,7 +113,6 @@ MODULE PIXCMD_VARS
   INTEGER :: kran=1
   REAL(SP), DIMENSION(nran,niso_max) :: ranarr
   REAL(SP), DIMENSION(npix,npix) :: gdev,gdev2
-  REAL(SP), DIMENSION(niso_mas)  :: ebv_ran
 
   !---------------------common arrays---------------------!
 

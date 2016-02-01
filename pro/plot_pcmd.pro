@@ -114,7 +114,7 @@ PRO PLOT_PCMD, psf=psf, age=age
 
   ;--------------------------------vary SFH------------------------------------;
 
-  FOR i=1,3 DO BEGIN
+  FOR i=2,4 DO BEGIN
 
      mb = float(i)
 
