@@ -7,7 +7,8 @@ SUBROUTINE SETUP_MODELS()
   CHARACTER(5), DIMENSION(nz)  :: zstr
   CHARACTER(1)  :: is,js
   INTEGER  :: i,j,k,z,m,n,t,f,stat
-  REAL(SP) :: iage,age,d2,d3,d4,mass,imf,b1,b2,tage
+  REAL(SP) :: iage,age,d2,d3,mass,imf,tage,bmag,vmag,imag,&
+       jmag,hmag,f275,f336,fuv,nuv
 
   !------------------------------------------------------------!
 
@@ -107,7 +108,8 @@ SUBROUTINE SETUP_MODELS()
 
      DO j=1,1000000
 
-        READ(10,'(F6.2,7F10.4)',IOSTAT=stat) iage,mass,d2,d3,imf,b1,d4,b2
+        READ(10,'(F6.2,20F10.4)',IOSTAT=stat) iage,mass,d2,d3,imf,&
+             bmag,vmag,imag,jmag,hmag,f275,f336,fuv,nuv
         IF (stat.NE.0) GOTO 21
 
         DO f=1,niso_age
@@ -118,14 +120,18 @@ SUBROUTINE SETUP_MODELS()
               iso(z,i)%age  = iage
               iso(z,i)%mass = mass
               iso(z,i)%imf  = imf
-              iso(z,i)%bands(1) = b1
-              iso(z,i)%bands(2) = b2
+              iso(z,i)%bands(1) = bmag
+              iso(z,i)%bands(2) = imag
               DO m=1,nage
                  IF (iage.GE.agesarr2(m).AND.iage.LT.agesarr2(m+1)) k=m
                  IF (iage.EQ.agesarr2(nage+1)) k=m
               ENDDO
               iso(z,i)%aind = k
               i=i+1
+              IF (i.GT.niso_max) THEN
+                 WRITE(*,*) 'ERROR: reached niso_max!'
+                 STOP
+              ENDIF
               IF (iage.NE.tage) THEN
                  nisoage(k) = nisoage(k)+1
                  tage=iage

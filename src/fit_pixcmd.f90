@@ -20,10 +20,12 @@ PROGRAM FIT_PIXCMD
 
   !down-sample the data by this factor
   REAL(SP), PARAMETER :: subsample=1.0
+  !initialization width, and re-initializtion width
+  REAL(SP), PARAMETER :: wdth0=1E-2,wdth1=1E-3
 
   INTEGER  :: i,j,k,ml,stat,iter=30,totacc=0,npos,ii
   REAL(SP) :: dt,cmin,cstd,minchi2=huge_number,ndat,tmp
-  REAL(SP) :: time1,time2,wdth1=1E-3,twgt=0.0,zmet0
+  REAL(SP) :: time1,time2,twgt=0.0,zmet0
   CHARACTER(10) :: time,is,tmpstr
   CHARACTER(2) :: tis
   CHARACTER(50) :: infile,tag=''
@@ -134,6 +136,7 @@ PROGRAM FIT_PIXCMD
      CALL GASDEV(gdev(:,i))
      CALL GASDEV(gdev2(:,i))
   ENDDO
+ CALL RAN1(ebv_ran)
 
   !now that the ranarr is identically initialized,
   !re-set the seed on each taskid for the emcee steps
@@ -176,7 +179,7 @@ PROGRAM FIT_PIXCMD
            WRITE(*,*) 'ERROR: input data has negative Hess entry'
            STOP
         ENDIF
-        IF (hess_data(i,j).EQ.1.0.OR.hess_data(i,j).EQ.2.0) &
+        IF (hess_data(i,j).GT.tiny_number.AND.hess_data(i,j).LE.2.0) &
              hess_err(i,j)=hess_err(i,j)*10
      ENDDO
   ENDDO

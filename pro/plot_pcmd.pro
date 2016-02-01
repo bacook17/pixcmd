@@ -114,15 +114,15 @@ PRO PLOT_PCMD, psf=psf, age=age
 
   ;--------------------------------vary SFH------------------------------------;
 
-  FOR i=1,4 DO BEGIN
+  FOR i=1,3 DO BEGIN
 
      mb = float(i)
 
      mbs = strmid(strtrim(mb,2),0,4)
      IF mb EQ -1. THEN mbs2='0.1'
-     IF mb EQ 0. THEN mbs2='1'
-     IF mb EQ 1. THEN mbs2='10'
-     IF mb GT 1. THEN mbs2='10!U'+strtrim(fix(mb),2)+'!N'
+     IF mb EQ 0.  THEN mbs2='1'
+     IF mb EQ 1.  THEN mbs2='10'
+     IF mb GT 1.  THEN mbs2='10!U'+strtrim(fix(mb),2)+'!N'
 
      mt0  = mrdfits(rdir+'pixcmd_t10.0_Zp0.00_Mbin'+mbs+'.fits',pp,/sil)
      mt2  = mrdfits(rdir+'pixcmd_tau2.00_Zp0.00_Mbin'+mbs+'.fits',pp,/sil)
@@ -133,9 +133,9 @@ PRO PLOT_PCMD, psf=psf, age=age
      flt2  = -2.5*alog10(median(10^(-2./5*mt2.i))*30*10)
      flt5  = -2.5*alog10(median(10^(-2./5*mt5.i))*30*10)
      flt10 = -2.5*alog10(median(10^(-2./5*mt10.i))*30*10)
-     
-     t10 = a[where(a.logage EQ 10.,cta)]
-     t8  = a[where(a.logage EQ 8.,cta)]
+
+     t10 = a[where(a.logage EQ 10. AND a.acs_f814w LT 7.5,cta)]
+     t8  = a[where(a.logage EQ 8. AND a.acs_f814w LT 7.5,cta)]
      
      file = pdir+'pixcmd_varySFH_Mbin'+strtrim(fix(mb),2)+spsf+'_BI.eps'
      begplot,name=file,/col,xsize=7,ysize=6,/quiet,/encap
@@ -148,29 +148,29 @@ PRO PLOT_PCMD, psf=psf, age=age
        oplot,t10.acs_f475w-t10.acs_f814w,t10.acs_f814w,col=!red,thick=2
        oplot,t8.acs_f475w-t8.acs_f814w,t8.acs_f814w,col=!red,thick=2
        legend,['N!Dpix!N='+mbs2],box=0,charsize=1.0
-       oplot,[-10,10],[1,1]*flt0,line=2,col=!dodgerblue
-       legend,['10 Gyr (SSP)'],box=0,charsize=0.8,/right
+       ;oplot,[-10,10],[1,1]*flt0,line=2,col=!dodgerblue
+       legend,['10 Gyr (SSP)'],box=0,charsize=0.8,/right,/bottom
        
        plot,[0],yr=[10,-8],ys=1,xr=[-1,4],xtit='B-I',ytit='I'
        oplot,mt2.b-mt2.i,mt2.i,ps=8,symsize=0.2
        oplot,t10.acs_f475w-t10.acs_f814w,t10.acs_f814w,col=!red,thick=2
        oplot,t8.acs_f475w-t8.acs_f814w,t8.acs_f814w,col=!red,thick=2
-       oplot,[-10,10],[1,1]*flt2,line=2,col=!dodgerblue
-       legend,[textoidl('\tau_{SF}=2 Gyr')],box=0,charsize=0.8,/right
+       ;oplot,[-10,10],[1,1]*flt2,line=2,col=!dodgerblue
+       legend,[textoidl('\tau_{SF}=2 Gyr')],box=0,charsize=0.8,/right,/bottom
        
        plot,[0],yr=[10,-8],ys=1,xr=[-1,4],xtit='B-I',ytit='I'
        oplot,mt5.b-mt5.i,mt5.i,ps=8,symsize=0.2
        oplot,t10.acs_f475w-t10.acs_f814w,t10.acs_f814w,col=!red,thick=2
        oplot,t8.acs_f475w-t8.acs_f814w,t8.acs_f814w,col=!red,thick=2
-       oplot,[-10,10],[1,1]*flt5,line=2,col=!dodgerblue
-       legend,[textoidl('\tau_{SF}=5 Gyr')],box=0,charsize=0.8,/right
+       ;oplot,[-10,10],[1,1]*flt5,line=2,col=!dodgerblue
+       legend,[textoidl('\tau_{SF}=5 Gyr')],box=0,charsize=0.8,/right,/bottom
        
        plot,[0],yr=[10,-8],ys=1,xr=[-1,4],xtit='B-I',ytit='I'
        oplot,mt10.b-mt10.i,mt10.i,ps=8,symsize=0.2
        oplot,t10.acs_f475w-t10.acs_f814w,t10.acs_f814w,col=!red,thick=2
        oplot,t8.acs_f475w-t8.acs_f814w,t8.acs_f814w,col=!red,thick=2
-       oplot,[-10,10],[1,1]*flt10,line=2,col=!dodgerblue
-       legend,[textoidl('SFH=constant')],box=0,charsize=0.8,/right
+       ;oplot,[-10,10],[1,1]*flt10,line=2,col=!dodgerblue
+       legend,[textoidl('SFH=constant')],box=0,charsize=0.8,/right,/bottom
        
      endplot,/quiet
 
@@ -178,6 +178,7 @@ PRO PLOT_PCMD, psf=psf, age=age
 
   ENDFOR 
 
+stop
 
   ;-----------------------vary metallicity----------------------------;
 
@@ -197,10 +198,10 @@ PRO PLOT_PCMD, psf=psf, age=age
 
   ;Rv=3.1, below is A_X / E(B-V)
   eb = 3.268
+  ev = 2.742
   ei = 1.526
   ej = 0.881
-  eh = 0.613
-  ev = 2.742
+  eh = 0.512
 
   ebv = 0.3
 
@@ -380,9 +381,6 @@ PRO PLOT_PCMD_OVERVIEW
   sbv  = sbi+vmi
   limv = fl1+vmi
 
-stop  
-
-
   ;read in model isochrone
   a  = mrdfits('~/pixcmd/isoc/MIST_v29_Zp0.00.fits',1,/sil)
   t1 = a[where(a.logage EQ 10.0,cta)]
@@ -425,9 +423,10 @@ stop
     plot,im0.bp-im0.ip,im0.ip,ps=3,xr=[0,4],yr=[10,-8],xs=1,ys=1,$
          xtit='B-I',ytit='I'
     oplot,t1.acs_f475w-t1.acs_f814w,t1.acs_f814w,col=!red,thick=2
+    wh=where(im0.ii LT fl0,ct)
+    oplot,im0[wh].bi-im0[wh].ii,im0[wh].ii,ps=8,col=!dodgerblue,symsize=0.5
     oplot,[0,4],[1,1]*fl0,line=2,thick=3,col=!dodgerblue
     legend,['HST PSF'],box=0,/right,charsize=0.9
-
   endplot,/quiet
 
   begplot,name=pdir+'pixvar_M1.eps',/encap,xsize=9,ysize=2.8,/col,/quiet
@@ -560,12 +559,14 @@ stop
   spawn,'convert -density 500 '+pdir+'pixvar_M2.eps '+pdir+'pixvar_M2.png'
   spawn,'convert -density 500 '+pdir+'pixvar_M3.eps '+pdir+'pixvar_M3.png'
   spawn,'convert -density 500 '+pdir+'pixvar_M4.eps '+pdir+'pixvar_M4.png'
-  spawn,'convert -density 500 '+pdir+'pixvar_M5.eps '+pdir+'pixvar_M5.png'
-  spawn,'convert -density 500 '+pdir+'pixvar_M6.eps '+pdir+'pixvar_M6.png'
+  ;spawn,'convert -density 500 '+pdir+'pixvar_M5.eps '+pdir+'pixvar_M5.png'
+  ;spawn,'convert -density 500 '+pdir+'pixvar_M6.eps '+pdir+'pixvar_M6.png'
 
   stop
 
 END
+
+;--------------------------------------------------------------------;
 
 PRO CROWDING_LIMIT
 
@@ -593,7 +594,6 @@ PRO CROWDING_LIMIT
   ;read in model isochrone
   a  = mrdfits('~/pixcmd/isoc/MIST_v29_Zp0.00.fits',1,/sil)
   t1 = a[where(a.logage EQ 10.0,cta)]
-
 
   plot,t1.acs_f475w-t1.acs_f814w,t1.acs_f814w,xr=[0,4],yr=[10,-5],xs=1,ys=1
   oplot,[0,5],[0,0]+fl4,line=2

@@ -34,7 +34,7 @@ MODULE PIXCMD_VARS
   !if set, include observational errors
   INTEGER, PARAMETER :: incl_obs_err=1
   !if >0, then set the random seed to fix_seed
-  INTEGER :: fix_seed=4002
+  INTEGER :: fix_seed=4003
 
   !variables for model image and CMD Hess diagram
   INTEGER, PARAMETER  :: nx=121,ny=351,nfil=2
@@ -44,16 +44,30 @@ MODULE PIXCMD_VARS
   REAL(SP), PARAMETER :: dm=24.47  !M31 distance modulus
   !exposure times: F475W, F814W
   REAL(SP), DIMENSION(nfil), PARAMETER :: exptime=(/3620.,3235./)
-  !zero-points: F475W, F814W
+
+  !zero-points: F275W, F336W (AB)
+  !REAL(SP), DIMENSION(nfil), PARAMETER :: zpt=(/24.1305,24.6682/)
+  !zero-points: F475W, F814W (AB)
   REAL(SP), DIMENSION(nfil), PARAMETER :: zpt=(/26.0593,25.9433/)
-  !Reddening values from Schalfly & Finkbeiner 2011 for F475W, F814W
+  !zero-points: F110W, F160W (AB)
+  !REAL(SP), DIMENSION(nfil), PARAMETER :: zpt=(/26.8223,25.9463/)
+
+  !Reddening values from Schalfly & Finkbeiner 2011 
   !should double check that this is the correct implementation
+  !reddening per E(B-V) for F275W, F336W
+  !REAL(SP), DIMENSION(nfil), PARAMETER :: red_per_ebv = (/5.487,4.453/)
+  !reddening per E(B-V) for F475W, F814W
   REAL(SP), DIMENSION(nfil), PARAMETER :: red_per_ebv = (/3.268,1.526/)
+  !reddening per E(B-V) for F110W, F160W
+  !REAL(SP), DIMENSION(nfil), PARAMETER :: red_per_ebv = (/0.881,0.613/)
+  !reddening per E(B-V) for GALEX FUV, NUV (approx!)
+  !REAL(SP), DIMENSION(nfil), PARAMETER :: red_per_ebv = (/6.9,6.7/)
  
   !upper/lower priors
-  REAL(SP), PARAMETER :: prlo_sfh=-10.0,prhi_sfh=0.2,wdth0=1E-2
+  REAL(SP), PARAMETER :: prlo_sfh=-10.0,prhi_sfh=0.2
   REAL(SP), PARAMETER :: prlo_lebv=-6.0,prhi_lebv=0.0
   REAL(SP), PARAMETER :: prlo_zmet=-1.1,prhi_zmet=0.5
+  
 
   !stellar mass below which the IMF is assumed to be fully populated
   REAL(SP), PARAMETER :: minmass=0.70
@@ -77,7 +91,7 @@ MODULE PIXCMD_VARS
   INTEGER, PARAMETER :: npar=nage+nxpar+nzi
 
   !max size of array for data and isochrones
-  INTEGER, PARAMETER :: niso_max=4096
+  INTEGER, PARAMETER :: niso_max=4096 !*8
 
   !background flux level (less than 1 dM per pixel)
   REAL(SP), PARAMETER :: bkgnd = 1E-10
@@ -94,11 +108,12 @@ MODULE PIXCMD_VARS
 
   CHARACTER(250) :: PIXCMD_HOME=''
 
-  !define the random number array
+  !define random number arrays
   INTEGER, PARAMETER :: nran=256*256
   INTEGER :: kran=1
   REAL(SP), DIMENSION(nran,niso_max) :: ranarr
   REAL(SP), DIMENSION(npix,npix) :: gdev,gdev2
+  REAL(SP), DIMENSION(niso_mas)  :: ebv_ran
 
   !---------------------common arrays---------------------!
 

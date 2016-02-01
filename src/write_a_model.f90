@@ -17,7 +17,7 @@ PROGRAM WRITE_A_MODEL
   REAL(SP) :: mpix=2.0,lebv=-5.0,zmet,tau=10.,dt,twgt=0.
   CHARACTER(10) :: char_mpix='2.0',char_flag='1',char_tau='10.0'
   CHARACTER(10) :: char_lebv='-5.0',char_zmet='0.0'
-  CHARACTER(50) :: outfile='',tag=''
+  CHARACTER(60) :: outfile='',tag=''
   REAL(SP), DIMENSION(npar)      :: pos
   REAL(SP), DIMENSION(nx,ny)     :: hess
   REAL(SP), DIMENSION(npix,npix) :: im
@@ -85,7 +85,7 @@ PROGRAM WRITE_A_MODEL
           TRIM(char_zmet(1:4))//TRIM(tag)
   ENDIF
 
-  WRITE(*,'("  Output File =  ",A50)') outfile
+  WRITE(*,'("  Output File =  ",A60)') outfile
   WRITE(*,'("  log(Mpix)   = ",F4.1)') mpix
   WRITE(*,'("  log(EBV)    = ",F4.1)') lebv
   WRITE(*,'("  [Z/H]       = ",F4.1)') zmet
@@ -104,6 +104,7 @@ PROGRAM WRITE_A_MODEL
   DO i=1,npix
      CALL GASDEV(gdev(:,i))
   ENDDO
+  CALL RAN1(ebv_ran)
 
   !setup the model grid
   CALL SETUP_MODELS()
@@ -144,6 +145,18 @@ PROGRAM WRITE_A_MODEL
   pos(1) = lebv
   pos(1+nxpar:nxpar+nage) = LOG10(swgt) + mpix
   pos(1+nxpar+nage:npar)  = zmet
+
+  IF (1.EQ.1) THEN
+     pos(1) = -2.34+1
+     pos(2) = -3.05
+     pos(3) = -1.91
+     pos(4) = -1.48
+     pos(5) = -0.87
+     pos(6) = -0.33
+     pos(7) =  0.86
+     pos(8) =  1.48
+     pos(9) = -0.05
+  ENDIF
 
   !get the model hess diagram and I-band image
   !store as the actual counts, not normalized

@@ -3,7 +3,6 @@ FUNCTION GETMODEL(inpos,im)
   USE pixcmd_vars; USE nrtype
   USE pixcmd_utils, ONLY : convolve,hist_2d,add_obs_err,&
        myran,mypoidev,drawn,interp_iso
-  USE nr, ONLY : locate,ran1
   IMPLICIT NONE
 
   INTEGER, PARAMETER :: test_time=0
@@ -15,9 +14,10 @@ FUNCTION GETMODEL(inpos,im)
   REAL(SP), DIMENSION(npix,npix) :: narr
   REAL(SP), DIMENSION(nz) :: mdf
   INTEGER  :: i,k,f,z,zniso
-  REAL(SP) :: nnn,sfh,red
+  REAL(SP) :: nnn,sfh,ebv
   CHARACTER(10) :: time
   TYPE(TISO), DIMENSION(niso_max) :: ziso
+  REAL(SP), DIMENSION(nfil) :: red
 
   !------------------------------------------------------------!
 
@@ -39,12 +39,14 @@ FUNCTION GETMODEL(inpos,im)
      IF (sfh.LE.prlo_sfh.OR.10**sfh.LT.0.1/(npix**2)) CYCLE
      
      nnn = 10**sfh*ziso(k)%imf
+
+     ebv =  myran() * (0.23-10**inpos(1)) + 10**inpos(1)
      
      !treat masses less than minmass as continuously sampled
      IF (ziso(k)%mass.LT.minmass.OR.nnn.GT.minnum) THEN
-        DO f=1,2
-           red = 10**(-2./5*(red_per_ebv(f)*10**inpos(1)))
-           f1(:,:,f) = f1(:,:,f)+nnn*ziso(k)%bands(f)*red
+        DO f=1,nfil
+           f1(:,:,f) = f1(:,:,f)+&
+                nnn*ziso(k)%bands(f)*10**(-2./5*red_per_ebv(f)*ebv)
         ENDDO
      ELSE
         IF (nnn.LE.maxpoidev) THEN
@@ -59,9 +61,9 @@ FUNCTION GETMODEL(inpos,im)
         ELSE
            narr = gdev*SQRT(nnn)+nnn
         ENDIF
-        DO f=1,2
-           red = 10**(-2./5*(red_per_ebv(f)*10**inpos(1)))
-           f1(:,:,f) = f1(:,:,f)+narr*ziso(k)%bands(f)*red
+        DO f=1,nfil
+           f1(:,:,f) = f1(:,:,f)+&
+                narr*ziso(k)%bands(f)*10**(-2./5*red_per_ebv(f)*ebv)
         ENDDO
      ENDIF
      

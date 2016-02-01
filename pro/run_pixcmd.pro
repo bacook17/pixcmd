@@ -26,7 +26,7 @@ PRO RUN_PIXCMD, xx=xx
  
   ;run models with a complex SFH (part c)
   IF xx EQ 3 THEN BEGIN
-     FOR i=1,4 DO BEGIN
+     FOR m=1,4 DO BEGIN
         pixcmd,mbin=10^float(m),ssp=10.
         pixcmd,mbin=10^float(m),sfh=1. 
         pixcmd,mbin=10^float(m),sfh=2. 
