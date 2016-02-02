@@ -13,7 +13,7 @@ PROGRAM FIT_PIXCMD
   INTEGER, PARAMETER :: nwalkers=256,nburn=1,nmcmc=1000
   !INTEGER, PARAMETER :: nwalkers=4,nburn=1,nmcmc=100
   !flag for testing clock time
-  INTEGER, PARAMETER :: test_time=1
+  INTEGER, PARAMETER :: test_time=0
   !fit for tau-Mpix
   INTEGER, PARAMETER :: dotaufit=1
   !fix the SFH=const

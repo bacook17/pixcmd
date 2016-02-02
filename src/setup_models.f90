@@ -9,6 +9,7 @@ SUBROUTINE SETUP_MODELS()
   INTEGER  :: i,j,k,z,m,n,t,f,stat
   REAL(SP) :: iage,age,d2,d3,mass,imf,tage,bmag,vmag,imag,&
        jmag,hmag,f275,f336,fuv,nuv
+  REAL(SP), DIMENSION(niso_age) :: dtweight=0.
 
   !------------------------------------------------------------!
 
@@ -78,6 +79,20 @@ SUBROUTINE SETUP_MODELS()
 
   !------------------------Set up the isochrones-----------------------------!
 
+  !read in the file giving the binning weights for each age point assuming
+  !constant weights in linear time
+  OPEN(34,FILE=TRIM(PIXCMD_HOME)//'/isoc/dt7_weights.dat',STATUS='OLD',iostat=stat,&
+       ACTION='READ')
+  IF (stat.NE.0) THEN
+     WRITE(*,*) 'SIM_PIXCMD ERROR: dt7_weights file not found'
+     STOP
+  ENDIF
+  DO i=1,niso_age
+     READ(34,*) dtweight(i)
+  ENDDO
+  CLOSE(34)
+
+
   DO z=1,nz
 
      !open the isochrone file
@@ -103,7 +118,7 @@ SUBROUTINE SETUP_MODELS()
 
      k       = 1
      i       = 1
-     nisoage = 0
+     nisoage = 0.
      tage    = 0.
 
      DO j=1,1000000
@@ -127,6 +142,7 @@ SUBROUTINE SETUP_MODELS()
                  IF (iage.EQ.agesarr2(nage+1)) k=m
               ENDDO
               iso(z,i)%aind = k
+              iso(z,i)%inorm = dtweight(f)
               i=i+1
               IF (i.GT.niso_max) THEN
                  WRITE(*,*) 'ERROR: reached niso_max!'
@@ -154,10 +170,20 @@ SUBROUTINE SETUP_MODELS()
      iso(z,1:niso(z))%bands(1) = 10**(-2./5*iso(z,1:niso(z))%bands(1))
      iso(z,1:niso(z))%bands(2) = 10**(-2./5*iso(z,1:niso(z))%bands(2))
      
-     !need to renormalize the weights since we now lump things togehter
+     !need to renormalize the weights since we now lump things together
      DO i=1,niso(z)
-        iso(z,i)%imf = iso(z,i)%imf / nisoage(iso(z,i)%aind)
+        !iso(z,i)%imf = iso(z,i)%imf / nisoage(iso(z,i)%aind)
+        iso(z,i)%imf = iso(z,i)%imf * iso(z,i)%inorm
      ENDDO
+
+     DO k=1,7
+        d3 = 0.0
+        DO j=1,niso(z)
+           IF (iso(z,j)%aind.EQ.k) THEN 
+              d3 = d3 + iso(z,j)%imf*iso(z,j)%mass
+           ENDIF
+        ENDDO
+    ENDDO
 
   ENDDO
 

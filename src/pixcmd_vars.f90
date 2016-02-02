@@ -135,7 +135,7 @@ MODULE PIXCMD_VARS
   TYPE TISO
      !band order is BI
      REAL(SP), DIMENSION(nfil) :: bands=0.0
-     REAL(SP) :: imf=-99.,mass=0.0,age=0.0
+     REAL(SP) :: imf=-99.,mass=0.0,age=0.0,inorm=0.
      INTEGER  :: aind=1
   END TYPE TISO
 
