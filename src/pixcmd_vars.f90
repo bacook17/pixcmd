@@ -66,7 +66,6 @@ MODULE PIXCMD_VARS
   !upper/lower priors
   REAL(SP), PARAMETER :: prlo_sfh=-10.0,prhi_sfh=0.2
   REAL(SP), PARAMETER :: prlo_lebv=-6.0,prhi_lebv=0.0
-  REAL(SP), PARAMETER :: prlo_lebvw=-3.0,prhi_lebvw=0.5
   REAL(SP), PARAMETER :: prlo_zmet=-1.1,prhi_zmet=0.5
   
   !stellar mass below which the IMF is assumed to be fully populated
@@ -87,7 +86,7 @@ MODULE PIXCMD_VARS
   REAL(SP), DIMENSION(nz)     :: zmetarr=0.
 
   !number of free parameters 
-  INTEGER, PARAMETER :: nxpar = 1+1 !lebv+lebvw
+  INTEGER, PARAMETER :: nxpar = 1 !lebv
   INTEGER, PARAMETER :: npar=nage+nxpar+nzi
 
   !max size of array for data and isochrones

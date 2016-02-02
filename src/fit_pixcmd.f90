@@ -59,6 +59,8 @@ PROGRAM FIT_PIXCMD
      !infile='m31_bulge'
      infile='model_M2.0_SFH1_tau10.0'
      mpix0=2.0
+     zmet0=0.0
+     lebv0=-5.0
   ELSE
      CALL GETARG(1,infile)
   ENDIF
@@ -115,12 +117,9 @@ PROGRAM FIT_PIXCMD
 
   !transfer the priors to the prior array
   prlo(1)                  = prlo_lebv
-  prlo(2)                  = prlo_lebvw
   prlo(1+nxpar:nxpar+nage) = prlo_sfh+mpix0
   prlo(1+nxpar+nage)       = prlo_zmet
-
   prhi(1)                  = prhi_lebv
-  prhi(2)                  = prhi_lebvw
   prhi(1+nxpar:nxpar+nage) = prhi_sfh+mpix0
   prhi(1+nxpar+nage)       = prhi_zmet
 
