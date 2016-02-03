@@ -97,7 +97,7 @@ MODULE PIXCMD_VARS
 
   !PSF array
   INTEGER, PARAMETER :: psf_step=4
-  INTEGER, PARAMETER :: npsf=59,npsf2=npix/psf_step
+  INTEGER, PARAMETER :: npsf=73,npsf2=npix/psf_step
   REAL(SP), DIMENSION(npsf,npsf) :: psfi=0.
   REAL(SP), DIMENSION(npsf2,npsf2,psf_step,psf_step) :: psf=0.
 
@@ -111,7 +111,7 @@ MODULE PIXCMD_VARS
   INTEGER, PARAMETER :: nran=256*256
   INTEGER :: kran=1
   REAL(SP), DIMENSION(nran,niso_max) :: ranarr
-  REAL(SP), DIMENSION(npix,npix) :: gdev,gdev2
+  REAL(SP), DIMENSION(npix,npix)     :: gdev,gdev2
 
   !---------------------common arrays---------------------!
 

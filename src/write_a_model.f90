@@ -27,7 +27,7 @@ PROGRAM WRITE_A_MODEL
   !------------------------------------------------------------!
 
   !generate truly random models if fix_seed=0
-  fix_seed = 0
+  fix_seed = 100
 
   IF (IARGC().GT.0) THEN
      IF (IARGC().LT.4) THEN
@@ -147,16 +147,15 @@ PROGRAM WRITE_A_MODEL
   pos(1+nxpar+nage)  = zmet
 
   IF (1.EQ.1) THEN
-     pos(1) = -2.34+1
-     pos(2) = -0.3
-     pos(3) = -3.05
-     pos(4) = -1.91
-     pos(5) = -1.48
-     pos(6) = -0.87
-     pos(7) = -0.33
-     pos(8) =  0.86
-     pos(9) =  1.48
-     pos(10) = -0.05
+     pos(1) = -2.34
+     pos(2) = -3.05
+     pos(3) = -1.91
+     pos(4) = -1.48
+     pos(5) = -0.87
+     pos(6) = -0.33
+     pos(7) =  0.86
+     pos(8) =  1.48
+     pos(9) = -0.05
   ENDIF
 
   !get the model hess diagram and I-band image
