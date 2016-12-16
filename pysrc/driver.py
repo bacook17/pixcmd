@@ -7,6 +7,31 @@ import isochrones as iso
 import galaxy as gal
 import warnings
 
+#Try to import pycuda, initialize the GPU
+try:
+    import pycuda.driver as cuda
+    import pycuda.autoinit
+    from pycuda.compiler import SourceModule
+    import pycuda.curandom as curand
+except ImportError as e:
+    mess = e.__str__() #error message
+    if 'No module named pycuda' in mess:
+        warnings.warn('pycuda not installed.',ImportWarning)
+        GPU_AVAIL = False
+        print('GPU acceleration not available')
+    elif 'libcuda' in mess:
+        warnings.warn('libcuda not found, likely because no GPU available.', RuntimeWarning)
+        GPU_AVAIL = False
+        print('GPU acceleration not available')
+    else:
+        warnings.warn(mess, ImportWarning)
+        GPU_AVAIL = False
+        print('GPU acceleration not available')
+else:
+    assert(cuda.Device.count() > 0)
+    GPU_AVAIL = True
+    print('GPU acceleration enabled')
+
 class Driver:
 
     def __init__(self, iso_model, gpu=False):
@@ -15,27 +40,11 @@ class Driver:
         self.n_filters = len(self.filters)
 
         if gpu:
-            #Try to import pycuda, initialize the GPU
-            try:
-                import pycuda.driver as cuda
-                import pycuda.autoinit
-                from pycuda.compiler import SourceModule
-                import pycuda.curandom as curand
-            except ImportError as e:
-                mess = e.__str__() #error message
-                if 'No module named pycuda' in mess:
-                    warnings.warn('pycuda not installed.',ImportWarning)
-                    self.gpu_on = False
-                    print('Continuing without GPU acceleration')
-                elif 'libcuda' in mess:
-                    warnings.warn('libcuda not found, likely because no GPU available.', RuntimeWarning)
-                    self.gpu_on = False
-                    print('Continuing without GPU acceleration')
-                else:
-                    raise ImportError(mess) 
-            else:
-                assert(cuda.Device.count() > 0)
+            if GPU_AVAIL:
                 self.gpu_on = True
+            else:
+                warnings.warn('GPU acceleration not available. Continuing without.', RuntimeWarning)
+                self.gpu_on = False
         else:
             #No GPU acceleration
             self.gpu_on = False
@@ -77,6 +86,7 @@ class Driver:
             raw_images += np.array([c * n_stars for c in counts])
             
         raw_images += 1e-10
+        raw_images = raw_images.reshape((self.n_filters, im_scale, im_scale))
         convolved_images = np.array([f.psf_convolve(im) for f,im in zip(self.filters,raw_images)])
         raw_mags = np.array([f.counts_to_mag(im).flatten() for f,im in zip(self.filters, raw_images)])
         conv_mags = np.array([f.counts_to_mag(im).flatten() for f,im in zip(self.filters, convolved_images)])
