@@ -44,7 +44,7 @@ def lnprior(gal_params):
     return 0.
 
 def lnprob(gal_params, driv, im_scale, gal_class=gal.Galaxy_Model, **kwargs):
-    if (gal_glass is gal.Galaxy_SSP):
+    if (gal_class is gal.Galaxy_SSP):
         pri = lnprior_ssp(gal_params)
     else:
         pri = lnprior(gal_params)
@@ -59,6 +59,8 @@ def lnprob(gal_params, driv, im_scale, gal_class=gal.Galaxy_Model, **kwargs):
 def sample_post(pcmd, filters, im_scale, n_walkers, n_burn, n_sample, 
                 p0=None, gal_class=gal.Galaxy_Model, gpu=True, bins=None, threads=1,
                 **kwargs):
+
+    print('-initializing models')
     n_filters = len(filters)
     assert(pcmd.shape[0] == n_filters)
     n_dim = gal_class._num_params
@@ -69,9 +71,11 @@ def sample_post(pcmd, filters, im_scale, n_walkers, n_burn, n_sample,
         assert(n_filters == 2)
         xbins = np.arange(-1.5, 4.6, 0.05)
         ybins = np.arange(-12, 5.6, 0.05)
-        bins = [xbins,ybins]
+        bins = np.array([xbins,ybins])
     driv.initialize_data(pcmd,bins)
 
+    print('-Setting up emcee sampler')
+    
     sampler = emcee.EnsembleSampler(n_walkers, n_dim, lnprob, args=[driv, im_scale], kwargs={'gal_class':gal_class},
                                     threads=threads, **kwargs)
 
@@ -100,9 +104,11 @@ def sample_post(pcmd, filters, im_scale, n_walkers, n_burn, n_sample,
             age0 = np.random.uniform(6, 10.3, n_walkers)
             p0 = np.array([z0, dust0, npix0, age0]).T
     assert(p0.shape == (n_walkers, n_dim))
-    
+
+    print('-emcee burn-in')
     pos,prob,state = sampler.run_mcmc(p0, n_burn)
 
+    print('-emcee sampling')
     sampler.reset()
     sampler.run_mcmc(pos, n_sample)
 

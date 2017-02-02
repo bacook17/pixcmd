@@ -72,3 +72,4 @@ def subdivide_image(image, d_sub, w_border=0):
             y_slice = slice(Ny_sub*j, Ny_sub*(j+1) + w_border)
             sub_im_matrix[i,j] = image[x_slice, y_slice]
     return sub_im_matrix
+

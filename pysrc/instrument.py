@@ -4,6 +4,7 @@
 """Define classes for Filters and other similar objects"""
 
 import numpy as np
+import utils
 from scipy.signal import fftconvolve
 
 class Filter:
