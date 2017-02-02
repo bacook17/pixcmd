@@ -9,6 +9,9 @@ import pycuda.gpuarray as gpuarray
 
 code = """
    #include <curand_kernel.h>
+   
+   extern "C"
+   {
    __global__ void my_random(curandState *global_state, const float *exp_nums, const float *fluxes, const int num_bins, const int num_bands, const int N, float *pixels) 
    {
       /* Initialize variables */
@@ -48,10 +51,14 @@ code = """
           pixels[id_pix + (N*N)*f] = results[f];
       }
    }
+   }
 """
 
 code_simple = """
    #include <curand_kernel.h>
+
+   extern "C"
+   {
    __global__ void my_poisson(curandState *global_state, const float *exp_nums, const int N, const int num_lams, float *output) 
    {
       /* Initialize variables */
@@ -71,9 +78,11 @@ code_simple = """
       /* Save back state */
       global_state[threadIdx.x] = local_state;
    }
+
+   }
 """
 
-mod = SourceModule(code_simple, keep=False)
+mod = SourceModule(code_simple, keep=False, no_extern_c=True)
 
 my_poiss = mod.get_function('my_poisson')
 
