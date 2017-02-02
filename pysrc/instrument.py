@@ -178,12 +178,13 @@ class Filter:
         
         return -2.5*np.log10(counts / self._exposure) + self._zero_point - self._dmod + extinct
 
-    def psf_convolve(self, image, simple=True, convolve_func=None, **kwargs):
+    def psf_convolve(self, image, multi_psf=True, convolve_func=None, **kwargs):
         """Convolve image with instrumental PSF
         
         Arguments:
            image -- counts, or flux, in each pixel of image (2D array of integers or floats)
         Keyword Arguments:
+           multi_psf -- set to TRUE if 
            convolve_func -- function to convolve the image and PSF (default: scipy.signal.fftconvolve)
            **kwargs -- any additional keyword arguments will be passed to convolve_func
         Output:
@@ -196,26 +197,30 @@ class Filter:
         if (image.ndim != 2):
             raise TypeError('The first argument (image) must be a 2D array of integers or floats')    
 
-        if self._psf.ndim == 2:
-            simple = True
+        if self._psf.ndim != 4:
+            multi_psf = False
         
         if convolve_func is None:
             N = image.shape[0]
-            Np = self._psf.shape[-1]
-            if simple:
+            p = self._psf.shape[-1]
+            if (p != self._psf.shape[-2]):
+                message = 'each psf must be a square array'
+                raise NotImplementedError(message)
+            if multi_psf:
+                assert(self._psf.ndim == 4)
+                d_sub = self._psf.shape[0]
+                assert(d_sub == self._psf.shape[1])
+                #add border and subdivide
+                sub_im_matrix = utils.subdivide_image(image, d_sub, w_border=p-1)
+                convolved_matrix = np.array([[fftconvolve(sub_im_matrix[i,j], self._psf[i,j], mode='valid') for j in range(d_sub)] for i in range(d_sub)])
+                im_convolved = np.concatenate(np.concatenate(convolved_matrix, axis=-2), axis=-1)
+            else:
                 #add border
-                im_new = self._wrap_border(image, Np-1)
+                im_new = self._wrap_border(image, p-1)
                 if self._psf.ndim == 2:
                     im_convolved = fftconvolve(im_new, self._psf, mode='valid')
                 else:
                     im_convolved = fftconvolve(im_new, self._psf[0,0], mode='valid')
-            else:
-                assert(self._psf.ndim == 4)
-                chunks = self._psf.shape[0]
-                assert(chunks == self._psf.shape[1])
-                sub_im_matrix = self._wrap_and_chunk(image, Np-1, chunks)
-                convolved_matrix = np.array([[fftconvolve(sub_im_matrix[i,j], self._psf[i,j], mode='valid') for j in range(chunks)] for i in range(chunks)])
-                im_convolved = np.concatenate(np.concatenate(convolved_matrix, axis=-2), axis=-1)
         else:
             im_convolved = convolve_func(image, self._psf, **kwargs)
 
@@ -226,30 +231,6 @@ class Filter:
             print(image.shape)
             print('to ')
             print(im_convolved.shape)
+            
         return im_convolved
-
-    #this function should go somewhere else, and better variables
-    def _wrap_border(self, image, d_width):
-        N = image.shape[0]
-        assert(d_width < N)
-        N_roll = d_width / 2
-        
-        im_temp = np.tile(image, [2,2])
-        im_temp = np.roll(np.roll(im_temp, N_roll, axis=0), N_roll, axis=1)
-        return im_temp[:N+d_width, :N+d_width]
-
-    #Same as above
-    def _wrap_and_chunk(self, image, d_width, chunks):
-        N = image.shape[0]
-        assert(N % chunks == 0) #should be cleanly divisible
-        N_sub = N / chunks
-        im_border = self._wrap_border(image, d_width)
-        sub_im_matrix = np.zeros((chunks, chunks, N_sub + d_width, N_sub + d_width))
-        sub_width = N_sub + d_width
-        for i in range(chunks):
-            for j in range(chunks):
-                x_slice = slice(N_sub*i, N_sub*i + sub_width)
-                y_slice = slice(N_sub*j, N_sub*j + sub_width)
-                sub_im_matrix[i,j] = im_border[x_slice, y_slice]
-        return sub_im_matrix
 

@@ -5,10 +5,12 @@ import numpy as np
 from scipy.stats import poisson, norm
 import instrument as ins
 import isochrones as iso
+import utils
 import galaxy as gal
 import warnings
 
 #Try to import pycuda, initialize the GPU
+GPU_AVAIL = False
 try:
     import pycuda.driver as cuda
     import pycuda.autoinit
@@ -18,20 +20,18 @@ except ImportError as e:
     mess = e.__str__() #error message
     if 'No module named pycuda' in mess:
         warnings.warn('pycuda not installed.',ImportWarning)
-        GPU_AVAIL = False
-        print('GPU acceleration not available')
     elif 'libcuda' in mess:
         warnings.warn('libcuda not found, likely because no GPU available.', RuntimeWarning)
-        GPU_AVAIL = False
-        print('GPU acceleration not available')
     else:
         warnings.warn(mess, ImportWarning)
-        GPU_AVAIL = False
-        print('GPU acceleration not available')
 else:
-    assert(cuda.Device.count() > 0)
-    GPU_AVAIL = True
+    if (cuda.Device.count() > 0):
+        GPU_AVAIL = True
+
+if GPU_AVAIL:
     print('GPU acceleration enabled')
+else:
+    print('GPU acceleration not available')
 
 class Driver:
 
@@ -56,7 +56,7 @@ class Driver:
         self.hess_bins = bins
         self.n_data = pcmd.shape[1]
         
-        counts, hess, err = self._bin_pcmd(pcmd, bins, charlie=charlie)
+        counts, hess, err = utils.bin_pcmd(pcmd, bins, charlie=charlie)
         self.counts_data = counts
         self.hess_data = hess
         self.err_data = err
@@ -135,44 +135,3 @@ class Driver:
         raw_mags = np.array([f.counts_to_mag(im, E_BV=gal_model.dust).flatten() for f,im in zip(self.filters, raw_images)])
         conv_mags = np.array([f.counts_to_mag(im, E_BV=gal_model.dust).flatten() for f,im in zip(self.filters, convolved_images)])
         return raw_mags, conv_mags, raw_images, convolved_images
-
-    #move elsewhere
-    def _make_pcmd(self, images):
-        if(images.shape[0] != 2):
-            print("Function not defined for n_filters != 2")
-            return
-        colors = (images[0] - images[1]).flatten()
-        mags = images[1].flatten()
-
-        return np.array([colors, mags])
-
-    #move elsewhere
-    def _bin_pcmd(self, pcmd, bins, charlie=False, err_min=2.):
-        #bin up counts, and create normalized hess diagram and errors from the data
-        counts = np.histogramdd(pcmd.T, bins=bins)[0].astype(float)
-        n = pcmd.shape[1] #total number of pixels
-
-        if charlie:
-            #this is all sort of bad
-            err = np.sqrt(counts)
-            no_counts = (counts < 1.)
-            err[no_counts] = 1.
-            counts_low = (counts >= 1.) & (counts < 2)
-            err[counts_low] *= 10.
-
-        else:
-            #count_min = 25.
-            err_min = err_min
-            #factor = 1. - (err_min / np.sqrt(count_min))
-            err = np.sqrt(counts)
-            err += err_min*np.exp(-err)
-            #inflate error of cells with < 25 counts
-            #inflation lessens as counts approaches 25
-            #to_inflate = (counts <= count_min)
-            #err[to_inflate] = err_min + factor*err[to_inflate]
-            
-        #normalize by number of pixels
-        hess = counts / n
-        err /= n
-
-        return counts, hess, err

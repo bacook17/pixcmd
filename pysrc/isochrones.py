@@ -126,7 +126,7 @@ class Isochrone_Model:
             return self._interp_arrays(dflow.values, dfhigh.values, frac_between).T
     """
     
-    def get_isochrone(self, age, z):
+    def get_isochrone(self, age, z, norm_IMF=False):
         """Interpolate MIST isochrones for given age and metallicity
         
         Arguments:
@@ -159,6 +159,8 @@ class Isochrone_Model:
             inter = self._interp_arrays(dflow.values, dfhigh.values, frac_between)
             
         IMF = 10.**inter[:,0]
+        if norm_IMF:
+            IMF /= np.sum(IMF)
         mags = inter[:,1:].T
 
         return IMF, mags
