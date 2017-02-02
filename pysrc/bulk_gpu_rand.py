@@ -50,6 +50,7 @@ code_complex = """
    }
 
    }
+   }
 """
 
 mod_2 = SourceModule(code_complex, keep=False, no_extern_c=True)
@@ -91,6 +92,8 @@ code_simple = """
 
       /* Save back state */
       global_state[idx] = local_state;
+   }
+
    }
 
    }
