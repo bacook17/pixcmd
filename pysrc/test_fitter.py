@@ -26,8 +26,8 @@ if __name__ == "__main__":
 
     #Take in optional arguments from command line
     print('Loading command line arguments')
-    usage_message = 'usage: test_fitter.py [--N_scale <N_scale>] [--N_walkers <N_walkers>] [--N_burn <N_burn>] '\
-                    +'[--N_sample <N_sample>]'
+    usage_message = 'usage: test_fitter.py [--N_scale=<N_scale>] [--N_walkers=<N_walkers>] [--N_burn=<N_burn>] '\
+                    +'[--N_sample=<N_sample>] [--no_gpu] [--require_gpu] [--require_cudac] [--SSP] [--append=<append>]'
     try:
         opts, args = getopt.getopt(sys.argv[1:], 'aohn:', ['N_scale=', 'N_walkers=', 'N_burn=', 'N_sample=', 'no_gpu', 'require_gpu', 'require_cudac', 'SSP',
                                                            'append='])
@@ -88,7 +88,10 @@ if __name__ == "__main__":
     _, mags, _, _ = driv.simulate(model_galaxy, N_scale)
     pcmd_model = utils.make_pcmd(mags)
 
-    params = ['logz', 'logdust', 'logNpix', 'logage']
+    if ssp:
+        params = ['logz', 'logdust', 'logNpix', 'logage']
+    else:
+        params = ['logz', 'logdust', 'logSFH0', 'logSFH1', 'logSFH2', 'logSFH3', 'logSFH4', 'logSFH5', 'logSFH6']
 
     print('---Running emcee')
     if ssp:
@@ -100,10 +103,10 @@ if __name__ == "__main__":
 
     print('---Emcee done, saving results')
     chain_df = pd.DataFrame()
-    for w in np.arange(N_walkers):
-        for d in np.arange(4):
-            chain_df[params[d] + '_%d'%w] = sampler.chain[w,:,d]
-        chain_df['lnprob_%d'%w] = sampler.lnprobability[w]
+    for d in np.arange(len(params)):
+        chain_df[params[d]] = sampler.flatchain[:,d]
+    chain_df['lnprob'] = sampler.flatlnprobability
+    chain_df['N_walkers'] = N_walkers
 
     if 'MacBook' in os.uname()[1]:
         pcmd_dir = '/Users/bcook/pCMDs/pixcmd/'

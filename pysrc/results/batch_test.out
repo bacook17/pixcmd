@@ -2,13 +2,17 @@ GPU acceleration enabled
 Loading command line arguments
 Setting N_scale to 1024
 Setting N_walkers to 20
-Setting N_burn to 100
-Setting N_sample to 2000
+Setting N_burn to 2
+Setting N_sample to 10
 Requiring GPU
 Requiring CUDAC
+Appending _smallgpu to filenames
 ---Setting up model galaxy
 ---Simulating model galaxy
 ---Running emcee
 -initializing models
 -Setting up emcee sampler
 -emcee burn-in
+-emcee sampling
+-emcee sampling
+---Emcee done, saving results
