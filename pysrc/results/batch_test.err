@@ -1,15 +1,4 @@
 Vendor:  Continuum Analytics, Inc.
 Package: mkl
 Message: trial mode expires in 30 days
-Traceback (most recent call last):
-  File "test_fitter.py", line 86, in <module>
-    gal_class=gal.Galaxy_Model, gpu=gpu)
-  File "/n/home01/bcook/pixcmd/pysrc/fit_model.py", line 108, in sample_post
-    pos,prob,state = sampler.run_mcmc(p0, n_burn)
-  File "/n/home01/bcook/.conda/envs/my_home/lib/python2.7/site-packages/emcee/sampler.py", line 172, in run_mcmc
-    **kwargs):
-  File "/n/home01/bcook/.conda/envs/my_home/lib/python2.7/site-packages/emcee/ensemble.py", line 198, in sample
-    lnprob, blobs = self._get_lnprob(p)
-  File "/n/home01/bcook/.conda/envs/my_home/lib/python2.7/site-packages/emcee/ensemble.py", line 367, in _get_lnprob
-    raise ValueError("At least one parameter value was NaN.")
-ValueError: At least one parameter value was NaN.
+slurmstepd: error: *** JOB 80257483 ON supermicgpu01 CANCELLED AT 2017-02-03T10:20:35 ***

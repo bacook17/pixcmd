@@ -90,12 +90,12 @@ def draw_image(expected_nums, fluxes, N_scale, gpu=_GPU_AVAIL, cudac=_CUDAC_AVAI
         func = _draw_image_numpy
     return func(expected_nums, fluxes, N_scale, **kwargs)
         
-def _draw_image_cudac(expected_nums, fluxes, N_scale, tolerance=0.01, d_block=32):
+def _draw_image_cudac(expected_nums, fluxes, N_scale, tolerance=1e-5, d_block=32):
     assert(_CUDAC_AVAIL)
     assert(_GPU_AVAIL)
-    #TODO: Implement max poisson
 
     assert(len(expected_nums) == fluxes.shape[1])
+    """
     upper_lim = tolerance**-2.
     use_poisson = (expected_nums <= upper_lim)
     use_fixed = ~use_poisson
@@ -106,6 +106,11 @@ def _draw_image_cudac(expected_nums, fluxes, N_scale, tolerance=0.01, d_block=32
     #remove fixed bins, and set proper byte size for cuda
     expected_nums = expected_nums[use_poisson].astype(np.float32)
     fluxes = fluxes[:,use_poisson].astype(np.int32)
+    """
+    
+    expected_nums = expected_nums.astype(np.float32)
+    fluxes = fluxes.astype(np.float32)
+
     N_scale = np.int32(N_scale)
 
     N_bins = np.int32(len(expected_nums))
@@ -120,7 +125,7 @@ def _draw_image_cudac(expected_nums, fluxes, N_scale, tolerance=0.01, d_block=32
               cuda.Out(result), block=block_dim, grid=grid_dim)
 
     #Add on flux from fully-populated bins
-    result = np.array([result[i] + fixed_fluxes[i] for i in range(N_bands)]).astype(float)
+    #result = np.array([result[i] + fixed_fluxes[i] for i in range(N_bands)]).astype(float)
     return result
 
 def _draw_image_pycuda(expected_nums, fluxes, N_scale, tolerance=-1., **kwargs):
