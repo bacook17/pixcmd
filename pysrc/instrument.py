@@ -217,7 +217,7 @@ class Filter:
                 im_convolved = np.concatenate(np.concatenate(convolved_matrix, axis=-2), axis=-1)
             else:
                 #add border
-                im_new = self._wrap_border(image, p-1)
+                im_new = utils.wrap_image(image, p-1)
                 if self._psf.ndim == 2:
                     im_convolved = fftconvolve(im_new, self._psf, mode='valid')
                 else:

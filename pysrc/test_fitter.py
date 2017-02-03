@@ -21,13 +21,16 @@ if __name__ == "__main__":
     N_sample = 500
     gpu=True
     force_gpu=False
+    ssp=False
+    append = ''
 
     #Take in optional arguments from command line
     print('Loading command line arguments')
     usage_message = 'usage: test_fitter.py [--N_scale <N_scale>] [--N_walkers <N_walkers>] [--N_burn <N_burn>] '\
                     +'[--N_sample <N_sample>]'
     try:
-        opts, args = getopt.getopt(sys.argv[1:], 'aohn:', ['N_scale=', 'N_walkers=', 'N_burn=', 'N_sample=', 'no_gpu', 'require_gpu', 'require_cudac'])
+        opts, args = getopt.getopt(sys.argv[1:], 'aohn:', ['N_scale=', 'N_walkers=', 'N_burn=', 'N_sample=', 'no_gpu', 'require_gpu', 'require_cudac', 'SSP',
+                                                           'append='])
     except getopt.GetoptError:
         print(usage_message)
         sys.exit(2)
@@ -58,6 +61,12 @@ if __name__ == "__main__":
             if not gpu_utils._CUDAC_AVAIL:
                 print('CUDAC NOT AVAILABLE. QUITTING')
                 sys.exit(2)
+        elif opt == '--SSP':
+            print('Using SSP')
+            ssp = True
+        elif opt == '--append':
+            print('Appending %s to filenames'%arg)
+            append = arg
         else:
             print(opt, arg)
             sys.exit(2)
@@ -71,8 +80,10 @@ if __name__ == "__main__":
     log_SFH_1e2 = np.log10(1e2 / 7.) 
     full_params = np.array([-0.2, -2, log_SFH_1e2, log_SFH_1e2,log_SFH_1e2,log_SFH_1e2,log_SFH_1e2,log_SFH_1e2,log_SFH_1e2,]) 
 
-    #model_galaxy = gal.Galaxy_SSP(SSP_params)
-    model_galaxy = gal.Galaxy_Model(full_params)
+    if ssp:
+        model_galaxy = gal.Galaxy_SSP(SSP_params)
+    else:
+        model_galaxy = gal.Galaxy_Model(full_params)
     print('---Simulating model galaxy')
     _, mags, _, _ = driv.simulate(model_galaxy, N_scale)
     pcmd_model = utils.make_pcmd(mags)
@@ -80,10 +91,12 @@ if __name__ == "__main__":
     params = ['logz', 'logdust', 'logNpix', 'logage']
 
     print('---Running emcee')
-#    sampler = fit_model.sample_post(pcmd_model, filters, N_scale, N_walkers, N_burn, N_sample,
-#                                    gal_class=gal.Galaxy_SSP, gpu=gpu)
-    sampler = fit_model.sample_post(pcmd_model, filters, N_scale, N_walkers, N_burn, N_sample,
-                                    gal_class=gal.Galaxy_Model, gpu=gpu)
+    if ssp:
+        sampler = fit_model.sample_post(pcmd_model, filters, N_scale, N_walkers, N_burn, N_sample,
+                                        gal_class=gal.Galaxy_SSP, gpu=gpu)
+    else:
+        sampler = fit_model.sample_post(pcmd_model, filters, N_scale, N_walkers, N_burn, N_sample,
+                                        gal_class=gal.Galaxy_Model, gpu=gpu)
 
     print('---Emcee done, saving results')
     chain_df = pd.DataFrame()
@@ -97,11 +110,11 @@ if __name__ == "__main__":
     else:
         pcmd_dir = '/n/home01/bcook/pixcmd/'
         
-    chain_file = pcmd_dir + 'pysrc/results/test_chain.csv'
-    chain_df.to_csv(chain_file, index=False)
-            
+    chain_file = pcmd_dir + 'pysrc/results/test_chain%s.csv'%append
+    chain_df.to_csv(chain_file, index=False, float_format='%.4f')
+    
     accept_df = pd.DataFrame()
     accept_df['acceptance'] = sampler.acceptance_fraction
-    accept_file = pcmd_dir + 'pysrc/results/test_accept.csv'
-    accept_df.to_csv(accept_file, index=False)
+    accept_file = pcmd_dir + 'pysrc/results/test_accept%s.csv'%append
+    accept_df.to_csv(accept_file, index=False, float_format='%.4f')
     
