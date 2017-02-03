@@ -86,7 +86,7 @@ def sample_post(pcmd, filters, im_scale, n_walkers, n_burn, n_sample,
             np.random.seed(0)
             dust0 = np.random.uniform(-6, 0, n_walkers)
             np.random.seed(0)
-            npix0 = np.random.uniform(-1, 6, n_walkers)
+            npix0 = 10.**np.random.uniform(-1, 6, n_walkers)
             sfh0 = 10.**np.random.uniform(-10, 0, (7, n_walkers))
             sfh0 *= npix0 / np.sum(sfh0, axis=0)
             sfh0 = np.log10(sfh0)
