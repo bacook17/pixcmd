@@ -67,8 +67,12 @@ if __name__ == "__main__":
     iso_model = iso.Isochrone_Model(filters)
     driv = driver.Driver(iso_model, gpu=gpu)
     
-    true_params = [-0.2, -2, 2, 9.6]
-    model_galaxy = gal.Galaxy_SSP(true_params)
+    SSP_params = np.array([-0.2, -2, 2, 9.6])
+    log_SFH_1e2 = np.log10(1e2 / 7.) 
+    full_params = np.array([-0.2, -2, log_SFH_1e2, log_SFH_1e2,log_SFH_1e2,log_SFH_1e2,log_SFH_1e2,log_SFH_1e2,log_SFH_1e2,]) 
+
+    #model_galaxy = gal.Galaxy_SSP(SSP_params)
+    model_galaxy = gal.Galaxy_Model(full_params)
     print('---Simulating model galaxy')
     _, mags, _, _ = driv.simulate(model_galaxy, N_scale)
     pcmd_model = utils.make_pcmd(mags)
@@ -76,8 +80,10 @@ if __name__ == "__main__":
     params = ['logz', 'logdust', 'logNpix', 'logage']
 
     print('---Running emcee')
+#    sampler = fit_model.sample_post(pcmd_model, filters, N_scale, N_walkers, N_burn, N_sample,
+#                                    gal_class=gal.Galaxy_SSP, gpu=gpu)
     sampler = fit_model.sample_post(pcmd_model, filters, N_scale, N_walkers, N_burn, N_sample,
-                                    gal_class=gal.Galaxy_SSP, gpu=gpu)
+                                    gal_class=gal.Galaxy_Model, gpu=gpu)
 
     print('---Emcee done, saving results')
     chain_df = pd.DataFrame()
