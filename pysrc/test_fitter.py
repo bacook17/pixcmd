@@ -8,6 +8,7 @@ import galaxy as gal
 import driver
 import fit_model
 import utils
+import gpu_utils
 import pandas as pd
 import os
 import sys, getopt
@@ -19,13 +20,14 @@ if __name__ == "__main__":
     N_burn = 20
     N_sample = 500
     gpu=True
+    force_gpu=False
 
     #Take in optional arguments from command line
     print('Loading command line arguments')
     usage_message = 'usage: test_fitter.py [--N_scale <N_scale>] [--N_walkers <N_walkers>] [--N_burn <N_burn>] '\
                     +'[--N_sample <N_sample>]'
     try:
-        opts, args = getopt.getopt(sys.argv[1:], 'aohn:', ['N_scale=', 'N_walkers=', 'N_burn=', 'N_sample=', 'no_gpu'])
+        opts, args = getopt.getopt(sys.argv[1:], 'aohn:', ['N_scale=', 'N_walkers=', 'N_burn=', 'N_sample=', 'no_gpu', 'require_gpu', 'require_cudac'])
     except getopt.GetoptError:
         print(usage_message)
         sys.exit(2)
@@ -46,6 +48,16 @@ if __name__ == "__main__":
         elif opt == '--no_gpu':
             print('Disabling GPU')
             gpu=False
+        elif opt == '--require_gpu':
+            print('Requiring GPU')
+            if not gpu_utils._GPU_AVAIL:
+                print('GPU NOT AVAILABLE. QUITTING')
+                sys.exit(2)
+        elif opt == '--require_cudac':
+            print('Requiring CUDAC')
+            if not gpu_utils._CUDAC_AVAIL:
+                print('CUDAC NOT AVAILABLE. QUITTING')
+                sys.exit(2)
         else:
             print(opt, arg)
             sys.exit(2)

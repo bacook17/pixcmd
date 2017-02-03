@@ -18,9 +18,10 @@ class Galaxy_Model:
            1 -- log E(B-V) dust extinction
            2... -- log SFH in age bin
         """
-        self.ages = age_arr
+        self.ages = self.age_arr
         assert(len(gal_params) == self._num_params)
 
+        self._params = gal_params
         self.z = gal_params[0]
         self.dust = 10.**gal_params[1]
         self.SFH = 10.**gal_params[2:]
@@ -29,7 +30,7 @@ class Galaxy_Model:
 class Galaxy_SSP:
     _num_params = 4
 
-    def __init__(self,gal_params):
+    def __init__(self, gal_params):
         """
         gal_params:
            0 -- log (z / z_solar) metallicity
@@ -38,6 +39,7 @@ class Galaxy_SSP:
            3 -- log age (in yrs)
         """
         assert(len(gal_params) == self._num_params)
+        self._params = gal_params
         self.z = gal_params[0]
         self.dust = 10.**gal_params[1]
         Npix = 10.**gal_params[2]

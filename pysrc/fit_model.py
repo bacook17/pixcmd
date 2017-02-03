@@ -51,7 +51,7 @@ def lnprob(gal_params, driv, im_scale, gal_class=gal.Galaxy_Model, **kwargs):
     if np.isinf(pri):
         return -np.inf
     gal_model = gal_class(gal_params)
-    _, mags, _, _ = driv.simulate(gal_model, im_scale)
+    _, mags, _, _ = driv.simulate(gal_model, im_scale, **kwargs)
     pcmd = utils.make_pcmd(mags)
     like = driv.loglike(pcmd, **kwargs)
     return pri + like

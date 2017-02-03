@@ -10,7 +10,6 @@ import gpu_utils
 import galaxy as gal
 import warnings
 
-
 class Driver:
 
     def __init__(self, iso_model, gpu=False):
@@ -68,7 +67,7 @@ class Driver:
         IMF, mags = self.iso_model.model_galaxy(gal_model)
         fluxes = np.array([f.mag_to_counts(m) for f,m in zip(self.filters, mags)])
 
-        raw_images = gpu_utils.draw_image(IMF, fluxes, im_scale, **kwargs)
+        raw_images = gpu_utils.draw_image(IMF, fluxes, im_scale, gpu=self.gpu_on, **kwargs)
         raw_images += 1e-10
 
         raw_mags = np.array([f.counts_to_mag(im, E_BV=gal_model.dust).flatten() for f,im in zip(self.filters, raw_images)])
