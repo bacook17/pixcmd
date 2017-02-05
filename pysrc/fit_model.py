@@ -31,6 +31,9 @@ def lnprior(gal_params):
     log_SFH = gal_params[2:]
     log_Npix = np.log10(np.sum(10.**log_SFH))
     #Flat priors
+    # log Npix between -2 and 8
+    if (log_Npix < -2.) or (log_Npix > 8.):
+        return -np.inf
     # log (z/z_solar) between -2 and 0.5
     if (z < -2.) or (z > 0.5):
         return -np.inf
