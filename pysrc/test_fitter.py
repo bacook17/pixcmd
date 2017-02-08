@@ -19,6 +19,7 @@ if __name__ == "__main__":
     N_walkers = 10
     N_burn = 20
     N_sample = 500
+    N_threads = 1
     gpu=True
     force_gpu=False
     ssp=False
@@ -27,10 +28,10 @@ if __name__ == "__main__":
     #Take in optional arguments from command line
     print('Loading command line arguments')
     usage_message = 'usage: test_fitter.py [--N_scale=<N_scale>] [--N_walkers=<N_walkers>] [--N_burn=<N_burn>] '\
-                    +'[--N_sample=<N_sample>] [--no_gpu] [--require_gpu] [--require_cudac] [--SSP] [--append=<append>]'
+                    +'[--N_sample=<N_sample>] [--no_gpu] [--require_gpu] [--require_cudac] [--SSP] [--append=<append>] [--N_threads=<N_threads>]'
     try:
         opts, args = getopt.getopt(sys.argv[1:], 'aohn:', ['N_scale=', 'N_walkers=', 'N_burn=', 'N_sample=', 'no_gpu', 'require_gpu', 'require_cudac', 'SSP',
-                                                           'append='])
+                                                           'append=', 'N_threads='])
     except getopt.GetoptError:
         print(usage_message)
         sys.exit(2)
@@ -39,6 +40,9 @@ if __name__ == "__main__":
         if opt == '--N_scale':
             print('Setting N_scale to %d'%int(arg))
             N_scale = int(arg)
+        elif opt == '--N_threads':
+            print('Using %d threads'%int(arg))
+            N_threads = int(arg)
         elif opt == '--N_walkers':
             print('Setting N_walkers to %d'%int(arg))
             N_walkers = int(arg)
@@ -96,10 +100,10 @@ if __name__ == "__main__":
     print('---Running emcee')
     if ssp:
         sampler = fit_model.sample_post(pcmd_model, filters, N_scale, N_walkers, N_burn, N_sample,
-                                        gal_class=gal.Galaxy_SSP, gpu=gpu)
+                                        gal_class=gal.Galaxy_SSP, gpu=gpu, threads=N_threads)
     else:
         sampler = fit_model.sample_post(pcmd_model, filters, N_scale, N_walkers, N_burn, N_sample,
-                                        gal_class=gal.Galaxy_Model, gpu=gpu)
+                                        gal_class=gal.Galaxy_Model, gpu=gpu, threads=N_threads)
 
     print('---Emcee done, saving results')
     chain_df = pd.DataFrame()
