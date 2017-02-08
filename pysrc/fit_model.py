@@ -107,11 +107,15 @@ def sample_post(pcmd, filters, im_scale, n_walkers, n_burn, n_sample,
             p0 = np.array([z0, dust0, npix0, age0]).T
     assert(p0.shape == (n_walkers, n_dim))
 
-    print('-emcee burn-in')
-    pos,prob,state = sampler.run_mcmc(p0, n_burn)
+    if n_burn > 0:
+        print('-emcee burn-in')
+        pos,prob,state = sampler.run_mcmc(p0, n_burn)
 
-    print('-emcee sampling')
-    sampler.reset()
-    sampler.run_mcmc(pos, n_sample)
+        print('-emcee sampling')
+        sampler.reset()
+        sampler.run_mcmc(pos, n_sample)
+
+    else:
+        sampler.run_mcmc(p0, n_sample)
 
     return sampler

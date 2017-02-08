@@ -1,0 +1,91 @@
+Vendor:  Continuum Analytics, Inc.
+Package: mkl
+Message: trial mode expires in 30 days
+Traceback (most recent call last):
+  File "/n/home01/bcook/.conda/envs/my_home/lib/python2.7/site-packages/emcee/ensemble.py", line 519, in __call__
+    return self.f(x, *self.args, **self.kwargs)
+  File "/n/home01/bcook/pixcmd/pysrc/fit_model.py", line 57, in lnprob
+    _, mags, _, _ = driv.simulate(gal_model, im_scale, **kwargs)
+  File "/n/home01/bcook/pixcmd/pysrc/driver.py", line 70, in simulate
+    raw_images = gpu_utils.draw_image(IMF, fluxes, im_scale, gpu=self.gpu_on, **kwargs)
+  File "/n/home01/bcook/pixcmd/pysrc/gpu_utils.py", line 91, in draw_image
+    return func(expected_nums, fluxes, N_scale, **kwargs)
+  File "/n/home01/bcook/pixcmd/pysrc/gpu_utils.py", line 119, in _draw_image_cudac
+    generator = pycuda.curandom.XORWOWRandomNumberGenerator()
+  File "/n/sw/fasrcsw/apps/Core/pycuda/2015.1.3-fasrc01/lib/python2.7/site-packages/pycuda-2015.1.3-py2.7-linux-x86_64.egg/pycuda/curandom.py", line 725, in __init__
+    xorwow_skip_ahead_sequence_source+random_skip_ahead64_source)
+  File "/n/sw/fasrcsw/apps/Core/pycuda/2015.1.3-fasrc01/lib/python2.7/site-packages/pycuda-2015.1.3-py2.7-linux-x86_64.egg/pycuda/curandom.py", line 605, in __init__
+    state_type, vector_type, generator_bits, additional_source)
+  File "/n/sw/fasrcsw/apps/Core/pycuda/2015.1.3-fasrc01/lib/python2.7/site-packages/pycuda-2015.1.3-py2.7-linux-x86_64.egg/pycuda/curandom.py", line 381, in __init__
+    dev = drv.Context.get_device()
+LogicError: cuCtxGetDevice failed: initialization error
+Traceback (most recent call last):
+  File "/n/home01/bcook/.conda/envs/my_home/lib/python2.7/site-packages/emcee/ensemble.py", line 519, in __call__
+    return self.f(x, *self.args, **self.kwargs)
+  File "/n/home01/bcook/pixcmd/pysrc/fit_model.py", line 57, in lnprob
+Traceback (most recent call last):
+  File "test_fitter.py", line 106, in <module>
+    _, mags, _, _ = driv.simulate(gal_model, im_scale, **kwargs)
+  File "/n/home01/bcook/pixcmd/pysrc/driver.py", line 70, in simulate
+    gal_class=gal.Galaxy_Model, gpu=gpu, threads=N_threads)
+  File "/n/home01/bcook/pixcmd/pysrc/fit_model.py", line 119, in sample_post
+    raw_images = gpu_utils.draw_image(IMF, fluxes, im_scale, gpu=self.gpu_on, **kwargs)
+  File "/n/home01/bcook/pixcmd/pysrc/gpu_utils.py", line 91, in draw_image
+    sampler.run_mcmc(p0, n_sample)
+  File "/n/home01/bcook/.conda/envs/my_home/lib/python2.7/site-packages/emcee/sampler.py", line 172, in run_mcmc
+    return func(expected_nums, fluxes, N_scale, **kwargs)
+  File "/n/home01/bcook/pixcmd/pysrc/gpu_utils.py", line 119, in _draw_image_cudac
+    generator = pycuda.curandom.XORWOWRandomNumberGenerator()
+  File "/n/sw/fasrcsw/apps/Core/pycuda/2015.1.3-fasrc01/lib/python2.7/site-packages/pycuda-2015.1.3-py2.7-linux-x86_64.egg/pycuda/curandom.py", line 725, in __init__
+    **kwargs):
+  File "/n/home01/bcook/.conda/envs/my_home/lib/python2.7/site-packages/emcee/ensemble.py", line 198, in sample
+    xorwow_skip_ahead_sequence_source+random_skip_ahead64_source)
+  File "/n/sw/fasrcsw/apps/Core/pycuda/2015.1.3-fasrc01/lib/python2.7/site-packages/pycuda-2015.1.3-py2.7-linux-x86_64.egg/pycuda/curandom.py", line 605, in __init__
+    state_type, vector_type, generator_bits, additional_source)
+  File "/n/sw/fasrcsw/apps/Core/pycuda/2015.1.3-fasrc01/lib/python2.7/site-packages/pycuda-2015.1.3-py2.7-linux-x86_64.egg/pycuda/curandom.py", line 381, in __init__
+    dev = drv.Context.get_device()
+LogicError: cuCtxGetDevice failed: initialization error
+    lnprob, blobs = self._get_lnprob(p)
+  File "/n/home01/bcook/.conda/envs/my_home/lib/python2.7/site-packages/emcee/ensemble.py", line 382, in _get_lnprob
+    results = list(M(self.lnprobfn, [p[i] for i in range(len(p))]))
+  File "/n/home01/bcook/.conda/envs/my_home/lib/python2.7/site-packages/emcee/interruptible_pool.py", line 94, in map
+Traceback (most recent call last):
+  File "/n/home01/bcook/.conda/envs/my_home/lib/python2.7/site-packages/emcee/ensemble.py", line 519, in __call__
+    return self.f(x, *self.args, **self.kwargs)
+  File "/n/home01/bcook/pixcmd/pysrc/fit_model.py", line 57, in lnprob
+    _, mags, _, _ = driv.simulate(gal_model, im_scale, **kwargs)
+  File "/n/home01/bcook/pixcmd/pysrc/driver.py", line 70, in simulate
+    raw_images = gpu_utils.draw_image(IMF, fluxes, im_scale, gpu=self.gpu_on, **kwargs)
+  File "/n/home01/bcook/pixcmd/pysrc/gpu_utils.py", line 91, in draw_image
+    return func(expected_nums, fluxes, N_scale, **kwargs)
+  File "/n/home01/bcook/pixcmd/pysrc/gpu_utils.py", line 119, in _draw_image_cudac
+    generator = pycuda.curandom.XORWOWRandomNumberGenerator()
+  File "/n/sw/fasrcsw/apps/Core/pycuda/2015.1.3-fasrc01/lib/python2.7/site-packages/pycuda-2015.1.3-py2.7-linux-x86_64.egg/pycuda/curandom.py", line 725, in __init__
+    xorwow_skip_ahead_sequence_source+random_skip_ahead64_source)
+  File "/n/sw/fasrcsw/apps/Core/pycuda/2015.1.3-fasrc01/lib/python2.7/site-packages/pycuda-2015.1.3-py2.7-linux-x86_64.egg/pycuda/curandom.py", line 605, in __init__
+    state_type, vector_type, generator_bits, additional_source)
+  File "/n/sw/fasrcsw/apps/Core/pycuda/2015.1.3-fasrc01/lib/python2.7/site-packages/pycuda-2015.1.3-py2.7-linux-x86_64.egg/pycuda/curandom.py", line 381, in __init__
+    dev = drv.Context.get_device()
+LogicError: cuCtxGetDevice failed: initialization error
+    return r.get(self.wait_timeout)
+  File "/n/home01/bcook/.conda/envs/my_home/lib/python2.7/multiprocessing/pool.py", line 567, in get
+Traceback (most recent call last):
+  File "/n/home01/bcook/.conda/envs/my_home/lib/python2.7/site-packages/emcee/ensemble.py", line 519, in __call__
+    return self.f(x, *self.args, **self.kwargs)
+  File "/n/home01/bcook/pixcmd/pysrc/fit_model.py", line 57, in lnprob
+    _, mags, _, _ = driv.simulate(gal_model, im_scale, **kwargs)
+  File "/n/home01/bcook/pixcmd/pysrc/driver.py", line 70, in simulate
+    raw_images = gpu_utils.draw_image(IMF, fluxes, im_scale, gpu=self.gpu_on, **kwargs)
+  File "/n/home01/bcook/pixcmd/pysrc/gpu_utils.py", line 91, in draw_image
+    return func(expected_nums, fluxes, N_scale, **kwargs)
+  File "/n/home01/bcook/pixcmd/pysrc/gpu_utils.py", line 119, in _draw_image_cudac
+    generator = pycuda.curandom.XORWOWRandomNumberGenerator()
+  File "/n/sw/fasrcsw/apps/Core/pycuda/2015.1.3-fasrc01/lib/python2.7/site-packages/pycuda-2015.1.3-py2.7-linux-x86_64.egg/pycuda/curandom.py", line 725, in __init__
+    xorwow_skip_ahead_sequence_source+random_skip_ahead64_source)
+  File "/n/sw/fasrcsw/apps/Core/pycuda/2015.1.3-fasrc01/lib/python2.7/site-packages/pycuda-2015.1.3-py2.7-linux-x86_64.egg/pycuda/curandom.py", line 605, in __init__
+    state_type, vector_type, generator_bits, additional_source)
+  File "/n/sw/fasrcsw/apps/Core/pycuda/2015.1.3-fasrc01/lib/python2.7/site-packages/pycuda-2015.1.3-py2.7-linux-x86_64.egg/pycuda/curandom.py", line 381, in __init__
+    dev = drv.Context.get_device()
+LogicError: cuCtxGetDevice failed: initialization error
+    raise self._value
+pycuda._driver.LogicError: cuCtxGetDevice failed: initialization error
