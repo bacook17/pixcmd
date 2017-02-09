@@ -1,7 +1,9 @@
 import numpy as np
 import warnings
+import multiprocessing
 _GPU_AVAIL = True
 try:
+    import pycuda
     import pycuda.driver as cuda
     import pycuda.autoinit
     from pycuda.compiler import SourceModule
@@ -178,3 +180,18 @@ def _draw_image_numpy(expected_nums, fluxes, N_scale, fixed_seed=False, toleranc
         
     return np.dot(realiz_num, fluxes.T).T
     
+def set_gpu_device(n):
+    """
+    This function makes pycuda use GPU number n in the system.
+    """
+    assert(n < cuda.Device.count())
+    cuda.init()
+    try:
+        pycuda.context.detach()
+    except:
+        pass
+    pycuda.context = cuda.Device(n).make_context()
+
+def initialize_process():
+    cpu_id = multiprocessing.current_process()
+    set_gpu_device(cpu_id)
