@@ -12,6 +12,7 @@ import gpu_utils
 import pandas as pd
 import os
 import sys, getopt
+import multiprocessing
 
 if __name__ == "__main__":
     
@@ -20,6 +21,7 @@ if __name__ == "__main__":
     N_burn = 20
     N_sample = 500
     N_threads = 1
+    pool = None
     gpu=True
     force_gpu=False
     ssp=False
@@ -97,13 +99,17 @@ if __name__ == "__main__":
     else:
         params = ['logz', 'logdust', 'logSFH0', 'logSFH1', 'logSFH2', 'logSFH3', 'logSFH4', 'logSFH5', 'logSFH6']
 
+    if N_threads > 1:
+        print('Setting up multiple GPUs')
+        pool = multiprocessing.Pool(processes=N_threads, initializer=gpu_utils.initalize_process)
+
     print('---Running emcee')
     if ssp:
         sampler = fit_model.sample_post(pcmd_model, filters, N_scale, N_walkers, N_burn, N_sample,
-                                        gal_class=gal.Galaxy_SSP, gpu=gpu, threads=N_threads)
+                                        gal_class=gal.Galaxy_SSP, gpu=gpu, pool=pool)
     else:
         sampler = fit_model.sample_post(pcmd_model, filters, N_scale, N_walkers, N_burn, N_sample,
-                                        gal_class=gal.Galaxy_Model, gpu=gpu, threads=N_threads)
+                                        gal_class=gal.Galaxy_Model, gpu=gpu, pool=pool)
 
     print('---Emcee done, saving results')
     chain_df = pd.DataFrame()
