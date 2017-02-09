@@ -6,9 +6,9 @@
 #SBATCH --constraint=cuda-7.5 #require CUDA
 #SBATCH -t 2-00:00 #runtime in D-HH:MM
 #SBATCH --mem 4000 #memory pool for cores
-#SBATCH -o results/batch_full.out
-#SBATCH -e results/batch_full.err
+#SBATCH -o results/batch_full_manywalker.out
+#SBATCH -e results/batch_full_manywalker.err
 #SBATCH --mail-type=BEGIN,END,FAIL #alert when done
 #SBATCH --mail-user=bcook@cfa.harvard.edu #Email to send to
 
-python test_fitter.py --N_scale=1024 --N_walkers=20 --N_burn=0 --N_sample=5000 --require_gpu --require_cudac --append=_gpu
+python test_fitter.py --N_scale=1024 --N_walkers=128 --N_burn=0 --N_sample=500 --require_gpu --require_cudac --append=_gpu_manywalker
