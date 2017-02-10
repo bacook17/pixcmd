@@ -184,8 +184,8 @@ def set_gpu_device(n):
     """
     This function makes pycuda use GPU number n in the system.
     """
-    assert(n < cuda.Device.count())
     cuda.init()
+    assert(n < cuda.Device.count())
     try:
         pycuda.context.detach()
     except:
