@@ -193,5 +193,5 @@ def set_gpu_device(n):
     pycuda.context = cuda.Device(n).make_context()
 
 def initialize_process():
-    cpu_id = multiprocessing.current_process()
-    set_gpu_device(cpu_id)
+    cpu_id = multiprocessing.current_process()._identity[0]
+    set_gpu_device(cpu_id - 1)
