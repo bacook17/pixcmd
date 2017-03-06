@@ -82,7 +82,7 @@ if __name__ == "__main__":
     iso_model = iso.Isochrone_Model(filters)
     driv = driver.Driver(iso_model, gpu=gpu)
     
-    SSP_params = np.array([-0.2, -2, 2, 9.6])
+    SSP_params = np.array([-0.2, -2., 2., 9.6])
     log_SFH_1e2 = np.log10(1e2 / 7.) 
     full_params = np.array([-0.2, -2, log_SFH_1e2, log_SFH_1e2,log_SFH_1e2,log_SFH_1e2,log_SFH_1e2,log_SFH_1e2,log_SFH_1e2,]) 
 

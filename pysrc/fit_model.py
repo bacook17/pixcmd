@@ -73,7 +73,7 @@ def sample_post(pcmd, filters, im_scale, n_walkers, n_burn, n_sample,
     if bins is None:
         assert(n_filters == 2)
         xbins = np.arange(-1.5, 4.6, 0.05)
-        ybins = np.arange(-12, 5.6, 0.05)
+        ybins = np.arange(-12, 15.6, 0.05)
         bins = np.array([xbins,ybins])
     driv.initialize_data(pcmd,bins)
 

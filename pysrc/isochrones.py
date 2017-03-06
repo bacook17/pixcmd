@@ -5,6 +5,7 @@
 
 import numpy as np
 import pandas as pd
+import matplotlib.pyplot as plt
 
 # The pre-computed MIST model metallicities
 _z_arr_default = np.array([-2.15, -1.13, -0.73, -0.52, -0.22, 0., 0.3, 0.5])
@@ -126,7 +127,7 @@ class Isochrone_Model:
             return self._interp_arrays(dflow.values, dfhigh.values, frac_between).T
     """
     
-    def get_isochrone(self, age, z, norm_IMF=False):
+    def get_isochrone(self, age, z, norm_IMF=True):
         """Interpolate MIST isochrones for given age and metallicity
         
         Arguments:
