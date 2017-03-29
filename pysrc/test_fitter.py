@@ -25,6 +25,7 @@ if __name__ == "__main__":
     gpu=True
     force_gpu=False
     ssp=False
+    fixed_seed=False
     append = ''
 
     #Take in optional arguments from command line
@@ -32,7 +33,7 @@ if __name__ == "__main__":
     usage_message = 'usage: test_fitter.py [--N_scale=<N_scale>] [--N_walkers=<N_walkers>] [--N_burn=<N_burn>] '\
                     +'[--N_sample=<N_sample>] [--no_gpu] [--require_gpu] [--require_cudac] [--SSP] [--append=<append>] [--N_threads=<N_threads>]'
     try:
-        opts, args = getopt.getopt(sys.argv[1:], 'aohn:', ['N_scale=', 'N_walkers=', 'N_burn=', 'N_sample=', 'no_gpu', 'require_gpu', 'require_cudac', 'SSP',
+        opts, args = getopt.getopt(sys.argv[1:], 'aohn:', ['N_scale=', 'N_walkers=', 'N_burn=', 'N_sample=', 'fixed_seed', 'no_gpu', 'require_gpu', 'require_cudac', 'SSP',
                                                            'append=', 'N_threads='])
     except getopt.GetoptError:
         print(usage_message)
@@ -70,6 +71,9 @@ if __name__ == "__main__":
         elif opt == '--SSP':
             print('Using SSP')
             ssp = True
+        elif opt == '--fixed_seed':
+            print('Using fixed seed')
+            fixed_seed = True
         elif opt == '--append':
             print('Appending %s to filenames'%arg)
             append = arg
@@ -91,7 +95,8 @@ if __name__ == "__main__":
     else:
         model_galaxy = gal.Galaxy_Model(full_params)
     print('---Simulating model galaxy')
-    _, mags, _, _ = driv.simulate(model_galaxy, N_scale)
+    N_data = 128
+    _, mags, _, _ = driv.simulate(model_galaxy, N_data, fixed_seed=fixed_seed)
     pcmd_model = utils.make_pcmd(mags)
 
     if ssp:
@@ -105,10 +110,10 @@ if __name__ == "__main__":
 
     print('---Running emcee')
     if ssp:
-        sampler = fit_model.sample_post(pcmd_model, filters, N_scale, N_walkers, N_burn, N_sample,
+        sampler = fit_model.sample_post(pcmd_model, filters, N_scale, N_walkers, N_burn, N_sample, fixed_seed=fixed_seed,
                                         gal_class=gal.Galaxy_SSP, gpu=gpu, pool=pool)
     else:
-        sampler = fit_model.sample_post(pcmd_model, filters, N_scale, N_walkers, N_burn, N_sample,
+        sampler = fit_model.sample_post(pcmd_model, filters, N_scale, N_walkers, N_burn, N_sample, fixed_seed=fixed_seed,
                                         gal_class=gal.Galaxy_Model, gpu=gpu, pool=pool)
 
     print('---Emcee done, saving results')
