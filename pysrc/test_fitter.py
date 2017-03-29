@@ -128,11 +128,11 @@ if __name__ == "__main__":
     else:
         pcmd_dir = '/n/home01/bcook/pixcmd/'
         
-    chain_file = pcmd_dir + 'pysrc/results/test_chain%s.csv'%append
+    chain_file = pcmd_dir + 'pysrc/results/chain%s.csv'%append
     chain_df.to_csv(chain_file, index=False, float_format='%.4f')
     
     accept_df = pd.DataFrame()
     accept_df['acceptance'] = sampler.acceptance_fraction
-    accept_file = pcmd_dir + 'pysrc/results/test_accept%s.csv'%append
+    accept_file = pcmd_dir + 'pysrc/results/accept%s.csv'%append
     accept_df.to_csv(accept_file, index=False, float_format='%.4f')
     
