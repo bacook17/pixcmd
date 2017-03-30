@@ -13,6 +13,7 @@ import pandas as pd
 import os
 import sys, getopt
 import multiprocessing
+import emcee
 
 if __name__ == "__main__":
     
@@ -131,7 +132,6 @@ if __name__ == "__main__":
     else:
         sampler = fit_model.sample_post(pcmd_model, filters, N_scale, N_walkers, N_burn, N_sample, fixed_seed=fixed_seed,
                                         gal_class=gal.Galaxy_Model, gpu=gpu, pool=pool, p0=p0)
-)
 
     print('---Emcee done, saving results')
     chain_df = pd.DataFrame()
