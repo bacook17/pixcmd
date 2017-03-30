@@ -26,6 +26,7 @@ if __name__ == "__main__":
     force_gpu=False
     ssp=False
     fixed_seed=False
+    ball=False
     append = ''
 
     #Take in optional arguments from command line
@@ -34,7 +35,7 @@ if __name__ == "__main__":
                     +'[--N_sample=<N_sample>] [--no_gpu] [--require_gpu] [--require_cudac] [--SSP] [--append=<append>] [--N_threads=<N_threads>]'
     try:
         opts, args = getopt.getopt(sys.argv[1:], 'aohn:', ['N_scale=', 'N_walkers=', 'N_burn=', 'N_sample=', 'fixed_seed', 'no_gpu', 'require_gpu', 'require_cudac', 'SSP',
-                                                           'append=', 'N_threads='])
+                                                           'append=', 'N_threads=', 'sample_ball'])
     except getopt.GetoptError:
         print(usage_message)
         sys.exit(2)
@@ -77,6 +78,9 @@ if __name__ == "__main__":
         elif opt == '--append':
             print('Appending %s to filenames'%arg)
             append = arg
+        elif opt == '--sample_ball':
+            print('Setting initial state as ball')
+            ball = True
         else:
             print(opt, arg)
             sys.exit(2)
@@ -108,13 +112,24 @@ if __name__ == "__main__":
         print('Setting up multiple GPUs')
         pool = multiprocessing.Pool(processes=N_threads, initializer=gpu_utils.initialize_process)
 
+    if ball:
+        if ssp:
+            std = 0.1 * np.ones_like(SSP_params)
+            p0 = emcee.utils.sample_ball(SSP_params, std, size=N_walkers)
+        else:
+            std = 0.1 * np.ones_like(full_params)
+            p0 = emcee.utils.sample_ball(full_params, std, size=N_walkers)
+    else:
+        p0 = None
+
     print('---Running emcee')
     if ssp:
         sampler = fit_model.sample_post(pcmd_model, filters, N_scale, N_walkers, N_burn, N_sample, fixed_seed=fixed_seed,
-                                        gal_class=gal.Galaxy_SSP, gpu=gpu, pool=pool)
+                                        gal_class=gal.Galaxy_SSP, gpu=gpu, pool=pool, p0=p0)
     else:
         sampler = fit_model.sample_post(pcmd_model, filters, N_scale, N_walkers, N_burn, N_sample, fixed_seed=fixed_seed,
-                                        gal_class=gal.Galaxy_Model, gpu=gpu, pool=pool)
+                                        gal_class=gal.Galaxy_Model, gpu=gpu, pool=pool, p0=p0)
+)
 
     print('---Emcee done, saving results')
     chain_df = pd.DataFrame()
