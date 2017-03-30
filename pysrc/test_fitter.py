@@ -60,11 +60,13 @@ if __name__ == "__main__":
             print('Disabling GPU')
             gpu=False
         elif opt == '--require_gpu':
+            gpu=True
             print('Requiring GPU')
             if not gpu_utils._GPU_AVAIL:
                 print('GPU NOT AVAILABLE. QUITTING')
                 sys.exit(2)
         elif opt == '--require_cudac':
+            gpu=True
             print('Requiring CUDAC')
             if not gpu_utils._CUDAC_AVAIL:
                 print('CUDAC NOT AVAILABLE. QUITTING')
