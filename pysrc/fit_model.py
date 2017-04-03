@@ -46,7 +46,8 @@ def lnprior(gal_params):
             return -np.inf
     return 0.
 
-def lnprob(gal_params, driv, im_scale, gal_class=gal.Galaxy_Model, **kwargs):
+def lnprob(gal_params, driv, im_scale, gal_class=gal.Galaxy_Model, 
+           fixed_seed=False, **kwargs):
     if (gal_class is gal.Galaxy_SSP):
         pri = lnprior_ssp(gal_params)
     else:
@@ -54,13 +55,13 @@ def lnprob(gal_params, driv, im_scale, gal_class=gal.Galaxy_Model, **kwargs):
     if np.isinf(pri):
         return -np.inf
     gal_model = gal_class(gal_params)
-    _, mags, _, _ = driv.simulate(gal_model, im_scale, **kwargs)
+    _, mags, _, _ = driv.simulate(gal_model, im_scale, fixed_seed=fixed_seed, **kwargs)
     pcmd = utils.make_pcmd(mags)
     like = driv.loglike(pcmd, **kwargs)
     return pri + like
 
 def sample_post(pcmd, filters, im_scale, n_walkers, n_burn, n_sample, 
-                p0=None, gal_class=gal.Galaxy_Model, gpu=True, bins=None, threads=1,
+                p0=None, gal_class=gal.Galaxy_Model, gpu=True, bins=None, threads=1, fixed_seed=False,
                 **kwargs):
 
     print('-initializing models')
@@ -79,7 +80,7 @@ def sample_post(pcmd, filters, im_scale, n_walkers, n_burn, n_sample,
 
     print('-Setting up emcee sampler')
     
-    sampler = emcee.EnsembleSampler(n_walkers, n_dim, lnprob, args=[driv, im_scale], kwargs={'gal_class':gal_class},
+    sampler = emcee.EnsembleSampler(n_walkers, n_dim, lnprob, args=[driv, im_scale], kwargs={'gal_class':gal_class, 'fixed_seed':fixed_seed},
                                     threads=threads, **kwargs)
 
     if p0 is None:

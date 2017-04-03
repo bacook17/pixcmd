@@ -40,8 +40,8 @@ _code = """
       int id_imx = blockIdx.x*blockDim.x + threadIdx.x;
       int id_imy = blockIdx.y*blockDim.y + threadIdx.y;
       int id_pix = (id_imx) + N*id_imy;
-      int id_within_block = threadIdx.y + (blockDim.x * threadIdx.x);
-      int block_id = blockIdx.x*gridDim.x + blockIdx.y;
+      int id_within_block = threadIdx.x + (blockDim.x * threadIdx.y);
+      int block_id = blockIdx.y*gridDim.x + blockIdx.x;
 
       curandState local_state = global_state[id_within_block];
       float results[10] = {0.0};
@@ -67,7 +67,7 @@ _code = """
       }
 
       /* Save back state */
-      global_state[id_within_block] = local_state;
+      /*global_state[id_within_block] = local_state;*/
    }
    }
 """
@@ -82,7 +82,7 @@ if _GPU_AVAIL:
     else:
         _CUDAC_AVAIL = True
 
-def draw_image(expected_nums, fluxes, N_scale, gpu=_GPU_AVAIL, cudac=_CUDAC_AVAIL, **kwargs):
+def draw_image(expected_nums, fluxes, N_scale, gpu=_GPU_AVAIL, cudac=_CUDAC_AVAIL, fixed_seed=False, **kwargs):
     if gpu:
         if cudac:
             func = _draw_image_cudac
@@ -90,9 +90,18 @@ def draw_image(expected_nums, fluxes, N_scale, gpu=_GPU_AVAIL, cudac=_CUDAC_AVAI
             func = _draw_image_pycuda
     else:
         func = _draw_image_numpy
-    return func(expected_nums, fluxes, N_scale, **kwargs)
+    return func(expected_nums, fluxes, N_scale, fixed_seed=fixed_seed, **kwargs)
+
+def seed_getter_fixed(N, value=None):
+    assert(_GPU_AVAIL)
+    result = pycuda.gpuarray.empty([N], np.int32)
+    if value is None:
+        #This will draw the same number every time
+        np.random.seed(0)
+        value = np.random.randint(0, 2**31 - 1) 
+    return result.fill(value)
         
-def _draw_image_cudac(expected_nums, fluxes, N_scale, tolerance=1e-5, d_block=32):
+def _draw_image_cudac(expected_nums, fluxes, N_scale, fixed_seed=False, tolerance=0, d_block=32, **kwargs):
     assert(_CUDAC_AVAIL)
     assert(_GPU_AVAIL)
 
@@ -118,7 +127,12 @@ def _draw_image_cudac(expected_nums, fluxes, N_scale, tolerance=1e-5, d_block=32
     N_bins = np.int32(len(expected_nums))
     N_bands = np.int32(fluxes.shape[0])
     
-    generator = pycuda.curandom.XORWOWRandomNumberGenerator()
+    if fixed_seed:
+        seed_getter = seed_getter_fixed
+    else:
+        seed_getter = pycuda.curandom.seed_getter_uniform
+
+    generator = pycuda.curandom.XORWOWRandomNumberGenerator(seed_getter=seed_getter)
     result = np.zeros((N_bands, N_scale, N_scale), dtype=np.float32)
     
     block_dim = (d_block, d_block,1)
@@ -130,7 +144,7 @@ def _draw_image_cudac(expected_nums, fluxes, N_scale, tolerance=1e-5, d_block=32
     #result = np.array([result[i] + fixed_fluxes[i] for i in range(N_bands)]).astype(float)
     return result
 
-def _draw_image_pycuda(expected_nums, fluxes, N_scale, tolerance=-1., **kwargs):
+def _draw_image_pycuda(expected_nums, fluxes, N_scale, fixed_seed=False, tolerance=-1., **kwargs):
     assert(_GPU_AVAIL)
 
     N_bins = len(expected_nums)
@@ -141,7 +155,12 @@ def _draw_image_pycuda(expected_nums, fluxes, N_scale, tolerance=-1., **kwargs):
     else:
         upper_lim = tolerance**-2.
     
-    generator = pycuda.curandom.XORWOWRandomNumberGenerator()
+    if fixed_seed:
+        seed_getter = seed_getter_fixed
+    else:
+        seed_getter = pycuda.curandom.seed_getter_uniform
+
+    generator = pycuda.curandom.XORWOWRandomNumberGenerator(seed_getter=seed_getter)
     result = np.zeros((N_bands, N_scale*N_scale), dtype=float)
 
     #Draw stars and cumulate flux for each mass bin
