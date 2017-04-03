@@ -67,7 +67,7 @@ _code = """
       }
 
       /* Save back state */
-      global_state[id_within_block] = local_state;
+      /*global_state[id_within_block] = local_state;*/
    }
    }
 """
@@ -101,7 +101,7 @@ def seed_getter_fixed(N, value=None):
         value = np.random.randint(0, 2**31 - 1) 
     return result.fill(value)
         
-def _draw_image_cudac(expected_nums, fluxes, N_scale, fixed_seed=False, tolerance=0, d_block=32):
+def _draw_image_cudac(expected_nums, fluxes, N_scale, fixed_seed=False, tolerance=0, d_block=32, **kwargs):
     assert(_CUDAC_AVAIL)
     assert(_GPU_AVAIL)
 
