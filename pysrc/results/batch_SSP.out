@@ -1,16 +1,40 @@
 GPU acceleration enabled
 Loading command line arguments
 Setting N_scale to 1024
-Setting N_walkers to 32
-Setting N_burn to 0
-Setting N_sample to 100
+Setting N_walkers to 128
+Setting N_burn to 100
+Setting N_sample to 400
+Using fixed seed
 Using SSP
+Setting initial state as ball
 Requiring GPU
 Requiring CUDAC
-Appending _gpuSSP to filenames
+Appending _SSP to filenames
 ---Setting up model galaxy
 ---Simulating model galaxy
 ---Running emcee
 -initializing models
 -Setting up emcee sampler
+-emcee burn-in
+-emcee sampling
+---Emcee done, saving results
+GPU acceleration enabled
+Loading command line arguments
+Setting N_scale to 128
+Setting N_walkers to 128
+Setting N_burn to 100
+Setting N_sample to 400
+Using fixed seed
+Using SSP
+Setting initial state as ball
+Requiring GPU
+Requiring CUDAC
+Appending _SSP_small to filenames
+---Setting up model galaxy
+---Simulating model galaxy
+---Running emcee
+-initializing models
+-Setting up emcee sampler
+-emcee burn-in
+-emcee sampling
 ---Emcee done, saving results

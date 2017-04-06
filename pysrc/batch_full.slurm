@@ -4,11 +4,13 @@
 #SBATCH -N 1 #ensure that all cores are on one machine
 #SBATCH --gres=gpu:1 #Number of GPUs requested
 #SBATCH --constraint=cuda-7.5 #require CUDA
-#SBATCH -t 2-00:00 #runtime in D-HH:MM
+#SBATCH -t 4-00:00 #runtime in D-HH:MM
 #SBATCH --mem 4000 #memory pool for cores
-#SBATCH -o results/batch_full_manywalker.out
-#SBATCH -e results/batch_full_manywalker.err
+#SBATCH -o results/batch_full.out
+#SBATCH -e results/batch_full.err
 #SBATCH --mail-type=BEGIN,END,FAIL #alert when done
 #SBATCH --mail-user=bcook@cfa.harvard.edu #Email to send to
 
-python test_fitter.py --N_scale=1024 --N_walkers=128 --N_burn=0 --N_sample=1000 --require_gpu --require_cudac --append=_gpu_manywalker
+python test_fitter.py --N_scale=1024 --N_walkers=128 --N_burn=100 --N_sample=400 --sample_ball --fixed_seed --require_gpu --require_cudac --append=_full
+
+python test_fitter.py --N_scale=128 --N_walkers=128 --N_burn=100 --N_sample=400 --sample_ball --fixed_seed --require_gpu --require_cudac --append=_full_small
