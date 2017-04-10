@@ -44,6 +44,7 @@ def wrap_image(image, w_border):
     Nx, Ny = image.shape
     if (w_border >= Nx) or (w_border >= Ny):
         message = "wrap_image is not implemented for cases where border is wider than existing image"
+        print(w_border)
         raise NotImplementedError(message)
     w_roll = w_border / 2
     im_temp = np.tile(image, [2,2])

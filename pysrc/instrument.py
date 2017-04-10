@@ -1,11 +1,11 @@
-            # instrument.py
+# instrument.py
 # Ben Cook (bcook@cfa.harvard.edu)
 
 """Define classes for Filters and other similar objects"""
 
 import numpy as np
 import utils
-from scipy.signal import fftconvolve
+from scipy.signal import fftconvolve, convolve2d, gaussian
 
 class Filter:
     """Models observations in a single band
@@ -108,7 +108,7 @@ class Filter:
         exposure = 3620.
         zero_point = 26.0593
         red_per_ebv = 3.248
-        psf_file = "../psf/f475w_%d%d.psf"
+        psf_file = "/Users/bcook/pCMDs/pixcmd/psf/f475w_%d%d.psf"
         psf = np.array([[10.**np.loadtxt(psf_file%(i,j)) for i in range(0,4)] for j in range(0,4)]) #4x4x73x73
         name= "F475W"
         tex_name = r"g$_{475}$"
@@ -143,7 +143,7 @@ class Filter:
         exposure = 3235.
         zero_point = 25.9433
         red_per_ebv = 1.536
-        psf_file = "../psf/f814w_%d%d.psf"
+        psf_file = "/Users/bcook/pCMDs/pixcmd/psf/f814w_%d%d.psf"
         psf = np.array([[10.**np.loadtxt(psf_file%(i,j)) for i in range(0,4)] for j in range(0,4)]) #4x4x73x73
         name= "F814W"
         tex_name = r"I$_{814}$"
@@ -222,6 +222,13 @@ class Filter:
                     im_convolved = fftconvolve(im_new, self._psf, mode='valid')
                 else:
                     im_convolved = fftconvolve(im_new, self._psf[0,0], mode='valid')
+        elif (convolve_func=="gaussian"):
+            if "width" in kwargs.keys():
+                width = kwargs['width']
+            else:
+                width = 3.
+            kernel = np.outer(gaussian(30, width), gaussian(30, width))
+            im_convolved = fftconvolve(image, kernel, mode='valid')
         else:
             im_convolved = convolve_func(image, self._psf, **kwargs)
 

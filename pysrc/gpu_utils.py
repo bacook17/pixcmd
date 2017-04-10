@@ -5,7 +5,7 @@ _GPU_AVAIL = True
 try:
     import pycuda
     import pycuda.driver as cuda
-    import pycuda.autoinit
+    import pycuda.autoinit as autoinit
     from pycuda.compiler import SourceModule
     import pycuda.curandom
 except ImportError as e:
@@ -21,6 +21,7 @@ except ImportError as e:
         print(mess)
     _GPU_AVAIL = False
 else:
+    print('Number of GPUs available: %d'%(cuda.device.count()))
     if (cuda.Device.count() > 0):
         _GPU_AVAIL = True
 
@@ -204,12 +205,10 @@ def set_gpu_device(n):
     This function makes pycuda use GPU number n in the system.
     """
     assert(n < cuda.Device.count())
-    cuda.init()
-    try:
-        pycuda.context.detach()
-    except:
-        pass
-    pycuda.context = cuda.Device(n).make_context()
+    #cuda.init()
+    global _gpu_context
+    autoinit.context.pop()
+    autoinit.context = _gpu_context = cuda.Device(n).make_context()
 
 def initialize_process():
     cpu_id = multiprocessing.current_process()._identity[0]

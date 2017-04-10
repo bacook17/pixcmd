@@ -134,7 +134,6 @@ class Isochrone_Model:
            age --- 
            z ---
         Output:
-           mass -- array of mass points (len N)
            IMF -- array of IMF points (len N)
            mags -- 2D array of magnitudes (DxN, where D is number of filters the model was initialized with)
         """
