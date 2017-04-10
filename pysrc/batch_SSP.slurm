@@ -11,6 +11,4 @@
 #SBATCH --mail-type=BEGIN,END,FAIL #alert when done
 #SBATCH --mail-user=bcook@cfa.harvard.edu #Email to send to
 
-python test_fitter.py --N_scale=1024 --N_walkers=128 --N_burn=100 --N_sample=400 --fixed_seed --SSP --sample_ball --require_gpu --require_cudac --append=_SSP
-
-python test_fitter.py --N_scale=128 --N_walkers=128 --N_burn=100 --N_sample=400 --fixed_seed --SSP --sample_ball --require_gpu --require_cudac --append=_SSP_small
+python test_fitter.py --N_scale=1024 --N_walkers=128 --N_burn=0 --N_sample=1000 --fixed_seed --SSP --sample_ball --require_gpu --require_cudac --append=_SSP
