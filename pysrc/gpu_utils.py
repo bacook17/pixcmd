@@ -21,7 +21,7 @@ except ImportError as e:
         print(mess)
     _GPU_AVAIL = False
 else:
-    print('Number of GPUs available: %d'%(cuda.device.count()))
+    print('Number of GPUs available: %d'%(cuda.Device.count()))
     if (cuda.Device.count() > 0):
         _GPU_AVAIL = True
 
