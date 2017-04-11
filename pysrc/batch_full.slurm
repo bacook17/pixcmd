@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/Bin/bash
 #SBATCH -p gpu
 #SBATCH -n 1 # Number of cores requested
 #SBATCH -N 1 #ensure that all cores are on one machine
@@ -6,8 +6,8 @@
 #SBATCH --constraint=cuda-7.5 #require CUDA
 #SBATCH -t 4-00:00 #runtime in D-HH:MM
 #SBATCH --mem 4000 #memory pool for cores
-#SBATCH -o results/batch_full.out
-#SBATCH -e results/batch_full.err
+#SBATCH -o logs/batch_full.out
+#SBATCH -e logs/batch_full.err
 #SBATCH --mail-type=BEGIN,END,FAIL #alert when done
 #SBATCH --mail-user=bcook@cfa.harvard.edu #Email to send to
 

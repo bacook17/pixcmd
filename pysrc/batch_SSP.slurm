@@ -6,8 +6,8 @@
 #SBATCH --constraint=cuda-7.5 #require CUDA
 #SBATCH -t 4-00:00 #runtime in D-HH:MM
 #SBATCH --mem 4000 #memory pool for cores
-#SBATCH -o results/batch_SSP.out
-#SBATCH -e results/batch_SSP.err
+#SBATCH -o logs/batch_SSP.out
+#SBATCH -e logs/batch_SSP.err
 #SBATCH --mail-type=BEGIN,END,FAIL #alert when done
 #SBATCH --mail-user=bcook@cfa.harvard.edu #Email to send to
 

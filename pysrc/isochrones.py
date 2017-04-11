@@ -5,7 +5,6 @@
 
 import numpy as np
 import pandas as pd
-import matplotlib.pyplot as plt
 
 # The pre-computed MIST model metallicities
 _z_arr_default = np.array([-2.15, -1.13, -0.73, -0.52, -0.22, 0., 0.3, 0.5])
@@ -175,6 +174,7 @@ class Isochrone_Model:
         return weights, mags
 
     def plot_isochrone(self, galaxy, ax=None, **kwargs):
+        import matplotlib.pyplot as plt
         if ax is None:
             fig, ax = plt.subplots()
         for age in galaxy.ages:

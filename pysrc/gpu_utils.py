@@ -107,6 +107,8 @@ def _draw_image_cudac(expected_nums, fluxes, N_scale, fixed_seed=False, toleranc
     assert(_GPU_AVAIL)
 
     assert(len(expected_nums) == fluxes.shape[1])
+    print(cuda.Context.get_device().name())
+
     """
     upper_lim = tolerance**-2.
     use_poisson = (expected_nums <= upper_lim)
@@ -204,12 +206,13 @@ def set_gpu_device(n):
     """
     This function makes pycuda use GPU number n in the system.
     """
-    assert(n < cuda.Device.count())
-    #cuda.init()
+    cuda.init()
+    #assert(n < cuda.Device.count())
     global _gpu_context
     autoinit.context.pop()
     autoinit.context = _gpu_context = cuda.Device(n).make_context()
 
 def initialize_process():
     cpu_id = multiprocessing.current_process()._identity[0]
+    print('for process id: %d'%cpu_id)
     set_gpu_device(cpu_id - 1)
