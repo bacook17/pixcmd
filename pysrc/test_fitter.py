@@ -25,6 +25,7 @@ if __name__ == "__main__":
     pool = None
     gpu=True
     force_gpu=False
+    offset=False
     ssp=False
     fixed_seed=False
     ball=False
@@ -36,7 +37,7 @@ if __name__ == "__main__":
                     +'[--N_sample=<N_sample>] [--no_gpu] [--require_gpu] [--require_cudac] [--SSP] [--append=<append>] [--N_threads=<N_threads>]'
     try:
         opts, args = getopt.getopt(sys.argv[1:], 'aohn:', ['N_scale=', 'N_walkers=', 'N_burn=', 'N_sample=', 'fixed_seed', 'no_gpu', 'require_gpu', 'require_cudac', 'SSP',
-                                                           'append=', 'N_threads=', 'sample_ball'])
+                                                           'append=', 'N_threads=', 'sample_ball', 'offset_ball'])
     except getopt.GetoptError:
         print(usage_message)
         sys.exit(2)
@@ -84,6 +85,10 @@ if __name__ == "__main__":
         elif opt == '--sample_ball':
             print('Setting initial state as ball')
             ball = True
+        elif opt == '--offset_ball':
+            print('Initial chain ball will be slightly offset')
+            ball = True
+            offset = True
         else:
             print(opt, arg)
             sys.exit(2)
@@ -118,9 +123,13 @@ if __name__ == "__main__":
     if ball:
         if ssp:
             std = 0.1 * np.ones_like(SSP_params)
+            if offset:
+                SSP_params += 0.25 * np.random.random(size=len(SSP_params))
             p0 = emcee.utils.sample_ball(SSP_params, std, size=N_walkers)
         else:
             std = 0.1 * np.ones_like(full_params)
+            if offset:
+                full_params += 0.25 * np.random.random(size=len(full_params))
             p0 = emcee.utils.sample_ball(full_params, std, size=N_walkers)
     else:
         p0 = None
