@@ -29,23 +29,36 @@ class Driver:
         #No data has been initialized
         self._data_init = False
         
-    def initialize_data(self, pcmd, bins, charlie_err=False):
+    def initialize_data(self, pcmd, bins, charlie_err=False, **kwargs):
         self.hess_bins = bins
         self.n_data = pcmd.shape[1]
         
+        mag1, mag2 = pcmd
+        mag1_total = np.power(10., np.sum(np.log10(mag1)))
+        mag2_total = np.power(10., np.sum(np.log10(mag2)))
+
+        self.mag_total_data = mag1_total 
+        self.color_total_data = mag1_total - mag2_total
+
         counts, hess, err = utils.make_hess(pcmd, bins, charlie_err=charlie_err)
         self.counts_data = counts
         self.hess_data = hess
         self.err_data = err
         self._data_init = True
 
-    def loglike(self, pcmd, use_gaussian=True, charlie_err=False):
+    def loglike(self, pcmd, use_gaussian=True, charlie_err=False, add_total=True, **kwargs):
         try:
             assert(self._data_init)
         except AssertionError:
             print('Cannot evaluate, as data has not been initialized (use driver.initialize_data)')
             return
 
+        mag1, mag2 = pcmd
+        mag1_total = np.power(10., np.sum(np.log10(mag1)))
+        color_total = mag1_total - np.power(10., np.sum(np.log10(mag2)))
+        sig_mag = 0.01
+        sig_color = 0.05
+        
         counts_model, hess_model, err_model = utils.make_hess(pcmd, self.hess_bins, charlie_err=charlie_err)
         n_model = pcmd.shape[1]
 
@@ -61,6 +74,10 @@ class Driver:
             counts_model *= float(self.n_data) / n_model #normalize to same number of pixels as data
             log_like = np.sum(poisson.logpmf(self.counts_data, counts_model))
 
+        if add_total:
+            log_like += (mag1_total - self.mag_total_data)**2 / sig_mag**2
+            log_like += (color_total - self.color_total_data)**2 / sig_color**2
+            
         return log_like
 
     def simulate(self, gal_model, im_scale, psf=True, fixed_seed=False, **kwargs):
