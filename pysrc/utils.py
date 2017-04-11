@@ -17,12 +17,16 @@ def make_pcmd(data):
     
     return np.array([colors, mags])
 
-def make_hess(pcmd, bins, charlie_err=False, err_min=2.):
+def make_hess(pcmd, bins, charlie_err=False, err_min=2., add_boundary=True):
     n_dim = pcmd.shape[0]
+    n = pcmd.shape[1] #total number of pixels
     if (n_dim != bins.shape[0]):
         raise IndexError("The first dimensions of pcmd and bins must match")
     counts = np.histogramdd(pcmd.T, bins=bins)[0].astype(float)
-    n = pcmd.shape[1] #total number of pixels
+    #add "everything else" bin
+    if add_boundary:
+        counts = counts.flatten()
+        counts.append([n - np.sum(counts)])
     err = np.sqrt(counts)
     
     if charlie_err:
