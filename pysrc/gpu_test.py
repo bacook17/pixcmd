@@ -4,13 +4,13 @@ Sample code showing running multiple processes including multiple GPUs
 
 import numpy as np
 import multiprocessing, sys
-#import pycuda.autoinit
 import pycuda.driver as drv
 import pycuda.curandom as curand
 from pycuda.compiler import SourceModule
+
 import os
 import time
-#from pycuda.tools import make_default_context
+
 drv.init()
 
 def set_gpu_device(q):
@@ -23,6 +23,7 @@ def set_gpu_device(q):
 
     import pycuda.autoinit
 
+    #Alternative version...also seems to work
     """
     drv.init()
     global device
@@ -31,24 +32,7 @@ def set_gpu_device(q):
     context = device.make_context()
     context.push()
     """
-    #print(device)
-    #print('Device PCI_BUS_ID: %s'%(str(device.pci_bus_id())))
-    #print('Setting context: %d'%n)
-    #print(context)
-    #print('all done: %d'%n)
-    """
-    try:
-    print('autoinitializing: %d'%n)
-    import pycuda.autoinit
-    global _context
-    _context = pycuda.autoinit.context
-    """
     
-# Note that func actually takes only one argument, that argument is a tuple
-# of arguments (which is why there are double parentheses). The reason is that
-# pool.map only works for functions of one argument. Note also that the arguments
-# have to be picklable and not all Brian objects are, however all np objects
-# should be.
 def func(x):
     n = multiprocessing.current_process()._identity[0]
     print('process %d, %d'%(n, x))
