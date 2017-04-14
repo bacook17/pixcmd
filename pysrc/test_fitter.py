@@ -118,7 +118,7 @@ if __name__ == "__main__":
 
     if N_threads > 1:
         print('Setting up multiple GPUs')
-        pool = multiprocessing.Pool(processes=N_threads, initializer=gpu_utils.initialize_process)
+        pool = multiprocessing.Pool(processes=N_threads, initializer=gpu_utils.initialize_gpu)
 
     if ball:
         if ssp:
