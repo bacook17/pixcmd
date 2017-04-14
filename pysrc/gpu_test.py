@@ -8,6 +8,7 @@ import pycuda.driver as drv
 import pycuda.curandom as curand
 import pycuda.gpuarray as gpuarray
 from pycuda.compiler import SourceModule
+
 import os
 import time
 
@@ -100,24 +101,15 @@ def set_gpu_device():
 
     import pycuda.autoinit
 
-    #drv.init()
-    #global device
-    #device = drv.Device(n)
-    #global context
-    #context = device.make_context()
-    #context.push()
-    #print(device)
-    bid_current = pycuda.autoinit.device.pci_bus_id()
-    bid_n = drv.Device(n).pci_bus_id()
-    print('active PCI_BUS_ID matches nth: ' + str(str(bid_current) == str(bid_n)))
-    global _mod
-    _mod = SourceModule(_code, keep=False, no_extern_c=True)
-    print('through here')
-    global _func
-    _func = _mod.get_function('possion_sum')
-
-    #print('Setting context: %d'%n)
-    #print(context)
+    #Alternative version...also seems to work
+    """
+    drv.init()
+    global device
+    device = drv.Device(n)
+    global context
+    context = device.make_context()
+    context.push()
+    """
     
 def func(x):
     n = multiprocessing.current_process()._identity[0]-1
