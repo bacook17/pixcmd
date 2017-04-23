@@ -109,7 +109,6 @@ def _draw_image_cudac(expected_nums, fluxes, N_scale, fixed_seed=False, toleranc
     assert(_GPU_AVAIL)
 
     assert(len(expected_nums) == fluxes.shape[1])
-    print(cuda.Context.get_device().name())
 
     """
     upper_lim = tolerance**-2.
