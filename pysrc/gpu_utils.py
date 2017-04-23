@@ -5,7 +5,7 @@ _GPU_AVAIL = True
 try:
     import pycuda
     import pycuda.driver as cuda
-    #import pycuda.autoinit as autoinit
+    import pycuda.autoinit as autoinit
     from pycuda.compiler import SourceModule
     import pycuda.curandom
     cuda.init()

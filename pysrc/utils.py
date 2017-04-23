@@ -26,7 +26,7 @@ def make_hess(pcmd, bins, charlie_err=False, err_min=2., add_boundary=True):
     #add "everything else" bin
     if add_boundary:
         counts = counts.flatten()
-        counts.append([n - np.sum(counts)])
+        counts = np.append(counts, n - np.sum(counts))
     err = np.sqrt(counts)
     
     if charlie_err:

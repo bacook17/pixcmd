@@ -13,14 +13,15 @@ import pandas as pd
 import sys
 import multiprocessing
 import emcee
-import importlib
+import imp
 
 if __name__ == "__main__":
 
     #Setup from an external file
-    setup_mod = sys.argv[1].strip('.py')
-    print('Loading Setup File: %s.py'%setup_mod)
-    setup = importlib.import_module(setup_mod)
+    setup_file = sys.argv[1]
+    setup_mod = sys.argv[1].strip('.py').rpartition('/')[-1]
+    print('Loading Setup File: %s'%setup_file)
+    setup = imp.load_source(setup_mod, setup_file)
 
     N_scale = setup.N_scale
     N_walkers = setup.N_walkers
@@ -36,9 +37,9 @@ if __name__ == "__main__":
     iso_model = setup.iso_model
 
     data_is_mock = setup.data_is_mock
-    data_pcmd = setup.pcmd_data
-    if data_mocked:
-        galaxy_mock = setup.mock_galaxy
+    data_pcmd = setup.data_pcmd
+    if data_is_mock:
+        galaxy_mock = setup.galaxy_mock
         N_mock = setup.N_mock
 
     model_class = setup.model_class
@@ -56,9 +57,9 @@ if __name__ == "__main__":
     #Save results of the chain
     chain_df = pd.DataFrame()
     for d in range(N_params):
-        chain_df[params[d]] = sampler.flatchain[:,d]
+        chain_df[param_names[d]] = sampler.flatchain[:,d]
     chain_df['lnprob'] = sampler.flatlnprobability
     chain_df['walker'] = np.repeat(np.arange(N_walkers), N_sample)
     chain_df['accept_frac'] = np.repeat(sampler.acceptance_fraction, N_sample)
 
-    chain_df.to_csv(chain_file, index=False, float_format='%.4f', compression='gzip', 
+    chain_df.to_csv(chain_file, index=False, float_format='%.4f', compression='gzip')

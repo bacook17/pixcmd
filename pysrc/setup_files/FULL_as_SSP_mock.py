@@ -1,8 +1,9 @@
-# setup_files/SSP_mock.py
+# setup_files/FULL_as_SSP_mock.py
 # Ben Cook (bcook@cfa.harvard.edu)
 
 ###############################################
-# SETUP FILE for SSP Mock Test
+# SETUP FILE for FULL_as_SSP Mock Test
+# The mock data is from FULL, multi-SFH model (with constant SFH), but we model it as an SSP
 
 import instrument as ins
 import isochrones as iso
@@ -104,7 +105,6 @@ assert(len(params_start) == model_class._num_params)
 std = 0.1 * np.ones_like(params_start)
 p0 = sample_ball(params_start, std, size=N_walkers)
 
-
 ###############################################
 ## DATA SETTINGS
 
@@ -121,16 +121,16 @@ N_mock = 128
 ## model of the mock galaxy
 
 ## SSP model
-model_mock = gal.Galaxy_SSP
-params_mock = np.array([-0.2, -2., 2., 9.6])
+#model_mock = gal.Galaxy_SSP
+#params_mock = np.array([-0.2, -2., 2., 9.6])
 
 ## FULL model with Npix = 1e2
-#model_mock = gal.Galaxy_Model
-#Npix = 1e2
-#age_edges = np.array([6., 7., 8., 8.5, 9.0, 9.5, 10., 10.2])
-#bin_widths = 10.**age_edges[1:] - 10.**age_edges[:-1]
-#logsfhs = np.log10(Npix * bin_widths / np.sum(bin_widths)) 
-#params_mock = np.append(np.array([-0.2, -2]), logsfhs)
+model_mock = gal.Galaxy_Model
+Npix = 1e2
+age_edges = np.array([6., 7., 8., 8.5, 9.0, 9.5, 10., 10.2])
+bin_widths = 10.**age_edges[1:] - 10.**age_edges[:-1]
+logsfhs = np.log10(Npix * bin_widths / np.sum(bin_widths)) 
+params_mock = np.append(np.array([-0.2, -2]), logsfhs)
 
 galaxy_mock = model_mock(params_mock)
 
@@ -148,6 +148,6 @@ data_pcmd = utils.make_pcmd(mags)
 ## Directory to save results to
 results_dir = '/n/home01/bcook/pixcmd/pysrc/results/'
 ## NAME OF THIS PARTICULAR RUN
-name = "SSP_mock"
+name = "FULL_as_SSP_mock"
 ## the file to save the data
 chain_file = results_dir + name + '.csv'

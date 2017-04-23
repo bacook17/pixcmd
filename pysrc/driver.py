@@ -46,7 +46,7 @@ class Driver:
         self.err_data = err
         self._data_init = True
 
-    def loglike(self, pcmd, use_gaussian=True, charlie_err=False, add_total=True, **kwargs):
+    def loglike(self, pcmd, use_gaussian=True, charlie_err=False, add_total=False, **kwargs):
         try:
             assert(self._data_init)
         except AssertionError:
@@ -75,8 +75,8 @@ class Driver:
             log_like = np.sum(poisson.logpmf(self.counts_data, counts_model))
 
         if add_total:
-            log_like += (mag1_total - self.mag_total_data)**2 / sig_mag**2
-            log_like += (color_total - self.color_total_data)**2 / sig_color**2
+            log_like -= (mag1_total - self.mag_total_data)**2. / sig_mag**2.
+            log_like -= (color_total - self.color_total_data)**2. / sig_color**2.
             
         return log_like
 
