@@ -96,8 +96,8 @@ model_class = gal.Galaxy_Model # 7-bin non-parametric SFH (FULL)
 Npix = 1e2
 tau = 1e9
 age_edges = 10.**np.array([6., 7., 8., 8.5, 9.0, 9.5, 10., 10.2])
-exp_factors = np.exp(- age_edges / tau)
-logsfhs = np.log10(Npix * (exp_factors[:-1] - exp_factors[1:])) 
+exp_factors = np.exp((age_edges - 10.**10.2) / tau)
+logsfhs = np.log10(Npix * (exp_factors[1:] - exp_factors[:-1])) 
 params_start = np.append(np.array([-0.2, -2]), logsfhs)
 
 assert(len(params_start) == model_class._num_params)
@@ -130,8 +130,8 @@ model_mock = gal.Galaxy_Model
 Npix = 1e2
 tau = 1e9
 age_edges = 10.**np.array([6., 7., 8., 8.5, 9.0, 9.5, 10., 10.2])
+exp_factors = np.exp((age_edges - 10.**10.2) / tau)
 exp_factors = np.exp(- age_edges / tau)
-logsfhs = np.log10(Npix * (exp_factors[:-1] - exp_factors[1:])) 
 params_mock = np.append(np.array([-0.2, -2]), logsfhs)
 
 galaxy_mock = model_mock(params_mock)

@@ -95,6 +95,8 @@ model_class = gal.Galaxy_Model # 7-bin non-parametric SFH (FULL)
 Npix = 1e2
 age_edges = np.array([6., 7., 8., 8.5, 9.0, 9.5, 10., 10.2])
 bin_widths = 10.**age_edges[1:] - 10.**age_edges[:-1]
+## add 5x burst in 2nd bin
+bin_widths[1] *= 5
 logsfhs = np.log10(Npix * bin_widths / np.sum(bin_widths)) 
 params_start = np.append(np.array([-0.2, -2]), logsfhs)
 

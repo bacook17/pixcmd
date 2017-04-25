@@ -92,11 +92,8 @@ model_class = gal.Galaxy_Model # 7-bin non-parametric SFH (FULL)
 #params_start = np.array([-0.2, -2., 2., 9.6])
 
 ## for FULL mock model
-## constant SFH, summing to Npix = 1e2
-Npix = 1e2
-age_edges = np.array([6., 7., 8., 8.5, 9.0, 9.5, 10., 10.2])
-bin_widths = 10.**age_edges[1:] - 10.**age_edges[:-1]
-logsfhs = np.log10(Npix * bin_widths / np.sum(bin_widths)) 
+## single burst in 2nd to last bin, summing to Npix = 1e2
+logsfhs = np.array([-5., -5., -5., -5., -5., 2., -5.])
 params_start = np.append(np.array([-0.2, -2]), logsfhs)
 
 assert(len(params_start) == model_class._num_params)
