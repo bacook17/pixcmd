@@ -4,13 +4,15 @@
 ###############################################
 # SETUP FILE for SSP Mock Test
 
-import instrument as ins
-import isochrones as iso
-import galaxy as gal
-import driver
-import utils
-import gpu_utils
+import pcmdpy.instrument as ins
+import pcmdpy.isochrones as iso
+import pcmdpy.galaxy as gal
+import pcmdpy.driver as driver
+import pcmdpy.utils as utils
+import pcmdpy.gpu_utils as gpu_utils
+
 from emcee.utils import sample_ball
+import multiprocessing
 
 import numpy as np
 import sys
