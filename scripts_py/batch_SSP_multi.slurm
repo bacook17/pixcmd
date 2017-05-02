@@ -1,10 +1,10 @@
 #!/bin/bash
 #SBATCH -p gpu
-#SBATCH -n 4 # Number of cores requested
+#SBATCH -n 6 # Number of cores requested
 #SBATCH -N 1 #ensure that all cores are on one machine
-#SBATCH --gres=gpu:4 #Number of GPUs requested
+#SBATCH --gres=gpu:6 #Number of GPUs requested
 #SBATCH --constraint=cuda-7.5 #require CUDA
-#SBATCH -t 0-01:00 #runtime in D-HH:MM
+#SBATCH -t 0-00:05 #runtime in D-HH:MM
 #SBATCH --mem-per-cpu 1000 #memory pool for cores
 #SBATCH -o logs/batch_SSP_multi_mock.out
 #SBATCH -e logs/batch_SSP_multi_mock.err

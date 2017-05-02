@@ -1,3 +1,15 @@
 Vendor:  Continuum Analytics, Inc.
 Package: mkl
 Message: trial mode expires in 30 days
+Traceback (most recent call last):
+  File "pcmd_fitter.py", line 59, in <module>
+    chain_df.to_csv(chain_file, index=False, float_format='%.4f', compression='gzip')
+  File "/n/home01/bcook/.conda/envs/my_home/lib/python2.7/site-packages/pandas/core/frame.py", line 1344, in to_csv
+    formatter.save()
+  File "/n/home01/bcook/.conda/envs/my_home/lib/python2.7/site-packages/pandas/formats/format.py", line 1526, in save
+    compression=self.compression)
+  File "/n/home01/bcook/.conda/envs/my_home/lib/python2.7/site-packages/pandas/io/common.py", line 390, in _get_handle
+    f = gzip.GzipFile(path, mode)
+  File "/n/home01/bcook/.conda/envs/my_home/lib/python2.7/gzip.py", line 94, in __init__
+    fileobj = self.myfileobj = __builtin__.open(filename, mode or 'rb')
+IOError: [Errno 2] No such file or directory: '/n/home01/bcook/pixcmd/pysrc/results/SSP_multi.csv'

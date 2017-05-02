@@ -29,7 +29,6 @@ if use_gpu:
     if not gpu_utils._GPU_AVAIL:
         print('GPU NOT AVAILABLE, SEE ERROR LOGS. QUITTING')
         sys.exit(2)
-    gpu_utils.initialize_gpu(n=0)
 
 ## Whether to require CUDAC (fasetest) implementation
 use_cudac = True
@@ -55,7 +54,7 @@ N_sample = 4
 ########## IMPORTANT NOTE:
 ##### Not currently implemented for N_threads > 1 and use_gpu = True, will fail
 ##### Hopefully this will be addressed soon
-N_threads = 4
+N_threads = 6
 
 ## Setup the multiprocessing pool, for parallel evaluation
 pool = None
@@ -65,6 +64,10 @@ if N_threads > 1:
         time.sleep(10)
     else:
         pool = multiprocessing.Pool(processes=N_threads)
+
+if use_gpu:
+    gpu_utils.initialize_gpu(n=0)
+
 
 ###############################################
 ## MODELLING SETTINGS
@@ -149,7 +152,7 @@ data_pcmd = utils.make_pcmd(mags)
 ## SAVE FILE SETTINGS
 
 ## Directory to save results to
-results_dir = '/n/home01/bcook/pixcmd/pysrc/results/'
+results_dir = '/n/home01/bcook/pixcmd/scripts_py/results/'
 ## NAME OF THIS PARTICULAR RUN
 name = "SSP_multi"
 ## the file to save the data
