@@ -2,17 +2,11 @@
 # Ben Cook (bcook@cfa.harvard.edu)
 
 import numpy as np
-import instrument as ins
-import isochrones as iso
-import galaxy as gal
-import driver
-import fit_model
-import utils
-import gpu_utils
+from pcmdpy import fit_model
+
 import pandas as pd
 import sys
-import multiprocessing
-import emcee
+
 import imp
 
 if __name__ == "__main__":

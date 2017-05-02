@@ -4,12 +4,13 @@
 ###############################################
 # SETUP FILE for SSP Mock Test
 
-import instrument as ins
-import isochrones as iso
-import galaxy as gal
-import driver
-import utils
-import gpu_utils
+import pcmdpy.instrument as ins
+import pcmdpy.isochrones as iso
+import pcmdpy.galaxy as gal
+import pcmdpy.driver as driver
+import pcmdpy.utils as utils
+import pcmdpy.gpu_utils as gpu_utils
+
 from emcee.utils import sample_ball
 import multiprocessing
 
@@ -28,6 +29,7 @@ if use_gpu:
     if not gpu_utils._GPU_AVAIL:
         print('GPU NOT AVAILABLE, SEE ERROR LOGS. QUITTING')
         sys.exit(2)
+    gpu_utils.initialize_gpu(n=0)
 
 ## Whether to require CUDAC (fasetest) implementation
 use_cudac = True
@@ -133,15 +135,11 @@ params_mock = np.array([-0.2, -2., 2., 9.6])
 
 galaxy_mock = model_mock(params_mock)
 
-print('Starting mock simulation')
-
-gpu_utils.initialize_gpu(n=0)
+#gpu_utils.initialize_gpu(n=0)
 
 ## Create the mock data
 driv = driver.Driver(iso_model, gpu=use_gpu) #temporary driver to model the data
 _, mags, _, _ = driv.simulate(galaxy_mock, N_mock, fixed_seed=fixed_seed)
-
-print('Ended mock simulation')
 
 ## The mock data
 data_pcmd = utils.make_pcmd(mags)
