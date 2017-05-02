@@ -2,16 +2,15 @@ import numpy as np
 import warnings, os
 import multiprocessing
 
-_GPU_AVAIL = True
 try:
     import pycuda
     import pycuda.driver as cuda
     from pycuda.compiler import SourceModule
     import pycuda.curandom
-    #import pycuda.autoinit as autoinit
-    #cuda.init()
 
 except ImportError as e:
+    print('GPU acceleration not available, sorry')
+    _GPU_AVAIL = False
     mess = e.__str__() #error message
     if 'No module named pycuda' in mess:
         warnings.warn('pycuda not installed.',ImportWarning)
@@ -22,13 +21,13 @@ except ImportError as e:
     else:
         warnings.warn(mess, ImportWarning)
         print(mess)
-    _GPU_AVAIL = False
-
-if _GPU_AVAIL:
-    print('GPU acceleration enabled')
 else:
-    print('GPU acceleration not available, sorry')
+    _GPU_AVAIL = True
+    print('GPU acceleration enabled')
 
+_GPU_ACTIVE = False
+_CUDAC_AVAIL = False
+    
 _code = """
    #include <curand_kernel.h>
 
@@ -77,6 +76,7 @@ def initialize_gpu(n=None):
     This function makes pycuda use GPU number n in the system. If no n is provided, will use the current
     multiprocessing process number
     """
+    assert(_GPU_AVAIL)
     if n is None:
         n = multiprocessing.current_process()._identity[0] - 1
         print('for process id: %d'%n)
@@ -86,6 +86,9 @@ def initialize_gpu(n=None):
     os.environ['CUDA_DEVICE'] = '%d'%n
     import pycuda.autoinit
 
+    global _GPU_ACTIVE
+    _GPU_ACTIVE = True
+    
     try:
         global _mod
         print('Starting SourceModule Code')
@@ -97,9 +100,11 @@ def initialize_gpu(n=None):
     except:
         print('Something Failed')
     else:
+        global _CUDAC_AVAIL
+        _CUDAC_AVAIL = True
         print('CUDAC Available')
 
-def draw_image(expected_nums, fluxes, N_scale, gpu=_GPU_AVAIL, cudac=True, fixed_seed=False, **kwargs):
+def draw_image(expected_nums, fluxes, N_scale, gpu=_GPU_ACTIVE, cudac=_CUDAC_AVAIL, fixed_seed=False, **kwargs):
     if gpu:
         if cudac:
             func = _draw_image_cudac
@@ -110,7 +115,7 @@ def draw_image(expected_nums, fluxes, N_scale, gpu=_GPU_AVAIL, cudac=True, fixed
     return func(expected_nums, fluxes, N_scale, fixed_seed=fixed_seed, **kwargs)
 
 def seed_getter_fixed(N, value=None):
-    assert(_GPU_AVAIL)
+    assert(_GPU_AVAIL & _GPU_ACTIVE)
     result = pycuda.gpuarray.empty([N], np.int32)
     if value is None:
         #This will draw the same number every time
@@ -119,7 +124,8 @@ def seed_getter_fixed(N, value=None):
     return result.fill(value)
         
 def _draw_image_cudac(expected_nums, fluxes, N_scale, fixed_seed=False, tolerance=0, d_block=32, **kwargs):
-    assert(_GPU_AVAIL)
+    assert(_GPU_AVAIL & _GPU_ACTIVE)
+    assert(_CUDAC_AVAIL)
 
     assert(len(expected_nums) == fluxes.shape[1])
 
@@ -162,7 +168,7 @@ def _draw_image_cudac(expected_nums, fluxes, N_scale, fixed_seed=False, toleranc
     return result
 
 def _draw_image_pycuda(expected_nums, fluxes, N_scale, fixed_seed=False, tolerance=-1., **kwargs):
-    assert(_GPU_AVAIL)
+    assert(_GPU_AVAIL & _GPU_ACTIVE)
 
     N_bins = len(expected_nums)
     N_bands = fluxes.shape[0]
