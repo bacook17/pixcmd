@@ -25,8 +25,8 @@ class Isochrone_Model:
     Constructors:
        __init__ -- Pass a list of Filter objects, path to MIST model files, and array of metallicities.
     """
-
-    def __init__(self, filters, path='../isoc_csv/', z_arr=_z_arr_default):
+    # CHANGE PATH 
+    def __init__(self, filters, path='/n/home01/bcook/pixcmd/pcmdpy/isoc_csv/', z_arr=_z_arr_default):
         """Creates a new Isochrone_Model, given a list of Filter objects
         
         Arguments:
