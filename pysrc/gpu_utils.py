@@ -1,14 +1,16 @@
 import numpy as np
 import warnings, os
 import multiprocessing
+
 _GPU_AVAIL = True
 try:
     import pycuda
     import pycuda.driver as cuda
-    import pycuda.autoinit as autoinit
     from pycuda.compiler import SourceModule
     import pycuda.curandom
-    cuda.init()
+    #import pycuda.autoinit as autoinit
+    #cuda.init()
+
 except ImportError as e:
     mess = e.__str__() #error message
     if 'No module named pycuda' in mess:
@@ -21,10 +23,6 @@ except ImportError as e:
         warnings.warn(mess, ImportWarning)
         print(mess)
     _GPU_AVAIL = False
-else:
-    print('Number of GPUs available: %d'%(cuda.Device.count()))
-    if (cuda.Device.count() > 0):
-        _GPU_AVAIL = True
 
 if _GPU_AVAIL:
     print('GPU acceleration enabled')
@@ -74,18 +72,36 @@ _code = """
    }
 """
 
-_CUDAC_AVAIL = False
-if _GPU_AVAIL:
-    try:
-        _mod = SourceModule(_code, keep=False, no_extern_c=True)
-        _func = _mod.get_function('poisson_sum')
-    except:
-        _CUDAC_AVAIL = False
-        raise
+def initialize_gpu(n=None):
+    """
+    This function makes pycuda use GPU number n in the system.
+    """
+    if n is None:
+        n = multiprocessing.current_process()._identity[0] - 1
+        print('for process id: %d'%n)
     else:
-        _CUDAC_AVAIL = True
+        print('using given n: %d'%n)
+    
+    os.environ['CUDA_DEVICE'] = '%d'%n
+    import pycuda.autoinit
+    #bid_current = pycuda.autoinit.device.pci_bus_id()
+    #bid_n = drv.Device(n).pci_bus_id()
+    #print('active PCI_BUS_ID matches expected: ' + str(str(bid_current) == str(bid_n)))
 
-def draw_image(expected_nums, fluxes, N_scale, gpu=_GPU_AVAIL, cudac=_CUDAC_AVAIL, fixed_seed=False, **kwargs):
+    try:
+        global _mod
+        print('Starting SourceModule Code')
+        _mod = SourceModule(_code, keep=False, no_extern_c=True)
+        print('Getting function')
+        global _func
+        _func = _mod.get_function('poisson_sum')
+        print('Past the SourceModule code')
+    except:
+        print('Something Failed')
+    else:
+        print('CUDAC Available')
+
+def draw_image(expected_nums, fluxes, N_scale, gpu=_GPU_AVAIL, cudac=True, fixed_seed=False, **kwargs):
     if gpu:
         if cudac:
             func = _draw_image_cudac
@@ -105,7 +121,6 @@ def seed_getter_fixed(N, value=None):
     return result.fill(value)
         
 def _draw_image_cudac(expected_nums, fluxes, N_scale, fixed_seed=False, tolerance=0, d_block=32, **kwargs):
-    assert(_CUDAC_AVAIL)
     assert(_GPU_AVAIL)
 
     assert(len(expected_nums) == fluxes.shape[1])
@@ -202,17 +217,3 @@ def _draw_image_numpy(expected_nums, fluxes, N_scale, fixed_seed=False, toleranc
         realiz_num[:,:,use_poisson] = np.random.poisson(lam=expected_nums[use_poisson], size=(N_scale, N_scale, num_poisson))
         
     return np.dot(realiz_num, fluxes.T).T
-    
-
-def initialize_gpu():
-    """
-    This function makes pycuda use GPU number n in the system.
-    """
-    n = multiprocessing.current_process()._identity[0] - 1
-    print('for process id: %d'%n)
-    
-    os.environ['CUDA_DEVICE'] = '%d'%n
-    import pycuda.autoinit
-    bid_current = pycuda.autoinit.device.pci_bus_id()
-    bid_n = drv.Device(n).pci_bus_id()
-    print('active PCI_BUS_ID matches expected: ' + str(str(bid_current) == str(bid_n)))

@@ -1,8 +1,8 @@
-# setup_files/FULL_mock.py
+# setup_files/SSP_mock.py
 # Ben Cook (bcook@cfa.harvard.edu)
 
 ###############################################
-# SETUP FILE for FULL Mock Test
+# SETUP FILE for SSP Mock Test
 
 import instrument as ins
 import isochrones as iso
@@ -11,6 +11,9 @@ import driver
 import utils
 import gpu_utils
 from emcee.utils import sample_ball
+import multiprocessing
+
+import time
 
 import numpy as np
 import sys
@@ -28,11 +31,6 @@ if use_gpu:
 
 ## Whether to require CUDAC (fasetest) implementation
 use_cudac = True
-## Check to see if CUDAC is available. If not, exit
-if use_cudac:
-    if not gpu_utils._CUDAC_AVAIL:
-        print('CUDAC NOT AVAILABLE, SEE ERROR LOGS. QUITTING')
-        sys.exit(2)
 
 ## Whether to use a fixed random-number seed (decreases stochasticity of likelihood calls)
 fixed_seed = True
@@ -42,26 +40,27 @@ fixed_seed = True
 ## N_walkers * (N_burn + N_sample) / N_threads
 
 ## The number of emcee walkers
-N_walkers = 1024
+N_walkers = 64
 
 ## The number of burn-in iterations, per walker
-N_burn = 20
+N_burn = 0
 
 ## The number of sampling iterations, per walker
-N_sample = 100
+N_sample = 4
 
 ## The number of parallel processes to run.
 ## Using more threads than available CPUs (or GPUs, if gpu=True) will not improve performance
 ########## IMPORTANT NOTE:
 ##### Not currently implemented for N_threads > 1 and use_gpu = True, will fail
 ##### Hopefully this will be addressed soon
-N_threads = 1
+N_threads = 4
 
 ## Setup the multiprocessing pool, for parallel evaluation
 pool = None
 if N_threads > 1:
     if use_gpu:
-        pool = multiprocessing.Pool(processes=N_threads, initializer=gpu_utils.initialize_process)
+        pool = multiprocessing.Pool(processes=N_threads, initializer=gpu_utils.initialize_gpu)
+        time.sleep(10)
     else:
         pool = multiprocessing.Pool(processes=N_threads)
 
@@ -80,29 +79,30 @@ filters = np.array([ins.Filter.HST_F475W(1.0), ins.Filter.HST_F814W(1.0)])
 iso_model = iso.Isochrone_Model(filters)
 
 ## The galaxy class to use to model the data
-#model_class = gal.Galaxy_SSP # simple stellar population (SSP)
-model_class = gal.Galaxy_Model # 7-bin non-parametric SFH (FULL)
+model_class = gal.Galaxy_SSP # simple stellar population (SSP)
+#model_class = gal.Galaxy_Model # 7-bin non-parametric SFH (FULL)
 
 #### Initialize the emcee chains
 # p0 = None #will initialize randomly over the prior space
 
 ## Initialize with a ball around a particular starting position
 ## for SSP mock model
-#params_start = np.array([-0.2, -2., 2., 9.6])
+params_start = np.array([-0.2, -2., 2., 9.6])
 
 ## for FULL mock model
 ## constant SFH, summing to Npix = 1e2
-Npix = 1e2
-age_edges = np.array([6., 7., 8., 8.5, 9.0, 9.5, 10., 10.2])
-bin_widths = 10.**age_edges[1:] - 10.**age_edges[:-1]
-logsfhs = np.log10(Npix * bin_widths / np.sum(bin_widths)) 
-params_start = np.append(np.array([-0.2, -2]), logsfhs)
+#Npix = 1e2
+#age_edges = np.array([6., 7., 8., 8.5, 9.0, 9.5, 10., 10.2])
+#bin_widths = 10.**age_edges[1:] - 10.**age_edges[:-1]
+#logsfhs = np.log10(Npix * bin_widths / np.sum(bin_widths)) 
+#params_start = np.append(np.array([-0.2, -2]), logsfhs)
 
 assert(len(params_start) == model_class._num_params)
 
 ## Initialize the ball with a particular width
 std = 0.1 * np.ones_like(params_start)
 p0 = sample_ball(params_start, std, size=N_walkers)
+
 
 ###############################################
 ## DATA SETTINGS
@@ -120,22 +120,28 @@ N_mock = 128
 ## model of the mock galaxy
 
 ## SSP model
-#model_mock = gal.Galaxy_SSP
-#params_mock = np.array([-0.2, -2., 2., 9.6])
+model_mock = gal.Galaxy_SSP
+params_mock = np.array([-0.2, -2., 2., 9.6])
 
 ## FULL model with Npix = 1e2
-model_mock = gal.Galaxy_Model
-Npix = 1e2
-age_edges = np.array([6., 7., 8., 8.5, 9.0, 9.5, 10., 10.2])
-bin_widths = 10.**age_edges[1:] - 10.**age_edges[:-1]
-logsfhs = np.log10(Npix * bin_widths / np.sum(bin_widths)) 
-params_mock = np.append(np.array([-0.2, -2]), logsfhs)
+#model_mock = gal.Galaxy_Model
+#Npix = 1e2
+#age_edges = np.array([6., 7., 8., 8.5, 9.0, 9.5, 10., 10.2])
+#bin_widths = 10.**age_edges[1:] - 10.**age_edges[:-1]
+#logsfhs = np.log10(Npix * bin_widths / np.sum(bin_widths)) 
+#params_mock = np.append(np.array([-0.2, -2]), logsfhs)
 
 galaxy_mock = model_mock(params_mock)
+
+print('Starting mock simulation')
+
+gpu_utils.initialize_gpu(n=0)
 
 ## Create the mock data
 driv = driver.Driver(iso_model, gpu=use_gpu) #temporary driver to model the data
 _, mags, _, _ = driv.simulate(galaxy_mock, N_mock, fixed_seed=fixed_seed)
+
+print('Ended mock simulation')
 
 ## The mock data
 data_pcmd = utils.make_pcmd(mags)
@@ -147,6 +153,6 @@ data_pcmd = utils.make_pcmd(mags)
 ## Directory to save results to
 results_dir = '/n/home01/bcook/pixcmd/pysrc/results/'
 ## NAME OF THIS PARTICULAR RUN
-name = "FULL_mock"
+name = "SSP_multi"
 ## the file to save the data
 chain_file = results_dir + name + '.csv'

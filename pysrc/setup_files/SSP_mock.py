@@ -42,13 +42,13 @@ fixed_seed = True
 ## N_walkers * (N_burn + N_sample) / N_threads
 
 ## The number of emcee walkers
-N_walkers = 256
+N_walkers = 1024
 
 ## The number of burn-in iterations, per walker
-N_burn = 50
+N_burn = 20
 
 ## The number of sampling iterations, per walker
-N_sample = 200
+N_sample = 100
 
 ## The number of parallel processes to run.
 ## Using more threads than available CPUs (or GPUs, if gpu=True) will not improve performance

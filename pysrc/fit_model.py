@@ -8,6 +8,7 @@ import galaxy as gal
 import driver
 import utils
 import emcee
+import multiprocessing
 
 def lnprior_ssp(gal_params):
     z, log_dust, log_Npix, age = gal_params
@@ -55,6 +56,7 @@ def lnprob(gal_params, driv, im_scale, gal_class=gal.Galaxy_Model,
     if np.isinf(pri):
         return -np.inf
     gal_model = gal_class(gal_params)
+    print('Evaluating lnprob on process: %d'%(multiprocessing.current_process()._identity[0]-1))
     _, mags, _, _ = driv.simulate(gal_model, im_scale, fixed_seed=fixed_seed, **kwargs)
     pcmd = utils.make_pcmd(mags)
     like = driv.loglike(pcmd, **kwargs)
