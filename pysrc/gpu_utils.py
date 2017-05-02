@@ -74,7 +74,8 @@ _code = """
 
 def initialize_gpu(n=None):
     """
-    This function makes pycuda use GPU number n in the system.
+    This function makes pycuda use GPU number n in the system. If no n is provided, will use the current
+    multiprocessing process number
     """
     if n is None:
         n = multiprocessing.current_process()._identity[0] - 1
@@ -84,9 +85,6 @@ def initialize_gpu(n=None):
     
     os.environ['CUDA_DEVICE'] = '%d'%n
     import pycuda.autoinit
-    #bid_current = pycuda.autoinit.device.pci_bus_id()
-    #bid_n = drv.Device(n).pci_bus_id()
-    #print('active PCI_BUS_ID matches expected: ' + str(str(bid_current) == str(bid_n)))
 
     try:
         global _mod
