@@ -3,7 +3,6 @@
 
 ###############################################
 # SETUP FILE for SSP Mock Test
-
 import pcmdpy.instrument as ins
 import pcmdpy.isochrones as iso
 import pcmdpy.galaxy as gal
@@ -14,6 +13,8 @@ import pcmdpy.gpu_utils as gpu_utils
 from emcee.utils import sample_ball
 import multiprocessing
 
+import time
+
 import numpy as np
 import sys
 
@@ -22,6 +23,26 @@ import sys
 
 ## Whether to use GPU acceleration
 use_gpu = True
+
+## The number of parallel processes to run.
+## Using more threads than available CPUs (or GPUs, if gpu=True) will not improve performance
+########## IMPORTANT NOTE:
+##### Not currently implemented for N_threads > 1 and use_gpu = True, will fail
+##### Hopefully this will be addressed soon
+N_threads = 4
+
+## Setup the multiprocessing pool, for parallel evaluation
+pool = None
+if N_threads > 1:
+    if use_gpu:
+        pool = multiprocessing.Pool(processes=N_threads, initializer=gpu_utils.initialize_gpu)
+        time.sleep(10)
+    else:
+        pool = multiprocessing.Pool(processes=N_threads)
+
+if use_gpu:
+    gpu_utils.initialize_gpu(n=0)
+
 ## Check to see if GPU is available. If not, exit
 if use_gpu:
     if not gpu_utils._GPU_AVAIL:
@@ -30,6 +51,7 @@ if use_gpu:
 
 ## Whether to require CUDAC (fasetest) implementation
 use_cudac = True
+
 ## Check to see if CUDAC is available. If not, exit
 if use_cudac:
     if not gpu_utils._CUDAC_AVAIL:
@@ -44,28 +66,16 @@ fixed_seed = True
 ## N_walkers * (N_burn + N_sample) / N_threads
 
 ## The number of emcee walkers
-N_walkers = 1024
+N_walkers = 256
 
 ## The number of burn-in iterations, per walker
-N_burn = 20
+N_burn = 0
 
 ## The number of sampling iterations, per walker
 N_sample = 100
 
-## The number of parallel processes to run.
-## Using more threads than available CPUs (or GPUs, if gpu=True) will not improve performance
-########## IMPORTANT NOTE:
-##### Not currently implemented for N_threads > 1 and use_gpu = True, will fail
-##### Hopefully this will be addressed soon
-N_threads = 1
-
-## Setup the multiprocessing pool, for parallel evaluation
-pool = None
-if N_threads > 1:
-    if use_gpu:
-        pool = multiprocessing.Pool(processes=N_threads, initializer=gpu_utils.initialize_process)
-    else:
-        pool = multiprocessing.Pool(processes=N_threads)
+## Whether to add an additional likelihood term, a 2D gaussian fit of the data
+add_total = False
 
 ###############################################
 ## MODELLING SETTINGS
@@ -148,7 +158,7 @@ data_pcmd = utils.make_pcmd(mags)
 ## SAVE FILE SETTINGS
 
 ## Directory to save results to
-results_dir = '/n/home01/bcook/pixcmd/pysrc/results/'
+results_dir = '/n/home01/bcook/pixcmd/scripts_py/results/'
 ## NAME OF THIS PARTICULAR RUN
 name = "SSP_mock"
 ## the file to save the data

@@ -10,6 +10,8 @@ import gpu_utils
 import galaxy as gal
 import warnings
 
+from scipy.stats import multivariate_normal
+
 class Driver:
 
     def __init__(self, iso_model, gpu=False):
@@ -32,13 +34,12 @@ class Driver:
     def initialize_data(self, pcmd, bins, charlie_err=False, **kwargs):
         self.hess_bins = bins
         self.n_data = pcmd.shape[1]
-        
-        mag1, mag2 = pcmd
-        mag1_total = np.power(10., np.sum(np.log10(mag1)))
-        mag2_total = np.power(10., np.sum(np.log10(mag2)))
 
-        self.mag_total_data = mag1_total 
-        self.color_total_data = mag1_total - mag2_total
+        #fit a 2D gaussian to the points
+        means = np.mean(pcmd, axis=1)
+        cov = np.cov(pcmd)
+
+        self.gaussian_data = multivariate_normal(mean=means, cov=cov)
 
         counts, hess, err = utils.make_hess(pcmd, bins, charlie_err=charlie_err)
         self.counts_data = counts
@@ -53,12 +54,6 @@ class Driver:
             print('Cannot evaluate, as data has not been initialized (use driver.initialize_data)')
             return
 
-        mag1, mag2 = pcmd
-        mag1_total = np.power(10., np.sum(np.log10(mag1)))
-        color_total = mag1_total - np.power(10., np.sum(np.log10(mag2)))
-        sig_mag = 0.01
-        sig_color = 0.05
-        
         counts_model, hess_model, err_model = utils.make_hess(pcmd, self.hess_bins, charlie_err=charlie_err)
         n_model = pcmd.shape[1]
 
@@ -75,8 +70,8 @@ class Driver:
             log_like = np.sum(poisson.logpmf(self.counts_data, counts_model))
 
         if add_total:
-            log_like -= (mag1_total - self.mag_total_data)**2. / sig_mag**2.
-            log_like -= (color_total - self.color_total_data)**2. / sig_color**2.
+            #evaluate the likelihood of the model datapoints assuming a 2D gaussian fit to the data
+            log_like += np.sum(self.gaussian_data.logpdf(pcmd.T))
             
         return log_like
 

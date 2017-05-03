@@ -63,7 +63,7 @@ def lnprob(gal_params, driv, im_scale, gal_class=gal.Galaxy_Model,
     return pri + like
 
 def sample_post(pcmd, filters, im_scale, n_walkers, n_burn, n_sample, 
-                p0=None, gal_class=gal.Galaxy_Model, gpu=True, bins=None, threads=1, fixed_seed=False,
+                p0=None, gal_class=gal.Galaxy_Model, gpu=True, bins=None, threads=1, fixed_seed=False, add_total=False,
                 **kwargs):
 
     print('-initializing models')
@@ -82,7 +82,7 @@ def sample_post(pcmd, filters, im_scale, n_walkers, n_burn, n_sample,
 
     print('-Setting up emcee sampler')
     
-    sampler = emcee.EnsembleSampler(n_walkers, n_dim, lnprob, args=[driv, im_scale], kwargs={'gal_class':gal_class, 'fixed_seed':fixed_seed},
+    sampler = emcee.EnsembleSampler(n_walkers, n_dim, lnprob, args=[driv, im_scale], kwargs={'gal_class':gal_class, 'fixed_seed':fixed_seed,'add_total':add_total},
                                     threads=threads, **kwargs)
 
     if p0 is None:

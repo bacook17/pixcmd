@@ -6,9 +6,9 @@
 #SBATCH --constraint=cuda-7.5 #require CUDA
 #SBATCH -t 1-00:00 #runtime in D-HH:MM
 #SBATCH --mem-per-cpu 1000 #memory pool for cores
-#SBATCH -o logs/batch_SSP_mock.out
-#SBATCH -e logs/batch_SSP_mock.err
+#SBATCH -o logs/batch_SSP_gaussian.out
+#SBATCH -e logs/batch_SSP_gaussian.err
 #SBATCH --mail-type=BEGIN,END,FAIL #alert when done
 #SBATCH --mail-user=bcook@cfa.harvard.edu #Email to send to
 
-python pcmd_fitter.py setup_files/SSP_mock.py
+python pcmd_fitter.py setup_files/SSP_gaussian.py

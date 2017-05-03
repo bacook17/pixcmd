@@ -40,12 +40,14 @@ if __name__ == "__main__":
     param_names = model_class._param_names
     N_params = len(param_names)
     p0 = setup.p0
+
+    add_total = setup.add_total
     
     chain_file = setup.chain_file
 
     print('Running emcee')
     sampler = fit_model.sample_post(data_pcmd, filters, N_scale, N_walkers, N_burn, N_sample, fixed_seed=fixed_seed,
-                                    gal_class=model_class, gpu=gpu, pool=pool, p0=p0)
+                                    gal_class=model_class, gpu=gpu, pool=pool, p0=p0, add_total=add_total)
 
     print('emcee complete, saving results')
     #Save results of the chain

@@ -1,10 +1,8 @@
-# setup_files/FULL_as_SSP_mock.py
+# setup_files/SSP_mock.py
 # Ben Cook (bcook@cfa.harvard.edu)
 
 ###############################################
-# SETUP FILE for FULL_as_SSP Mock Test
-# The mock data is from FULL, multi-SFH model (with constant SFH), but we model it as an SSP
-
+# SETUP FILE for SSP Mock Test
 import pcmdpy.instrument as ins
 import pcmdpy.isochrones as iso
 import pcmdpy.galaxy as gal
@@ -31,7 +29,7 @@ use_gpu = True
 ########## IMPORTANT NOTE:
 ##### Not currently implemented for N_threads > 1 and use_gpu = True, will fail
 ##### Hopefully this will be addressed soon
-N_threads = 6
+N_threads = 4
 
 ## Setup the multiprocessing pool, for parallel evaluation
 pool = None
@@ -71,10 +69,13 @@ fixed_seed = True
 N_walkers = 256
 
 ## The number of burn-in iterations, per walker
-N_burn = 50
+N_burn = 0
 
 ## The number of sampling iterations, per walker
-N_sample = 200
+N_sample = 100
+
+## Whether to add an additional likelihood term, a 2D gaussian fit of the data
+add_total = True
 
 ###############################################
 ## MODELLING SETTINGS
@@ -115,6 +116,7 @@ assert(len(params_start) == model_class._num_params)
 std = 0.1 * np.ones_like(params_start)
 p0 = sample_ball(params_start, std, size=N_walkers)
 
+
 ###############################################
 ## DATA SETTINGS
 
@@ -131,16 +133,16 @@ N_mock = 128
 ## model of the mock galaxy
 
 ## SSP model
-#model_mock = gal.Galaxy_SSP
-#params_mock = np.array([-0.2, -2., 2., 9.6])
+model_mock = gal.Galaxy_SSP
+params_mock = np.array([-0.2, -2., 2., 9.6])
 
 ## FULL model with Npix = 1e2
-model_mock = gal.Galaxy_Model
-Npix = 1e2
-age_edges = np.array([6., 7., 8., 8.5, 9.0, 9.5, 10., 10.2])
-bin_widths = 10.**age_edges[1:] - 10.**age_edges[:-1]
-logsfhs = np.log10(Npix * bin_widths / np.sum(bin_widths)) 
-params_mock = np.append(np.array([-0.2, -2]), logsfhs)
+#model_mock = gal.Galaxy_Model
+#Npix = 1e2
+#age_edges = np.array([6., 7., 8., 8.5, 9.0, 9.5, 10., 10.2])
+#bin_widths = 10.**age_edges[1:] - 10.**age_edges[:-1]
+#logsfhs = np.log10(Npix * bin_widths / np.sum(bin_widths)) 
+#params_mock = np.append(np.array([-0.2, -2]), logsfhs)
 
 galaxy_mock = model_mock(params_mock)
 
@@ -158,6 +160,6 @@ data_pcmd = utils.make_pcmd(mags)
 ## Directory to save results to
 results_dir = '/n/home01/bcook/pixcmd/scripts_py/results/'
 ## NAME OF THIS PARTICULAR RUN
-name = "FULL_as_SSP_mock"
+name = "SSP_gaussian"
 ## the file to save the data
 chain_file = results_dir + name + '.csv'

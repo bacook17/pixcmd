@@ -24,30 +24,6 @@ import sys
 
 ## Whether to use GPU acceleration
 use_gpu = True
-## Check to see if GPU is available. If not, exit
-if use_gpu:
-    if not gpu_utils._GPU_AVAIL:
-        print('GPU NOT AVAILABLE, SEE ERROR LOGS. QUITTING')
-        sys.exit(2)
-
-## Whether to require CUDAC (fasetest) implementation
-use_cudac = True
-
-## Whether to use a fixed random-number seed (decreases stochasticity of likelihood calls)
-fixed_seed = True
-
-##### TIMING NOTE:
-## The evaluation time of the fitting process will scale as:
-## N_walkers * (N_burn + N_sample) / N_threads
-
-## The number of emcee walkers
-N_walkers = 64
-
-## The number of burn-in iterations, per walker
-N_burn = 0
-
-## The number of sampling iterations, per walker
-N_sample = 4
 
 ## The number of parallel processes to run.
 ## Using more threads than available CPUs (or GPUs, if gpu=True) will not improve performance
@@ -68,6 +44,36 @@ if N_threads > 1:
 if use_gpu:
     gpu_utils.initialize_gpu(n=0)
 
+## Check to see if GPU is available. If not, exit
+if use_gpu:
+    if not gpu_utils._GPU_AVAIL:
+        print('GPU NOT AVAILABLE, SEE ERROR LOGS. QUITTING')
+        sys.exit(2)
+
+## Whether to require CUDAC (fasetest) implementation
+use_cudac = True
+
+## Check to see if CUDAC is available. If not, exit
+if use_cudac:
+    if not gpu_utils._CUDAC_AVAIL:
+        print('CUDAC NOT AVAILABLE, SEE ERROR LOGS. QUITTING')
+        sys.exit(2)
+
+## Whether to use a fixed random-number seed (decreases stochasticity of likelihood calls)
+fixed_seed = True
+
+##### TIMING NOTE:
+## The evaluation time of the fitting process will scale as:
+## N_walkers * (N_burn + N_sample) / N_threads
+
+## The number of emcee walkers
+N_walkers = 64
+
+## The number of burn-in iterations, per walker
+N_burn = 0
+
+## The number of sampling iterations, per walker
+N_sample = 4
 
 ###############################################
 ## MODELLING SETTINGS
