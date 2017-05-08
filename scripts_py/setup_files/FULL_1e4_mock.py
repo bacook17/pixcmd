@@ -65,6 +65,9 @@ if use_cudac:
 ## Whether to use a fixed random-number seed (decreases stochasticity of likelihood calls)
 fixed_seed = True
 
+## Whether to include a Gaussian likelihood term
+add_total = False
+
 ##### TIMING NOTE:
 ## The evaluation time of the fitting process will scale as:
 ## N_walkers * (N_burn + N_sample) / N_threads

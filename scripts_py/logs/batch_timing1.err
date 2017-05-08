@@ -1,0 +1,25 @@
+Vendor:  Continuum Analytics, Inc.
+Package: mkl
+Message: trial mode expires in 30 days
+Traceback (most recent call last):
+  File "/n/home01/bcook/.conda/envs/my_home/lib/python2.7/site-packages/emcee/ensemble.py", line 519, in __call__
+    return self.f(x, *self.args, **self.kwargs)
+  File "/n/home01/bcook/pixcmd/pcmdpy/fit_model.py", line 59, in lnprob
+    print('Evaluating lnprob on process: %d'%(multiprocessing.current_process()._identity[0]-1))
+IndexError: tuple index out of range
+Traceback (most recent call last):
+  File "pcmd_fitter.py", line 50, in <module>
+    gal_class=model_class, gpu=gpu, pool=pool, p0=p0, add_total=add_total)
+  File "/n/home01/bcook/pixcmd/pcmdpy/fit_model.py", line 122, in sample_post
+    sampler.run_mcmc(p0, n_sample)
+  File "/n/home01/bcook/.conda/envs/my_home/lib/python2.7/site-packages/emcee/sampler.py", line 172, in run_mcmc
+    **kwargs):
+  File "/n/home01/bcook/.conda/envs/my_home/lib/python2.7/site-packages/emcee/ensemble.py", line 198, in sample
+    lnprob, blobs = self._get_lnprob(p)
+  File "/n/home01/bcook/.conda/envs/my_home/lib/python2.7/site-packages/emcee/ensemble.py", line 382, in _get_lnprob
+    results = list(M(self.lnprobfn, [p[i] for i in range(len(p))]))
+  File "/n/home01/bcook/.conda/envs/my_home/lib/python2.7/site-packages/emcee/ensemble.py", line 519, in __call__
+    return self.f(x, *self.args, **self.kwargs)
+  File "/n/home01/bcook/pixcmd/pcmdpy/fit_model.py", line 59, in lnprob
+    print('Evaluating lnprob on process: %d'%(multiprocessing.current_process()._identity[0]-1))
+IndexError: tuple index out of range

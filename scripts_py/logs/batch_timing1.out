@@ -1,0 +1,16 @@
+GPU acceleration enabled
+Loading Setup File: setup_files/timing1.py
+using given n: 0
+Starting SourceModule Code
+Getting function
+Past the SourceModule code
+CUDAC Available
+Running emcee
+-initializing models
+-Setting up emcee sampler
+emcee: Exception while calling your likelihood function:
+  params: [-0.22889421 -1.9098416  -1.36344356 -0.31544566  0.24971777  0.83176311
+  1.10512391  1.74462474  1.55554882]
+  args: [<pcmdpy.driver.Driver instance at 0x2b8891686710>, 1024]
+  kwargs: {'fixed_seed': True, 'add_total': False, 'gal_class': <class pcmdpy.galaxy.Galaxy_Model at 0x2b888256c050>}
+  exception:

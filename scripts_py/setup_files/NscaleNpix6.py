@@ -1,9 +1,8 @@
-# setup_files/FULL_as_SSP_mock.py
+# setup_files/NscaleNpix6.py
 # Ben Cook (bcook@cfa.harvard.edu)
 
 ###############################################
-# SETUP FILE for FULL_as_SSP Mock Test
-# The mock data is from FULL, multi-SFH model (with constant SFH), but we model it as an SSP
+# SETUP FILE for NscaleNpix test (Nscale=1024, Npix=1e3)
 
 import pcmdpy.instrument as ins
 import pcmdpy.isochrones as iso
@@ -28,10 +27,7 @@ use_gpu = True
 
 ## The number of parallel processes to run.
 ## Using more threads than available CPUs (or GPUs, if gpu=True) will not improve performance
-########## IMPORTANT NOTE:
-##### Not currently implemented for N_threads > 1 and use_gpu = True, will fail
-##### Hopefully this will be addressed soon
-N_threads = 6
+N_threads = 8
 
 ## Setup the multiprocessing pool, for parallel evaluation
 pool = None
@@ -71,13 +67,13 @@ add_total = False
 ## N_walkers * (N_burn + N_sample) / N_threads
 
 ## The number of emcee walkers
-N_walkers = 256
+N_walkers = 512
 
 ## The number of burn-in iterations, per walker
-N_burn = 50
+N_burn = 0
 
 ## The number of sampling iterations, per walker
-N_sample = 200
+N_sample = 100
 
 ###############################################
 ## MODELLING SETTINGS
@@ -94,23 +90,23 @@ filters = np.array([ins.Filter.HST_F475W(1.0), ins.Filter.HST_F814W(1.0)])
 iso_model = iso.Isochrone_Model(filters)
 
 ## The galaxy class to use to model the data
-model_class = gal.Galaxy_SSP # simple stellar population (SSP)
-#model_class = gal.Galaxy_Model # 7-bin non-parametric SFH (FULL)
+#model_class = gal.Galaxy_SSP # simple stellar population (SSP)
+model_class = gal.Galaxy_Model # 7-bin non-parametric SFH (FULL)
 
 #### Initialize the emcee chains
 # p0 = None #will initialize randomly over the prior space
 
 ## Initialize with a ball around a particular starting position
 ## for SSP mock model
-params_start = np.array([-0.2, -2., 2., 9.6])
+#params_start = np.array([-0.2, -2., 2., 9.6])
 
 ## for FULL mock model
 ## constant SFH, summing to Npix = 1e2
-#Npix = 1e2
-#age_edges = np.array([6., 7., 8., 8.5, 9.0, 9.5, 10., 10.2])
-#bin_widths = 10.**age_edges[1:] - 10.**age_edges[:-1]
-#logsfhs = np.log10(Npix * bin_widths / np.sum(bin_widths)) 
-#params_start = np.append(np.array([-0.2, -2]), logsfhs)
+Npix = 1e3
+age_edges = np.array([6., 7., 8., 8.5, 9.0, 9.5, 10., 10.2])
+bin_widths = 10.**age_edges[1:] - 10.**age_edges[:-1]
+logsfhs = np.log10(Npix * bin_widths / np.sum(bin_widths)) 
+params_start = np.append(np.array([-0.2, -2]), logsfhs)
 
 assert(len(params_start) == model_class._num_params)
 
@@ -139,7 +135,7 @@ N_mock = 128
 
 ## FULL model with Npix = 1e2
 model_mock = gal.Galaxy_Model
-Npix = 1e2
+Npix = 1e3
 age_edges = np.array([6., 7., 8., 8.5, 9.0, 9.5, 10., 10.2])
 bin_widths = 10.**age_edges[1:] - 10.**age_edges[:-1]
 logsfhs = np.log10(Npix * bin_widths / np.sum(bin_widths)) 
@@ -161,6 +157,6 @@ data_pcmd = utils.make_pcmd(mags)
 ## Directory to save results to
 results_dir = '/n/home01/bcook/pixcmd/scripts_py/results/'
 ## NAME OF THIS PARTICULAR RUN
-name = "FULL_as_SSP_mock"
+name = "NscaleNpix6"
 ## the file to save the data
 chain_file = results_dir + name + '.csv'
