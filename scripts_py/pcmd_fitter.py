@@ -26,6 +26,11 @@ if __name__ == "__main__":
     gpu = setup.use_gpu
 
     fixed_seed = setup.fixed_seed
+    add_total = setup.add_total
+    try:
+        rare_cut = setup.rare_cut
+    except:
+        rare_cut = 0.
 
     filters = setup.filters
     iso_model = setup.iso_model
@@ -41,8 +46,6 @@ if __name__ == "__main__":
     N_params = len(param_names)
     p0 = setup.p0
 
-    add_total = setup.add_total
-    
     chain_file = setup.chain_file
 
     print('Running emcee')

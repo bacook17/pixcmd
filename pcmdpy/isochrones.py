@@ -126,7 +126,7 @@ class Isochrone_Model:
             return self._interp_arrays(dflow.values, dfhigh.values, frac_between).T
     """
     
-    def get_isochrone(self, age, z, norm_IMF=True, rare_cut=0.):
+    def get_isochrone(self, age, z, norm_IMF=True, rare_cut=0., **kwargs):
         """Interpolate MIST isochrones for given age and metallicity
         
         Arguments:
@@ -165,7 +165,7 @@ class Isochrone_Model:
         #remove stars that are extremely rare
         to_keep = (IMF >= rare_cut)
         
-        return IMF[to_keep], mags[to_keep]
+        return IMF[to_keep], mags[:,to_keep]
 
     def model_galaxy(self, galaxy, **kwargs):
         weights = np.empty((1,0),dtype=float)

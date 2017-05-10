@@ -12,3 +12,4 @@
 #SBATCH --mail-user=bcook@cfa.harvard.edu #Email to send to
 
 python gpu_test.py
+sjob "${SLURM_JOB_ID}"

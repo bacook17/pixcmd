@@ -12,3 +12,4 @@
 #SBATCH --mail-user=bcook@cfa.harvard.edu #Email to send to
 
 python pcmd_fitter.py setup_files/timing4.py
+sacct -j "${SLURM_JOB_ID}" --format=JOBID,JobName,NTasks,AllocCPUs,AllocGRES,Partition,Elapsed,MaxRSS,MaxVMSize,MaxDiskRead,MaxDiskWrite,State 

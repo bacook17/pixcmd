@@ -5,10 +5,11 @@
 #SBATCH --gres=gpu:2 #Number of GPUs requested
 #SBATCH --constraint=cuda-7.5 #require CUDA
 #SBATCH -t 1-00:00 #runtime in D-HH:MM
-#SBATCH --mem 1000 #memory pool for cores
+#SBATCH --mem-per-cpu 1000 #memory pool for cores
 #SBATCH -o logs/batch_ball_large.out
 #SBATCH -e logs/batch_ball_large.err
 #SBATCH --mail-type=BEGIN,END,FAIL #alert when done
 #SBATCH --mail-user=bcook@cfa.harvard.edu #Email to send to
 
 python pcmd_fitter.py setup_files/ball_large.py
+sacct -j "${SLURM_JOB_ID}" --format=JOBID,JobName,NTasks,AllocCPUs,AllocGRES,Partition,Elapsed,MaxRSS,MaxVMSize,MaxDiskRead,MaxDiskWrite,State

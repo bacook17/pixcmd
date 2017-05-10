@@ -65,6 +65,9 @@ fixed_seed = True
 ## Whether to include a Gaussian likelihood term
 add_total = False
 
+## Cut out stars rarer than some limit (as fraction of total mass)
+rare_cut = 0.
+
 ##### TIMING NOTE:
 ## The evaluation time of the fitting process will scale as:
 ## N_walkers * (N_burn + N_sample) / N_threads

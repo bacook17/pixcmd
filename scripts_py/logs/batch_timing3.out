@@ -1,0 +1,35 @@
+GPU acceleration enabled
+Loading Setup File: setup_files/timing3.py
+for process id: 0
+for process id: 1
+for process id: 3
+for process id: 2
+Starting SourceModule Code
+Starting SourceModule Code
+Starting SourceModule Code
+Starting SourceModule Code
+using given n: 0
+Starting SourceModule Code
+Getting function
+Past the SourceModule code
+CUDAC Available
+Getting function
+Past the SourceModule code
+CUDAC Available
+Getting function
+Past the SourceModule code
+CUDAC Available
+Getting function
+Past the SourceModule code
+CUDAC Available
+Getting function
+Past the SourceModule code
+CUDAC Available
+Running emcee
+-initializing models
+-Setting up emcee sampler
+emcee complete, saving results
+       JobID    JobName   NTasks  AllocCPUS    AllocGRES  Partition    Elapsed     MaxRSS  MaxVMSize  MaxDiskRead MaxDiskWrite      State 
+------------ ---------- -------- ---------- ------------ ---------- ---------- ---------- ---------- ------------ ------------ ---------- 
+87463295     batch_tim+                   4        gpu:4        gpu   01:00:55                                                    RUNNING 
+87463295.ex+     extern        1          4        gpu:4              01:00:55                                                    RUNNING 

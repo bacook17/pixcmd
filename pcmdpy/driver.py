@@ -76,7 +76,7 @@ class Driver:
         return log_like
 
     def simulate(self, gal_model, im_scale, psf=True, fixed_seed=False, **kwargs):
-        IMF, mags = self.iso_model.model_galaxy(gal_model)
+        IMF, mags = self.iso_model.model_galaxy(gal_model, **kwargs)
         fluxes = np.array([f.mag_to_counts(m) for f,m in zip(self.filters, mags)])
 
         raw_images = gpu_utils.draw_image(IMF, fluxes, im_scale, gpu=self.gpu_on, cudac=True, fixed_seed=fixed_seed, **kwargs)

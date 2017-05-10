@@ -62,7 +62,10 @@ if use_cudac:
 fixed_seed = True
 
 ## Whether to add an additional likelihood term, a 2D gaussian fit of the data
-add_total = True
+add_total = False
+
+## Cut out stars rarer than some limit (as fraction of total mass)
+rare_cut = 0.
 
 ##### TIMING NOTE:
 ## The evaluation time of the fitting process will scale as:
