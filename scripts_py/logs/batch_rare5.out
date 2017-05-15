@@ -1,0 +1,67 @@
+GPU acceleration enabled
+Loading Setup File: setup_files/rare5.py
+for process id: 0
+for process id: 1
+for process id: 2
+for process id: 3
+for process id: 4
+for process id: 5
+for process id: 6
+for process id: 7
+using given n: 0
+Starting SourceModule Code
+Starting SourceModule Code
+Starting SourceModule Code
+Starting SourceModule Code
+Starting SourceModule Code
+Starting SourceModule Code
+Starting SourceModule Code
+Starting SourceModule Code
+Starting SourceModule Code
+Getting function
+Past the SourceModule code
+CUDAC Available
+Getting function
+Past the SourceModule code
+CUDAC Available
+Getting function
+Past the SourceModule code
+CUDAC Available
+Getting function
+Past the SourceModule code
+CUDAC Available
+Getting function
+Past the SourceModule code
+CUDAC Available
+Getting function
+Past the SourceModule code
+CUDAC Available
+Getting function
+Past the SourceModule code
+CUDAC Available
+Getting function
+Past the SourceModule code
+CUDAC Available
+Getting function
+Past the SourceModule code
+CUDAC Available
+Running emcee
+-initializing models
+-Setting up emcee sampler
+emcee complete, saving results
+       JobID    JobName   NTasks  AllocCPUS    AllocGRES  Partition    Elapsed     MaxRSS  MaxVMSize  MaxDiskRead MaxDiskWrite      State 
+------------ ---------- -------- ---------- ------------ ---------- ---------- ---------- ---------- ------------ ------------ ---------- 
+87531116_5         rare                   8        gpu:8        gpu   03:30:21                                                    RUNNING 
+87531116_5.+     extern        1          8        gpu:8              03:30:21                                                    RUNNING 
+87531116_1         rare                   8        gpu:8        gpu   02:59:39                                                  COMPLETED 
+87531116_1.+      batch        1          8        gpu:8              02:59:39   2297668K 931529768K   388160.58M   188996.38M  COMPLETED 
+87531116_1.+     extern        1          8        gpu:8              02:59:39       572K    100900K        0.00M            0  COMPLETED 
+87531116_2         rare                   8        gpu:8        gpu   03:02:05                                                  COMPLETED 
+87531116_2.+      batch        1          8        gpu:8              03:02:05   2256924K 931377840K   388789.41M   189195.46M  COMPLETED 
+87531116_2.+     extern        1          8        gpu:8              03:02:05       568K    100900K        0.00M            0  COMPLETED 
+87531116_3         rare                   8        gpu:8        gpu   03:25:52                                                  COMPLETED 
+87531116_3.+      batch        1          8        gpu:8              03:25:52   2285180K 931759948K   429934.06M   202162.64M  COMPLETED 
+87531116_3.+     extern        1          8        gpu:8              03:25:52       568K    100900K        0.00M            0  COMPLETED 
+87531116_4         rare                   8        gpu:8        gpu   03:34:22                                                  COMPLETED 
+87531116_4.+      batch        1          8        gpu:8              03:34:22   2334544K 931898620K   448602.36M   208106.05M  COMPLETED 
+87531116_4.+     extern        1          8        gpu:8              03:34:23       572K    100900K        0.00M            0  COMPLETED 
