@@ -50,7 +50,7 @@ if __name__ == "__main__":
 
     print('Running emcee')
     sampler = fit_model.sample_post(data_pcmd, filters, N_scale, N_walkers, N_burn, N_sample, fixed_seed=fixed_seed,
-                                    gal_class=model_class, gpu=gpu, pool=pool, p0=p0, add_total=add_total)
+                                    gal_class=model_class, gpu=gpu, pool=pool, p0=p0, add_total=add_total, rare_cut=rare_cut)
 
     print('emcee complete, saving results')
     #Save results of the chain
