@@ -79,7 +79,7 @@ N_walkers = 512
 N_burn = 0
 
 ## The number of sampling iterations, per walker
-N_sample = 100
+N_sample = 1000
 
 ###############################################
 ## MODELLING SETTINGS
@@ -117,7 +117,7 @@ params_start = np.append(np.array([-0.2, -2]), logsfhs)
 assert(len(params_start) == model_class._num_params)
 
 ## Initialize the ball with a particular width
-std_small = 0.05
+std_small = 0.01
 std = std_small * np.ones_like(params_start)
 p0 = sample_ball(params_start, std, size=N_walkers)
 

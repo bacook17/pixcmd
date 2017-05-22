@@ -20,7 +20,7 @@ if __name__ == "__main__":
     N_scale = setup.N_scale
     N_points = setup.N_walkers
     N_burn = setup.N_burn
-    N_sample = setup.N_sample
+    N_max = setup.N_sample
     N_threads = setup.N_threads
     pool = setup.pool 
     gpu = setup.use_gpu
@@ -49,8 +49,8 @@ if __name__ == "__main__":
     chain_file = setup.chain_file
 
     print('Running Nestle')
-    sampler = fit_model.nested_integrate(data_pcmd, filters, N_scale, N_walkers, fixed_seed=fixed_seed,
-                                         gal_class=model_class, gpu=gpu, p0=p0, add_total=add_total)
+    sampler = fit_model.nested_integrate(data_pcmd, filters, N_scale, N_points, fixed_seed=fixed_seed,
+                                         gal_class=model_class, gpu=gpu, p0=p0, max_call=N_max, add_total=add_total, verbose=True)
 
     print('Nestle complete, saving results')
     #Save results of the chain
@@ -61,9 +61,9 @@ if __name__ == "__main__":
     chain_df['weights'] = sampler.weights
     chain_df['logvol'] = sampler.logvol
 
-    chain_df['niter'] = sample.niter
-    chain_df['log_evidence'] = sample.logz
-    chain_df['error_log_evidence'] = sample.logzerr
-    chain_df['information'] = sample.h
+    chain_df['niter'] = sampler.niter
+    chain_df['log_evidence'] = sampler.logz
+    chain_df['error_log_evidence'] = sampler.logzerr
+    chain_df['information'] = sampler.h
 
     chain_df.to_csv(chain_file, index=False, float_format='%.4f', compression='gzip')

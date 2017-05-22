@@ -102,7 +102,8 @@ def lnprob(gal_params, driv, im_scale, gal_class=gal.Galaxy_Model, **kwargs):
     like = lnlike(gal_params, driv, im_scale, gal_class=gal_class, **kwargs)
     return pri + like
 
-def nested_integrate(pcmd, filters, im_scale, n_points=200, method='multi', max_iters=100000, gal_class=gal.Galaxy_Model, bins=None, **kwargs):
+def nested_integrate(pcmd, filters, im_scale, n_points=200, method='multi', max_call=100000, gal_class=gal.Galaxy_Model, gpu=True,
+                     bins=None, verbose=False, **kwargs):
     print('-initializing models')
     n_filters = len(filters)
     assert(pcmd.shape[0] == n_filters)
@@ -122,11 +123,15 @@ def nested_integrate(pcmd, filters, im_scale, n_points=200, method='multi', max_
     else:
         this_pri_transform = lnprior_transform_ssp
 
-    def this_lnlke(gal_params):
+    def this_lnlike(gal_params):
         return lnlike(gal_params, driv, im_scale, gal_class=gal_class, **kwargs)
 
+    callback = None
+    if verbose:
+        callback = nestle.print_progress
+
     print('-Running nestle sampler')
-    sampler = nestle.sample(this_lnlike, this_pri_transform, ndim, method=method, npoints=n_points, maxiter=max_iters)
+    sampler = nestle.sample(this_lnlike, this_pri_transform, n_dim, method=method, npoints=n_points, maxcall=max_call, callback=callback)
     return sampler
 
 def sample_post(pcmd, filters, im_scale, n_walkers, n_burn, n_sample, 

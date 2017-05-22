@@ -1,8 +1,8 @@
-# setup_files/ball_large.py
+# setup_files/NscaleNpix10.py
 # Ben Cook (bcook@cfa.harvard.edu)
 
 ###############################################
-# SETUP FILE for emcee-ball test, with large ball
+# SETUP FILE for NscaleNpix test (Nscale=1024, Npix=10) with many more walkers
 
 import pcmdpy.instrument as ins
 import pcmdpy.isochrones as iso
@@ -27,10 +27,7 @@ use_gpu = True
 
 ## The number of parallel processes to run.
 ## Using more threads than available CPUs (or GPUs, if gpu=True) will not improve performance
-########## IMPORTANT NOTE:
-##### Not currently implemented for N_threads > 1 and use_gpu = True, will fail
-##### Hopefully this will be addressed soon
-N_threads = 2
+N_threads = 4
 
 ## Setup the multiprocessing pool, for parallel evaluation
 pool = None
@@ -73,19 +70,19 @@ rare_cut = 0.
 ## N_walkers * (N_burn + N_sample) / N_threads
 
 ## The number of emcee walkers
-N_walkers = 512
+N_walkers = 2048
 
 ## The number of burn-in iterations, per walker
 N_burn = 0
 
 ## The number of sampling iterations, per walker
-N_sample = 1000
+N_sample = 100
 
 ###############################################
 ## MODELLING SETTINGS
 
 ## The size (N_scale x N_scale) of the simulated image
-N_scale = 1024
+N_scale = 256
 
 ## The filters (photometry bands) to model
 ## There should be at least 2 filters.
@@ -108,7 +105,7 @@ model_class = gal.Galaxy_Model # 7-bin non-parametric SFH (FULL)
 
 ## for FULL mock model
 ## constant SFH, summing to Npix = 1e2
-Npix = 1e2
+Npix = 1e1
 age_edges = np.array([6., 7., 8., 8.5, 9.0, 9.5, 10., 10.2])
 bin_widths = 10.**age_edges[1:] - 10.**age_edges[:-1]
 logsfhs = np.log10(Npix * bin_widths / np.sum(bin_widths)) 
@@ -117,8 +114,7 @@ params_start = np.append(np.array([-0.2, -2]), logsfhs)
 assert(len(params_start) == model_class._num_params)
 
 ## Initialize the ball with a particular width
-std_large = 0.5
-std = std_large * np.ones_like(params_start)
+std = 0.1 * np.ones_like(params_start)
 p0 = sample_ball(params_start, std, size=N_walkers)
 
 ###############################################
@@ -142,7 +138,7 @@ N_mock = 128
 
 ## FULL model with Npix = 1e2
 model_mock = gal.Galaxy_Model
-Npix = 1e2
+Npix = 1e1
 age_edges = np.array([6., 7., 8., 8.5, 9.0, 9.5, 10., 10.2])
 bin_widths = 10.**age_edges[1:] - 10.**age_edges[:-1]
 logsfhs = np.log10(Npix * bin_widths / np.sum(bin_widths)) 
@@ -157,12 +153,13 @@ _, mags, _, _ = driv.simulate(galaxy_mock, N_mock, fixed_seed=fixed_seed)
 ## The mock data
 data_pcmd = utils.make_pcmd(mags)
 
+
 ##############################################
 ## SAVE FILE SETTINGS
 
 ## Directory to save results to
 results_dir = '/n/home01/bcook/pixcmd/scripts_py/results/'
 ## NAME OF THIS PARTICULAR RUN
-name = "ball_large"
+name = "NscaleNpix1"
 ## the file to save the data
 chain_file = results_dir + name + '.csv'

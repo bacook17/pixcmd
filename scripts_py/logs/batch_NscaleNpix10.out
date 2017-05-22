@@ -1,17 +1,27 @@
 GPU acceleration enabled
-Loading Setup File: setup_files/ball_medium.py
+Loading Setup File: setup_files/NscaleNpix10.py
 for process id: 0
 for process id: 1
+for process id: 2
+for process id: 3
 Starting SourceModule Code
 Starting SourceModule Code
+Starting SourceModule Code
+Starting SourceModule Code
+Getting function
+Past the SourceModule code
+CUDAC Available
+Getting function
+Past the SourceModule code
+CUDAC Available
+Getting function
+Past the SourceModule code
+CUDAC Available
+Getting function
+Past the SourceModule code
+CUDAC Available
 using given n: 0
 Starting SourceModule Code
-Getting function
-Past the SourceModule code
-CUDAC Available
-Getting function
-Past the SourceModule code
-CUDAC Available
 Getting function
 Past the SourceModule code
 CUDAC Available
@@ -21,5 +31,5 @@ Running emcee
 emcee complete, saving results
        JobID    JobName   NTasks  AllocCPUS    AllocGRES  Partition    Elapsed     MaxRSS  MaxVMSize  MaxDiskRead MaxDiskWrite      State 
 ------------ ---------- -------- ---------- ------------ ---------- ---------- ---------- ---------- ------------ ------------ ---------- 
-87920427     batch_bal+                   2        gpu:2        gpu 5-11:33:00                                                    RUNNING 
-87920427.ex+     extern        1          2        gpu:2            5-11:33:00                                                    RUNNING 
+87817795_10  NscaleNpix                   4        gpu:4        gpu   11:36:25                                                    RUNNING 
+87817795_10+     extern        1          4        gpu:4              11:36:25                                                    RUNNING 

@@ -79,7 +79,7 @@ N_walkers = 512
 N_burn = 0
 
 ## The number of sampling iterations, per walker
-N_sample = 100
+N_sample = 1000
 
 ###############################################
 ## MODELLING SETTINGS

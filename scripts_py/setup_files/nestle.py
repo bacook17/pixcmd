@@ -1,8 +1,8 @@
-# setup_files/ball_large.py
+# setup_files/nestle.py
 # Ben Cook (bcook@cfa.harvard.edu)
 
 ###############################################
-# SETUP FILE for emcee-ball test, with large ball
+# SETUP FILE for NESTLE SSP Test
 
 import pcmdpy.instrument as ins
 import pcmdpy.isochrones as iso
@@ -30,7 +30,7 @@ use_gpu = True
 ########## IMPORTANT NOTE:
 ##### Not currently implemented for N_threads > 1 and use_gpu = True, will fail
 ##### Hopefully this will be addressed soon
-N_threads = 2
+N_threads = 1
 
 ## Setup the multiprocessing pool, for parallel evaluation
 pool = None
@@ -72,14 +72,14 @@ rare_cut = 0.
 ## The evaluation time of the fitting process will scale as:
 ## N_walkers * (N_burn + N_sample) / N_threads
 
-## The number of emcee walkers
+## The number of emcee walkers / nestle points
 N_walkers = 512
 
 ## The number of burn-in iterations, per walker
 N_burn = 0
 
-## The number of sampling iterations, per walker
-N_sample = 1000
+## The number of sampling iterations, per walker / max calls for nestle
+N_sample = 100000
 
 ###############################################
 ## MODELLING SETTINGS
@@ -96,29 +96,28 @@ filters = np.array([ins.Filter.HST_F475W(1.0), ins.Filter.HST_F814W(1.0)])
 iso_model = iso.Isochrone_Model(filters)
 
 ## The galaxy class to use to model the data
-#model_class = gal.Galaxy_SSP # simple stellar population (SSP)
-model_class = gal.Galaxy_Model # 7-bin non-parametric SFH (FULL)
+model_class = gal.Galaxy_SSP # simple stellar population (SSP)
+#model_class = gal.Galaxy_Model # 7-bin non-parametric SFH (FULL)
 
 #### Initialize the emcee chains
 # p0 = None #will initialize randomly over the prior space
 
 ## Initialize with a ball around a particular starting position
 ## for SSP mock model
-#params_start = np.array([-0.2, -2., 2., 9.6])
+params_start = np.array([-0.2, -2., 2., 9.6])
 
 ## for FULL mock model
 ## constant SFH, summing to Npix = 1e2
-Npix = 1e2
-age_edges = np.array([6., 7., 8., 8.5, 9.0, 9.5, 10., 10.2])
-bin_widths = 10.**age_edges[1:] - 10.**age_edges[:-1]
-logsfhs = np.log10(Npix * bin_widths / np.sum(bin_widths)) 
-params_start = np.append(np.array([-0.2, -2]), logsfhs)
+#Npix = 1e2
+#age_edges = np.array([6., 7., 8., 8.5, 9.0, 9.5, 10., 10.2])
+#bin_widths = 10.**age_edges[1:] - 10.**age_edges[:-1]
+#logsfhs = np.log10(Npix * bin_widths / np.sum(bin_widths)) 
+#params_start = np.append(np.array([-0.2, -2]), logsfhs)
 
 assert(len(params_start) == model_class._num_params)
 
 ## Initialize the ball with a particular width
-std_large = 0.5
-std = std_large * np.ones_like(params_start)
+std = 0.1 * np.ones_like(params_start)
 p0 = sample_ball(params_start, std, size=N_walkers)
 
 ###############################################
@@ -137,16 +136,16 @@ N_mock = 128
 ## model of the mock galaxy
 
 ## SSP model
-#model_mock = gal.Galaxy_SSP
-#params_mock = np.array([-0.2, -2., 2., 9.6])
+model_mock = gal.Galaxy_SSP
+params_mock = np.array([-0.2, -2., 2., 9.6])
 
 ## FULL model with Npix = 1e2
-model_mock = gal.Galaxy_Model
-Npix = 1e2
-age_edges = np.array([6., 7., 8., 8.5, 9.0, 9.5, 10., 10.2])
-bin_widths = 10.**age_edges[1:] - 10.**age_edges[:-1]
-logsfhs = np.log10(Npix * bin_widths / np.sum(bin_widths)) 
-params_mock = np.append(np.array([-0.2, -2]), logsfhs)
+#model_mock = gal.Galaxy_Model
+#Npix = 1e2
+#age_edges = np.array([6., 7., 8., 8.5, 9.0, 9.5, 10., 10.2])
+#bin_widths = 10.**age_edges[1:] - 10.**age_edges[:-1]
+#logsfhs = np.log10(Npix * bin_widths / np.sum(bin_widths)) 
+#params_mock = np.append(np.array([-0.2, -2]), logsfhs)
 
 galaxy_mock = model_mock(params_mock)
 
@@ -163,6 +162,6 @@ data_pcmd = utils.make_pcmd(mags)
 ## Directory to save results to
 results_dir = '/n/home01/bcook/pixcmd/scripts_py/results/'
 ## NAME OF THIS PARTICULAR RUN
-name = "ball_large"
+name = "nestle_SSP"
 ## the file to save the data
 chain_file = results_dir + name + '.csv'
