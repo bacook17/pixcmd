@@ -18,3 +18,8 @@ CUDAC Available
 Running emcee
 -initializing models
 -Setting up emcee sampler
+emcee complete, saving results
+       JobID    JobName   NTasks  AllocCPUS    AllocGRES  Partition    Elapsed     MaxRSS  MaxVMSize  MaxDiskRead MaxDiskWrite      State 
+------------ ---------- -------- ---------- ------------ ---------- ---------- ---------- ---------- ------------ ------------ ---------- 
+87920421     batch_bal+                   2        gpu:2        gpu 6-02:51:20                                                    RUNNING 
+87920421.ex+     extern        1          2        gpu:2            6-02:51:20                                                    RUNNING 
