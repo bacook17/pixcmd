@@ -22,27 +22,27 @@ Getting function
 Past the SourceModule code
 CUDAC Available
 Getting function
+Getting function
+Past the SourceModule code
+CUDAC Available
 Past the SourceModule code
 CUDAC Available
 Getting function
 Past the SourceModule code
+Getting functionCUDAC Available
+
+Past the SourceModule code
 CUDAC Available
+Getting functionGetting function
+
+Past the SourceModule codePast the SourceModule code
+
+CUDAC AvailableCUDAC Available
+
+Getting function
 Getting function
 Past the SourceModule code
 CUDAC Available
-Getting function
-Past the SourceModule code
-CUDAC Available
-Getting function
-Past the SourceModule code
-CUDAC Available
-Getting function
-Past the SourceModule code
-CUDAC Available
-Getting function
-Past the SourceModule code
-CUDAC Available
-Getting function
 Past the SourceModule code
 CUDAC Available
 Running emcee
@@ -51,17 +51,17 @@ Running emcee
 emcee complete, saving results
        JobID    JobName   NTasks  AllocCPUS    AllocGRES  Partition    Elapsed     MaxRSS  MaxVMSize  MaxDiskRead MaxDiskWrite      State 
 ------------ ---------- -------- ---------- ------------ ---------- ---------- ---------- ---------- ------------ ------------ ---------- 
-87531116_5         rare                   8        gpu:8        gpu   03:30:21                                                    RUNNING 
-87531116_5.+     extern        1          8        gpu:8              03:30:21                                                    RUNNING 
-87531116_1         rare                   8        gpu:8        gpu   02:59:39                                                  COMPLETED 
-87531116_1.+      batch        1          8        gpu:8              02:59:39   2297668K 931529768K   388160.58M   188996.38M  COMPLETED 
-87531116_1.+     extern        1          8        gpu:8              02:59:39       572K    100900K        0.00M            0  COMPLETED 
-87531116_2         rare                   8        gpu:8        gpu   03:02:05                                                  COMPLETED 
-87531116_2.+      batch        1          8        gpu:8              03:02:05   2256924K 931377840K   388789.41M   189195.46M  COMPLETED 
-87531116_2.+     extern        1          8        gpu:8              03:02:05       568K    100900K        0.00M            0  COMPLETED 
-87531116_3         rare                   8        gpu:8        gpu   03:25:52                                                  COMPLETED 
-87531116_3.+      batch        1          8        gpu:8              03:25:52   2285180K 931759948K   429934.06M   202162.64M  COMPLETED 
-87531116_3.+     extern        1          8        gpu:8              03:25:52       568K    100900K        0.00M            0  COMPLETED 
-87531116_4         rare                   8        gpu:8        gpu   03:34:22                                                  COMPLETED 
-87531116_4.+      batch        1          8        gpu:8              03:34:22   2334544K 931898620K   448602.36M   208106.05M  COMPLETED 
-87531116_4.+     extern        1          8        gpu:8              03:34:23       572K    100900K        0.00M            0  COMPLETED 
+88002831_5         rare                   8        gpu:8        gpu   02:59:10                                                    RUNNING 
+88002831_5.+     extern        1          8        gpu:8              02:59:10                                                    RUNNING 
+88002831_1         rare                   8        gpu:8        gpu   03:13:50                                                  COMPLETED 
+88002831_1.+      batch        1          8        gpu:8              03:13:50   2326844K 931674232K   411404.82M   196324.96M  COMPLETED 
+88002831_1.+     extern        1          8        gpu:8              03:13:50       568K    100900K        0.00M            0  COMPLETED 
+88002831_2         rare                   8        gpu:8        gpu   02:57:26                                                  COMPLETED 
+88002831_2.+      batch        1          8        gpu:8              02:57:26   2403680K 931601196K   389728.77M   189492.20M  COMPLETED 
+88002831_2.+     extern        1          8        gpu:8              02:57:26       572K    100900K        0.00M            0  COMPLETED 
+88002831_3         rare                   8        gpu:8        gpu   01:01:57                                                 CANCELLED+ 
+88002831_3.+      batch        1          8        gpu:8              01:02:01   2302136K 931429436K   134922.06M    66360.47M  CANCELLED 
+88002831_3.+     extern        1          8        gpu:8              01:01:58       572K    100900K        0.00M            0  COMPLETED 
+88002831_4         rare                   8        gpu:8        gpu   02:49:07                                                  COMPLETED 
+88002831_4.+      batch        1          8        gpu:8              02:49:07   2316612K 931878480K   382114.21M   187001.35M  COMPLETED 
+88002831_4.+     extern        1          8        gpu:8              02:49:07       576K    100904K        0.00M            0  COMPLETED 

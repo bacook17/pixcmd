@@ -1,13 +1,13 @@
 GPU acceleration enabled
 Loading Setup File: setup_files/rare4.py
-for process id: 0
-for process id: 1
-for process id: 2
 for process id: 3
-for process id: 4
-for process id: 5
-for process id: 6
+for process id: 1for process id: 2
+
+for process id: 0for process id: 4
+
 for process id: 7
+for process id: 5for process id: 6
+
 using given n: 0
 Starting SourceModule Code
 Starting SourceModule Code
@@ -19,30 +19,30 @@ Starting SourceModule Code
 Starting SourceModule Code
 Starting SourceModule Code
 Getting function
+Getting function
+Past the SourceModule codePast the SourceModule code
+
+CUDAC AvailableCUDAC Available
+
+Getting function
+Getting function
+Past the SourceModule code
+CUDAC Available
+Past the SourceModule code
+CUDAC Available
+Getting function
+Getting function
+Past the SourceModule code
+CUDAC Available
 Past the SourceModule code
 CUDAC Available
 Getting function
 Past the SourceModule code
 CUDAC Available
 Getting function
-Past the SourceModule code
+Getting functionPast the SourceModule code
+
 CUDAC Available
-Getting function
-Past the SourceModule code
-CUDAC Available
-Getting function
-Past the SourceModule code
-CUDAC Available
-Getting function
-Past the SourceModule code
-CUDAC Available
-Getting function
-Past the SourceModule code
-CUDAC Available
-Getting function
-Past the SourceModule code
-CUDAC Available
-Getting function
 Past the SourceModule code
 CUDAC Available
 Running emcee
@@ -51,5 +51,5 @@ Running emcee
 emcee complete, saving results
        JobID    JobName   NTasks  AllocCPUS    AllocGRES  Partition    Elapsed     MaxRSS  MaxVMSize  MaxDiskRead MaxDiskWrite      State 
 ------------ ---------- -------- ---------- ------------ ---------- ---------- ---------- ---------- ------------ ------------ ---------- 
-87531116_4         rare                   8        gpu:8        gpu   03:34:22                                                    RUNNING 
-87531116_4.+     extern        1          8        gpu:8              03:34:22                                                    RUNNING 
+88002831_4         rare                   8        gpu:8        gpu   02:49:07                                                    RUNNING 
+88002831_4.+     extern        1          8        gpu:8              02:49:07                                                    RUNNING 
