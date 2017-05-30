@@ -73,13 +73,13 @@ rare_cut = 0.
 ## N_walkers * (N_burn + N_sample) / N_threads
 
 ## The number of emcee walkers / nestle points
-N_walkers = 512
+N_walkers = 64
 
 ## The number of burn-in iterations, per walker
 N_burn = 0
 
 ## The number of sampling iterations, per walker / max calls for nestle
-N_sample = 100000
+N_sample = 2000
 
 ###############################################
 ## MODELLING SETTINGS
