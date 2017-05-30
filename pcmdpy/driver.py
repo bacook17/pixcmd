@@ -46,17 +46,34 @@ class Driver:
         self.hess_data = hess
         self.err_data = err
         self._data_init = True
+        self.pcmd_data = pcmd
 
-    def loglike(self, pcmd, use_gaussian=True, charlie_err=False, add_total=False, **kwargs):
+    def loglike(self, pcmd, use_gaussian=True, charlie_err=False, like_mode=0, **kwargs):
         try:
             assert(self._data_init)
         except AssertionError:
             print('Cannot evaluate, as data has not been initialized (use driver.initialize_data)')
             return
 
+        #fit a 2D gaussian to the points
+        means = np.mean(pcmd, axis=1)
+        cov = np.cov(pcmd)
+
+        normal_model = multivariate_normal(mean=means, cov=cov)
+        normal_term = np.sum(normal_model.logpdf(self.pcmd_data.T))
+        
+        if like_mode == 2:
+            #ONLY use the normal approximation
+            log_like = normal_term
+            return log_like
+        
         counts_model, hess_model, err_model = utils.make_hess(pcmd, self.hess_bins, charlie_err=charlie_err)
         n_model = pcmd.shape[1]
 
+        #the fraction of bins populated by both the model and the data
+        #NOT including the "everything else" bin
+        frac_common = np.logical_and(counts_model, self.counts_data)[:-1].mean()
+        
         if use_gaussian:
             #add error in quadrature
             combined_var = (self.err_data**2 + err_model**2) 
@@ -69,9 +86,13 @@ class Driver:
             counts_model *= float(self.n_data) / n_model #normalize to same number of pixels as data
             log_like = np.sum(poisson.logpmf(self.counts_data, counts_model))
 
-        if add_total:
+        if like_mode==1:
             #evaluate the likelihood of the model datapoints assuming a 2D gaussian fit to the data
-            log_like += np.sum(self.gaussian_data.logpdf(pcmd.T))
+            log_like += normal_term
+
+        if like_mode==3:
+            #combine the two terms, weighted by the amount of overlap
+            log_like = f*log_like +  (1 - frac_common) * normal_term 
             
         return log_like
 

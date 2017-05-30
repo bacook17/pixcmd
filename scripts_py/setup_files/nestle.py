@@ -25,6 +25,9 @@ import sys
 ## Whether to use GPU acceleration
 use_gpu = True
 
+## Whether to output progress steps
+verbose = True
+
 ## The number of parallel processes to run.
 ## Using more threads than available CPUs (or GPUs, if gpu=True) will not improve performance
 ########## IMPORTANT NOTE:
@@ -63,7 +66,7 @@ if use_cudac:
 fixed_seed = True
 
 ## Whether to include a Gaussian likelihood term
-add_total = False
+like_mode = 0
 
 ## Cut out stars rarer than some limit (as fraction of total mass)
 rare_cut = 0.
