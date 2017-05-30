@@ -160,6 +160,6 @@ data_pcmd = utils.make_pcmd(mags)
 ## Directory to save results to
 results_dir = '/n/home01/bcook/pixcmd/scripts_py/results/'
 ## NAME OF THIS PARTICULAR RUN
-name = "NscaleNpix1"
+name = "NscaleNpix10"
 ## the file to save the data
 chain_file = results_dir + name + '.csv'
