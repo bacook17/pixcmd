@@ -31,14 +31,14 @@ def lnprior_ssp(gal_params):
 def lnprior_transform_ssp(normed_params):
     results = np.zeros(len(normed_params))
     #Flat priors
-    # log (z/z_solar) between -2 and 0.5
-    results[0] = -2. + 2.5*normed_params[0]
-    # E(B-V) between 1e-2 and 3
-    results[1] = -2 + 2.5*normed_params[1]
-    #log Npix between -1 and 6
-    results[2] = -1 + 7*normed_params[2]
-    #age between 6 (1 Myr) and 10.3 (50 Gyr)
-    results[3] = 6 + 4.3*normed_params[3]
+    # log (z/z_solar) between -0.5 and 0.0
+    results[0] = -.5 + .5*normed_params[0]
+    # E(B-V) between -2.5 and -1.5
+    results[1] = -2.5 + normed_params[1]
+    #log Npix between 1.5 and 2.5
+    results[2] = 1.5 + normed_params[2]
+    #age between 9.5 (3 Gyr) and 10.0 (10 Gyr)
+    results[3] = 9.5 + 0.5*normed_params[3]
     return results
 
 def lnprior(gal_params):
