@@ -102,8 +102,8 @@ def lnprob(gal_params, driv, im_scale, gal_class=gal.Galaxy_Model, **kwargs):
     like = lnlike(gal_params, driv, im_scale, gal_class=gal_class, **kwargs)
     return pri + like
 
-def nested_integrate(pcmd, filters, im_scale, n_points=200, method='multi', max_call=100000, gal_class=gal.Galaxy_Model, gpu=True,
-                     bins=None, verbose=False, **kwargs):
+def nested_integrate(pcmd, filters, im_scale, N_points, method='multi', max_call=100000, gal_class=gal.Galaxy_Model, gpu=True,
+                     bins=None, verbose=False, like_mode=0, **kwargs):
     print('-initializing models')
     n_filters = len(filters)
     assert(pcmd.shape[0] == n_filters)
@@ -124,30 +124,30 @@ def nested_integrate(pcmd, filters, im_scale, n_points=200, method='multi', max_
         this_pri_transform = lnprior_transform_ssp
 
     def this_lnlike(gal_params):
-        return lnlike(gal_params, driv, im_scale, gal_class=gal_class, **kwargs)
+        return lnlike(gal_params, driv, im_scale, gal_class=gal_class, like_mode=like_mode, **kwargs)
 
     callback = None
     if verbose:
         callback = nestle.print_progress
 
     print('-Running nestle sampler')
-    sampler = nestle.sample(this_lnlike, this_pri_transform, n_dim, method=method, npoints=n_points, maxcall=max_call, callback=callback)
+    sampler = nestle.sample(this_lnlike, this_pri_transform, n_dim, method=method, npoints=N_points, maxcall=max_call, callback=callback)
     return sampler
 
-def sample_post(pcmd, filters, im_scale, n_walkers, n_burn, n_sample, 
-                p0=None, gal_class=gal.Galaxy_Model, gpu=True, bins=None, threads=1, fixed_seed=True, add_total=True,
-                rare_cut=0.,
+def sample_post(pcmd, filters, im_scale, N_walkers, N_burn, N_sample, 
+                p0=None, gal_class=gal.Galaxy_Model, gpu=True, bins=None, threads=1, fixed_seed=True,
+                rare_cut=0., like_mode=0, 
                 **kwargs):
 
     print('-initializing models')
-    n_filters = len(filters)
-    assert(pcmd.shape[0] == n_filters)
-    n_dim = gal_class._num_params
+    N_filters = len(filters)
+    assert(pcmd.shape[0] == N_filters)
+    N_dim = gal_class._num_params
     
     iso_model = iso.Isochrone_Model(filters)
     driv = driver.Driver(iso_model, gpu=gpu)
     if bins is None:
-        assert(n_filters == 2)
+        assert(N_filters == 2)
         xbins = np.arange(-1.5, 4.6, 0.05)
         ybins = np.arange(-12, 15.6, 0.05)
         bins = np.array([xbins,ybins])
@@ -155,44 +155,44 @@ def sample_post(pcmd, filters, im_scale, n_walkers, n_burn, n_sample,
 
     print('-Setting up emcee sampler')
     
-    sampler = emcee.EnsembleSampler(n_walkers, n_dim, lnprob, args=[driv, im_scale], kwargs={'gal_class':gal_class, 'fixed_seed':fixed_seed,'add_total':add_total, 'rare_cut':rare_cut},
+    sampler = emcee.EnsembleSampler(N_walkers, N_dim, lnprob, args=[driv, im_scale], kwargs={'gal_class':gal_class, 'fixed_seed':fixed_seed,'rare_cut':rare_cut, "like_mode":like_mode},
                                     threads=threads, **kwargs)
 
     if p0 is None:
         if (gal_class is gal.Galaxy_Model):
             np.random.seed(0)
-            z0 = np.random.uniform(-2., 0.5, n_walkers)
+            z0 = np.random.uniform(-2., 0.5, N_walkers)
             np.random.seed(0)
-            dust0 = np.random.uniform(-6, 0, n_walkers)
+            dust0 = np.random.uniform(-6, 0, N_walkers)
             np.random.seed(0)
-            npix0 = 10.**np.random.uniform(-1, 6, n_walkers)
-            sfh0 = 10.**np.random.uniform(-10, 0, (7, n_walkers))
+            npix0 = 10.**np.random.uniform(-1, 6, N_walkers)
+            sfh0 = 10.**np.random.uniform(-10, 0, (7, N_walkers))
             sfh0 *= npix0 / np.sum(sfh0, axis=0)
             sfh0 = np.log10(sfh0)
             p0 = np.array([z0, dust0])
             p0 = np.concatenate([p0, sfh0]).T
         else:
             np.random.seed(0)
-            z0 = np.random.uniform(-2., 0.5, n_walkers)
+            z0 = np.random.uniform(-2., 0.5, N_walkers)
             np.random.seed(0)
-            dust0 = np.random.uniform(-6, 0, n_walkers)
+            dust0 = np.random.uniform(-6, 0, N_walkers)
             np.random.seed(0)
-            npix0 = np.random.uniform(-1, 6, n_walkers)
+            npix0 = np.random.uniform(-1, 6, N_walkers)
             np.random.seed(0)
-            age0 = np.random.uniform(6, 10.3, n_walkers)
+            age0 = np.random.uniform(6, 10.3, N_walkers)
             p0 = np.array([z0, dust0, npix0, age0]).T
-    assert(p0.shape == (n_walkers, n_dim))
+    assert(p0.shape == (N_walkers, N_dim))
 
-    if n_burn > 0:
+    if N_burn > 0:
         print('-emcee burn-in')
-        pos,prob,state = sampler.run_mcmc(p0, n_burn)
+        pos,prob,state = sampler.run_mcmc(p0, N_burn)
 
         print('-emcee sampling')
         sampler.reset()
-        sampler.run_mcmc(pos, n_sample)
+        sampler.run_mcmc(pos, N_sample)
 
     else:
-        sampler.run_mcmc(p0, n_sample)
+        sampler.run_mcmc(p0, N_sample)
 
     return sampler
 

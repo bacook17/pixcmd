@@ -25,6 +25,9 @@ import sys
 ## Whether to use GPU acceleration
 use_gpu = True
 
+## Whether to output progress steps
+verbose = True
+
 ## The number of parallel processes to run.
 ## Using more threads than available CPUs (or GPUs, if gpu=True) will not improve performance
 ########## IMPORTANT NOTE:
@@ -63,7 +66,7 @@ if use_cudac:
 fixed_seed = True
 
 ## Whether to include a Gaussian likelihood term
-add_total = False
+like_mode = 0
 
 ## Cut out stars rarer than some limit (as fraction of total mass)
 rare_cut = 0.
@@ -72,14 +75,14 @@ rare_cut = 0.
 ## The evaluation time of the fitting process will scale as:
 ## N_walkers * (N_burn + N_sample) / N_threads
 
-## The number of emcee walkers / nestle points
-N_walkers = 512
+## The number of nestle points
+N_points = 512
 
 ## The number of burn-in iterations, per walker
 N_burn = 0
 
-## The number of sampling iterations, per walker / max calls for nestle
-N_sample = 100000
+## The number of max likelihood calls for nestle
+N_max = 100000
 
 ###############################################
 ## MODELLING SETTINGS
