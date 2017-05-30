@@ -128,7 +128,12 @@ def nested_integrate(pcmd, filters, im_scale, N_points, method='multi', max_call
 
     callback = None
     if verbose:
-        callback = nestle.print_progress
+        def my_progress(callback_info):
+            it = callback_info['it']
+            logz = callback_info['logz']
+            n_calls = driv.num_calls
+            print('Iteration Number: %d, Likelihood Calls: %d, logz: %.3f'%(it, n_calls, logz)) 
+        callback = my_progress
 
     print('-Running nestle sampler')
     sampler = nestle.sample(this_lnlike, this_pri_transform, n_dim, method=method, npoints=N_points, maxcall=max_call, callback=callback)
