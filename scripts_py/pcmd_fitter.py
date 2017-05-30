@@ -34,9 +34,12 @@ if __name__ == "__main__":
     args['p0'] = setup.p0
     try:
         args['like_mode'] = setup.like_mode
+    except:
+        pass
     try:
         args['rare_cut'] = setup.rare_cut
-
+    except:
+        pass
     #if setup.data_is_mock:
     #    args['galaxy_mock'] = setup.galaxy_mock
     #    args['N_mock'] = setup.N_mock

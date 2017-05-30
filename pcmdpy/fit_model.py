@@ -9,6 +9,7 @@ import driver
 import utils
 import emcee
 import nestle
+from datetime import datetime
 
 def lnprior_ssp(gal_params):
     z, log_dust, log_Npix, age = gal_params
@@ -132,7 +133,9 @@ def nested_integrate(pcmd, filters, im_scale, N_points, method='multi', max_call
             it = callback_info['it']
             logz = callback_info['logz']
             n_calls = driv.num_calls
+            print('----------------')
             print('Iteration Number: %d, Likelihood Calls: %d, logz: %.3f'%(it, n_calls, logz)) 
+            print('Current time: %s'%(str(datetime.now())))
         callback = my_progress
 
     print('-Running nestle sampler')

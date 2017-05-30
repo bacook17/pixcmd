@@ -58,6 +58,7 @@ class Driver:
             return
 
         self.num_calls += 1
+        print(self.num_calls)
 
         #fit a 2D gaussian to the points
         means = np.mean(pcmd, axis=1)

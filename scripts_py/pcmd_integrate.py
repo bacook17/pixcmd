@@ -30,8 +30,12 @@ if __name__ == "__main__":
     args['fixed_seed'] = setup.fixed_seed
     try:
         args['like_mode'] = setup.like_mode
+    except:
+        pass
     try:
         args['rare_cut'] = setup.rare_cut
+    except:
+        pass
     args['gal_class'] = setup.model_class
     args['verbose'] = setup.verbose
     

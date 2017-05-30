@@ -66,7 +66,7 @@ if use_cudac:
 fixed_seed = True
 
 ## Whether to include a Gaussian likelihood term
-like_mode = 0
+like_mode = 2 #ONLY use the normal approximation
 
 ## Cut out stars rarer than some limit (as fraction of total mass)
 rare_cut = 0.
@@ -75,14 +75,14 @@ rare_cut = 0.
 ## The evaluation time of the fitting process will scale as:
 ## N_walkers * (N_burn + N_sample) / N_threads
 
-## The number of emcee walkers / nestle points
-N_walkers = 64
+## The number of nestle points
+N_points = 64
 
 ## The number of burn-in iterations, per walker
 N_burn = 0
 
-## The number of sampling iterations, per walker / max calls for nestle
-N_sample = 2000
+## The number of max calls for nestle
+N_max = 2000
 
 ###############################################
 ## MODELLING SETTINGS
@@ -120,8 +120,8 @@ params_start = np.array([-0.2, -2., 2., 9.6])
 assert(len(params_start) == model_class._num_params)
 
 ## Initialize the ball with a particular width
-std = 0.1 * np.ones_like(params_start)
-p0 = sample_ball(params_start, std, size=N_walkers)
+#std = 0.1 * np.ones_like(params_start)
+#p0 = sample_ball(params_start, std, size=N_walkers)
 
 ###############################################
 ## DATA SETTINGS
