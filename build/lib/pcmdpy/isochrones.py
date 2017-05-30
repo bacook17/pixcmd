@@ -5,10 +5,6 @@
 
 import numpy as np
 import pandas as pd
-try:
-    from pkg_resources import resource_filename
-except ImportError:
-    pass
 
 # The pre-computed MIST model metallicities
 _z_arr_default = np.array([-2.15, -1.13, -0.73, -0.52, -0.22, 0., 0.3, 0.5])
@@ -30,23 +26,16 @@ class Isochrone_Model:
        __init__ -- Pass a list of Filter objects, path to MIST model files, and array of metallicities.
     """
     # CHANGE PATH 
-    def __init__(self, filters, MIST_path=None, z_arr=_z_arr_default):
+    def __init__(self, filters, path='/n/home01/bcook/pixcmd/pcmdpy/isoc_csv/', z_arr=_z_arr_default):
         """Creates a new Isochrone_Model, given a list of Filter objects
         
         Arguments:
            filters -- list of Filter objects
         Keyword Arguments:
-           MIST_path -- directory containing MIST model files
+           path -- directory containing MIST model files
            z_arr -- array of MIST metallicity values to use
         """
 
-        #Locate MIST files
-        if MIST_path is None:
-            try:
-                MIST_path = resource_filename('pcmdpy', 'isoc_csv/')
-            except:
-                MIST_path = '/n/home01/bcook/pixcmd/pcmdpy/isoc_csv/'
-        
         #Import all MIST model files into Pandas dataframe
         self.MIST_df = pd.DataFrame()
         self._z_arr = z_arr
@@ -55,7 +44,7 @@ class Isochrone_Model:
         self.filter_names = [f.tex_name for f in self.filters]
         #MIST files are organized by metallicity
         for z in self._z_arr:
-            MIST_doc = MIST_path + 'MIST_v29_Z'+ self._z_to_str(z) + '_x5FEWER.csv'
+            MIST_doc = path + 'MIST_v29_Z'+ self._z_to_str(z) + '_x5FEWER.csv'
             try:
                 new_df = pd.read_csv(MIST_doc)
                 new_df['z'] = z
