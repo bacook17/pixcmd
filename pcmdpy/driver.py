@@ -30,6 +30,8 @@ class Driver:
             self.gpu_on = False
         #No data has been initialized
         self._data_init = False
+        self.num_sims = 0
+        self.num_calls = 0
         
     def initialize_data(self, pcmd, bins, charlie_err=False, **kwargs):
         self.hess_bins = bins
@@ -54,6 +56,8 @@ class Driver:
         except AssertionError:
             print('Cannot evaluate, as data has not been initialized (use driver.initialize_data)')
             return
+
+        self.num_calls += 1
 
         #fit a 2D gaussian to the points
         means = np.mean(pcmd, axis=1)
@@ -111,5 +115,6 @@ class Driver:
         else:
             convolved_images = raw_images
             conv_mags = raw_mags
-            
+
+        self.num_sims += 1
         return raw_mags, conv_mags, raw_images, convolved_images
