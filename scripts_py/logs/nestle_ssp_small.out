@@ -1,0 +1,6 @@
+GPU acceleration enabled
+Loading Setup File: setup_files/nestle_ssp_small.py
+       JobID    JobName   NTasks  AllocCPUS    AllocGRES  Partition    Elapsed     MaxRSS  MaxVMSize  MaxDiskRead MaxDiskWrite      State 
+------------ ---------- -------- ---------- ------------ ---------- ---------- ---------- ---------- ------------ ------------ ---------- 
+88885354     batch_nes+                   2        gpu:1        gpu   00:00:28                                                    RUNNING 
+88885354.ex+     extern        1          2        gpu:1              00:00:28                                                    RUNNING 

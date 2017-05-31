@@ -32,6 +32,19 @@ def lnprior_ssp(gal_params):
 def lnprior_transform_ssp(normed_params):
     results = np.zeros(len(normed_params))
     #Flat priors
+    # log (z/z_solar) between -2 and 0.5
+    results[0] = -2 + 2.5*normed_params[0]
+    # E(B-V) between 1e-3 and 3
+    results[1] = -3 + 3.5*normed_params[1]
+    #log Npix between -1 and 6
+    results[2] = -1 + 7*normed_params[2]
+    #age between 6 (1 Myr) and 10.3 (50 Gyr)
+    results[3] = 6 + 4.3*normed_params[3]
+    return results
+
+def lnprior_transform_ssp_small(normed_params):
+    results = np.zeros(len(normed_params))
+    #Flat priors
     # log (z/z_solar) between -0.5 and 0.0
     results[0] = -.5 + .5*normed_params[0]
     # E(B-V) between -2.5 and -1.5
@@ -80,6 +93,21 @@ def lnprior_transform(normed_params):
     results[-1] = np.log10(10.**log_Npix - total)
     return results
 
+def lnprior_transform_small(normed_params):
+    results = np.zeros(len(normed_params))
+    #Flat priors
+    # log (z/z_solar) between -0.5 and 0.0
+    results[0] = -0.5 + 0.5*normed_params[0]
+    # E(B-V) between 3e-3 and 3e-2
+    results[1] = -2.5 + normed_params[1]
+    # log M_i between +/- 0.5 of truth
+    appx_truth = np.array([-1.25, -0.25,  0.135,  0.635,
+                            1.135, 1.635,  1.57])
+    for i in range(2, len(normed_params)-1):
+        results[i] = appx_truth[i-2] - 0.5 + normed_params[i]
+    return results
+
+
 def lnlike(gal_params, driv, im_scale, gal_class=gal.Galaxy_Model, **kwargs):
     if (gal_class is gal.Galaxy_SSP):
         pri = lnprior_ssp(gal_params)
@@ -105,7 +133,7 @@ def lnprob(gal_params, driv, im_scale, gal_class=gal.Galaxy_Model, **kwargs):
     return pri + like
 
 def nested_integrate(pcmd, filters, im_scale, N_points, method='multi', max_call=100000, gal_class=gal.Galaxy_Model, gpu=True,
-                     bins=None, verbose=False, **kwargs):
+                     bins=None, verbose=False, small_prior=False, dlogz=None, **kwargs):
     print('-initializing models')
     n_filters = len(filters)
     assert(pcmd.shape[0] == n_filters)
@@ -121,9 +149,15 @@ def nested_integrate(pcmd, filters, im_scale, N_points, method='multi', max_call
     driv.initialize_data(pcmd,bins)
 
     if gal_class is gal.Galaxy_Model:
-        this_pri_transform = lnprior_transform
+        if small_prior:
+            this_pri_transform = lnprior_transform_small
+        else:
+            this_pri_transform = lnprior_transform
     else:
-        this_pri_transform = lnprior_transform_ssp
+        if small_prior:
+            this_pri_transform = lnprior_transform_ssp_small
+        else:
+            this_pri_transform = lnprior_transform_ssp
 
     def this_lnlike(gal_params):
         return lnlike(gal_params, driv, im_scale, gal_class=gal_class, **kwargs)
@@ -140,9 +174,19 @@ def nested_integrate(pcmd, filters, im_scale, N_points, method='multi', max_call
             sys.stdout.flush()
         callback = my_progress
 
+    #Initialize the nestle sampler with a different random state than global
+    #This is important because the driver resets the global seed
+    rstate = np.random.RandomState(1234)
+
     print('-Running nestle sampler')
     sampler = nestle.sample(this_lnlike, this_pri_transform, n_dim, method=method, npoints=N_points, maxcall=max_call, callback=callback,
-                            update_interval=1)
+                            update_interval=1, rstate=rstate, dlogz=dlogz)
+
+    if driv.num_calls >= (max_call - 1):
+        print('Nestle terminated after surpassing max likelihood calls')
+    else:
+        print('Nestle reached desired convergence')
+
     return sampler
 
 def sample_post(pcmd, filters, im_scale, N_walkers, N_burn, N_sample, 

@@ -29,8 +29,13 @@ if __name__ == "__main__":
     args['gpu'] = setup.use_gpu
     args['fixed_seed'] = setup.fixed_seed
     args['like_mode'] = setup.like_mode
+    args['small_prior'] = setup.small_prior
     try:
         args['rare_cut'] = setup.rare_cut
+    except:
+        pass
+    try:
+        args['dlogz'] = setup.dlogz
     except:
         pass
     args['gal_class'] = setup.model_class
@@ -41,7 +46,7 @@ if __name__ == "__main__":
 
     print('Nestle complete, saving results')
     #Used for saving output
-    param_names = model_class._param_names
+    param_names = setup.model_class._param_names
     N_params = len(param_names)
     chain_file = setup.chain_file
     
