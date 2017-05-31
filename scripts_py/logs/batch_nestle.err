@@ -1,4 +1,7 @@
 Vendor:  Continuum Analytics, Inc.
 Package: mkl
 Message: trial mode expires in 30 days
-slurmstepd: error: *** JOB 88837599 ON supermicgpu01 CANCELLED AT 2017-05-30T14:32:01 ***
+Traceback (most recent call last):
+  File "pcmd_integrate.py", line 44, in <module>
+    param_names = model_class._param_names
+NameError: name 'model_class' is not defined

@@ -5,6 +5,7 @@ import numpy as np
 import instrument as ins
 import isochrones as iso
 import galaxy as gal
+import sys
 import driver
 import utils
 import emcee
@@ -104,7 +105,7 @@ def lnprob(gal_params, driv, im_scale, gal_class=gal.Galaxy_Model, **kwargs):
     return pri + like
 
 def nested_integrate(pcmd, filters, im_scale, N_points, method='multi', max_call=100000, gal_class=gal.Galaxy_Model, gpu=True,
-                     bins=None, verbose=False, like_mode=0, **kwargs):
+                     bins=None, verbose=False, **kwargs):
     print('-initializing models')
     n_filters = len(filters)
     assert(pcmd.shape[0] == n_filters)
@@ -125,7 +126,7 @@ def nested_integrate(pcmd, filters, im_scale, N_points, method='multi', max_call
         this_pri_transform = lnprior_transform_ssp
 
     def this_lnlike(gal_params):
-        return lnlike(gal_params, driv, im_scale, gal_class=gal_class, like_mode=like_mode, **kwargs)
+        return lnlike(gal_params, driv, im_scale, gal_class=gal_class, **kwargs)
 
     callback = None
     if verbose:
@@ -134,12 +135,14 @@ def nested_integrate(pcmd, filters, im_scale, N_points, method='multi', max_call
             logz = callback_info['logz']
             n_calls = driv.num_calls
             print('----------------')
-            print('Iteration Number: %d, Likelihood Calls: %d, logz: %.3f'%(it, n_calls, logz)) 
+            print('Iteration Number: %d, Likelihood Calls: %d, logz: %.3e'%(it, n_calls, logz)) 
             print('Current time: %s'%(str(datetime.now())))
+            sys.stdout.flush()
         callback = my_progress
 
     print('-Running nestle sampler')
-    sampler = nestle.sample(this_lnlike, this_pri_transform, n_dim, method=method, npoints=N_points, maxcall=max_call, callback=callback)
+    sampler = nestle.sample(this_lnlike, this_pri_transform, n_dim, method=method, npoints=N_points, maxcall=max_call, callback=callback,
+                            update_interval=1)
     return sampler
 
 def sample_post(pcmd, filters, im_scale, N_walkers, N_burn, N_sample, 

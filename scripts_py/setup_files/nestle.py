@@ -63,10 +63,10 @@ if use_cudac:
         sys.exit(2)
 
 ## Whether to use a fixed random-number seed (decreases stochasticity of likelihood calls)
-fixed_seed = True
+fixed_seed = False
 
 ## Whether to include a Gaussian likelihood term
-like_mode = 2 #ONLY use the normal approximation
+like_mode = 3 #weight the normal approximation by overlap
 
 ## Cut out stars rarer than some limit (as fraction of total mass)
 rare_cut = 0.
@@ -76,13 +76,13 @@ rare_cut = 0.
 ## N_walkers * (N_burn + N_sample) / N_threads
 
 ## The number of nestle points
-N_points = 64
+N_points = 200
 
 ## The number of burn-in iterations, per walker
 N_burn = 0
 
 ## The number of max calls for nestle
-N_max = 2000
+N_max = 20000
 
 ###############################################
 ## MODELLING SETTINGS

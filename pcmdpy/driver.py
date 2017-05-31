@@ -58,7 +58,6 @@ class Driver:
             return
 
         self.num_calls += 1
-        print(self.num_calls)
 
         #fit a 2D gaussian to the points
         means = np.mean(pcmd, axis=1)
@@ -97,7 +96,7 @@ class Driver:
 
         if like_mode==3:
             #combine the two terms, weighted by the amount of overlap
-            log_like = f*log_like +  (1 - frac_common) * normal_term 
+            log_like = frac_common*log_like +  (1 - frac_common) * normal_term 
             
         return log_like
 

@@ -28,10 +28,7 @@ if __name__ == "__main__":
     args['max_call'] = setup.N_max
     args['gpu'] = setup.use_gpu
     args['fixed_seed'] = setup.fixed_seed
-    try:
-        args['like_mode'] = setup.like_mode
-    except:
-        pass
+    args['like_mode'] = setup.like_mode
     try:
         args['rare_cut'] = setup.rare_cut
     except:
