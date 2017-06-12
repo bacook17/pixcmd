@@ -41,10 +41,10 @@ if __name__ == "__main__":
     args['gal_class'] = setup.model_class
     args['verbose'] = setup.verbose
     
-    print('Running Nestle')
+    print('Running Nested Sampling')
     sampler = fit_model.nested_integrate(**args)
 
-    print('Nestle complete, saving results')
+    print('Nested Sampling Complete, saving results')
     #Used for saving output
     param_names = setup.model_class._param_names
     N_params = len(param_names)
@@ -63,4 +63,4 @@ if __name__ == "__main__":
     chain_df['error_log_evidence'] = sampler.logzerr
     chain_df['information'] = sampler.h
 
-    chain_df.to_csv(chain_file, index=False, float_format='%.4f', compression='gzip')
+    chain_df.to_csv(chain_file, index=False, float_format='%.3e', compression='gzip')

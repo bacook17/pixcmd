@@ -66,7 +66,7 @@ if use_cudac:
 fixed_seed = True
 
 ## Whether to include a Gaussian likelihood term
-like_mode = 3 #weight the normal approximation by overlap
+like_mode = 2 #use only the gaussian model
 
 ## Cut out stars rarer than some limit (as fraction of total mass)
 rare_cut = 0.
