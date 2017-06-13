@@ -38,11 +38,16 @@ if __name__ == "__main__":
         args['dlogz'] = setup.dlogz
     except:
         pass
+    try:
+        args['use_dynesty'] = setup.use_dynesty
+    except:
+        args['use_dynesty'] = False
+    
     args['gal_class'] = setup.model_class
     args['verbose'] = setup.verbose
     
     print('Running Nested Sampling')
-    sampler = fit_model.nested_integrate(**args)
+    results = fit_model.nested_integrate(**args)
 
     print('Nested Sampling Complete, saving results')
     #Used for saving output
@@ -53,14 +58,11 @@ if __name__ == "__main__":
     #Save results of the chain
     chain_df = pd.DataFrame()
     for d in range(N_params):
-        chain_df[param_names[d]] = sampler.samples[:,d]
-    chain_df['lnlike'] = sampler.logl
-    chain_df['weights'] = sampler.weights
-    chain_df['logvol'] = sampler.logvol
-
-    chain_df['niter'] = sampler.niter
-    chain_df['log_evidence'] = sampler.logz
-    chain_df['error_log_evidence'] = sampler.logzerr
-    chain_df['information'] = sampler.h
-
+        chain_df[param_names[d]] = results.samples[:,d]
+    for key in ['nlive', 'niter', 'ncall', 'eff', 'logwt', 'logz', 'logzerr', 'h']:
+        try:
+            chain_df[key] = getattr(results, key)
+        except:
+            print('%s not found among result keys'%(key))
+    
     chain_df.to_csv(chain_file, index=False, float_format='%.3e', compression='gzip')

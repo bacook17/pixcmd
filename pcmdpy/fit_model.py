@@ -189,15 +189,18 @@ def nested_integrate(pcmd, filters, im_scale, N_points, method='multi', max_call
     #This is important because the driver resets the global seed
     rstate = np.random.RandomState(1234)
 
-    #HUGE HACK!
     if use_dynsety:
         sampler = dynesty.NestedSampler(this_lnlike, this_pri_transform, ndim=n_dim, bound=method, sample='unif', nlive=N_points,
                                         update_interval=1, rstate=rstate)
+        print('-Running dynesty sampler')
         for it, results in enumerate(sampler.sample(dlogz=dlogz,maxcall=max_call)):
             (worst, ustar, vstar, loglstar, logvol, logwt, logz, logzerr, h, nc) = results
-            
-            sys.stderr.write("\riter+: {:d} | nc: {:d} | "
-                             "logz: {:6.3f} +/- {:6.3f}".format(it, nc, logz, logzerr))
+            #compute delta_logz
+            logz_remain = np.max(sampler.live_logl) + logvol
+            delta_logz = np.logaddexp(logz, logz_remain) - logz
+            message = 'iteration: %d | ncalls: %d | logz: %6.3f +/- %6.3f | dlogz: %6.3f'%(it, nc, logz, logzerr, delta_logz)
+            message += '\n --------------------------'
+            print(message)
     else:
         print('-Running nestle sampler')
         sampler = nestle.sample(this_lnlike, this_pri_transform, n_dim, method=method, npoints=N_points, maxcall=max_call, callback=callback,
@@ -208,7 +211,10 @@ def nested_integrate(pcmd, filters, im_scale, N_points, method='multi', max_call
     else:
         print('Reached desired convergence')
 
-    return sampler
+    if use_dynesty:
+        return sampler.results
+    else:
+        return sampler
 
 def sample_post(pcmd, filters, im_scale, N_walkers, N_burn, N_sample, 
                 p0=None, gal_class=gal.Galaxy_Model, gpu=True, bins=None, threads=1, fixed_seed=True,
