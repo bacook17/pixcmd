@@ -10,6 +10,7 @@ import driver
 import utils
 import emcee
 import nestle
+import dynesty
 from datetime import datetime
 
 def lnprior_ssp(gal_params):
@@ -18,8 +19,8 @@ def lnprior_ssp(gal_params):
     # log (z/z_solar) between -2 and 0.5
     if (z < -2.) or (z>0.5):
         return -np.inf
-    # E(B-V) between 1e-2 and 3
-    if (log_dust < -2) or (log_dust > 0.5):
+    # E(B-V) between 1e-3 and 3
+    if (log_dust < -3) or (log_dust > 0.5):
         return -np.inf
     #Npix between 0.1 and 1e6
     if (log_Npix < -1) or (log_Npix > 6):
@@ -66,8 +67,8 @@ def lnprior(gal_params):
     # log (z/z_solar) between -2 and 0.5
     if (z < -2.) or (z > 0.5):
         return -np.inf
-    # E(B-V) between 1e-2 and 3
-    if (log_dust < -2) or (log_dust > 0.5):
+    # E(B-V) between 1e-3 and 3
+    if (log_dust < -3) or (log_dust > 0.5):
         return -np.inf
     # log M_i / Mtot between 1e-6 and 1
     for log_m in log_SFH:
@@ -76,21 +77,23 @@ def lnprior(gal_params):
     return 0.
 
 def lnprior_transform(normed_params):
+    #HUGE HACK: returns more dimensions than used in model!
     results = np.zeros(len(normed_params))
     #Flat priors
     # log (z/z_solar) between -2 and 0.5
     results[0] = -2. + 2.5*normed_params[0]
-    # E(B-V) between 1e-2 and 3
-    results[1] = -2 + 2.5*normed_params[1]
-    #log Npix between -1 and 6
-    log_Npix = -1 + 7*normed_params[2]
-    total = 0.
+    # E(B-V) between 1e-3 and 3
+    results[1] = -3 + 3.5*normed_params[1]
     # log M_i between -6 and 0
     for i in range(2, len(normed_params)-1):
-        log_mi = -6 + 6*normed_params[i+1]
-        results[i] = log_Npix + log_mi 
-        total += 10.**results[i]
-    results[-1] = np.log10(10.**log_Npix - total)
+        results[i] = -6 + 6*normed_params[i]
+    log_total = np.log10(np.sum(10.**results[2:-1]))
+    #HACKHACKHACK
+    #log Npix between -1 and 6
+    log_Npix = -1 + 7*normed_params[2]
+    results[-1] = log_Npix
+    #Normalize the mass bins to sum to log_Npix
+    results[2:-1] += log_Npix - log_total
     return results
 
 def lnprior_transform_small(normed_params):
@@ -103,10 +106,9 @@ def lnprior_transform_small(normed_params):
     # log M_i between +/- 0.5 of truth
     appx_truth = np.array([-1.25, -0.25,  0.135,  0.635,
                             1.135, 1.635,  1.57])
-    for i in range(2, len(normed_params)-1):
+    for i in range(2, len(normed_params)):
         results[i] = appx_truth[i-2] - 0.5 + normed_params[i]
     return results
-
 
 def lnlike(gal_params, driv, im_scale, gal_class=gal.Galaxy_Model, **kwargs):
     if (gal_class is gal.Galaxy_SSP):
@@ -132,8 +134,10 @@ def lnprob(gal_params, driv, im_scale, gal_class=gal.Galaxy_Model, **kwargs):
     like = lnlike(gal_params, driv, im_scale, gal_class=gal_class, **kwargs)
     return pri + like
 
+
+
 def nested_integrate(pcmd, filters, im_scale, N_points, method='multi', max_call=100000, gal_class=gal.Galaxy_Model, gpu=True,
-                     bins=None, verbose=False, small_prior=False, dlogz=None, **kwargs):
+                     bins=None, verbose=False, small_prior=False, dlogz=None, use_dynesty=False, **kwargs):
     print('-initializing models')
     n_filters = len(filters)
     assert(pcmd.shape[0] == n_filters)
@@ -152,6 +156,7 @@ def nested_integrate(pcmd, filters, im_scale, N_points, method='multi', max_call
         if small_prior:
             this_pri_transform = lnprior_transform_small
         else:
+            ndim += 1 #HACKHACKHACK
             this_pri_transform = lnprior_transform
     else:
         if small_prior:
@@ -160,6 +165,9 @@ def nested_integrate(pcmd, filters, im_scale, N_points, method='multi', max_call
             this_pri_transform = lnprior_transform_ssp
 
     def this_lnlike(gal_params):
+        #HACKHACKHACK to remove trailing zero
+        if (not small_prior) and (gal_class is gal.Galaxy_Model):
+            gal_params = gal_params[:-1]
         return lnlike(gal_params, driv, im_scale, gal_class=gal_class, **kwargs)
 
     callback = None
@@ -169,7 +177,10 @@ def nested_integrate(pcmd, filters, im_scale, N_points, method='multi', max_call
             logz = callback_info['logz']
             n_calls = driv.num_calls
             print('----------------')
-            print('Iteration Number: %d, Likelihood Calls: %d, logz: %.3e'%(it, n_calls, logz)) 
+            if (np.abs(logz) <= 1e5):
+                print('Iteration Number: %d, Likelihood Calls: %d, logz: %.2f'%(it, n_calls, logz))
+            else:
+                print('Iteration Number: %d, Likelihood Calls: %d, logz: %.4e'%(it, n_calls, logz))
             print('Current time: %s'%(str(datetime.now())))
             sys.stdout.flush()
         callback = my_progress
@@ -178,14 +189,24 @@ def nested_integrate(pcmd, filters, im_scale, N_points, method='multi', max_call
     #This is important because the driver resets the global seed
     rstate = np.random.RandomState(1234)
 
-    print('-Running nestle sampler')
-    sampler = nestle.sample(this_lnlike, this_pri_transform, n_dim, method=method, npoints=N_points, maxcall=max_call, callback=callback,
-                            update_interval=1, rstate=rstate, dlogz=dlogz)
+    #HUGE HACK!
+    if use_dynsety:
+        sampler = dynesty.NestedSampler(this_lnlike, this_pri_transform, ndim=n_dim, bound=method, sample='unif', nlive=N_points,
+                                        update_interval=1, rstate=rstate)
+        for it, results in enumerate(sampler.sample(dlogz=dlogz,maxcall=max_call)):
+            (worst, ustar, vstar, loglstar, logvol, logwt, logz, logzerr, h, nc) = results
+            
+            sys.stderr.write("\riter+: {:d} | nc: {:d} | "
+                             "logz: {:6.3f} +/- {:6.3f}".format(it, nc, logz, logzerr))
+    else:
+        print('-Running nestle sampler')
+        sampler = nestle.sample(this_lnlike, this_pri_transform, n_dim, method=method, npoints=N_points, maxcall=max_call, callback=callback,
+                                update_interval=1, rstate=rstate, dlogz=dlogz)
 
     if driv.num_calls >= (max_call - 1):
-        print('Nestle terminated after surpassing max likelihood calls')
+        print('Terminated after surpassing max likelihood calls')
     else:
-        print('Nestle reached desired convergence')
+        print('Reached desired convergence')
 
     return sampler
 

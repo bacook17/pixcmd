@@ -226,16 +226,19 @@ def _draw_image_numpy(expected_nums, fluxes, N_scale, fixed_seed=False, toleranc
 
 class PSFConvolver():
 
-    def __init__(self):
+    def __init__(self, image_shape=None, psf_shape=None):
         #The GPU thread to submit kernels to
         self.thread = cluda.cuda_api().Thread.create()
-        self.psf_shape = self.image_shape = None
-        self.ndim = None
-        self.fshape = None
-        self.fft = None
-        self.fftc = None
-        
-        self.initialized = False
+        if (image_shape is not None) and (psf_shape is not None):
+            self._setup(image_shape, psf_shape)
+        else:
+            self.psf_shape = None
+            self.ndim = None
+            self.fshape = None
+            self.fft = None
+            self.fftc = None
+            self.image_shape = None
+            self.initialized = False
         
     def _setup(self, image_shape, psf_shape):
         self.image_shape = np.array(image_shape)
@@ -249,10 +252,11 @@ class PSFConvolver():
         #The image and psf will be padded to a larger image that can fit both together
         #Inflate this padded shape to be a power of 2
         self.fshape = self.inflate_sizes(self.image_shape, self.psf_shape)
-        psf_temp = gpuarray.GPUArray(tuple(self.fshape), np.complex64)
+        self.fslice = tuple([slice(0, self.image_shape[i] + self.psf_shape[i] - 1) for i in range(self.ndim)])
+        psf_temp = pycuda.gpuarray.GPUArray(tuple(self.fshape), np.complex64)
 
         #The FFT object, initialized to the shape "self.fshape2"
-        self.fft = FFT(self.psf_g)
+        self.fft = FFT(psf_temp)
         self.fftc = self.fft.compile(self.thread)
 
         self.initialized = True
@@ -260,34 +264,35 @@ class PSFConvolver():
     def convolve_image(self, image, psf, mode='valid'):
         padded_shape = self.inflate_sizes(image.shape, psf.shape)
         if not self.initialized or np.any(padded_shape != self.fshape):
+            print('Reinitializing Convolver for new image sizes')
             self._setup(image.shape, psf.shape)
         #Inflate the arrays to the proper, power of 2 shape
         image_pad = self.pad_end(image, self.fshape).astype(np.complex64)
         psf_pad = self.pad_end(psf, self.fshape).astype(np.complex64)
-        image_g = gpuarray.to_gpu(image_pad)
-        psf_g = gpuarray.to_gpu(psf_pad)
+        image_g = pycuda.gpuarray.to_gpu(image_pad)
+        psf_g = pycuda.gpuarray.to_gpu(psf_pad)
 
         #FFT the image and psf arrays, in place
         self.fftc(image_g, image_g)
         self.fftc(psf_g, psf_g)
         result_g = image_g * psf_g
         self.fftc(result_g, result_g, inverse=True)
-        result = result_g.get().real
+        result = result_g.get().real[self.fslice]
 
         if mode == 'full':
-            return self.centered(result)
+            return self.center(result)
         elif mode == 'same':
-            return self.centered(result, newshape=self.image_shape)
+            return self.center(result, newshape=self.image_shape)
         elif mode == 'valid':
-            return self.centered(result, newshape=(self.image_shape - self.psf_shape + 1))
+            return self.center(result, newshape=(self.image_shape - self.psf_shape + 1))
 
     @classmethod
-    def centered(cls, image, newshape=None):
+    def center(cls, image, newshape=None):
         #Center the quandrants of the image
         result = image.copy()
-        shift = 1 - (np.array(result.shape) / 2)
-        for i in range(image.ndim):
-            result = np.roll(result, shift[i], axis=i)
+        #shift = 1 - (np.array(result.shape) / 2)
+        #for i in range(image.ndim):
+        #    result = np.roll(result, shift[i], axis=i)
         #Remove exterior border
         if newshape is not None:
             start = (np.array(result.shape) - np.array(newshape)) / 2
@@ -302,7 +307,7 @@ class PSFConvolver():
             assert(len(shape1) == len(shape2))
         except:
             raise AssertionError('Input images must have same number of dimensions')
-        return np.array([self.next_power2(shape1[i] + shape2[i] - 1) for i in range(len(shape1))]) 
+        return np.array([cls.next_power2(shape1[i] + shape2[i] - 1) for i in range(len(shape1))]) 
 
     @classmethod
     def next_power2(cls, n):
@@ -319,3 +324,6 @@ class PSFConvolver():
         assert(a.shape <= new_shape)
         s_temp = np.array(a.shape)
         return np.pad(a, [(0, new_shape[i] - s_temp[i]) for i in range(a.ndim)], 'constant')
+
+    def close(self):
+        self.thread.release()
