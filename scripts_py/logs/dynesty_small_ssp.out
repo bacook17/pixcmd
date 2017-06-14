@@ -1,0 +1,5 @@
+GPU acceleration enabled
+       JobID    JobName   NTasks  AllocCPUS    AllocGRES  Partition    Elapsed     MaxRSS  MaxVMSize  MaxDiskRead MaxDiskWrite      State 
+------------ ---------- -------- ---------- ------------ ---------- ---------- ---------- ---------- ------------ ------------ ---------- 
+89661231     batch_dyn+                   2        gpu:1        gpu   00:01:47                                                    RUNNING 
+89661231.ex+     extern        1          2        gpu:1              00:01:47                                                    RUNNING 
