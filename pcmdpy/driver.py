@@ -105,17 +105,13 @@ class Driver:
         IMF, mags = self.iso_model.model_galaxy(gal_model, **kwargs)
         fluxes = np.array([f.mag_to_counts(m) for f,m in zip(self.filters, mags)])
 
-        raw_images = gpu_utils.draw_image(IMF, fluxes, im_scale, gpu=self.gpu_on, cudac=True, fixed_seed=fixed_seed, **kwargs)
-        raw_images += 1e-10
-
-        raw_mags = np.array([f.counts_to_mag(im, E_BV=gal_model.dust).flatten() for f,im in zip(self.filters, raw_images)])
+        images = gpu_utils.draw_image(IMF, fluxes, im_scale, gpu=self.gpu_on, cudac=True, fixed_seed=fixed_seed, **kwargs)
+        images += 1e-10
 
         if psf:
-            convolved_images = np.array([f.psf_convolve(im, **kwargs) for f,im in zip(self.filters,raw_images)])
-            conv_mags = np.array([f.counts_to_mag(im, E_BV=gal_model.dust).flatten() for f,im in zip(self.filters, convolved_images)])
-        else:
-            convolved_images = raw_images
-            conv_mags = raw_mags
+            images = np.array([f.psf_convolve(im, **kwargs) for f,im in zip(self.filters,images)])
+
+        mags = np.array([f.counts_to_mag(im.flatten(), E_BV=gal_model.dust, **kwargs) for f,im in zip(self.filters, images)])
 
         self.num_sims += 1
-        return raw_mags, conv_mags, raw_images, convolved_images
+        return mags, images

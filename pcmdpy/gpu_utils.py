@@ -8,7 +8,8 @@ try:
     import pycuda
     import pycuda.driver as cuda
     from pycuda.compiler import SourceModule
-    import pycuda.curandom
+    from pycuda import curandom
+    from pycuda import cumath
 
 except ImportError as e:
     print('GPU acceleration not available, sorry')
@@ -155,9 +156,9 @@ def _draw_image_cudac(expected_nums, fluxes, N_scale, fixed_seed=False, toleranc
     if fixed_seed:
         seed_getter = seed_getter_fixed
     else:
-        seed_getter = pycuda.curandom.seed_getter_uniform
+        seed_getter = curandom.seed_getter_uniform
 
-    generator = pycuda.curandom.XORWOWRandomNumberGenerator(seed_getter=seed_getter)
+    generator = curandom.XORWOWRandomNumberGenerator(seed_getter=seed_getter)
     result = np.zeros((N_bands, N_scale, N_scale), dtype=np.float32)
     
     block_dim = (d_block, d_block,1)
@@ -183,7 +184,7 @@ def _draw_image_pycuda(expected_nums, fluxes, N_scale, fixed_seed=False, toleran
     if fixed_seed:
         seed_getter = seed_getter_fixed
     else:
-        seed_getter = pycuda.curandom.seed_getter_uniform
+        seed_getter = curandom.seed_getter_uniform
 
     generator = pycuda.curandom.XORWOWRandomNumberGenerator(seed_getter=seed_getter)
     result = np.zeros((N_bands, N_scale*N_scale), dtype=float)
@@ -223,6 +224,14 @@ def _draw_image_numpy(expected_nums, fluxes, N_scale, fixed_seed=False, toleranc
         realiz_num[:,:,use_poisson] = np.random.poisson(lam=expected_nums[use_poisson], size=(N_scale, N_scale, num_poisson))
         
     return np.dot(realiz_num, fluxes.T).T
+
+def gpu_log10(array_in, verbose=False, **kwargs):
+    if _GPU_AVAIL:
+        return pycuda.cumath.log10(pycuda.gpuarray.to_gpu(array_in)).get()
+    else:
+        if verbose:
+            warnings.warn('gpu_log10 using cpu, because gpu not available.',RuntimeWarning)
+        return np.log10(array_in)
 
 class PSFConvolver():
 

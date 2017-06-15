@@ -5,6 +5,7 @@
 
 import numpy as np
 import utils
+from gpu_utils import gpu_log10
 from scipy.signal import fftconvolve, convolve2d, gaussian
 
 class Filter:
@@ -165,7 +166,7 @@ class Filter:
 
         return 10.**(-0.4 * (mags + self._dmod - self._zero_point)) * self._exposure
 
-    def counts_to_mag(self, counts, E_BV=0):
+    def counts_to_mag(self, counts, E_BV=0, **kwargs):
         """Convert photon counts to absolute magnitudes (assuming reddening)
 
         Arguments:
@@ -177,7 +178,7 @@ class Filter:
 
         extinct = E_BV * self._red_per_ebv #magnitudes of extinction
         
-        return -2.5*np.log10(counts / self._exposure) + self._zero_point - self._dmod + extinct
+        return -2.5*gpu_log10(counts / self._exposure, **kwargs) + self._zero_point - self._dmod + extinct
 
     def psf_convolve(self, image, multi_psf=True, convolve_func=None, **kwargs):
         """Convolve image with instrumental PSF
