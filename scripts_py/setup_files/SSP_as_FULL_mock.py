@@ -149,7 +149,7 @@ galaxy_mock = model_mock(params_mock)
 
 ## Create the mock data
 driv = driver.Driver(iso_model, gpu=use_gpu) #temporary driver to model the data
-_, mags, _, _ = driv.simulate(galaxy_mock, N_mock, fixed_seed=fixed_seed)
+mags, _ = driv.simulate(galaxy_mock, N_mock, fixed_seed=fixed_seed)
 
 ## The mock data
 data_pcmd = utils.make_pcmd(mags)
