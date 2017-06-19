@@ -90,6 +90,15 @@ def initialize_gpu(n=None):
 
     global _GPU_ACTIVE
     _GPU_ACTIVE = True
+
+    global _MAX_THREADS_PER_BLOCK
+    global _MAX_2D_BLOCK_DIM
+    try:
+        _MAX_THREADS_PER_BLOCK = pycuda.autoinit.device.get_attribute(cuda.device_attribute.MAX_THREADS_PER_BLOCK)
+        _MAX_2D_BLOCK_DIM = int(np.floor(np.sqrt(_MAX_THREADS_PER_BLOCK)))
+    except:
+        _MAX_THREADS_PER_BLOCK = 1024
+        _MAX_2D_BLOCK_DIM = 32
     
     try:
         global _mod
@@ -125,7 +134,7 @@ def seed_getter_fixed(N, value=None):
         value = np.random.randint(0, 2**31 - 1) 
     return result.fill(value)
         
-def _draw_image_cudac(expected_nums, fluxes, N_scale, fixed_seed=False, tolerance=0, d_block=32, **kwargs):
+def _draw_image_cudac(expected_nums, fluxes, N_scale, fixed_seed=False, tolerance=0, d_block=_MAX_2D_BLOCK_DIM, **kwargs):
     assert(_GPU_AVAIL & _GPU_ACTIVE)
     assert(_CUDAC_AVAIL)
 

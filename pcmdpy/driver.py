@@ -33,7 +33,11 @@ class Driver:
         self.num_sims = 0
         self.num_calls = 0
         
-    def initialize_data(self, pcmd, bins, charlie_err=False, **kwargs):
+    def initialize_data(self, pcmd, bins=None, charlie_err=False, **kwargs):
+        if bins is None:
+            xbins = np.arange(-1.5, 4.6, 0.05)
+            ybins = np.arange(-12, 15.6, 0.05)
+            bins = np.array([xbins,ybins])
         self.hess_bins = bins
         self.n_data = pcmd.shape[1]
 
