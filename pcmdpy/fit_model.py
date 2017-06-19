@@ -142,7 +142,7 @@ def lnprob(gal_params, driv, im_scale, gal_class=gal.Galaxy_Model, **kwargs):
 
 
 def nested_integrate(pcmd, filters, im_scale, N_points, method='multi', max_call=100000, gal_class=gal.Galaxy_Model, gpu=True,
-                     bins=None, verbose=False, small_prior=False, dlogz=None, use_dynesty=False, **kwargs):
+                     bins=None, verbose=False, small_prior=False, dlogz=None, use_dynesty=False, dynamic=False, **kwargs):
     if (not _DYNESTY_INSTALLED) and use_dynesty:
         raise ImportError('Dynesty not installed correctly')
     print('-initializing models')
@@ -197,19 +197,23 @@ def nested_integrate(pcmd, filters, im_scale, N_points, method='multi', max_call
     rstate = np.random.RandomState(1234)
 
     if use_dynesty:
-        sampler = dynesty.NestedSampler(this_lnlike, this_pri_transform, ndim=n_dim, bound=method, sample='unif', nlive=N_points,
-                                        update_interval=1, rstate=rstate)
-        print('-Running dynesty sampler')
-        for it, results in enumerate(sampler.sample(dlogz=dlogz,maxcall=max_call)):
-            (worst, ustar, vstar, loglstar, logvol, logwt, logz, logzerr, h, nc) = results
-            #compute delta_logz
-            logz_remain = np.max(sampler.live_logl) + logvol
-            delta_logz = np.logaddexp(logz, logz_remain) - logz
-            message = 'iteration: %d | ncalls: %d | logz: %6.3f +/- %6.3f | dlogz: %6.3f'%(it, nc, logz, logzerr, delta_logz)
-            message += '\n Current time: ' + '%s'%(str(datetime.now()))
-            message += '\n --------------------------'
-            print(message)
-        results = sampler.results
+        if dynamic:
+            sampler = dynesty.DynamicNestedSampler(this_lnlike, this_pri_transform, ndim=n_dim, bound=method, sample='unif', update_interval=1, rstate=rstate)
+            sampler.run_nested(ninit=N_points, maxcall_init=max_call, dlogz_init=dlogz)
+        else:
+            sampler = dynesty.NestedSampler(this_lnlike, this_pri_transform, ndim=n_dim, bound=method, sample='unif', nlive=N_points,
+                                            update_interval=1, rstate=rstate)
+            print('-Running dynesty sampler')
+            for it, results in enumerate(sampler.sample(dlogz=dlogz,maxcall=max_call)):
+                (worst, ustar, vstar, loglstar, logvol, logwt, logz, logzerr, h, nc) = results
+                #compute delta_logz
+                logz_remain = np.max(sampler.live_logl) + logvol
+                delta_logz = np.logaddexp(logz, logz_remain) - logz
+                message = 'iteration: %d | ncalls: %d | logz: %6.3f +/- %6.3f | dlogz: %6.3f'%(it, nc, logz, logzerr, delta_logz)
+                message += '\n Current time: ' + '%s'%(str(datetime.now()))
+                message += '\n --------------------------'
+                print(message)
+            results = sampler.results
     else:
         print('-Running nestle sampler')
         results = nestle.sample(this_lnlike, this_pri_transform, n_dim, method=method, npoints=N_points, maxcall=max_call, callback=callback,

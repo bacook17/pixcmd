@@ -42,6 +42,11 @@ if __name__ == "__main__":
         args['use_dynesty'] = setup.use_dynesty
     except:
         args['use_dynesty'] = False
+
+    try:
+        args['dynamic'] = setup.dynamic
+    except:
+        args['dynamic'] = False
     
     args['gal_class'] = setup.model_class
     args['verbose'] = setup.verbose

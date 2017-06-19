@@ -1,0 +1,13 @@
+GPU acceleration enabled
+Loading Setup File: setup_files/dynesty_2_k80.py
+using given n: 0
+Starting SourceModule Code
+Getting function
+Past the SourceModule code
+CUDAC Available
+Running Nested Sampling
+-initializing models
+       JobID    JobName   NTasks  AllocCPUS    AllocGRES  Partition    Elapsed     MaxRSS  MaxVMSize  MaxDiskRead MaxDiskWrite      State 
+------------ ---------- -------- ---------- ------------ ---------- ---------- ---------- ---------- ------------ ------------ ---------- 
+89752275     batch_dyn+                   1        gpu:1     aagk80   10:52:00                                                    RUNNING 
+89752275.ex+     extern        1          1        gpu:1              10:52:00                                                    RUNNING 
