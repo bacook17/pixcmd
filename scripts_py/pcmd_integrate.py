@@ -60,14 +60,19 @@ if __name__ == "__main__":
     N_params = len(param_names)
     chain_file = setup.chain_file
     
+    results_dict = {'nlive':'nlive', 'niter':'niter', 'ncall':'ncall', 'eff':'eff',
+                     'logl':'lnlike', 'logwt':'logwt', 'logz':'log_evidence',
+                     'logzerr':'e_log_evidence', 'h':'information', 'weights':'weights'}
+
     #Save results of the chain
     chain_df = pd.DataFrame()
     for d in range(N_params):
         chain_df[param_names[d]] = results.samples[:,d]
-    for key in ['nlive', 'niter', 'ncall', 'eff', 'logwt', 'logz', 'logzerr', 'h', 'weights']:
+    #######Fix nomenclature
+    for their_name, our_name in results_dict.iteritems():
         try:
-            chain_df[key] = getattr(results, key)
+            chain_df[our_name] = getattr(results, their_name)
         except:
-            print('%s not found among result keys'%(key))
+            print('%s not found among result keys'%(their_name))
     
     chain_df.to_csv(chain_file, index=False, float_format='%.3e', compression='gzip')

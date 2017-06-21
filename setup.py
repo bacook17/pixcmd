@@ -1,6 +1,8 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+#To use: python setup.py install
+
 import os
 import sys
 
@@ -20,7 +22,7 @@ setup(
     url='',
     license='LICENSE',
     description='Tools for modelling crowded-field photometry using the Pixel Color-Magnitude Diagram technique',
-    package_data={'pcmdpy':['isoc_csv/*csv']},
+    package_data={'pcmdpy':['isoc_csv/*csv', 'isoc_MIST_v1.0/*.iso.cmd']},
     include_package_data=True,
     #install_requires=['numpy','scipy','pandas','matplotlib','emcee'],
 )

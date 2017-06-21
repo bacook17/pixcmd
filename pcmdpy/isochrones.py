@@ -11,7 +11,8 @@ except ImportError:
     pass
 
 # The pre-computed MIST model metallicities
-_z_arr_default = np.array([-2.15, -1.13, -0.73, -0.52, -0.22, 0., 0.3, 0.5])
+_z_arr_default = np.array([-4.0, -3.5, -3.0, -2.5, -2.0, -1.75, -1.5, -1.25, -1.0, -0.75, -0.5, -0.25, 0.0, 0.25, 0.5])
+#_z_arr_default = np.array([-2.15, -1.13, -0.73, -0.52, -0.22, 0., 0.3, 0.5])
 
 class Isochrone_Model:
     """Models Isochrones (IMF, and magnitudes in particular Filters) using
@@ -43,9 +44,9 @@ class Isochrone_Model:
         #Locate MIST files
         if MIST_path is None:
             try:
-                MIST_path = resource_filename('pcmdpy', 'isoc_csv/')
+                MIST_path = resource_filename('pcmdpy', 'isoc_MIST_v1.0/')
             except:
-                MIST_path = '/n/home01/bcook/pixcmd/pcmdpy/isoc_csv/'
+                MIST_path = '/n/home01/bcook/pixcmd/pcmdpy/isoc_MIST_v1.0/'
         
         #Import all MIST model files into Pandas dataframe
         self.MIST_df = pd.DataFrame()
@@ -53,91 +54,30 @@ class Isochrone_Model:
         self.num_filters = len(filters)
         self.filters = filters
         self.filter_names = [f.tex_name for f in self.filters]
+        self.colnames = pd.read_table(MIST_path + 'columns.txt', delim_whitespace=True).columns
         #MIST files are organized by metallicity
         for z in self._z_arr:
-            MIST_doc = MIST_path + 'MIST_v29_Z'+ self._z_to_str(z) + '_x5FEWER.csv'
+            MIST_doc = MIST_path + 'MIST_v1.0_feh_'+ _z_to_str(z) + 'afe_p0.0_vvcrit0.0_HST_ACSWF.iso.cmd'
             try:
-                new_df = pd.read_csv(MIST_doc)
+                new_df = pd.read_table(MIST_doc, names=self.colnames, comment='#', delim_whitespace=True)
                 new_df['z'] = z
                 self.MIST_df = self.MIST_df.append([new_df], ignore_index=True)
             except IOError:
                 raise IOError('No MIST file found for z=%.2f'%z)
 
-        self.ages = self.MIST_df.age.unique()
+        self.ages = self.MIST_df['log10_isochrone_age_yr'].unique()
             
         #The MIST columns that will be interpolated (mass, logIMF, and all input filters)
-        self._interp_cols = ['logIMF']
-        for f in filters:
+        self._interp_cols = ['initial_mass']
+        for f in self.filters:
             c = f.MIST_column
             if c in self.MIST_df.columns:
                 self._interp_cols.append(f.MIST_column)
             else:
                 raise ValueError('Filter input does not have a valid MIST_column')
 
-
-            
-    @staticmethod
-    def _interp_arrays(arr1, arr2, f):
-        """Linearly interpolate between two (potentially unequal length) arrays 
-        
-        Arguments:
-           arr1 -- first (lower) array (len N1 or N1xD)
-           arr2 -- second (upper) array (len N2 or N2xD, N2 doesn't have to equal N1)
-           f -- linear interpolation fraction (float between 0 and 1)
-        Output: interpolated array (len max(N1,N2) or max(N1,N2)xD)
-        """
-        assert(arr1.ndim == arr2.ndim)
-        
-        l1,l2 = len(arr1), len(arr2)
-        #If arrays are unequal length, extrapolate shorter using trend of longer
-        if (l1 < l2):
-            delta = arr2[l1:] - arr2[l1-1]
-            added = arr1[-1] + delta
-            arr1 = np.append(arr1, added, axis=0)
-        elif (l1 > l2):
-            delta = arr1[l2:] - arr1[l2-1]
-            added = arr2[-1] + delta
-            arr2 = np.append(arr2, added, axis=0)
-        return (1-f)*arr1 + f*arr2
-
-    @staticmethod
-    def _z_to_str(z):
-        """Converts a metallicity value to MIST string
-        Example Usage: 
-           _z_to_str(-0.5313) -> "m0.53"
-           _z_to_str(1.326)   -> "p1.33"
-
-        Arguments: 
-           z -- metallicity (float)
-        Output: string representing metallicity
-        """
-        result = ''
-        if (z < 0):
-            result += 'm'
-        else:
-            result += 'p'
-        result += '%1.2f'%(np.abs(z))
-        return result
-
-    """
-    def _interp_df(self, df, col, z):
-        if z in self._z_arr:
-            return df[df.z == z][col]
-        else:
-            i = self._z_arr.searchsorted(z)
-            if (i == 0):
-                i = 1 #will extrapolate low
-            elif (i == len(self._z_arr)):
-                i = -1 #will extrapolate high  
-            zlow, zhigh = self._z_arr[i-1:i+1] #bounding metallicities
-            frac_between = (z - zlow) / (zhigh - zlow)
-            if (frac_between >= 2) or (frac_between <= -1):
-                raise ValueError('Extrapolating metallicity more than one entire metallicity bin')
-            dflow, dfhigh = df[df.z == zlow][col], df[df.z == zhigh][col]
-            return self._interp_arrays(dflow.values, dfhigh.values, frac_between).T
-    """
     
-    def get_isochrone(self, age, z, norm_IMF=True, rare_cut=0., **kwargs):
+    def get_isochrone(self, age, z, imf_func=salpeter_IMF, rare_cut=0., **kwargs):
         """Interpolate MIST isochrones for given age and metallicity
         
         Arguments:
@@ -166,11 +106,9 @@ class Isochrone_Model:
             if (frac_between >= 2) or (frac_between <= -1):
                 raise ValueError('Extrapolating metallicity more than one entire metallicity bin')
             dflow, dfhigh = this_age[this_age.z == zlow][self._interp_cols], this_age[this_age.z == zhigh][self._interp_cols]
-            inter = self._interp_arrays(dflow.values, dfhigh.values, frac_between)
+            inter = _interp_arrays(dflow.values, dfhigh.values, frac_between)
             
-        IMF = 10.**inter[:,0]
-        if norm_IMF:
-            IMF /= np.sum(IMF)
+        IMF = imf_func(inter[:,0], **kwargs)
         mags = inter[:,1:].T
 
         #remove stars that are extremely rare
@@ -198,3 +136,57 @@ class Isochrone_Model:
         ax.set_ylabel(names[1],fontsize='x-large')
         ax.set_xlabel('%s - %s'%(names[0], names[1]), fontsize='x-large')
         return ax
+
+
+#-----------------
+# Useful Utilities
+#-----------------
+
+def _salpeter_IMF(mass, cutoff=0.08, normed=True):
+    imf = np.power(mass, -2.35)
+    imf[mass < cutoff] = 0.
+    if normed:
+        imf /= np.sum(imf)
+    return imf
+
+def _interp_arrays(arr1, arr2, f):
+    """Linearly interpolate between two (potentially unequal length) arrays 
+    
+    Arguments:
+    arr1 -- first (lower) array (len N1 or N1xD)
+    arr2 -- second (upper) array (len N2 or N2xD, N2 doesn't have to equal N1)
+    f -- linear interpolation fraction (float between 0 and 1)
+    Output: interpolated array (len max(N1,N2) or max(N1,N2)xD)
+    """
+    assert(arr1.ndim == arr2.ndim)
+    
+    l1,l2 = len(arr1), len(arr2)
+    #If arrays are unequal length, extrapolate shorter using trend of longer
+    if (l1 < l2):
+        delta = arr2[l1:] - arr2[l1-1]
+        added = arr1[-1] + delta
+        arr1 = np.append(arr1, added, axis=0)
+    elif (l1 > l2):
+        delta = arr1[l2:] - arr1[l2-1]
+        added = arr2[-1] + delta
+        arr2 = np.append(arr2, added, axis=0)
+    return (1-f)*arr1 + f*arr2
+    
+def _z_to_str(z):
+    """Converts a metallicity value to MIST string
+    Example Usage: 
+    _z_to_str(-0.5313) -> "m0.53"
+    _z_to_str(1.326)   -> "p1.33"
+    
+    Arguments: 
+    z -- metallicity (float)
+    Output: string representing metallicity
+    """
+    result = ''
+    if (z < 0):
+        result += 'm'
+    else:
+        result += 'p'
+    result += '%1.2f'%(np.abs(z))
+    return result
+
