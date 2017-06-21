@@ -99,7 +99,7 @@ class Filter:
            psf : loaded from file
            name = "F475W"
            tex_name = r"g$_{475}$"
-           MIST_column = "bmag"
+           MIST_column = "ACS_WFC_F475W"
         """
 
         assert(isinstance(d_mpc, int) or isinstance(d_mpc, float)) #d_mpc must be real number
@@ -113,7 +113,7 @@ class Filter:
         psf = np.array([[10.**np.loadtxt(psf_file%(i,j)) for i in range(0,4)] for j in range(0,4)]) #4x4x73x73
         name= "F475W"
         tex_name = r"g$_{475}$"
-        MIST_column = "bmag"
+        MIST_column = "ACS_WFC_F475W"
 
         return cls(exposure, zero_point, d_mpc, red_per_ebv, psf, name=name, tex_name=tex_name, MIST_column=MIST_column)
 
@@ -134,7 +134,7 @@ class Filter:
            psf : loaded from file
            name = "F814W"
            tex_name = r"I$_{814}$"
-           MIST_column = "imag"
+           MIST_column = "ACS_WFC_F475W"
         """
 
         assert(isinstance(d_mpc, int) or isinstance(d_mpc, float)) #d_mpc must be real number
@@ -148,7 +148,7 @@ class Filter:
         psf = np.array([[10.**np.loadtxt(psf_file%(i,j)) for i in range(0,4)] for j in range(0,4)]) #4x4x73x73
         name= "F814W"
         tex_name = r"I$_{814}$"
-        MIST_column = "imag"
+        MIST_column = "ACS_WFC_F814W"
 
         return cls(exposure, zero_point, d_mpc, red_per_ebv, psf, name=name, tex_name=tex_name, MIST_column=MIST_column)
 
