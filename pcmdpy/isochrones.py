@@ -5,6 +5,8 @@
 
 import numpy as np
 import pandas as pd
+import os, glob
+from warnings import warn
 try:
     from pkg_resources import resource_filename
 except ImportError:
@@ -15,7 +17,10 @@ except ImportError:
 #-----------------
 
 def salpeter_IMF(mass, cutoff=0.08, normed=True):
-    imf = np.power(mass, -2.35)
+    dm = np.diff(mass)
+    m_low = mass - 0.5*np.append([0.], dm) # m - delta_m / 2 (lowest bin stays same)
+    m_high = mass + 0.5*np.append(dm, [0.]) # m + delta / 2 (highest bin stays same)
+    imf = np.power(m_low, -1.35) - np.power(m_high, -1.35)
     imf[mass < cutoff] = 0.
     if normed:
         imf /= np.sum(imf)
@@ -43,7 +48,24 @@ def _interp_arrays(arr1, arr2, f):
         added = arr2[-1] + delta
         arr2 = np.append(arr2, added, axis=0)
     return (1-f)*arr1 + f*arr2
+
+def _z_from_str(z_str):
+    """Converts a metallicity value to MIST string
+    Example Usage: 
+    _z_from_str("m0.53") -> -0.53
+    _z_from_str("p1.326")   -> 1.326
     
+    Arguments: 
+    z_str -- metallicity (as a string)
+    Output: float value of metallicity
+    """
+    value = float(z_str[1:])
+    if z_str[0] == 'm':
+        value *= -1
+    elif z_str[0] != 'p':
+        raise ValueError('z string not of valid format')
+    return value
+
 def _z_to_str(z):
     """Converts a metallicity value to MIST string
     Example Usage: 
@@ -64,7 +86,7 @@ def _z_to_str(z):
 
 
 # The pre-computed MIST model metallicities
-_z_arr_default = np.array([-4.0, -3.5, -3.0, -2.5, -2.0, -1.75, -1.5, -1.25, -1.0, -0.75, -0.5, -0.25, 0.0, 0.25, 0.5])
+#_z_arr_default = np.array([-4.0, -3.5, -3.0, -2.5, -2.0, -1.75, -1.5, -1.25, -1.0, -0.75, -0.5, -0.25, 0.0, 0.25, 0.5])
 #_z_arr_default = np.array([-2.15, -1.13, -0.73, -0.52, -0.22, 0., 0.3, 0.5])
 
 class Isochrone_Model:
@@ -84,7 +106,7 @@ class Isochrone_Model:
        __init__ -- Pass a list of Filter objects, path to MIST model files, and array of metallicities.
     """
     # CHANGE PATH 
-    def __init__(self, filters, MIST_path=None, z_arr=_z_arr_default):
+    def __init__(self, filters, MIST_path=None):
         """Creates a new Isochrone_Model, given a list of Filter objects
         
         Arguments:
@@ -103,20 +125,23 @@ class Isochrone_Model:
         
         #Import all MIST model files into Pandas dataframe
         self.MIST_df = pd.DataFrame()
-        self._z_arr = z_arr
         self.num_filters = len(filters)
+        self._z_arr = np.array([])
         self.filters = filters
         self.filter_names = [f.tex_name for f in self.filters]
-        self.colnames = pd.read_table(MIST_path + 'columns.txt', delim_whitespace=True).columns
-        #MIST files are organized by metallicity
-        for z in self._z_arr:
-            MIST_doc = MIST_path + 'MIST_v1.0_feh_'+ _z_to_str(z) + '_afe_p0.0_vvcrit0.0_HST_ACSWF.iso.cmd'
+        self.colnames = pd.read_table(MIST_path + 'columns.dat', delim_whitespace=True).columns
+        #load all MIST files found in directory
+        for MIST_doc in glob.glob( os.path.join(MIST_path, '*.iso.cmd')):
             try:
+                z_str = MIST_doc.split('feh_')[-1][:5]
+                z = _z_from_str(z_str)
                 new_df = pd.read_table(MIST_doc, names=self.colnames, comment='#', delim_whitespace=True)
                 new_df['z'] = z
                 self.MIST_df = self.MIST_df.append([new_df], ignore_index=True)
-            except IOError:
-                raise IOError('No MIST file found for z=%.2f, tried: %s'%(z, MIST_doc))
+                self._z_arr = np.append(self._z_arr, _z_from_str(z_str))
+            except:
+                warn('File not properly formatted: %s'%(MIST_doc))
+                raise
 
         self.MIST_df.rename(columns={'log10_isochrone_age_yr':'age'}, inplace=True)
         self.ages = self.MIST_df.age.unique()
@@ -124,11 +149,14 @@ class Isochrone_Model:
         self._interp_cols = ['initial_mass']
         for f in self.filters:
             c = f.MIST_column
+            c_alt = f.MIST_column_alt
             if c in self.MIST_df.columns:
-                self._interp_cols.append(f.MIST_column)
+                self._interp_cols.append(c)
+            elif c_alt in self.MIST_df.columns:
+                self._interp_cols.append(c_alt)
             else:
+                print(c, c_alt)
                 raise ValueError('Filter input does not have a valid MIST_column')
-
     
     def get_isochrone(self, age, z, imf_func=salpeter_IMF, rare_cut=0., **kwargs):
         """Interpolate MIST isochrones for given age and metallicity

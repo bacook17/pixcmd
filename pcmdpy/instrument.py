@@ -29,7 +29,7 @@ class Filter:
     """
 
     
-    def __init__(self, exposure, zero_point, d_mpc, red_per_ebv, psf,  name="", tex_name="", MIST_column="", **kwargs):
+    def __init__(self, exposure, zero_point, d_mpc, red_per_ebv, psf,  name="", tex_name="", MIST_column="", MIST_column_alt="", **kwargs):
         """Create a new Filter, given input properties of observation
 
         Arguments:
@@ -77,6 +77,7 @@ class Filter:
         self.name = name
         self.tex_name = tex_name
         self.MIST_column = MIST_column
+        self.MIST_column_alt = MIST_column_alt
         self.props = kwargs
 
     ##############################
@@ -100,6 +101,7 @@ class Filter:
            name = "F475W"
            tex_name = r"g$_{475}$"
            MIST_column = "ACS_WFC_F475W"
+           MIST_column_alt = 'bmag'
         """
 
         assert(isinstance(d_mpc, int) or isinstance(d_mpc, float)) #d_mpc must be real number
@@ -111,11 +113,13 @@ class Filter:
         red_per_ebv = 3.248
         psf_file = "../psf/f475w_%d%d.psf"
         psf = np.array([[10.**np.loadtxt(psf_file%(i,j)) for i in range(0,4)] for j in range(0,4)]) #4x4x73x73
-        name= "F475W"
-        tex_name = r"g$_{475}$"
-        MIST_column = "ACS_WFC_F475W"
+        kwargs = {}
+        kwargs['name'] = "F475W"
+        kwargs['tex_name'] = r"g$_{475}$"
+        kwargs['MIST_column'] = "ACS_WFC_F475W"
+        kwargs['MIST_column_alt'] = "bmag"
 
-        return cls(exposure, zero_point, d_mpc, red_per_ebv, psf, name=name, tex_name=tex_name, MIST_column=MIST_column)
+        return cls(exposure, zero_point, d_mpc, red_per_ebv, psf, **kwargs)
 
     @classmethod
     def HST_F814W(cls, d_mpc):
@@ -146,11 +150,13 @@ class Filter:
         red_per_ebv = 1.536
         psf_file = "../psf/f814w_%d%d.psf"
         psf = np.array([[10.**np.loadtxt(psf_file%(i,j)) for i in range(0,4)] for j in range(0,4)]) #4x4x73x73
-        name= "F814W"
-        tex_name = r"I$_{814}$"
-        MIST_column = "ACS_WFC_F814W"
+        kwargs = {}
+        kwargs['name'] = "F814W"
+        kwargs['tex_name'] = r"I$_{814}$"
+        kwargs['MIST_column'] = "ACS_WFC_F814W"
+        kwargs['MIST_column_alt'] = "imag"
 
-        return cls(exposure, zero_point, d_mpc, red_per_ebv, psf, name=name, tex_name=tex_name, MIST_column=MIST_column)
+        return cls(exposure, zero_point, d_mpc, red_per_ebv, psf, **kwargs)
 
     #########################
     # Filter methods
