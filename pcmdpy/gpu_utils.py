@@ -32,7 +32,6 @@ _GPU_ACTIVE = False
 _CUDAC_AVAIL = False
 _MAX_THREADS_PER_BLOCK = 1024
 _MAX_2D_BLOCK_DIM = 32
-    
 _code = """
    #include <curand_kernel.h>
 

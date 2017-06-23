@@ -77,6 +77,7 @@ rare_cut = 0.
 
 ## Whether to use dynesty (otherwise, use Nestle)
 use_dynesty = True
+dynamic = False
 
 ## The number of nestle points
 N_points = 200
@@ -85,7 +86,7 @@ N_points = 200
 N_burn = 0
 
 ## The number of max calls for nestle
-N_max = 2000
+N_max = 50000
 
 ## The error tolerance for Nestle stopping criterion
 dlogz = 0.5
