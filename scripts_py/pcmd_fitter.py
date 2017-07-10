@@ -61,4 +61,4 @@ if __name__ == "__main__":
     chain_df['walker'] = np.repeat(np.arange(N_walkers), N_sample)
     chain_df['accept_frac'] = np.repeat(sampler.acceptance_fraction, N_sample)
 
-    chain_df.to_csv(chain_file, index=False, float_format='%.4f', compression='gzip')
+    chain_df.to_csv(chain_file, index=False, float_format='%.4e', compression='gzip')

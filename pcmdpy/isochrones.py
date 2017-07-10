@@ -126,7 +126,7 @@ class Isochrone_Model:
         #Import all MIST model files into Pandas dataframe
         self.MIST_df = pd.DataFrame()
         self.num_filters = len(filters)
-        self._z_arr = np.array([])
+        _z_arr = []
         self.filters = filters
         self.filter_names = [f.tex_name for f in self.filters]
         self.colnames = pd.read_table(MIST_path + 'columns.dat', delim_whitespace=True).columns
@@ -138,11 +138,12 @@ class Isochrone_Model:
                 new_df = pd.read_table(MIST_doc, names=self.colnames, comment='#', delim_whitespace=True)
                 new_df['z'] = z
                 self.MIST_df = self.MIST_df.append([new_df], ignore_index=True)
-                self._z_arr = np.append(self._z_arr, _z_from_str(z_str))
+                _z_arr.append(_z_from_str(z_str))
             except:
                 warn('File not properly formatted: %s'%(MIST_doc))
                 raise
 
+        self._z_arr = np.sort(_z_arr)
         self.MIST_df.rename(columns={'log10_isochrone_age_yr':'age'}, inplace=True)
         self.ages = self.MIST_df.age.unique()
         #The MIST columns that will be interpolated (mass, logIMF, and all input filters)

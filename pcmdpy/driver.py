@@ -14,7 +14,7 @@ from scipy.stats import multivariate_normal
 
 class Driver:
 
-    def __init__(self, iso_model, gpu=False):
+    def __init__(self, iso_model, gpu=True, **kwargs):
         self.iso_model = iso_model
         self.filters = iso_model.filters
         self.n_filters = len(self.filters)
