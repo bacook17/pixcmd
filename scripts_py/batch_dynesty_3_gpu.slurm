@@ -6,9 +6,9 @@
 #SBATCH --constraint=cuda-7.5 #require CUDA
 #SBATCH -t 5-00:00 #runtime in D-HH:MM
 #SBATCH --mem-per-cpu 2000 #memory pool for cores
-#SBATCH -o logs/dynesty_1_gpu.out
-#SBATCH -e logs/dynesty_1_gpu.err
+#SBATCH -o logs/dynesty_3_gpu.out
+#SBATCH -e logs/dynesty_3_gpu.err
 #SBATCH --mail-type=BEGIN,END,FAIL #alert when done
 #SBATCH --mail-user=bcook@cfa.harvard.edu #Email to send to
 
-python pcmd_integrate.py setup_files/dynesty_1_gpu.py
+python pcmd_integrate.py setup_files/dynesty_3_gpu.py
