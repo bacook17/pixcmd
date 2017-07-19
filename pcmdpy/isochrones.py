@@ -16,7 +16,7 @@ except ImportError:
 # Useful Utilities
 #-----------------
 
-def salpeter_IMF(mass, cutoff=0.08, normed=True):
+def salpeter_IMF(mass, cutoff=0.08, normed=True, **kwargs):
     dm = np.diff(mass)
     m_low = mass - 0.5*np.append([0.], dm) # m - delta_m / 2 (lowest bin stays same)
     m_high = mass + 0.5*np.append(dm, [0.]) # m + delta / 2 (highest bin stays same)
