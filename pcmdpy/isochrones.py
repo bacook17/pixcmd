@@ -159,7 +159,7 @@ class Isochrone_Model:
                 print(c, c_alt)
                 raise ValueError('Filter input does not have a valid MIST_column')
     
-    def get_isochrone(self, age, z, imf_func=salpeter_IMF, rare_cut=0., **kwargs):
+    def get_isochrone(self, age, z, imf_func=salpeter_IMF, rare_cut=0., lum_cut=np.inf, **kwargs):
         """Interpolate MIST isochrones for given age and metallicity
         
         Arguments:
@@ -193,8 +193,14 @@ class Isochrone_Model:
         IMF = imf_func(inter[:,0], **kwargs)
         mags = inter[:,1:].T
 
+        lum = np.power(10., -0.4*mags)
+        mean_lum = np.average(lum, weights=IMF, axis=1)
+        
         #remove stars that are extremely rare
         to_keep = (IMF >= rare_cut)
+
+        #remove stars brighter than given limit in EITHER filter
+        to_keep &= (lum / mean_lum >= lum_cut).sum(axis=1) == 0
         
         return IMF[to_keep], mags[:,to_keep]
 
@@ -218,5 +224,3 @@ class Isochrone_Model:
         ax.set_ylabel(names[1],fontsize='x-large')
         ax.set_xlabel('%s - %s'%(names[0], names[1]), fontsize='x-large')
         return ax
-
-

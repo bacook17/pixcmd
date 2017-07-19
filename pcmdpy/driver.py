@@ -3,6 +3,7 @@
 
 import numpy as np
 from scipy.stats import poisson, norm
+from scipy.misc import logsumexp
 import instrument as ins
 import isochrones as iso
 import utils
@@ -47,6 +48,13 @@ class Driver:
 
         self.gaussian_data = multivariate_normal(mean=means, cov=cov)
 
+        #compute the mean magnitudes
+        mags = np.copy(pcmd)
+        mags[0] += mags[1]
+        mag_factor = -0.4 * np.log(10) #convert from base 10 to base e
+        weights = 1. / mags.shape[1] #evenly weight each pixel
+        self.mean_mags_data = logsumexp(mag_factor*mags, b=weights, axis=1)
+        
         counts, hess, err = utils.make_hess(pcmd, bins, charlie_err=charlie_err)
         self.counts_data = counts
         self.hess_data = hess
@@ -71,10 +79,17 @@ class Driver:
         normal_model = multivariate_normal(mean=means, cov=cov)
         normal_term = np.sum(normal_model.logpdf(self.pcmd_data.T))
         
-        if like_mode == 2:
+        if like_mode == 0:
             #ONLY use the normal approximation
             log_like = normal_term
             return log_like
+        
+        #compute the mean magnitudes
+        mags = np.copy(pcmd)
+        mags[0] += mags[1]
+        mag_factor = -0.4 * np.log(10) #convert from base 10 to base e
+        weights = 1. / mags.shape[1] #evenly weight each pixel
+        mean_mags_model = logsumexp(mag_factor*mags, b=weights, axis=1)
         
         counts_model, hess_model, err_model = utils.make_hess(pcmd, self.hess_bins, charlie_err=charlie_err)
         n_model = pcmd.shape[1]
@@ -96,14 +111,26 @@ class Driver:
             log_like = np.sum(poisson.logpmf(self.counts_data, counts_model))
 
         if like_mode==1:
-            #evaluate the likelihood of the model datapoints assuming a 2D gaussian fit to the data
-            log_like += normal_term
+            return log_like
 
-        if like_mode==3:
+        elif like_mode==2:
+            #add terms relating to mean magnitude and color
+            mag_data = self.mean_mags_data[0]
+            mag_model = mean_mags_model[0]
+            color_data = mag_data - self.mean_mags_data[1]
+            color_model = mag_model - mean_mags_model[1]
+            var_mag = 0.01**2
+            var_color = 0.05**2
+            log_like -= (mag_data - mag_model)**2 / (2*var_mag)
+            log_like -= (color_data - color_model)**2 / (2*var_color)
+
+        elif like_mode==3:
             #combine the two terms, weighted by the amount of overlap
-            log_like = frac_common*log_like +  (1 - frac_common) * normal_term 
-            
-        return log_like
+            log_like = frac_common*log_like +  (1 - frac_common) * normal_term
+
+        else:
+            #default to like_mode == 1
+            return log_like
 
     def simulate(self, gal_model, im_scale, psf=True, fixed_seed=False, **kwargs):
         IMF, mags = self.iso_model.model_galaxy(gal_model, **kwargs)
