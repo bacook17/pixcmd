@@ -34,16 +34,16 @@ xbins = np.arange(-1.5, 4.6, 0.05)
 ybins = np.arange(-12, 15.6, 0.05)
 bins = np.array([xbins,ybins])
 
-for r_cut in [0., 1e-10, 1e-8, 1e-6, 1e-4, 1e-2]:
+for l_cut in [np.inf, 1000, 300, 100, 30, 10, 3]:
     for full in [True, False]:
         if full:
-            print('Running rare_cut=%.1e, full MIST models'%(r_cut))
+            print('Running lum_cut=%d, full MIST models'%(l_cut))
             d = driv
         else:
-            print('Running rare_cut=%.1e, 5xFEWER MIST models'%(r_cut))
+            print('Running lum_cut=%d, 5xFEWER MIST models'%(l_cut))
             d = driv_x5
         #Simulate mock data
-        mags, _ = d.simulate(gal_model, N_data, rare_cut=r_cut, fixed_seed=True)
+        mags, _ = d.simulate(gal_model, N_data, lum_cut=l_cut, fixed_seed=True)
         data_pcmd = utils.make_pcmd(mags)
         d.initialize_data(data_pcmd, bins)
 
@@ -60,8 +60,8 @@ for r_cut in [0., 1e-10, 1e-8, 1e-6, 1e-4, 1e-2]:
                     like_mode.append(l_mode)
                     log_like.append(d.loglike(pcmd, like_mode=l_mode))
                 
-df = pd.DataFrame({'N_scale':N_scale, 'rare_cut':rare_cut, 'full_MIST':full_MIST,
+df = pd.DataFrame({'N_scale':N_scale, 'lum_cut':lum_cut, 'full_MIST':full_MIST,
                    'log_like':log_like, 'like_mode':like_mode})
 
-df.to_csv('/n/home01/bcook/pixcmd/scripts_py/results/loglike_tests.csv', index=False, 
+df.to_csv('/n/home01/bcook/pixcmd/scripts_py/results/loglike_tests_2.csv', index=False, 
           float_format='%.4e')
