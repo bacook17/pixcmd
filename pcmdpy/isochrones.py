@@ -200,7 +200,7 @@ class Isochrone_Model:
         to_keep = (IMF >= rare_cut)
 
         #remove stars brighter than given limit in EITHER filter
-        to_keep &= (lum / mean_lum >= lum_cut).sum(axis=1) == 0
+        to_keep &= (lum.T / mean_lum >= lum_cut).sum(axis=1) == 0
         
         return IMF[to_keep], mags[:,to_keep]
 

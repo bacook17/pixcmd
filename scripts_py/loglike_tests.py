@@ -22,7 +22,7 @@ driv = driver.Driver(iso_model, gpu=True)
 driv_x5 = driver.Driver(iso_model_x5, gpu=True)
 
 N_scale = []
-rare_cut = []
+lum_cut = []
 full_MIST = []
 like_mode = []
 log_like = []
@@ -34,13 +34,13 @@ xbins = np.arange(-1.5, 4.6, 0.05)
 ybins = np.arange(-12, 15.6, 0.05)
 bins = np.array([xbins,ybins])
 
-for l_cut in [np.inf, 1000, 300, 100, 30, 10, 3]:
+for l_cut in [np.inf, 1000., 300., 100., 30., 10., 3.]:
     for full in [True, False]:
         if full:
-            print('Running lum_cut=%d, full MIST models'%(l_cut))
+            print('Running lum_cut=%.1e, full MIST models'%(l_cut))
             d = driv
         else:
-            print('Running lum_cut=%d, 5xFEWER MIST models'%(l_cut))
+            print('Running lum_cut=%.1e, 5xFEWER MIST models'%(l_cut))
             d = driv_x5
         #Simulate mock data
         mags, _ = d.simulate(gal_model, N_data, lum_cut=l_cut, fixed_seed=True)
@@ -51,11 +51,11 @@ for l_cut in [np.inf, 1000, 300, 100, 30, 10, 3]:
             print('---N_scale = %d'%(n))
             for i in range(N_loops):
                 print('       %d of %d'%(i+1, N_loops))
-                mags, _ = d.simulate(gal_model, n, fixed_seed=False, rare_cut=r_cut)
+                mags, _ = d.simulate(gal_model, n, fixed_seed=False, lum_cut=l_cut)
                 pcmd = utils.make_pcmd(mags)
                 for l_mode in [0, 1, 2, 3]: 
                     N_scale.append(n)
-                    rare_cut.append(r_cut)
+                    lum_cut.append(l_cut)
                     full_MIST.append(full)
                     like_mode.append(l_mode)
                     log_like.append(d.loglike(pcmd, like_mode=l_mode))

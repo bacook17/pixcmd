@@ -123,10 +123,12 @@ class Driver:
             var_color = 0.05**2
             log_like -= (mag_data - mag_model)**2 / (2*var_mag)
             log_like -= (color_data - color_model)**2 / (2*var_color)
+            return log_like
 
         elif like_mode==3:
             #combine the two terms, weighted by the amount of overlap
             log_like = frac_common*log_like +  (1 - frac_common) * normal_term
+            return log_like
 
         else:
             #default to like_mode == 1
