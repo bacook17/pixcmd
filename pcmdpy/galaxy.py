@@ -23,11 +23,11 @@ class Galaxy_Model:
         self.ages = self.age_arr
         assert(len(gal_params) == self._num_params)
 
-        self._params = gal_params
         self.z = gal_params[0]
         self.dust = 10.**gal_params[1]
         self.SFH = 10.**gal_params[2:]
         self.Npix = np.sum(self.SFH)
+        self._params = np.append(gal_params, np.log10(self.Npix))
 
 class Galaxy_SSP:
     _param_names = ['logz', 'logdust', 'logNpix', 'logage']
