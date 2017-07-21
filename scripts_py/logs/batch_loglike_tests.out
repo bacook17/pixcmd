@@ -7088,3 +7088,7 @@ Running lum_cut=3.0e+00, 5xFEWER MIST models
        98 of 100
        99 of 100
        100 of 100
+       JobID    JobName   NTasks  AllocCPUS    AllocGRES  Partition    Elapsed     MaxRSS  MaxVMSize  MaxDiskRead MaxDiskWrite      State 
+------------ ---------- -------- ---------- ------------ ---------- ---------- ---------- ---------- ------------ ------------ ---------- 
+24707699     batch_log+                   2        gpu:1 serial_re+   04:26:39                                                    RUNNING 
+24707699.ex+     extern        1          2        gpu:1              04:26:39                                                    RUNNING 
