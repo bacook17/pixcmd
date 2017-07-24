@@ -4,9 +4,9 @@ import numpy as np
 import pandas as pd
 import sys
 
-pc.gpu_utils.initialize_gpu(n=0)
+ppy.gpu_utils.initialize_gpu(n=0)
 
-filters = np.array([ppy.instrument.Filter.HST_F475W(1.0), ppy.instrument.Filter.HST_814W(1.0)])
+filters = np.array([ppy.instrument.Filter.HST_F475W(1.0), ppy.instrument.Filter.HST_F814W(1.0)])
 iso_model = ppy.isochrones.Isochrone_Model(filters)
 iso_model_x5 = ppy.isochrones.Isochrone_Model(filters, MIST_path = '/n/home01/bcook/pixcmd/pcmdpy/isoc_MIST_v0.29_x5FEWER/')
 
@@ -20,9 +20,10 @@ driv_x5 = ppy.driver.Driver(iso_model_x5, gpu=True)
 #Create a list of random (deterministic) galaxy models to use as "data" sources
 data_gals = []
 r = np.random.RandomState(seed=0)
+#for i in range(2):
 for i in range(10):
-    u = r.rand(8)
-    v = ppy.fit_model.lnprior_transform(u)
+    u = r.rand(10)
+    v = ppy.fit_model.lnprior_transform(u)[:-1] #HACKHACKHACK
     gal = full_gal(v)
     gal.u = u #keep track of random param
     data_gals.append(gal)
@@ -33,11 +34,14 @@ for i in range(10):
     gal.u = u 
     data_gals.append(gal)
 
+#lum_cuts = [np.inf, 1e2]
 lum_cuts = [np.inf, 1e4, 3e3, 1e3, 3e2, 1e2, 3e1, 1e1, 3e0]
+#N_scale = [128, 256, 512]
 N_scale = [128, 256, 512, 1024, 2048]
 like_mode = [0,1,2,3]
 
-N_sim = 30
+#N_sim = 1
+N_sim = 10
 N_data = 512
 close_width = 0.02
 similar_width = 0.1
@@ -50,14 +54,14 @@ for i, gal in enumerate(data_gals):
     print('Simulating dataset %d'%i)
     row = {}
     if isinstance(gal, full_gal):
-        row{'gal_type'} = 'Full'
+        row['gal_type'] = 'Full'
         galaxy_model = full_gal
         transform = ppy.fit_model.lnprior_transform
     else:
-        row{'gal_type'} = 'SSP'
+        row['gal_type'] = 'SSP'
         galaxy_model = ssp_gal
         transform = ppy.fit_model.lnprior_transform_ssp
-    row{'data_params'} = gal._params
+    row['data_params'] = gal._params
     
     for l_cut in lum_cuts:
         print('--Luminosity cut: %.1e'%l_cut)
@@ -93,7 +97,10 @@ for i, gal in enumerate(data_gals):
                             #reflect around [0,1]
                             u[u<0.] = -u[u<0.]
                             u[u>1.] = 2 - u[u>1.]
-                            new_gal = galaxy_model(transform(u))
+                            v = transform(u)
+                            if isinstance(gal, full_gal):
+                                v = v[:-1]
+                            new_gal = galaxy_model(v)
 
                         #compare same model to pretty similar ones
                         elif compare is 'similar':
@@ -102,17 +109,27 @@ for i, gal in enumerate(data_gals):
                             #reflect around [0,1]
                             u[u<0.] = -u[u<0.]
                             u[u>1.] = 2 - u[u>1.]
-                            new_gal = galaxy_model(transform(u))
+                            v = transform(u)
+                            if isinstance(gal, full_gal):
+                                v = v[:-1]
+                            new_gal = galaxy_model(v)
 
                         #compare to random model
                         elif compare is 'rand':
                             u = r.rand(len(gal.u))
-                            new_gal = galaxy_model(transform(u))
+                            v = transform(u)
+                            if isinstance(gal, full_gal):
+                                v = v[:-1]
+                            new_gal = galaxy_model(v)
 
                         #simulate the model, and store the comparison
+                        row['model_params'] = new_gal._params
                         mags, _ = d.simulate(new_gal, n, lum_cut=l_cut, fixed_seed=False)
                         model_pcmd = ppy.utils.make_pcmd(mags)
                         for l_mode in like_mode:
                             row['like_mode'] = l_mode
                             row['log_like'] = d.loglike(model_pcmd, like_mode=l_mode)
-                            df.append(row, ignore_index=True)
+                            print('               appending like_mode: %d'%l_mode)
+                            results = results.append(row, ignore_index=True)
+
+results.to_csv('/n/home01/bcook/pixcmd/scripts_py/results/full_loglike_test.csv', index=False, float_format='%.4e')

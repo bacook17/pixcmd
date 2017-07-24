@@ -119,8 +119,6 @@ class Driver:
             mag_model = mean_mags_model[0]
             color_data = mag_data - self.mean_mags_data[1]
             color_model = mag_model - mean_mags_model[1]
-            print(mag_data, mag_model)
-            print(color_data, color_model)
             var_mag = 0.01**2
             var_color = 0.05**2
             log_like = (mag_data - mag_model)**2 / (2*var_mag)
