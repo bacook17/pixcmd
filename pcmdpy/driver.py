@@ -121,7 +121,7 @@ class Driver:
             color_model = mag_model - mean_mags_model[1]
             var_mag = 0.01**2
             var_color = 0.05**2
-            log_like = (mag_data - mag_model)**2 / (2*var_mag)
+            log_like = -(mag_data - mag_model)**2 / (2*var_mag)
             log_like -= (color_data - color_model)**2 / (2*var_color)
             return log_like
 

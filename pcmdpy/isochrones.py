@@ -211,7 +211,10 @@ class Isochrone_Model:
             imf,m = self.get_isochrone(age, galaxy.z, **kwargs)
             weights = np.append(weights, imf*sfh)
             mags = np.append(mags, m, axis=-1)
-        return weights, mags
+        lum = np.power(10., -0.4*mags)
+        mean_lum = np.average(lum, weights=weights, axis=1)
+        to_keep = (lum.T / mean_lum >= lum_cut).sum(axis=1) == 0
+        return weights[to_keep], mags[:,to_keep]
 
     def plot_isochrone(self, galaxy, ax=None, **kwargs):
         import matplotlib.pyplot as plt
