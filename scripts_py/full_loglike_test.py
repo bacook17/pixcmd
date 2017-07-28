@@ -79,6 +79,8 @@ for i, gal in enumerate(data_gals):
             d.initialize_data(data_pcmd)
 
             for n in N_scale:
+                #reset index to redraw same random galaxies
+                r = np.random.RandomState(seed=0)
                 print('------N_scale: %d'%n)
                 row['N_scale'] = n
                 for j in range(N_sim):
@@ -92,7 +94,7 @@ for i, gal in enumerate(data_gals):
 
                         #compare same model to very similar ones
                         elif compare is 'close':
-                            u = gal.u
+                            u = np.copy(gal.u)
                             u += (r.rand(len(u))-0.5) * close_width
                             #reflect around [0,1]
                             u[u<0.] = -u[u<0.]
@@ -104,7 +106,7 @@ for i, gal in enumerate(data_gals):
 
                         #compare same model to pretty similar ones
                         elif compare is 'similar':
-                            u = gal.u
+                            u = np.copy(gal.u)
                             u += (r.rand(len(u))-0.5) * similar_width
                             #reflect around [0,1]
                             u[u<0.] = -u[u<0.]
