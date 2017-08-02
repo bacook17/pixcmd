@@ -7,6 +7,7 @@ import numpy as np
 
 class Galaxy_Model:
 
+    age_edges = np.array([6., 7., 8., 8.5, 9., 9.5, 10., 10.2])
     age_arr = np.array([6.5, 7.5, 8.25, 8.75, 9.25, 9.75, 10.1])
     _num_ages = len(age_arr)
 
@@ -28,6 +29,73 @@ class Galaxy_Model:
         self.SFH = 10.**gal_params[2:]
         self.Npix = np.sum(self.SFH)
         self._params = np.append(gal_params, np.log10(self.Npix))
+
+class Constant_SFR(Galaxy_Model):
+
+    def __init__(self, gal_params):
+        """
+        gal_params:
+           0 -- log (z / z_solar) metallicity
+           1 -- log E(B-V) dust extinction
+           2 -- log Npix
+        """
+        self.ages = self.age_arr
+        assert(len(gal_params) == 3)
+
+        self.z = gal_params[0]
+        self.dust = 10.**gal_params[1]
+        self.Npix = 10.**gal_params[2]
+        
+        SFH_term = 10.**self.age_edges[1:] - 10.**self.age_edges[:-1]
+        self.SFH = self.Npix * SFH_term / np.sum(SFH_term)
+        self._params = np.append(np.append(gal_params[:-1], np.log10(self.SFH)), np.log10(self.Npix))
+
+class Tau_Model(Galaxy_Model):
+
+    def __init__(self, gal_params):
+        """
+        gal_params:
+           0 -- log (z / z_solar) metallicity
+           1 -- log E(B-V) dust extinction
+           2 -- log Npix
+           3 -- tau (SFH time-scale, in Gyr)
+        """
+
+        self.ages = self.age_arr
+        assert(len(gal_params) == 4)
+
+        self.z = gal_params[0]
+        self.dust = 10.**gal_params[1]
+        self.Npix = 10.**gal_params[2]
+
+        ages_linear= 10.**(self.age_edges - 9.) #convert to Gyrs
+        SFH_term = np.exp(-ages_linear[:-1] / tau) - np.exp(-ages_linear[1:] / tau)
+        self.SFH = self.Npix * SFH_term / np.sum(SFH_term)
+        self._params = np.append(np.append(gal_params[:-1], np.log10(self.SFH)), np.log10(self.Npix))
+
+class Rising_Tau(Galaxy_Model):
+
+    def __init__(self, gal_params):
+        """
+        gal_params:
+           0 -- log (z / z_solar) metallicity
+           1 -- log E(B-V) dust extinction
+           2 -- log Npix
+           3 -- tau (SFH time-scale, in Gyr)
+        """
+
+        self.ages = self.age_arr
+        assert(len(gal_params) == 4)
+
+        self.z = gal_params[0]
+        self.dust = 10.**gal_params[1]
+        self.Npix = 10.**gal_params[2]
+
+        ages_linear= 10.**(self.age_edges - 9.) #convert to Gyrs
+        base_term = (ages_linear + tau) * np.exp(-ages_linear / tau)
+        SFH_term = base_term[:-1] - base_term[1:]
+        self.SFH = self.Npix * SFH_term / np.sum(SFH_term)
+        self._params = np.append(np.append(gal_params[:-1], np.log10(self.SFH)), np.log10(self.Npix))
 
 class Galaxy_SSP:
     _param_names = ['logz', 'logdust', 'logNpix', 'logage']
