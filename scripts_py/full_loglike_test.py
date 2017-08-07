@@ -46,7 +46,7 @@ N_data = 512
 close_width = 0.02
 similar_width = 0.1
 
-cols = np.array(['gal_type', 'compare_type', 'N_scale', 'MIST_full', 'like_mode', 'lum_cut', 'log_like', 'data_params', 'model_params'])
+cols = np.array(['gal_type', 'compare_type', 'N_scale', 'MIST_full', 'like_mode', 'lum_cut', 'log_like', 'data_params', 'data_meta', 'model_params', 'model_meta'])
 
 results = pd.DataFrame(columns=cols)
 
@@ -62,6 +62,7 @@ for i, gal in enumerate(data_gals):
         galaxy_model = ssp_gal
         transform = ppy.fit_model.lnprior_transform_ssp
     row['data_params'] = gal._params
+    row['data_meta'] = gal._meta_params
     
     for l_cut in lum_cuts:
         print('--Luminosity cut: %.1e'%l_cut)
@@ -126,6 +127,7 @@ for i, gal in enumerate(data_gals):
 
                         #simulate the model, and store the comparison
                         row['model_params'] = new_gal._params
+                        row['model_meta'] = new_gal._meta_params
                         mags, _ = d.simulate(new_gal, n, lum_cut=l_cut, fixed_seed=False)
                         model_pcmd = ppy.utils.make_pcmd(mags)
                         for l_mode in like_mode:

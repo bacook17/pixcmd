@@ -1,0 +1,39 @@
+GPU acceleration enabled
+using given n: 0
+Starting SourceModule Code
+Getting function
+Past the SourceModule code
+CUDAC Available
+Starting timing tests
+
+
+5x Undersampled
+N_im: 512
+---Gal1 (Npix = 1e4): 0.59 sec
+---Gal2 (Npix = 1e2): 0.57 sec
+---Gal3 (Npix = 1): 0.57 sec
+N_im: 1024
+---Gal1 (Npix = 1e4): 1.17 sec
+---Gal2 (Npix = 1e2): 1.11 sec
+---Gal3 (Npix = 1): 1.10 sec
+N_im: 2048
+---Gal1 (Npix = 1e4): 4.85 sec
+---Gal2 (Npix = 1e2): 4.60 sec
+---Gal3 (Npix = 1): 4.59 sec
+Full MIST
+N_im: 512
+---Gal1 (Npix = 1e4): 0.84 sec
+---Gal2 (Npix = 1e2): 0.81 sec
+---Gal3 (Npix = 1): 0.81 sec
+N_im: 1024
+---Gal1 (Npix = 1e4): 2.10 sec
+---Gal2 (Npix = 1e2): 1.97 sec
+---Gal3 (Npix = 1): 1.97 sec
+N_im: 2048
+---Gal1 (Npix = 1e4): 8.55 sec
+---Gal2 (Npix = 1e2): 8.02 sec
+---Gal3 (Npix = 1): 7.99 sec
+       JobID    JobName   NTasks  AllocCPUS    AllocGRES  Partition    Elapsed     MaxRSS  MaxVMSize  MaxDiskRead MaxDiskWrite      State 
+------------ ---------- -------- ---------- ------------ ---------- ---------- ---------- ---------- ------------ ------------ ---------- 
+25502856     batch_tim+                   2        gpu:1        gpu   00:44:09                                                    RUNNING 
+25502856.ex+     extern        1          2        gpu:1              00:44:09                                                    RUNNING 

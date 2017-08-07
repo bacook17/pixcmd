@@ -22,12 +22,12 @@ lum_cuts = [np.inf, 1e4, 1e3]
 N_im = [256, 512, 1024, 2048]
 like_mode = [0,1,2]
 
-vary_fracs = np.linspace(-.25, .25, 11)
+vary_fracs = np.linspace(-.5, .5, 11)
 N_sim = 1
 #N_sim = 10
 N_data = 512
 
-cols = np.array(['gal_num', 'N_im', 'param_num', 'vary_frac', 'like_mode', 'lum_cut', 'log_like', 'data_params', 'model_params'])
+cols = np.array(['gal_num', 'N_im', 'param_num', 'vary_frac', 'like_mode', 'lum_cut', 'log_like', 'data_params', 'data_meta', 'model_params', 'model_meta'])
 results = pd.DataFrame(columns=cols)
 
 for g, gal in enumerate(data_gals):
@@ -35,6 +35,7 @@ for g, gal in enumerate(data_gals):
     row = {}
     row['gal_num'] = g
     row['data_params'] = gal._params
+    row['data_meta'] = gal._meta_params
 
     for l_cut in lum_cuts:
         print('--Luminosity Cut: %.1e'%l_cut)
@@ -56,10 +57,11 @@ for g, gal in enumerate(data_gals):
                         model_gal = gal
                     else:
                         row['vary_frac'] = vf
-                        params = np.copy(gal._params[:-1])
-                        params[p] *= (1. + vf)
+                        params = np.copy(gal._params)
+                        params[p] += vf
                         model_gal = ppy.galaxy.Galaxy_Model(params)
                     row['model_params'] = model_gal._params
+                    row['model_meta'] = model_gal._meta_params
                     for i in range(N_sim):
                         mags, _ = driv.simulate(model_gal, n, lum_cut=l_cut, fixed_seed=False)
                         model_pcmd = ppy.utils.make_pcmd(mags)
@@ -68,4 +70,4 @@ for g, gal in enumerate(data_gals):
                             row['log_like'] = driv.loglike(model_pcmd, like_mode=l_mode)
                             results = results.append(row, ignore_index=True)
 
-results.to_csv('/n/home01/bcook/pixcmd/scripts_py/results/varations.csv', index=False, float_format='%.4e')
+    results.to_csv('/n/home01/bcook/pixcmd/scripts_py/results/varations.csv', index=False, float_format='%.4e')

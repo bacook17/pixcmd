@@ -13,6 +13,7 @@ class Galaxy_Model:
 
     _param_names = ['logz', 'logdust', 'logSFH0', 'logSFH1', 'logSFH2', 'logSFH3', 'logSFH4', 'logSFH5', 'logSFH6']
     _num_params = len(_param_names)
+    _meta_names = ['logNpix']
     
     def __init__(self, gal_params):
         """
@@ -28,10 +29,12 @@ class Galaxy_Model:
         self.dust = 10.**gal_params[1]
         self.SFH = 10.**gal_params[2:]
         self.Npix = np.sum(self.SFH)
-        self._params = np.append(gal_params, np.log10(self.Npix))
+        self._params = gal_params
+        self._meta_params = np.array([np.log10(self.Npix)])
 
 class Constant_SFR(Galaxy_Model):
 
+    _meta_names = ['logNpix']
     def __init__(self, gal_params):
         """
         gal_params:
@@ -48,10 +51,12 @@ class Constant_SFR(Galaxy_Model):
         
         SFH_term = 10.**self.age_edges[1:] - 10.**self.age_edges[:-1]
         self.SFH = self.Npix * SFH_term / np.sum(SFH_term)
-        self._params = np.append(np.append(gal_params[:-1], np.log10(self.SFH)), np.log10(self.Npix))
+        self._params = np.append(gal_params[:-1], np.log10(self.SFH))
+        self._meta_params = np.array([np.log10(self.Npix)])
 
 class Tau_Model(Galaxy_Model):
 
+    _meta_names = ['logNpix', 'tau']
     def __init__(self, gal_params):
         """
         gal_params:
@@ -67,14 +72,17 @@ class Tau_Model(Galaxy_Model):
         self.z = gal_params[0]
         self.dust = 10.**gal_params[1]
         self.Npix = 10.**gal_params[2]
+        tau = gal_params[3]
 
         ages_linear= 10.**(self.age_edges - 9.) #convert to Gyrs
         SFH_term = np.exp(-ages_linear[:-1] / tau) - np.exp(-ages_linear[1:] / tau)
         self.SFH = self.Npix * SFH_term / np.sum(SFH_term)
-        self._params = np.append(np.append(gal_params[:-1], np.log10(self.SFH)), np.log10(self.Npix))
+        self._params = np.append(gal_params[:2], np.log10(self.SFH))
+        self._meta_params = np.array([np.log10(self.Npix), tau])
 
 class Rising_Tau(Galaxy_Model):
 
+    _meta_names = ['logNpix', 'tau']
     def __init__(self, gal_params):
         """
         gal_params:
@@ -90,12 +98,14 @@ class Rising_Tau(Galaxy_Model):
         self.z = gal_params[0]
         self.dust = 10.**gal_params[1]
         self.Npix = 10.**gal_params[2]
+        tau = gal_params[3]
 
         ages_linear= 10.**(self.age_edges - 9.) #convert to Gyrs
         base_term = (ages_linear + tau) * np.exp(-ages_linear / tau)
         SFH_term = base_term[:-1] - base_term[1:]
         self.SFH = self.Npix * SFH_term / np.sum(SFH_term)
-        self._params = np.append(np.append(gal_params[:-1], np.log10(self.SFH)), np.log10(self.Npix))
+        self._params = np.append(gal_params[2], np.log10(self.SFH))
+        self._meta_params = np.array([np.log10(self.Npix), tau])
 
 class Galaxy_SSP:
     _param_names = ['logz', 'logdust', 'logNpix', 'logage']
