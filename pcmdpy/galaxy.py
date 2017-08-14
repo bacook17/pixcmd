@@ -75,7 +75,7 @@ class Tau_Model(Galaxy_Model):
         tau = gal_params[3]
 
         ages_linear= 10.**(self.age_edges - 9.) #convert to Gyrs
-        SFH_term = np.exp(-ages_linear[:-1] / tau) - np.exp(-ages_linear[1:] / tau)
+        SFH_term = np.exp(ages_linear[1:] / tau) - np.exp(ages_linear[:-1] / tau)
         self.SFH = self.Npix * SFH_term / np.sum(SFH_term)
         self._params = np.append(gal_params[:2], np.log10(self.SFH))
         self._meta_params = np.array([np.log10(self.Npix), tau])

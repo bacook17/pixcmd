@@ -7,6 +7,10 @@ import numpy as np
 import utils
 from gpu_utils import gpu_log10
 from scipy.signal import fftconvolve, convolve2d, gaussian
+try:
+    from pkg_resources import resource_filename
+except ImportError:
+    pass
 
 class Filter:
     """Models observations in a single band
@@ -111,7 +115,11 @@ class Filter:
         exposure = 3620.
         zero_point = 26.0593
         red_per_ebv = 3.248
-        psf_file = "../psf/f475w_%d%d.psf"
+        try:
+            psf_path = resource_filename('pcmdpy', 'psf/')
+        except:
+            psf_path = '/n/home01/bcook/pixcmd/pcmdpy/psf/'
+        psf_file = psf_path +'f475w_%d%d.psf'
         psf = np.array([[10.**np.loadtxt(psf_file%(i,j)) for i in range(0,4)] for j in range(0,4)]) #4x4x73x73
         kwargs = {}
         kwargs['name'] = "F475W"
@@ -148,7 +156,11 @@ class Filter:
         exposure = 3235.
         zero_point = 25.9433
         red_per_ebv = 1.536
-        psf_file = "../psf/f814w_%d%d.psf"
+        try:
+            psf_path = resource_filename('pcmdpy', 'psf/')
+        except:
+            psf_path = '/n/home01/bcook/pixcmd/pcmdpy/psf/'
+        psf_file = psf_path +'f814w_%d%d.psf'
         psf = np.array([[10.**np.loadtxt(psf_file%(i,j)) for i in range(0,4)] for j in range(0,4)]) #4x4x73x73
         kwargs = {}
         kwargs['name'] = "F814W"
