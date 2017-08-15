@@ -205,10 +205,14 @@ def nested_integrate(pcmd, filters, im_scale, N_points, method='multi', max_call
                                             update_interval=1, rstate=rstate)
             print('-Running dynesty sampler')
             for it, results in enumerate(sampler.sample(dlogz=dlogz,maxcall=max_call)):
-                (worst, ustar, vstar, loglstar, logvol, logwt, logz, logzerr, h, nc) = results
+                (worst, ustar, vstar, loglstar, logvol, logwt, logz, logzvar, h, nc, worst_it, propidx, propiter, eff, delta_logz) = results
                 #compute delta_logz
-                logz_remain = np.max(sampler.live_logl) + logvol
-                delta_logz = np.logaddexp(logz, logz_remain) - logz
+                if delta_logz > 1e6:
+                    delta_logz = np.inf
+                if logzvar >= 0.:
+                    logzerr = np.sqrt(logzvar)
+                else:
+                    logzerr = np.nan
                 message = 'iteration: %d | ncalls: %d | logz: %6.3f +/- %6.3f | dlogz: %6.3f'%(it, nc, logz, logzerr, delta_logz)
                 message += '\n Current time: ' + '%s'%(str(datetime.now()))
                 message += '\n --------------------------'
