@@ -6,6 +6,6 @@ Message: trial mode expires in 30 days
 Traceback (most recent call last):
   File "pcmd_integrate.py", line 58, in <module>
     results = fit_model.nested_integrate(**args)
-  File "/n/home01/bcook/pixcmd/pcmdpy/fit_model.py", line 208, in nested_integrate
-    (worst, ustar, vstar, loglstar, logvol, logwt, logz, logzvar, h, nc, worst_it, propidx, propiter, eff, delta_logz) = results
-ValueError: need more than 14 values to unpack
+  File "/n/home01/bcook/pixcmd/pcmdpy/fit_model.py", line 202, in nested_integrate
+    sampler.run_nested(nlive_init=N_points, nlive_batch=N_batch, wt_kwargs={'pfrac':1.0})
+NameError: global name 'N_batch' is not defined

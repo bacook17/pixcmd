@@ -104,13 +104,13 @@ def lnprior_transform(normed_params):
 def lnprior_transform_small(normed_params):
     results = np.zeros(len(normed_params))
     #Flat priors
-    # log (z/z_solar) between -0.5 and 0.0
-    results[0] = -0.5 + 0.5*normed_params[0]
-    # E(B-V) between 3e-3 and 3e-2
-    results[1] = -2.5 + normed_params[1]
+    # log (z/z_solar) between -0.75 and -0.25
+    results[0] = -0.75 + 0.5*normed_params[0]
+    # E(B-V) between 3e-2 and 3e-1
+    results[1] = -1.5 + normed_params[1]
     # log M_i between +/- 0.5 of truth
-    appx_truth = np.array([-1.25, -0.25,  0.135,  0.635,
-                            1.135, 1.635,  1.57])
+    appx_truth = np.array([ 0.75426991,  1.75426991,  2.13493886,  2.63493886,  3.13493886,
+        3.63493886,  3.56710397])
     for i in range(2, len(normed_params)):
         results[i] = appx_truth[i-2] - 0.5 + normed_params[i]
     return results
@@ -142,7 +142,7 @@ def lnprob(gal_params, driv, im_scale, gal_class=gal.Galaxy_Model, **kwargs):
 
 
 def nested_integrate(pcmd, filters, im_scale, N_points, method='multi', max_call=100000, gal_class=gal.Galaxy_Model, gpu=True,
-                     bins=None, verbose=False, small_prior=False, dlogz=None, use_dynesty=False, dynamic=False, **kwargs):
+                     bins=None, verbose=False, small_prior=False, dlogz=None, use_dynesty=False, dynamic=False, N_batch=0, **kwargs):
     if (not _DYNESTY_INSTALLED) and use_dynesty:
         raise ImportError('Dynesty not installed correctly')
     print('-initializing models')

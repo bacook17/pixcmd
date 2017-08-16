@@ -122,7 +122,7 @@ small_prior = True
 #logsfhs = np.log10(Npix * bin_widths / np.sum(bin_widths)) 
 #params_start = np.append(np.array([-0.2, -2]), logsfhs)
 
-assert(len(params_start) == model_class._num_params)
+#assert(len(params_start) == model_class._num_params)
 
 ## Initialize the ball with a particular width
 #std = 0.1 * np.ones_like(params_start)
