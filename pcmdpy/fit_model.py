@@ -198,8 +198,8 @@ def nested_integrate(pcmd, filters, im_scale, N_points, method='multi', max_call
 
     if use_dynesty:
         if dynamic:
-            sampler = dynesty.DynamicNestedSampler(this_lnlike, this_pri_transform, ndim=n_dim, bound=method, sample='unif', update_interval=1, rstate=rstate)
-            sampler.run_nested(ninit=N_points, maxcall_init=max_call, dlogz_init=dlogz)
+            sampler = dynesty.DynamicNestedSampler(this_lnlike, this_pri_transform, ndim=n_dim, bound=method, sample='unif', rstate=rstate)
+            sampler.run_nested(nlive_init=N_points, nlive_batch=N_batch, wt_kwargs={'pfrac':1.0})
         else:
             sampler = dynesty.NestedSampler(this_lnlike, this_pri_transform, ndim=n_dim, bound=method, sample='unif', nlive=N_points,
                                             update_interval=1, rstate=rstate)

@@ -2,7 +2,7 @@
 # Ben Cook (bcook@cfa.harvard.edu)
 
 ###############################################
-# SETUP FILE for DYNESTY SSP Test with small prior volume
+# SETUP FILE for DYNESTY Test
 
 import pcmdpy.instrument as ins
 import pcmdpy.isochrones as iso
@@ -30,9 +30,6 @@ verbose = True
 
 ## The number of parallel processes to run.
 ## Using more threads than available CPUs (or GPUs, if gpu=True) will not improve performance
-########## IMPORTANT NOTE:
-##### Not currently implemented for N_threads > 1 and use_gpu = True, will fail
-##### Hopefully this will be addressed soon
 N_threads = 1
 
 ## Setup the multiprocessing pool, for parallel evaluation
@@ -65,11 +62,11 @@ if use_cudac:
 ## Whether to use a fixed random-number seed (decreases stochasticity of likelihood calls)
 fixed_seed = True
 
-## Whether to include a Gaussian likelihood term
-like_mode = 2 #use only the gaussian model
+##Add the binned hess values and the mean magnitude and color terms
+like_mode = 2
 
 ## Cut out stars rarer than some limit (as fraction of total mass)
-rare_cut = 0.
+lum_cut = np.inf
 
 ##### TIMING NOTE:
 ## The evaluation time of the fitting process will scale as:
@@ -77,15 +74,16 @@ rare_cut = 0.
 
 ## Whether to use dynesty (otherwise, use Nestle)
 use_dynesty = True
-dynamic = True
-## The number of nestle points
+dynamic = False
+
+## The number of dynesty live points
 N_points = 200
 
 ## The number of burn-in iterations, per walker
 N_burn = 0
 
-## The number of max calls for nestle
-N_max = 50000
+## The number of max calls for dynesty
+N_max = 500000
 
 ## The error tolerance for Nestle stopping criterion
 dlogz = 0.5
@@ -105,15 +103,15 @@ filters = np.array([ins.Filter.HST_F475W(1.0), ins.Filter.HST_F814W(1.0)])
 iso_model = iso.Isochrone_Model(filters)
 
 ## The galaxy class to use to model the data
-model_class = gal.Galaxy_SSP # simple stellar population (SSP)
-#model_class = gal.Galaxy_Model # 7-bin non-parametric SFH (FULL)
+#model_class = gal.Galaxy_SSP # simple stellar population (SSP)
+model_class = gal.Galaxy_Model # 7-bin non-parametric SFH (FULL)
 
 #### Initialize the emcee chains
 # p0 = None #will initialize randomly over the prior space
 
 ## Initialize with a ball around a particular starting position
 ## for SSP mock model
-params_start = np.array([-0.2, -2., 2., 9.6])
+#params_start = np.array([-0.2, -2., 2., 9.6])
 
 ## Constrain the prior volume to a small region around the correct answer?
 small_prior = True
@@ -143,22 +141,23 @@ assert(len(params_start) == model_class._num_params)
 data_is_mock = True
 
 ## scale of mock image (N_mock x N_mock)
-N_mock = 128
+N_mock = 512
 
 ## model of the mock galaxy
 
 ## SSP model
-model_mock = gal.Galaxy_SSP
-params_mock = np.array([-0.2, -2., 2., 9.6])
+#model_mock = gal.Galaxy_SSP
+#params_mock = np.array([-0.2, -2., 2., 9.6])
 
 ## FULL model with Npix = 1e2
-#model_mock = gal.Galaxy_Model
+model_mock = gal.Constant_SFR
 #Npix = 1e2
 #age_edges = np.array([6., 7., 8., 8.5, 9.0, 9.5, 10., 10.2])
 #bin_widths = 10.**age_edges[1:] - 10.**age_edges[:-1]
 #logsfhs = np.log10(Npix * bin_widths / np.sum(bin_widths)) 
 #params_mock = np.append(np.array([-0.2, -2]), logsfhs)
 
+params_mock = np.array([-0.5, -1., 4.]) 
 galaxy_mock = model_mock(params_mock)
 
 ## Create the mock data
@@ -174,6 +173,6 @@ data_pcmd = utils.make_pcmd(mags)
 ## Directory to save results to
 results_dir = '/n/home01/bcook/pixcmd/scripts_py/results/'
 ## NAME OF THIS PARTICULAR RUN
-name = "dynesty_2_k80"
+name = "dynesty_reg"
 ## the file to save the data
 chain_file = results_dir + name + '.csv'

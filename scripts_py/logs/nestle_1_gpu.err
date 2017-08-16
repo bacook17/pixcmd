@@ -1,6 +1,6 @@
 Vendor:  Continuum Analytics, Inc.
 Package: mkl
 Message: trial mode expires in 30 days
-       JobID  MaxVMSize  MaxVMSizeNode  MaxVMSizeTask  AveVMSize     MaxRSS MaxRSSNode MaxRSSTask     AveRSS MaxPages MaxPagesNode   MaxPagesTask   AvePages     MinCPU MinCPUNode MinCPUTask     AveCPU   NTasks AveCPUFreq ReqCPUFreqMin ReqCPUFreqMax ReqCPUFreqGov ConsumedEnergy  MaxDiskRead MaxDiskReadNode MaxDiskReadTask  AveDiskRead MaxDiskWrite MaxDiskWriteNode MaxDiskWriteTask AveDiskWrite 
------------- ---------- -------------- -------------- ---------- ---------- ---------- ---------- ---------- -------- ------------ -------------- ---------- ---------- ---------- ---------- ---------- -------- ---------- ------------- ------------- ------------- -------------- ------------ --------------- --------------- ------------ ------------ ---------------- ---------------- ------------ 
-89687236.ex+          0  supermicgpu01              0          0          0 supermicg+          0          0        0 supermicgpu+              0          0                            65534  00:00.000        0          0             0             0             0              0            0   supermicgpu01               0            0            0    supermicgpu01                0            0 
+/n/home01/bcook/.conda/envs/my_home/lib/python2.7/site-packages/matplotlib/font_manager.py:273: UserWarning: Matplotlib is building the font cache using fc-list. This may take a moment.
+  warnings.warn('Matplotlib is building the font cache using fc-list. This may take a moment.')
+slurmstepd: error: *** JOB 26418381 ON supermicgpu01 CANCELLED AT 2017-08-15T14:41:58 ***

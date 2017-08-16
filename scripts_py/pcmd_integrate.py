@@ -23,7 +23,10 @@ if __name__ == "__main__":
     args['filters'] = setup.filters
     args['im_scale'] = setup.N_scale
     args['N_points'] = setup.N_points
-
+    try:
+        args['N_batch'] = setup.N_batch
+    except:
+        pass
     #optional key-word arguments (defaults are set by fit_model.nested_integrate)
     args['max_call'] = setup.N_max
     args['gpu'] = setup.use_gpu
@@ -31,7 +34,7 @@ if __name__ == "__main__":
     args['like_mode'] = setup.like_mode
     args['small_prior'] = setup.small_prior
     try:
-        args['rare_cut'] = setup.rare_cut
+        args['lum_cut'] = setup.lum_cut
     except:
         pass
     try:
