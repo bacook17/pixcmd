@@ -106,7 +106,7 @@ class Isochrone_Model:
        __init__ -- Pass a list of Filter objects, path to MIST model files, and array of metallicities.
     """
     # CHANGE PATH 
-    def __init__(self, filters, MIST_path=None):
+    def __init__(self, filters, MIST_path=None, append=".iso.cmd"):
         """Creates a new Isochrone_Model, given a list of Filter objects
         
         Arguments:
@@ -131,7 +131,7 @@ class Isochrone_Model:
         self.filter_names = [f.tex_name for f in self.filters]
         self.colnames = pd.read_table(MIST_path + 'columns.dat', delim_whitespace=True).columns
         #load all MIST files found in directory
-        for MIST_doc in glob.glob( os.path.join(MIST_path, '*.iso.cmd')):
+        for MIST_doc in glob.glob( os.path.join(MIST_path, '*'+append)):
             try:
                 z_str = MIST_doc.split('feh_')[-1][:5]
                 z = _z_from_str(z_str)
