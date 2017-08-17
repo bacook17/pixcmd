@@ -6,8 +6,8 @@
 #SBATCH --constraint=cuda-7.5 #require CUDA
 #SBATCH -t 5-00:00 #runtime in D-HH:MM
 #SBATCH --mem-per-cpu 2000 #memory pool for cores
-#SBATCH -o logs/dynesty_reg.out
-#SBATCH -e logs/dynesty_reg.err
+#SBATCH -o logs/dynesty_dyn.out
+#SBATCH -e logs/dynesty_dyn.err
 #SBATCH --mail-type=BEGIN,END,FAIL #alert when done
 #SBATCH --mail-user=bcook@cfa.harvard.edu #Email to send to
 
