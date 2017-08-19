@@ -54,7 +54,7 @@ _code = """
 
       if ((id_imx < N) && (id_imy < N)) {
           /* Update local_state, to make sure values are very random */
-          skip = 20 * block_id;
+          /*skip = 20 * block_id;*/
           skipahead(skip, &local_state);
           for (int i = 0; i < num_bins; i++){
              count = curand_poisson(&local_state, exp_nums[i]);
@@ -70,7 +70,7 @@ _code = """
       }
 
       /* Save back state */
-      /*global_state[id_within_block] = local_state;*/
+      global_state[id_within_block] = local_state;
    }
    }
 """
