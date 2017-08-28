@@ -37,16 +37,18 @@ _code = """
 
    extern "C"
    {
-   __global__ void poisson_sum(curandState *global_state, const float *exp_nums, const float *fluxes, const int num_bands, const int num_bins, const int N, float *pixels)
+   __global__ void poisson_sum(curandState *global_state, const float *exp_nums, const float *fluxes, const int num_bands, const int num_bins, const int N, float *pixels, const int skip_n, const int num_procs)
    {
       /* Initialize variables */
       int id_imx = blockIdx.x*blockDim.x + threadIdx.x;
       int id_imy = blockIdx.y*blockDim.y + threadIdx.y;
       int id_pix = (id_imx) + N*id_imy;
       int id_within_block = threadIdx.x + (blockDim.x * threadIdx.y);
-      int block_id = blockIdx.y*gridDim.x + blockIdx.x;
+      int block_id = blockIdx.x*gridDim.y + blockIdx.y;
 
-      curandState local_state = global_state[id_within_block];
+      int seed_id = id_within_block + ((blockDim.x * blockDim.y) * (block_id % num_procs));
+
+      curandState local_state = global_state[seed_id];
       float results[10] = {0.0};
 
       float flux;
@@ -54,7 +56,7 @@ _code = """
 
       if ((id_imx < N) && (id_imy < N)) {
           /* Update local_state, to make sure values are very random */
-          /*skip = 20 * block_id;*/
+          skip = skip_n * block_id;
           skipahead(skip, &local_state);
           for (int i = 0; i < num_bins; i++){
              count = curand_poisson(&local_state, exp_nums[i]);
@@ -70,7 +72,7 @@ _code = """
       }
 
       /* Save back state */
-      global_state[id_within_block] = local_state;
+      global_state[seed_id] = local_state;
    }
    }
 """
@@ -133,10 +135,11 @@ def seed_getter_fixed(N, value=None):
     if value is None:
         #This will draw the same number every time
         np.random.seed(0)
-        value = np.random.randint(0, 2**31 - 1) 
-    return result.fill(value)
+        return pycuda.gpuarray.to_gpu(np.random.randint(0, 2**31 - 1, N).astype(np.int32))
+    else:
+        return result.fill(value)
         
-def _draw_image_cudac(expected_nums, fluxes, N_scale, fixed_seed=False, tolerance=0, d_block=_MAX_2D_BLOCK_DIM, **kwargs):
+def _draw_image_cudac(expected_nums, fluxes, N_scale, fixed_seed=False, tolerance=0, d_block=_MAX_2D_BLOCK_DIM, skip_n=1, my_shuffle=False, **kwargs):
     assert(_GPU_AVAIL & _GPU_ACTIVE)
     assert(_CUDAC_AVAIL)
 
@@ -162,6 +165,7 @@ def _draw_image_cudac(expected_nums, fluxes, N_scale, fixed_seed=False, toleranc
 
     N_bins = np.int32(len(expected_nums))
     N_bands = np.int32(fluxes.shape[0])
+    skip_n = np.int32(skip_n)
     
     if fixed_seed:
         seed_getter = seed_getter_fixed
@@ -169,12 +173,13 @@ def _draw_image_cudac(expected_nums, fluxes, N_scale, fixed_seed=False, toleranc
         seed_getter = curandom.seed_getter_uniform
 
     generator = curandom.XORWOWRandomNumberGenerator(seed_getter=seed_getter)
+    num_procs = np.int32(generator.block_count)
     result = np.zeros((N_bands, N_scale, N_scale), dtype=np.float32)
     
     block_dim = (d_block, d_block,1)
     grid_dim = (N_scale/d_block + 1, N_scale/d_block + 1)
-    _func(generator.state, cuda.In(expected_nums), cuda.In(fluxes), N_bands, N_bins, N_scale,
-              cuda.Out(result), block=block_dim, grid=grid_dim)
+    _func(generator._state, cuda.In(expected_nums), cuda.In(fluxes), N_bands, N_bins, N_scale,
+              cuda.Out(result), skip_n, num_procs, block=block_dim, grid=grid_dim)
 
     #Add on flux from fully-populated bins
     #result = np.array([result[i] + fixed_fluxes[i] for i in range(N_bands)]).astype(float)

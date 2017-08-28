@@ -2,7 +2,7 @@
 # Ben Cook (bcook@cfa.harvard.edu)
 
 ###############################################
-# SETUP FILE for dynamic DYNESTY Test 
+# SETUP FILE for DYNESTY Test using parallellization
 
 import pcmdpy.instrument as ins
 import pcmdpy.isochrones as iso
@@ -30,7 +30,7 @@ verbose = True
 
 ## The number of parallel processes to run.
 ## Using more threads than available CPUs (or GPUs, if gpu=True) will not improve performance
-N_threads = 1
+N_threads = 2
 
 ## Setup the multiprocessing pool, for parallel evaluation
 pool = None
@@ -74,11 +74,13 @@ lum_cut = np.inf
 
 ## Whether to use dynesty (otherwise, use Nestle)
 use_dynesty = True
-dynamic = True
+dynamic = False
 
 ## The number of dynesty live points
-N_points = 50
-N_batch = 50
+N_points = 200
+
+## The number of burn-in iterations, per walker
+N_burn = 0
 
 ## The number of max calls for dynesty
 N_max = 500000
@@ -90,7 +92,7 @@ dlogz = 0.5
 ## MODELLING SETTINGS
 
 ## The size (N_scale x N_scale) of the simulated image
-N_scale = 256
+N_scale = 1024
 
 ## The filters (photometry bands) to model
 ## There should be at least 2 filters.
@@ -139,7 +141,7 @@ small_prior = True
 data_is_mock = True
 
 ## scale of mock image (N_mock x N_mock)
-N_mock = 256
+N_mock = 512
 
 ## model of the mock galaxy
 
@@ -171,6 +173,6 @@ data_pcmd = utils.make_pcmd(mags)
 ## Directory to save results to
 results_dir = '/n/home01/bcook/pixcmd/scripts_py/results/'
 ## NAME OF THIS PARTICULAR RUN
-name = "dynesty_dyn"
+name = "dynesty_par"
 ## the file to save the data
-output_file = results_dir + name + '.csv'
+chain_file = results_dir + name + '.csv'

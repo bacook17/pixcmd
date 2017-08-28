@@ -115,11 +115,14 @@ def lnprior_transform_small(normed_params):
         results[i] = appx_truth[i-2] - 0.5 + normed_params[i]
     return results
 
-def lnlike(gal_params, driv, im_scale, gal_class=gal.Galaxy_Model, **kwargs):
-    if (gal_class is gal.Galaxy_SSP):
-        pri = lnprior_ssp(gal_params)
+def lnlike(gal_params, driv, im_scale, prior_func=None, gal_class=gal.Galaxy_Model, **kwargs):
+    if prior_func is None:
+        if (gal_class is gal.Galaxy_SSP):
+            pri = lnprior_ssp(gal_params)
+        else:
+            pri = lnprior(gal_params)
     else:
-        pri = lnprior(gal_params)
+        pri = prior_func(gal_params)
     if np.isinf(pri):
         return -np.inf
     gal_model = gal_class(gal_params)
@@ -139,16 +142,57 @@ def lnprob(gal_params, driv, im_scale, gal_class=gal.Galaxy_Model, **kwargs):
     like = lnlike(gal_params, driv, im_scale, gal_class=gal_class, **kwargs)
     return pri + like
 
-
+def dynesty_run(func, out_df=None, out_file=None, save_every=100, param_names=None, ncall_start=0, **func_kwargs):
+    ncall = ncall_start
+    if 'dlogz' in func_kwargs.keys():
+        dlogz = func_kwargs['dlogz']
+    else:
+        dlogz = np.nan
+    print(func_kwargs)
+    for it, results in enumerate(func(**func_kwargs)):
+        row = {'niter': it}
+        (worst, ustar, vstar, row['logl'], row['logvol'], row['logwt'], row['logz'], logzvar, row['h'], nc, worst_it, propidx, propiter, row['eff'], delta_logz) = results
+        ncall += nc
+        row['ncall'] =  ncall
+        row['nlive'] = 2000
+        if delta_logz > 1e6:
+            delta_logz = np.inf
+        row['delta_logz'] = delta_logz
+        if logzvar >= 0.:
+            row['logzerr'] = np.sqrt(logzvar)
+        else:
+            row['logzerr'] = np.nan
+        if param_names is not None:
+            for i, pname in enumerate(param_names):
+                row[pname] = vstar[i]
+        else:
+            for i, v in enumerate(vstar):
+                row['param%d'%i] = v
+                    
+        if out_df is not None:
+            out_df = out_df.append(row, ignore_index=True)
+            if ((it+1) % save_every == 0) and (out_file is not None):
+                out_df.to_csv(out_file, mode='a', index=False, header=False, float_format='%.4e')
+                
+        message = 'iteration: {:d} | nc: {:d} | ncalls: {:d} | eff(%): {:6.3f} | logz: {:6.3f} +/- {:6.3f} | dlogz: {:6.3f} > {:6.3f}'.format(it, nc, ncall, row['eff'], row['logz'], row['logzerr'], row['delta_logz'], dlogz)
+        message += '\n Current time: ' + '%s'%(str(datetime.now()))
+        message += '\n --------------------------'
+        print(message)
+    return ncall
 
 def nested_integrate(pcmd, filters, im_scale, N_points, method='multi', max_call=100000, gal_class=gal.Galaxy_Model, gpu=True,
-                     bins=None, verbose=False, small_prior=False, dlogz=None, use_dynesty=False, dynamic=False, N_batch=0, **kwargs):
-    if (not _DYNESTY_INSTALLED) and use_dynesty:
+                     bins=None, verbose=False, small_prior=False, dlogz=None, dynamic=False, N_batch=0,
+                     pool=None, out_df=None, out_file=None, save_every=100, param_names=None, prior_trans=None, prior_func=None, **kwargs):
+    if (not _DYNESTY_INSTALLED):
         raise ImportError('Dynesty not installed correctly')
     print('-initializing models')
     n_filters = len(filters)
     assert(pcmd.shape[0] == n_filters)
     n_dim = gal_class._num_params
+    if pool is None:
+        nprocs = 1
+    else:
+        nprocs = pool._processes
     
     iso_model = iso.Isochrone_Model(filters)
     driv = driver.Driver(iso_model, gpu=gpu)
@@ -159,69 +203,47 @@ def nested_integrate(pcmd, filters, im_scale, N_points, method='multi', max_call
         bins = np.array([xbins,ybins])
     driv.initialize_data(pcmd,bins)
 
-    if gal_class is gal.Galaxy_Model:
-        if small_prior:
-            this_pri_transform = lnprior_transform_small
-        else:
-            ndim += 1 #HACKHACKHACK
-            this_pri_transform = lnprior_transform
+    if prior_trans is not None:
+        this_pri_transform = prior_trans
     else:
-        if small_prior:
-            this_pri_transform = lnprior_transform_ssp_small
+        if gal_class is gal.Galaxy_Model:
+            if small_prior:
+                this_pri_transform = lnprior_transform_small
+            else:
+                ndim += 1 #HACKHACKHACK
+                this_pri_transform = lnprior_transform
         else:
-            this_pri_transform = lnprior_transform_ssp
+            if small_prior:
+                this_pri_transform = lnprior_transform_ssp_small
+            else:
+                this_pri_transform = lnprior_transform_ssp
 
     def this_lnlike(gal_params):
         #HACKHACKHACK to remove trailing zero
         if (not small_prior) and (gal_class is gal.Galaxy_Model):
             gal_params = gal_params[:-1]
-        return lnlike(gal_params, driv, im_scale, gal_class=gal_class, **kwargs)
-
-    callback = None
-    if verbose:
-        def my_progress(callback_info):
-            it = callback_info['it']
-            logz = callback_info['logz']
-            n_calls = driv.num_calls
-            print('----------------')
-            if (np.abs(logz) <= 1e5):
-                print('Iteration Number: %d, Likelihood Calls: %d, logz: %.2f'%(it, n_calls, logz))
-            else:
-                print('Iteration Number: %d, Likelihood Calls: %d, logz: %.4e'%(it, n_calls, logz))
-            print('Current time: %s'%(str(datetime.now())))
-            sys.stdout.flush()
-        callback = my_progress
+        return lnlike(gal_params, driv, im_scale, gal_class=gal_class, prior_func=prior_func, **kwargs)
 
     #Initialize the nestle sampler with a different random state than global
     #This is important because the driver resets the global seed
     rstate = np.random.RandomState(1234)
 
-    if use_dynesty:
-        if dynamic:
-            sampler = dynesty.DynamicNestedSampler(this_lnlike, this_pri_transform, ndim=n_dim, bound=method, sample='unif', rstate=rstate)
-            sampler.run_nested(nlive_init=N_points, nlive_batch=N_batch, wt_kwargs={'pfrac':1.0})
-        else:
-            sampler = dynesty.NestedSampler(this_lnlike, this_pri_transform, ndim=n_dim, bound=method, sample='unif', nlive=N_points,
-                                            update_interval=1, rstate=rstate)
-            print('-Running dynesty sampler')
-            for it, results in enumerate(sampler.sample(dlogz=dlogz,maxcall=max_call)):
-                (worst, ustar, vstar, loglstar, logvol, logwt, logz, logzvar, h, nc, worst_it, propidx, propiter, eff, delta_logz) = results
-                #compute delta_logz
-                if delta_logz > 1e6:
-                    delta_logz = np.inf
-                if logzvar >= 0.:
-                    logzerr = np.sqrt(logzvar)
-                else:
-                    logzerr = np.nan
-                message = 'iteration: %d | ncalls: %d | logz: %6.3f +/- %6.3f | dlogz: %6.3f'%(it, nc, logz, logzerr, delta_logz)
-                message += '\n Current time: ' + '%s'%(str(datetime.now()))
-                message += '\n --------------------------'
-                print(message)
-            results = sampler.results
+    if dynamic:
+        sampler = dynesty.DynamicNestedSampler(this_lnlike, this_pri_transform, ndim=n_dim, bound=method,
+                                               sample='unif', rstate=rstate, pool=pool, nprocs=nprocs)
+        print('-Running dynesty dynamic sampler')
+        sampler.run_nested(nlive_init=N_points, maxcall=max_call, nlive_batch=N_batch,
+                           wt_kwargs={'pfrac':1.0}, save_proposals=False, print_progress=True)
     else:
-        print('-Running nestle sampler')
-        results = nestle.sample(this_lnlike, this_pri_transform, n_dim, method=method, npoints=N_points, maxcall=max_call, callback=callback,
-                                update_interval=1, rstate=rstate, dlogz=dlogz)
+        sampler = dynesty.NestedSampler(this_lnlike, this_pri_transform, ndim=n_dim, bound=method, sample='unif', nlive=N_points,
+                                        update_interval=1, rstate=rstate, pool=pool, nprocs=nprocs)
+        print('-Running dynesty sampler')
+        dlogz_final = dlogz
+        ncall = dynesty_run(sampler.sample, out_df=out_df, save_every=save_every, param_names=param_names, ncall_start=0,
+                            dlogz=dlogz_final, maxcall=max_call, out_file=out_file)
+        print('-Adding live points at end of dynesty samping')
+        _ = dynesty_run(sampler.add_live_points, out_df=out_df, save_every=save_every, param_names=param_names, ncall_start=ncall, out_file=out_file)
+        results = sampler.results
 
     if driv.num_calls >= (max_call - 1):
         print('Terminated after surpassing max likelihood calls')

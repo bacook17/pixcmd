@@ -27,7 +27,9 @@ if __name__ == "__main__":
         args['N_batch'] = setup.N_batch
     except:
         pass
+
     #optional key-word arguments (defaults are set by fit_model.nested_integrate)
+    args['pool'] = setup.pool 
     args['max_call'] = setup.N_max
     args['gpu'] = setup.use_gpu
     args['fixed_seed'] = setup.fixed_seed
@@ -50,32 +52,53 @@ if __name__ == "__main__":
         args['dynamic'] = setup.dynamic
     except:
         args['dynamic'] = False
+
+    try:
+        args['prior_trans'] = setup.prior_transform
+    except:
+        args['prior_trans'] = None
+
+    try:
+        args['prior_func'] = setup.prior_func
+    except:
+        args['prior_func'] = None
     
     args['gal_class'] = setup.model_class
     args['verbose'] = setup.verbose
-    
+
+    results_cols = ['nlive', 'niter', 'ncall', 'eff',
+                     'logl', 'logwt','logvol', 'logz',
+                     'logzerr', 'h', 'delta_logz']
+    param_names = setup.model_class._param_names
+    param_names[0] = 'logzh'
+    N_params = len(param_names)
+    out_file = setup.output_file
+
+    for pname in param_names:
+        results_cols.append(pname)
+
+    out_df = pd.DataFrame(columns=results_cols)
+    args['out_file'] = out_file
+    args['out_df'] = out_df
+    args['save_every'] = 100 #fix this later
+    args['param_names'] = param_names
+
     print('Running Nested Sampling')
     results = fit_model.nested_integrate(**args)
 
     print('Nested Sampling Complete, saving results')
     #Used for saving output
-    param_names = setup.model_class._param_names
-    N_params = len(param_names)
-    chain_file = setup.chain_file
-    
-    results_dict = {'nlive':'nlive', 'niter':'niter', 'ncall':'ncall', 'eff':'eff',
-                     'logl':'lnlike', 'logwt':'logwt', 'logz':'log_evidence',
-                     'logzerr':'e_log_evidence', 'h':'information', 'weights':'weights'}
 
-    #Save results of the chain
-    chain_df = pd.DataFrame()
+    #Save results
+    out_df = pd.DataFrame(columns=results_cols)
     for d in range(N_params):
-        chain_df[param_names[d]] = results.samples[:,d]
+        out_df[param_names[d]] = results.samples[:,d]
     #######Fix nomenclature
-    for their_name, our_name in results_dict.iteritems():
+    for col in results_cols:
         try:
-            chain_df[our_name] = getattr(results, their_name)
+            out_df[col] = getattr(results, col)
         except:
-            print('%s not found among result keys'%(their_name))
+            if col not in param_names:
+                print('%s not found among result keys'%(col))
     
-    chain_df.to_csv(chain_file, index=False, float_format='%.3e', compression='gzip')
+    out_df.to_csv(out_file, index=False, float_format='%.3e', compression='gzip')

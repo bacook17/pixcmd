@@ -2,7 +2,7 @@
 # Ben Cook (bcook@cfa.harvard.edu)
 
 ###############################################
-# SETUP FILE for dynamic DYNESTY Test 
+# SETUP FILE for DYNESTY Test
 
 import pcmdpy.instrument as ins
 import pcmdpy.isochrones as iso
@@ -62,8 +62,8 @@ if use_cudac:
 ## Whether to use a fixed random-number seed (decreases stochasticity of likelihood calls)
 fixed_seed = True
 
-##Add the binned hess values and the mean magnitude and color terms
-like_mode = 2
+## Use only the normal approximation
+like_mode = 0
 
 ## Cut out stars rarer than some limit (as fraction of total mass)
 lum_cut = np.inf
@@ -74,11 +74,13 @@ lum_cut = np.inf
 
 ## Whether to use dynesty (otherwise, use Nestle)
 use_dynesty = True
-dynamic = True
+dynamic = False
 
 ## The number of dynesty live points
-N_points = 50
-N_batch = 50
+N_points = 200
+
+## The number of burn-in iterations, per walker
+N_burn = 0
 
 ## The number of max calls for dynesty
 N_max = 500000
@@ -171,6 +173,6 @@ data_pcmd = utils.make_pcmd(mags)
 ## Directory to save results to
 results_dir = '/n/home01/bcook/pixcmd/scripts_py/results/'
 ## NAME OF THIS PARTICULAR RUN
-name = "dynesty_dyn"
+name = "dynesty_reg_2"
 ## the file to save the data
 output_file = results_dir + name + '.csv'

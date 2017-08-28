@@ -92,7 +92,7 @@ dlogz = 0.5
 ## MODELLING SETTINGS
 
 ## The size (N_scale x N_scale) of the simulated image
-N_scale = 1024
+N_scale = 256
 
 ## The filters (photometry bands) to model
 ## There should be at least 2 filters.
@@ -141,7 +141,7 @@ small_prior = True
 data_is_mock = True
 
 ## scale of mock image (N_mock x N_mock)
-N_mock = 512
+N_mock = 256
 
 ## model of the mock galaxy
 
@@ -175,4 +175,4 @@ results_dir = '/n/home01/bcook/pixcmd/scripts_py/results/'
 ## NAME OF THIS PARTICULAR RUN
 name = "dynesty_reg"
 ## the file to save the data
-chain_file = results_dir + name + '.csv'
+output_file = results_dir + name + '.csv'

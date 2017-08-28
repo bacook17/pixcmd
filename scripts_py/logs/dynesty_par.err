@@ -1,0 +1,23 @@
+Vendor:  Continuum Analytics, Inc.
+Package: mkl
+Message: trial mode expires in 30 days
+/n/home01/bcook/.conda/envs/my_home/lib/python2.7/site-packages/matplotlib/font_manager.py:273: UserWarning: Matplotlib is building the font cache using fc-list. This may take a moment.
+  warnings.warn('Matplotlib is building the font cache using fc-list. This may take a moment.')
+Traceback (most recent call last):
+  File "pcmd_integrate.py", line 60, in <module>
+    results = fit_model.nested_integrate(**args)
+  File "/n/home01/bcook/pixcmd/pcmdpy/fit_model.py", line 213, in nested_integrate
+    for it, results in enumerate(sampler.sample(dlogz=dlogz,maxcall=max_call)):
+  File "/n/home01/bcook/dynesty/dynesty/sampler.py", line 636, in sample
+    u, v, logl, nc = self._new_point(loglstar_new)
+  File "/n/home01/bcook/dynesty/dynesty/sampler.py", line 302, in _new_point
+    u, v, logl, nc, blob = self._get_point_value(loglstar)
+  File "/n/home01/bcook/dynesty/dynesty/sampler.py", line 289, in _get_point_value
+    self._fill_queue(loglstar)
+  File "/n/home01/bcook/dynesty/dynesty/sampler.py", line 281, in _fill_queue
+    self.queue = self.M(self.evolve_point, args)
+  File "/n/home01/bcook/.conda/envs/my_home/lib/python2.7/multiprocessing/pool.py", line 251, in map
+    return self.map_async(func, iterable, chunksize).get()
+  File "/n/home01/bcook/.conda/envs/my_home/lib/python2.7/multiprocessing/pool.py", line 567, in get
+    raise self._value
+cPickle.PicklingError: Can't pickle <type 'function'>: attribute lookup __builtin__.function failed

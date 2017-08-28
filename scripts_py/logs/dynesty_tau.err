@@ -1,0 +1,15 @@
+Vendor:  Continuum Analytics, Inc.
+Package: mkl
+Message: trial mode expires in 30 days
+/n/home01/bcook/.conda/envs/my_home/lib/python2.7/site-packages/matplotlib/font_manager.py:273: UserWarning: Matplotlib is building the font cache using fc-list. This may take a moment.
+  warnings.warn('Matplotlib is building the font cache using fc-list. This may take a moment.')
+Traceback (most recent call last):
+  File "pcmd_integrate.py", line 87, in <module>
+    results = fit_model.nested_integrate(**args)
+  File "/n/home01/bcook/pixcmd/pcmdpy/fit_model.py", line 246, in nested_integrate
+    _ = dynesty_run(sampler.add_live_points, out_df=out_df, save_every=save_every, param_names=param_names, ncall_start=ncall, out_file=out_file)
+  File "/n/home01/bcook/pixcmd/pcmdpy/fit_model.py", line 152, in dynesty_run
+    for it, results in enumerate(func(**func_kwargs)):
+  File "/n/home01/bcook/dynesty/dynesty/sampler.py", line 327, in add_live_points
+    logvols = self.saved_logvol[-1]
+IndexError: list index out of range

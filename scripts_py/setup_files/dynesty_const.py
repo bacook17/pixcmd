@@ -2,7 +2,7 @@
 # Ben Cook (bcook@cfa.harvard.edu)
 
 ###############################################
-# SETUP FILE for dynamic DYNESTY Test 
+# SETUP FILE for DYNESTY Test with simple Tau model
 
 import pcmdpy.instrument as ins
 import pcmdpy.isochrones as iso
@@ -74,11 +74,13 @@ lum_cut = np.inf
 
 ## Whether to use dynesty (otherwise, use Nestle)
 use_dynesty = True
-dynamic = True
+dynamic = False
 
 ## The number of dynesty live points
-N_points = 50
-N_batch = 50
+N_points = 200
+
+## The number of burn-in iterations, per walker
+N_burn = 0
 
 ## The number of max calls for dynesty
 N_max = 500000
@@ -102,7 +104,7 @@ iso_model = iso.Isochrone_Model(filters)
 
 ## The galaxy class to use to model the data
 #model_class = gal.Galaxy_SSP # simple stellar population (SSP)
-model_class = gal.Galaxy_Model # 7-bin non-parametric SFH (FULL)
+model_class = gal.Constant_SFR # 4-param Tau model
 
 #### Initialize the emcee chains
 # p0 = None #will initialize randomly over the prior space
@@ -147,7 +149,7 @@ N_mock = 256
 #model_mock = gal.Galaxy_SSP
 #params_mock = np.array([-0.2, -2., 2., 9.6])
 
-## FULL model with Npix = 1e2
+## Tau model with Npix = 1e4, tau=5 Gyr
 model_mock = gal.Constant_SFR
 #Npix = 1e2
 #age_edges = np.array([6., 7., 8., 8.5, 9.0, 9.5, 10., 10.2])
@@ -157,6 +159,23 @@ model_mock = gal.Constant_SFR
 
 params_mock = np.array([-0.5, -1., 4.]) 
 galaxy_mock = model_mock(params_mock)
+
+def prior_trans(normed_params):
+    #+/- 0.5 around correct answer
+    results = np.zeros(len(normed_params))
+    for i in range(len(normed_params)):
+        results[i] = -0.5 + normed_params + params_mock[i]
+    return results
+
+def lnprior_func(params):
+    z, log_dust, log_Npix, tau = params
+    if (z < -2.) or (z > 0.5):
+        return -np.inf
+    if (log_dust < -3.) or (log_dust > 0.5):
+        return -np.inf
+    if (log_Npix < -1.) or (log_Npix > 6):
+        return -np.inf
+    return 0.
 
 ## Create the mock data
 driv = driver.Driver(iso_model, gpu=use_gpu) #temporary driver to model the data
@@ -171,6 +190,6 @@ data_pcmd = utils.make_pcmd(mags)
 ## Directory to save results to
 results_dir = '/n/home01/bcook/pixcmd/scripts_py/results/'
 ## NAME OF THIS PARTICULAR RUN
-name = "dynesty_dyn"
+name = "dynesty_const"
 ## the file to save the data
 output_file = results_dir + name + '.csv'
