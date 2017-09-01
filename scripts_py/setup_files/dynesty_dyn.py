@@ -2,7 +2,7 @@
 # Ben Cook (bcook@cfa.harvard.edu)
 
 ###############################################
-# SETUP FILE for dynamic DYNESTY Test 
+# SETUP FILE for dynamic DYNESTY Test with Tau model
 
 import pcmdpy.instrument as ins
 import pcmdpy.isochrones as iso
@@ -63,7 +63,7 @@ if use_cudac:
 fixed_seed = True
 
 ##Add the binned hess values and the mean magnitude and color terms
-like_mode = 2
+like_mode = 0
 
 ## Cut out stars rarer than some limit (as fraction of total mass)
 lum_cut = np.inf
@@ -84,7 +84,7 @@ N_batch = 50
 N_max = 500000
 
 ## The error tolerance for Nestle stopping criterion
-dlogz = 0.5
+dlogz = 10.
 
 ###############################################
 ## MODELLING SETTINGS
@@ -102,7 +102,7 @@ iso_model = iso.Isochrone_Model(filters)
 
 ## The galaxy class to use to model the data
 #model_class = gal.Galaxy_SSP # simple stellar population (SSP)
-model_class = gal.Galaxy_Model # 7-bin non-parametric SFH (FULL)
+model_class = gal.Tau_Model # 4-param Tau model
 
 #### Initialize the emcee chains
 # p0 = None #will initialize randomly over the prior space
@@ -148,15 +148,36 @@ N_mock = 256
 #params_mock = np.array([-0.2, -2., 2., 9.6])
 
 ## FULL model with Npix = 1e2
-model_mock = gal.Constant_SFR
+model_mock = gal.Tau_Model
 #Npix = 1e2
 #age_edges = np.array([6., 7., 8., 8.5, 9.0, 9.5, 10., 10.2])
 #bin_widths = 10.**age_edges[1:] - 10.**age_edges[:-1]
 #logsfhs = np.log10(Npix * bin_widths / np.sum(bin_widths)) 
 #params_mock = np.append(np.array([-0.2, -2]), logsfhs)
 
-params_mock = np.array([-0.5, -1., 4.]) 
+params_mock = np.array([-0.5, -1., 6., 5.]) 
 galaxy_mock = model_mock(params_mock)
+
+def prior_trans(normed_params):
+    #+/- 1. around correct answer
+    results = np.zeros(len(normed_params))
+    for i in range(len(normed_params)-1):
+        results[i] = -1. + 2*normed_params[i] + params_mock[i]
+    #tau between 1 and 9 Gyrs
+    results[-1] = params_mock[-1] + (-4 + 8*normed_params[-1])
+    return results
+
+def lnprior_func(params):
+    z, log_dust, log_Npix, tau = params
+    if (z < -2.) or (z > 1.0):
+        return -np.inf
+    if (log_dust < -3.) or (log_dust > 0.5):
+        return -np.inf
+    if (log_Npix < -1.) or (log_Npix > 8):
+        return -np.inf
+    if (tau < 0.1) or (tau > 20.):
+        return -np.inf
+    return 0.
 
 ## Create the mock data
 driv = driver.Driver(iso_model, gpu=use_gpu) #temporary driver to model the data

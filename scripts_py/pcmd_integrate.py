@@ -54,14 +54,14 @@ if __name__ == "__main__":
         args['dynamic'] = False
 
     try:
-        args['prior_trans'] = setup.prior_transform
+        args['prior_trans'] = setup.prior_trans
     except:
         args['prior_trans'] = None
 
     try:
-        args['prior_func'] = setup.prior_func
+        args['lnprior_func'] = setup.lnprior_func
     except:
-        args['prior_func'] = None
+        args['lnprior_func'] = None
     
     args['gal_class'] = setup.model_class
     args['verbose'] = setup.verbose

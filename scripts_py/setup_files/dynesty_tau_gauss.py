@@ -63,7 +63,7 @@ if use_cudac:
 fixed_seed = True
 
 ##Add the binned hess values and the mean magnitude and color terms
-like_mode = 2 
+like_mode = 0 #use gaussian approximation only
 
 ## Cut out stars rarer than some limit (as fraction of total mass)
 lum_cut = np.inf
@@ -77,7 +77,7 @@ use_dynesty = True
 dynamic = False
 
 ## The number of dynesty live points
-N_points = 200
+N_points = 100
 
 ## The number of burn-in iterations, per walker
 N_burn = 0
@@ -104,7 +104,7 @@ iso_model = iso.Isochrone_Model(filters)
 
 ## The galaxy class to use to model the data
 #model_class = gal.Galaxy_SSP # simple stellar population (SSP)
-model_class = gal.Constant_SFR # 4-param Tau model
+model_class = gal.Tau_Model # 4-param Tau model
 
 #### Initialize the emcee chains
 # p0 = None #will initialize randomly over the prior space
@@ -150,30 +150,34 @@ N_mock = 256
 #params_mock = np.array([-0.2, -2., 2., 9.6])
 
 ## Tau model with Npix = 1e4, tau=5 Gyr
-model_mock = gal.Constant_SFR
+model_mock = gal.Tau_Model
 #Npix = 1e2
 #age_edges = np.array([6., 7., 8., 8.5, 9.0, 9.5, 10., 10.2])
 #bin_widths = 10.**age_edges[1:] - 10.**age_edges[:-1]
 #logsfhs = np.log10(Npix * bin_widths / np.sum(bin_widths)) 
 #params_mock = np.append(np.array([-0.2, -2]), logsfhs)
 
-params_mock = np.array([-0.5, -1., 6.]) 
+params_mock = np.array([-0.5, -1., 6., 5.]) 
 galaxy_mock = model_mock(params_mock)
 
 def prior_trans(normed_params):
-    #+/- 1.0 around correct answer
+    #+/- 0.5 around correct answer
     results = np.zeros(len(normed_params))
-    for i in range(len(normed_params)):
-        results[i] = -1.0 + 2.*normed_params[i] + params_mock[i]
+    for i in range(len(normed_params)-1):
+        results[i] = -1.0 + 2*normed_params[i] + params_mock[i]
+    #tau between 1 and 9 Gyrs
+    results[-1] = params_mock[-1] + (-4. + 8.*normed_params[-1])
     return results
 
 def lnprior_func(params):
-    z, log_dust, log_Npix = params
+    z, log_dust, log_Npix, tau = params
     if (z < -2.) or (z > 0.5):
         return -np.inf
     if (log_dust < -3.) or (log_dust > 0.5):
         return -np.inf
-    if (log_Npix < -1.) or (log_Npix > 8.):
+    if (log_Npix < -1.) or (log_Npix > 8):
+        return -np.inf
+    if (tau < .1) or (tau > 20.):
         return -np.inf
     return 0.
 
@@ -190,6 +194,6 @@ data_pcmd = utils.make_pcmd(mags)
 ## Directory to save results to
 results_dir = '/n/home01/bcook/pixcmd/scripts_py/results/'
 ## NAME OF THIS PARTICULAR RUN
-name = "dynesty_const_bin"
+name = "dynesty_tau_gauss"
 ## the file to save the data
 output_file = results_dir + name + '.csv'

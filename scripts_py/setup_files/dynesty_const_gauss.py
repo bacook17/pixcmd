@@ -63,7 +63,7 @@ if use_cudac:
 fixed_seed = True
 
 ##Add the binned hess values and the mean magnitude and color terms
-like_mode = 2 
+like_mode = 0 #gaussian approximation only
 
 ## Cut out stars rarer than some limit (as fraction of total mass)
 lum_cut = np.inf
@@ -190,6 +190,6 @@ data_pcmd = utils.make_pcmd(mags)
 ## Directory to save results to
 results_dir = '/n/home01/bcook/pixcmd/scripts_py/results/'
 ## NAME OF THIS PARTICULAR RUN
-name = "dynesty_const_bin"
+name = "dynesty_const_gauss"
 ## the file to save the data
 output_file = results_dir + name + '.csv'

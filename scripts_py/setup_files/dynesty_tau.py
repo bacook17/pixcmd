@@ -77,7 +77,7 @@ use_dynesty = True
 dynamic = False
 
 ## The number of dynesty live points
-N_points = 200
+N_points = 100
 
 ## The number of burn-in iterations, per walker
 N_burn = 0
@@ -157,16 +157,16 @@ model_mock = gal.Tau_Model
 #logsfhs = np.log10(Npix * bin_widths / np.sum(bin_widths)) 
 #params_mock = np.append(np.array([-0.2, -2]), logsfhs)
 
-params_mock = np.array([-0.5, -1., 4., 5.]) 
+params_mock = np.array([-0.5, -1., 6., 5.]) 
 galaxy_mock = model_mock(params_mock)
 
 def prior_trans(normed_params):
     #+/- 0.5 around correct answer
     results = np.zeros(len(normed_params))
     for i in range(len(normed_params)-1):
-        results[i] = -0.5 + normed_params + params_mock[i]
-    #tau between 3 and 7 Gyrs
-    results[-1] = params_mock[-1] + (-2 + 4*normed_params[-1])
+        results[i] = -1.0 + 2*normed_params[i] + params_mock[i]
+    #tau between 1 and 9 Gyrs
+    results[-1] = params_mock[-1] + (-4. + 8.*normed_params[-1])
     return results
 
 def lnprior_func(params):
@@ -175,9 +175,9 @@ def lnprior_func(params):
         return -np.inf
     if (log_dust < -3.) or (log_dust > 0.5):
         return -np.inf
-    if (log_Npix < -1.) or (log_Npix > 6):
+    if (log_Npix < -1.) or (log_Npix > 8):
         return -np.inf
-    if (tau < 6.) or (tau > 10.3):
+    if (tau < .1) or (tau > 20.):
         return -np.inf
     return 0.
 
