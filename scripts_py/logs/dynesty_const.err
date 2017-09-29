@@ -1,3 +1,45 @@
 Vendor:  Continuum Analytics, Inc.
 Package: mkl
 Message: trial mode expires in 30 days
+Traceback (most recent call last):
+  File "pcmd_integrate.py", line 87, in <module>
+    results = fit_model.nested_integrate(**args)
+  File "/n/home01/bcook/pixcmd/pcmdpy/fit_model.py", line 261, in nested_integrate
+    dlogz=dlogz_final, maxcall=max_call, out_file=out_file)
+  File "/n/home01/bcook/pixcmd/pcmdpy/fit_model.py", line 152, in dynesty_run
+    for it, results in enumerate(func(**func_kwargs)):
+  File "/n/home01/bcook/dynesty/dynesty/sampler.py", line 636, in sample
+    u, v, logl, nc = self._new_point(loglstar_new)
+  File "/n/home01/bcook/dynesty/dynesty/sampler.py", line 302, in _new_point
+    u, v, logl, nc, blob = self._get_point_value(loglstar)
+  File "/n/home01/bcook/dynesty/dynesty/sampler.py", line 289, in _get_point_value
+    self._fill_queue(loglstar)
+  File "/n/home01/bcook/dynesty/dynesty/sampler.py", line 281, in _fill_queue
+    self.queue = self.M(self.evolve_point, args)
+  File "/n/home01/bcook/dynesty/dynesty/sampling.py", line 35, in sample_unif
+    logl = loglikelihood(v)
+  File "/n/home01/bcook/pixcmd/pcmdpy/fit_model.py", line 236, in this_lnlike
+    return lnlike(gal_params, driv, im_scale, gal_class=gal_class, lnprior_func=lnprior_func, **kwargs)
+  File "/n/home01/bcook/pixcmd/pcmdpy/fit_model.py", line 129, in lnlike
+    mags, _ = driv.simulate(gal_model, im_scale, **kwargs)
+  File "/n/home01/bcook/pixcmd/pcmdpy/driver.py", line 141, in simulate
+    images = gpu_utils.draw_image(IMF, fluxes, im_scale, gpu=self.gpu_on, cudac=True, fixed_seed=fixed_seed, **kwargs)
+  File "/n/home01/bcook/pixcmd/pcmdpy/gpu_utils.py", line 130, in draw_image
+    return func(expected_nums, fluxes, N_scale, fixed_seed=fixed_seed, **kwargs)
+  File "/n/home01/bcook/pixcmd/pcmdpy/gpu_utils.py", line 175, in _draw_image_cudac
+    generator = curandom.XORWOWRandomNumberGenerator(seed_getter=seed_getter)
+  File "/n/sw/fasrcsw/apps/Core/pycuda/2015.1.3-fasrc01/lib/python2.7/site-packages/pycuda-2015.1.3-py2.7-linux-x86_64.egg/pycuda/curandom.py", line 725, in __init__
+    xorwow_skip_ahead_sequence_source+random_skip_ahead64_source)
+  File "/n/sw/fasrcsw/apps/Core/pycuda/2015.1.3-fasrc01/lib/python2.7/site-packages/pycuda-2015.1.3-py2.7-linux-x86_64.egg/pycuda/curandom.py", line 605, in __init__
+    state_type, vector_type, generator_bits, additional_source)
+  File "/n/sw/fasrcsw/apps/Core/pycuda/2015.1.3-fasrc01/lib/python2.7/site-packages/pycuda-2015.1.3-py2.7-linux-x86_64.egg/pycuda/curandom.py", line 440, in __init__
+    self.module = module = pycuda.compiler.SourceModule(source, no_extern_c=True)
+  File "/n/sw/fasrcsw/apps/Core/pycuda/2015.1.3-fasrc01/lib/python2.7/site-packages/pycuda-2015.1.3-py2.7-linux-x86_64.egg/pycuda/compiler.py", line 259, in __init__
+    arch, code, cache_dir, include_dirs)
+  File "/n/sw/fasrcsw/apps/Core/pycuda/2015.1.3-fasrc01/lib/python2.7/site-packages/pycuda-2015.1.3-py2.7-linux-x86_64.egg/pycuda/compiler.py", line 249, in compile
+    return compile_plain(source, options, keep, nvcc, cache_dir, target)
+  File "/n/sw/fasrcsw/apps/Core/pycuda/2015.1.3-fasrc01/lib/python2.7/site-packages/pycuda-2015.1.3-py2.7-linux-x86_64.egg/pycuda/compiler.py", line 78, in compile_plain
+    checksum.update(preprocess_source(source, options, nvcc).encode("utf-8"))
+  File "/n/sw/fasrcsw/apps/Core/pycuda/2015.1.3-fasrc01/lib/python2.7/site-packages/pycuda-2015.1.3-py2.7-linux-x86_64.egg/pycuda/compiler.py", line 64, in preprocess_source
+    unlink(source_path)
+OSError: [Errno 2] No such file or directory: '/tmp/tmp7kTjg8.cu'

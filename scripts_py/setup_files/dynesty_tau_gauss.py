@@ -83,7 +83,7 @@ N_points = 100
 N_burn = 0
 
 ## The number of max calls for dynesty
-N_max = 500000
+N_max = 1000000
 
 ## The error tolerance for Nestle stopping criterion
 dlogz = 0.5

@@ -83,7 +83,7 @@ N_points = 200
 N_burn = 0
 
 ## The number of max calls for dynesty
-N_max = 500000
+N_max = 1000000
 
 ## The error tolerance for Nestle stopping criterion
 dlogz = 0.5
@@ -190,6 +190,6 @@ data_pcmd = utils.make_pcmd(mags)
 ## Directory to save results to
 results_dir = '/n/home01/bcook/pixcmd/scripts_py/results/'
 ## NAME OF THIS PARTICULAR RUN
-name = "dynesty_const_bin"
+name = "dynesty_const"
 ## the file to save the data
 output_file = results_dir + name + '.csv'
