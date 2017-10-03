@@ -11,4 +11,4 @@
 #SBATCH --mail-type=BEGIN,END,FAIL #alert when done
 #SBATCH --mail-user=bcook@cfa.harvard.edu #Email to send to
 
-python pcmd_integrate.py setup_files/dynesty_%a.py
+python pcmd_integrate.py setup_files/dynesty_${SLURM_ARRAY_TASK_ID}.py
