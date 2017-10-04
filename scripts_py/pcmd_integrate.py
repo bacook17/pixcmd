@@ -86,19 +86,19 @@ if __name__ == "__main__":
     print('Running Nested Sampling')
     results = fit_model.nested_integrate(**args)
 
-    print('Nested Sampling Complete, saving results')
+    #print('Nested Sampling Complete, saving results')
     #Used for saving output
 
-    #Save results
-    out_df = pd.DataFrame(columns=results_cols)
-    for d in range(N_params):
-        out_df[param_names[d]] = results.samples[:,d]
-    #######Fix nomenclature
-    for col in results_cols:
-        try:
-            out_df[col] = getattr(results, col)
-        except:
-            if col not in param_names:
-                print('%s not found among result keys'%(col))
-    
-    out_df.to_csv(out_file, index=False, float_format='%.3e', compression='gzip')
+    ##Save results
+    #out_df = pd.DataFrame(columns=results_cols)
+    #for d in range(N_params):
+    #    out_df[param_names[d]] = results.samples[:,d]
+    ########Fix nomenclature
+    #for col in results_cols:
+    #    try:
+    #        out_df[col] = getattr(results, col)
+    #    except:
+    #        if col not in param_names:
+    #            print('%s not found among result keys'%(col))
+    #
+    #out_df.to_csv(out_file, index=False, float_format='%.3e', compression='gzip')
