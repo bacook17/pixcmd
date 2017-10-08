@@ -196,6 +196,6 @@ data_pcmd = utils.make_pcmd(mags)
 ## Directory to save results to
 results_dir = '/n/home01/bcook/pixcmd/scripts_py/results/'
 ## NAME OF THIS PARTICULAR RUN
-name = "dynesty_13"
+name = "dynesty_14"
 ## the file to save the data
 output_file = results_dir + name + '.csv'

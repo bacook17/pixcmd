@@ -264,6 +264,9 @@ def nested_integrate(pcmd, filters, im_scale, N_points, method='multi', max_call
                         param_names=param_names, ncall_start=ncall, out_file=out_file)
 
     results = sampler.results
+    if (out_df is not None) and (out_file is not None):
+        print('-Saving final results dataframe')
+        out_df.to_csv(out_file, mode='a', index=False, header=False, float_format='%.4e')
 
     if driv.num_calls >= (max_call - 1):
         print('Terminated after surpassing max likelihood calls')
