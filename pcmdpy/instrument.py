@@ -146,7 +146,7 @@ class Filter:
            psf : loaded from file
            name = "F814W"
            tex_name = r"I$_{814}$"
-           MIST_column = "ACS_WFC_F475W"
+           MIST_column = "ACS_WFC_F814W"
         """
 
         assert(isinstance(d_mpc, int) or isinstance(d_mpc, float)) #d_mpc must be real number
