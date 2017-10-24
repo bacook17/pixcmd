@@ -62,7 +62,8 @@ if __name__ == "__main__":
         args['lnprior_func'] = setup.lnprior_func
     except:
         args['lnprior_func'] = None
-    
+
+    args['iso_model'] = setup.iso_model
     args['gal_class'] = setup.model_class
     args['verbose'] = setup.verbose
 

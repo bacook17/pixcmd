@@ -191,7 +191,7 @@ def dynesty_run(func, out_df=None, out_file=None, save_every=100, param_names=No
 
     return ncall
 
-def nested_integrate(pcmd, filters, im_scale, N_points, method='multi', max_call=100000, gal_class=gal.Galaxy_Model, gpu=True,
+def nested_integrate(pcmd, filters, im_scale, N_points, method='multi', max_call=100000, gal_class=gal.Galaxy_Model, gpu=True, iso_model=None,
                      bins=None, verbose=False, small_prior=False, dlogz=None, dynamic=False, N_batch=0,
                      pool=None, out_df=None, out_file=None, save_every=100, param_names=None, prior_trans=None, lnprior_func=None, **kwargs):
     if (not _DYNESTY_INSTALLED):
@@ -204,8 +204,9 @@ def nested_integrate(pcmd, filters, im_scale, N_points, method='multi', max_call
         nprocs = 1
     else:
         nprocs = pool._processes
-    
-    iso_model = iso.Isochrone_Model(filters)
+
+    if iso_model is None:
+        iso_model = iso.Isochrone_Model(filters)
     driv = driver.Driver(iso_model, gpu=gpu)
     if bins is None:
         assert(n_filters == 2)
