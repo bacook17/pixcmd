@@ -106,7 +106,7 @@ class Isochrone_Model:
        __init__ -- Pass a list of Filter objects, path to MIST model files, and array of metallicities.
     """
     # CHANGE PATH 
-    def __init__(self, filters, MIST_path=None, append=".iso.cmd"):
+    def __init__(self, filters, MIST_path=None, conversions=None, append=".iso.cmd"):
         """Creates a new Isochrone_Model, given a list of Filter objects
         
         Arguments:
@@ -126,6 +126,12 @@ class Isochrone_Model:
         #Import all MIST model files into Pandas dataframe
         self.MIST_df = pd.DataFrame()
         self.num_filters = len(filters)
+        if conversions is None:
+            self.conversions = np.zeros_like(filters, dtype=float)
+        elif len(conversions) != len(filters):
+            self.conversions = np.zeros_like(filters, dtype=float)
+        else:
+            self.conversions = conversions
         _z_arr = []
         self.filters = filters
         self.filter_names = [f.tex_name for f in self.filters]
@@ -142,7 +148,7 @@ class Isochrone_Model:
             except:
                 warn('File not properly formatted: %s'%(MIST_doc))
                 raise
-
+            
         self._z_arr = np.sort(_z_arr)
         self.MIST_df.rename(columns={'log10_isochrone_age_yr':'age'}, inplace=True)
         self.ages = self.MIST_df.age.unique()
@@ -158,13 +164,14 @@ class Isochrone_Model:
             else:
                 print(c, c_alt)
                 raise ValueError('Filter input does not have a valid MIST_column')
+        return None
     
     def get_isochrone(self, age, z, imf_func=salpeter_IMF, rare_cut=0., **kwargs):
         """Interpolate MIST isochrones for given age and metallicity
         
         Arguments:
            age --- 
-           z ---
+        z ---
         Output:
            IMF -- array of IMF points (len N)
            mags -- 2D array of magnitudes (DxN, where D is number of filters the model was initialized with)
@@ -191,8 +198,7 @@ class Isochrone_Model:
             inter = _interp_arrays(dflow.values, dfhigh.values, frac_between)
             
         IMF = imf_func(inter[:,0], **kwargs)
-        mags = inter[:,1:].T
-
+        mags = (inter[:,1:] + self.conversions).T 
         lum = np.power(10., -0.4*mags)
         mean_lum = np.average(lum, weights=IMF, axis=1)
         
