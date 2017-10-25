@@ -119,9 +119,9 @@ class Isochrone_Model:
         #Locate MIST files
         if MIST_path is None:
             try:
-                MIST_path = resource_filename('pcmdpy', 'isoc_MIST_v1.0/')
+                MIST_path = resource_filename('pcmdpy', 'isoc_MIST_v1.1/')
             except:
-                MIST_path = '/n/home01/bcook/pixcmd/pcmdpy/isoc_MIST_v1.0/'
+                MIST_path = '/n/home01/bcook/pixcmd/pcmdpy/isoc_MIST_v1.1/'
         
         #Import all MIST model files into Pandas dataframe
         self.MIST_df = pd.DataFrame()
