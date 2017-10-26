@@ -220,8 +220,8 @@ class Isochrone_Model:
         return weights[to_keep], mags[:,to_keep]
 
     def plot_isochrone(self, galaxy, ax=None, **kwargs):
-        import matplotlib.pyplot as plt
         if ax is None:
+            import matplotlib.pyplot as plt
             fig, ax = plt.subplots()
         for age in galaxy.ages:
             _, mags = self.get_isochrone(age, galaxy.z)
