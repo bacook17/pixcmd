@@ -177,7 +177,6 @@ class Filter:
 
     ##############################
     # Alternative constructors
-
     @classmethod
     def HST_F475W(cls, d_mpc, **kwargs):
         """
@@ -195,27 +194,43 @@ class Filter:
 
 ##############################
 # Pre-defined Filters
+class ACS_WFC_F435W(Filter):
+    """Return a Filter with HST F435W default params
+    Arguments:
+       d_mpc -- the assumed distance to the source
+       exposure -- exposure time (in sec) DEFAULT=3235.0
+    Output: Filter with default F435W attributes
+    """
+    def __init__(self, d_mpc, exposure=3235.):
+        assert(isinstance(d_mpc, int) or isinstance(d_mpc, float)) #d_mpc must be real number
+        if (d_mpc < 0.):
+            raise ValueError('Argument (d_mpc) must be greater than zero')
+        assert(isinstance(exposure, int) or isinstance(exposure, float)) #exposure must be real number
+        if (exposure < 0.):
+            raise ValueError('Argument (exposure) must be greater than zero')
+        
+        zero_point = 25.767 #VEGAmag
+        red_per_ebv = 3.610
+        try:
+            psf_path = resource_filename('pcmdpy', 'psf/')
+        except:
+            psf_path = '/n/home01/bcook/pixcmd/pcmdpy/psf/'
+        psf_file = psf_path +'f435w_%d%d.psf'
+        psf = np.array([[10.**np.loadtxt(psf_file%(i,j)) for i in range(0,4)] for j in range(0,4)]) #4x4x73x73
+        kwargs = {}
+        kwargs['name'] = "F435W"
+        kwargs['tex_name'] = r"B$_{435}$"
+        kwargs['MIST_column'] = "ACS_WFC_F435W"
+        kwargs['MIST_column_alt'] = "Bmag"
+        Filter.__init__(self, exposure, zero_point, d_mpc, red_per_ebv, psf, **kwargs)
 
 class ACS_WFC_F475W(Filter):
     """Return a Filter with HST F475W default params
-        
-        Example usage:
-           >>>my_filter = HST_F475W(1.0)
-
-        Arguments:
-           d_mpc -- the assumed distance to the source
-        Output: Filter with the following attributes:
-           exposure = 3620.
-           zero_point = 26.0593
-           d_mpc : set by argument
-           red_per_ebv = 3.248 (Schlafly & Finkbeiner 2011, Table 6)
-           psf : loaded from file
-           name = "F475W"
-           tex_name = r"g$_{475}$"
-           MIST_column = "ACS_WFC_F475W"
-           MIST_column_alt = 'bmag'
-        """
-
+    Arguments:
+       d_mpc -- the assumed distance to the source
+       exposure -- exposure time (in sec) DEFAULT=3620.0
+    Output: Filter with default F475W attributes
+    """
     def __init__(self, d_mpc, exposure=3620.):
         assert(isinstance(d_mpc, int) or isinstance(d_mpc, float)) #d_mpc must be real number
         if (d_mpc < 0.):
@@ -237,27 +252,45 @@ class ACS_WFC_F475W(Filter):
         kwargs['tex_name'] = r"g$_{475}$"
         kwargs['MIST_column'] = "ACS_WFC_F475W"
         kwargs['MIST_column_alt'] = "bmag"
-
         Filter.__init__(self, exposure, zero_point, d_mpc, red_per_ebv, psf, **kwargs)
     
-class ACS_WFC_F814W(Filter):
-    """Return a Filter with HST F814W default params
-    
-    Example usage:
-       >>>my_filter = HST_F814W(1.0)
-    
+class ACS_WFC_F555W(Filter):
+    """Return a Filter with HST F555W default params
     Arguments:
        d_mpc -- the assumed distance to the source
-    Output: Filter with the following attributes:
-       exposure = 3235.
-       zero_point = 25.9433
-       red_per_ebv = 1.536 (Schlafly & Finkbeiner 2011, Table 6)
-       d_mpc : set by argument
-       psf : loaded from file
-       name = "F814W"
-       tex_name = r"I$_{814}$"
-       MIST_column = "ACS_WFC_F814W"
-        """
+       exposure -- exposure time (in sec) DEFAULT=3235.0
+    Output: Filter with default F555W attributes
+    """
+    def __init__(self, d_mpc, exposure=3235.):
+        assert(isinstance(d_mpc, int) or isinstance(d_mpc, float)) #d_mpc must be real number
+        if (d_mpc < 0.):
+            raise ValueError('Argument (d_mpc) must be greater than zero')
+        assert(isinstance(exposure, int) or isinstance(exposure, float)) #exposure must be real number
+        if (exposure < 0.):
+            raise ValueError('Argument (exposure) must be greater than zero')
+        
+        zero_point = 25.720 #VEGAmag
+        red_per_ebv = 2.792
+        try:
+            psf_path = resource_filename('pcmdpy', 'psf/')
+        except:
+            psf_path = '/n/home01/bcook/pixcmd/pcmdpy/psf/'
+        psf_file = psf_path +'f555w_%d%d.psf'
+        psf = np.array([[10.**np.loadtxt(psf_file%(i,j)) for i in range(0,4)] for j in range(0,4)]) #4x4x73x73
+        kwargs = {}
+        kwargs['name'] = "F555W"
+        kwargs['tex_name'] = r"V$_{555}$"
+        kwargs['MIST_column'] = "ACS_WFC_F555W"
+        kwargs['MIST_column_alt'] = "vmag"
+        Filter.__init__(self, exposure, zero_point, d_mpc, red_per_ebv, psf, **kwargs)
+
+class ACS_WFC_F814W(Filter):
+    """Return a Filter with HST F814W default params
+    Arguments:
+       d_mpc -- the assumed distance to the source
+       exposure -- exposure time (in sec) DEFAULT=3235.0
+    Output: Filter with default F814W attributes
+    """
     def __init__(self, d_mpc, exposure=3235.):
         assert(isinstance(d_mpc, int) or isinstance(d_mpc, float)) #d_mpc must be real number
         if (d_mpc < 0.):
@@ -279,6 +312,5 @@ class ACS_WFC_F814W(Filter):
         kwargs['tex_name'] = r"I$_{814}$"
         kwargs['MIST_column'] = "ACS_WFC_F814W"
         kwargs['MIST_column_alt'] = "imag"
-
         Filter.__init__(self, exposure, zero_point, d_mpc, red_per_ebv, psf, **kwargs)
 
