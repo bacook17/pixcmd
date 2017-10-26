@@ -101,7 +101,8 @@ d_mpc = 10.**((dmod - 25.)/5.) #about 0.78
 filters = np.array([ins.Filter.HST_F475W(d_mpc), ins.Filter.HST_F814W(d_mpc)])
 
 ## Initialize the isochrone models for the current set of filters
-iso_model = iso.Isochrone_Model(filters)
+iso_model = iso.Isochrone_Model(filters,
+                                conversions=np.array([-0.0978757217, 0.4236631949]))
 
 ## The galaxy class to use to model the data
 model_class = gal.Tau_Model # Tau model
