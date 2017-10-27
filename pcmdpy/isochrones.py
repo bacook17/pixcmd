@@ -16,14 +16,17 @@ except ImportError:
 # Useful Utilities
 #-----------------
 
-def salpeter_IMF(mass, cutoff=0.08, normed=True, **kwargs):
+def salpeter_IMF(mass, cutoff=0.08, norm_by_mass=False, **kwargs):
     dm = np.diff(mass)
     m_low = mass - 0.5*np.append([0.], dm) # m - delta_m / 2 (lowest bin stays same)
     m_high = mass + 0.5*np.append(dm, [0.]) # m + delta / 2 (highest bin stays same)
-    imf = np.power(m_low, -1.35) - np.power(m_high, -1.35)
+    imf = (np.power(m_low, -1.35) - np.power(m_high, -1.35)) / 1.35
     imf[mass < cutoff] = 0.
-    if normed:
-        imf /= np.sum(imf)
+    min_mass = max(cutoff, mass[0])
+    if norm_by_mass:
+        imf *= .35 / (np.power(min_mass, -.35) - np.power(mass[-1], -.35))
+    else:
+        imf *= 1.35 / (np.power(min_mass, -1.35) - np.power(mass[-1], -1.35))
     return imf
 
 def _interp_arrays(arr1, arr2, f):
