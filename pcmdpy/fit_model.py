@@ -12,7 +12,7 @@ import utils
 #import nestle
 
 import dynesty
-from datetime import datetime
+import time
 
 def lnprior_ssp(gal_params):
     z, log_dust, log_Npix, age = gal_params
@@ -138,21 +138,20 @@ def lnprob(gal_params, driv, im_scale, gal_class=gal.Galaxy_Model, **kwargs):
     like = lnlike(gal_params, driv, im_scale, gal_class=gal_class, **kwargs)
     return pri + like
 
-def dynesty_run(func, out_df=None, out_file=None, save_every=100, param_names=None, ncall_start=0, **func_kwargs):
+def dynesty_run(func, out_df=None, out_file=None, save_every=100, param_names=None, ncall_start=0, tstart=0., **func_kwargs):
     ncall = ncall_start
     if 'dlogz' in func_kwargs.keys():
         dlogz = func_kwargs['dlogz']
     else:
         dlogz = np.nan
-    now = datetime.now()
+    start = time.time()
     for it, results in enumerate(func(**func_kwargs)):
-        dt = (datetime.now() - now)
-        dt = float(dt.seconds) + 1e-6*float(dt.microseconds)
-        now = datetime.now()
+        dt = (time.time() - start) + tstart
         row = {'niter': it}
+        row['time_elapsed'] = dt
         (worst, ustar, vstar, row['logl'], row['logvol'], row['logwt'], row['logz'], logzvar, row['h'], nc, worst_it, propidx, propiter, row['eff'], delta_logz) = results
         ncall += nc
-        ave_t = dt / nc
+        ave_t = dt / ncall
         row['ncall'] =  ncall
         row['nlive'] = 2000
         if delta_logz > 1e6:
@@ -185,10 +184,10 @@ def dynesty_run(func, out_df=None, out_file=None, save_every=100, param_names=No
         out_df.to_csv(out_file, mode='a', index=False, header=False, float_format='%.4e')
         out_df.drop(out_df.index, inplace=True)
 
-    return ncall
+    return ncall, dt
 
 def nested_integrate(pcmd, filters, im_scale, N_points, method='multi', max_call=100000, gal_class=gal.Galaxy_Model, gpu=True, iso_model=None,
-                     bins=None, verbose=False, small_prior=False, dlogz=None, dynamic=False, N_batch=0,
+                     bins=None, verbose=False, small_prior=False, dlogz=None, dynamic=False, N_batch=0, save_live=True,
                      pool=None, out_df=None, out_file=None, save_every=100, param_names=None, prior_trans=None, lnprior_func=None, **kwargs):
     print('-initializing models')
     n_filters = len(filters)
@@ -251,12 +250,13 @@ def nested_integrate(pcmd, filters, im_scale, N_points, method='multi', max_call
             out_df.to_csv(out_file, index=False, float_format='%.4e')
         print('-Running dynesty sampler')
         dlogz_final = dlogz
-        ncall = dynesty_run(sampler.sample, out_df=out_df, save_every=save_every,
+        ncall, dt = dynesty_run(sampler.sample, out_df=out_df, save_every=save_every,
                             param_names=param_names, ncall_start=0,
                             dlogz=dlogz_final, maxcall=max_call, out_file=out_file)
-        print('-Adding live points at end of dynesty samping')
-        _ = dynesty_run(sampler.add_live_points, out_df=out_df, save_every=save_every,
-                        param_names=param_names, ncall_start=ncall, out_file=out_file)
+        if save_live:
+            print('-Adding live points at end of dynesty samping')
+            _, _ = dynesty_run(sampler.add_live_points, out_df=out_df, save_every=save_every,
+                               param_names=param_names, ncall_start=ncall, tstart=dt, out_file=out_file)
 
     results = sampler.results
     if (out_df is not None) and (out_file is not None):

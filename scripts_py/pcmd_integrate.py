@@ -69,7 +69,7 @@ if __name__ == "__main__":
 
     results_cols = ['nlive', 'niter', 'ncall', 'eff',
                      'logl', 'logwt','logvol', 'logz',
-                     'logzerr', 'h', 'delta_logz']
+                     'logzerr', 'h', 'delta_logz', 'time_elapsed']
     param_names = setup.model_class._param_names
     param_names[0] = 'logzh'
     N_params = len(param_names)
