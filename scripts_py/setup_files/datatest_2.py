@@ -98,7 +98,7 @@ N_scale = 1024
 ###### Using more than 2 filters is currently not implemented
 dmod = 24.47
 d_mpc = 10.**((dmod - 25.)/5.) #about 0.78
-filters = np.array([ins.Filter.HST_F475W(d_mpc), ins.Filter.HST_F814W(d_mpc)])
+filters = np.array([ins.ACS_WFC_F475W(d_mpc), ins.ACS_WFC_F814W(d_mpc)])
 
 ## Initialize the isochrone models for the current set of filters
 iso_model = iso.Isochrone_Model(filters,

@@ -189,7 +189,7 @@ class Filter:
         """
         Deprecated. Use: ACS_WFC_F814W
         """
-        return ACS_WFC_F814W(d_pmc, **kwargs)
+        return ACS_WFC_F814W(d_mpc, **kwargs)
 
 
 ##############################

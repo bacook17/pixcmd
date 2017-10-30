@@ -13,6 +13,7 @@ import utils
 
 import dynesty
 import time
+from datetime import datetime
 
 def lnprior_ssp(gal_params):
     z, log_dust, log_Npix, age = gal_params
