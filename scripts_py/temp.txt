@@ -1,0 +1,13 @@
+Vendor:  Continuum Analytics, Inc.
+Package: mkl
+Message: trial mode expires in 30 days
+/n/home01/bcook/pixcmd/pcmdpy/gpu_utils.py:22: RuntimeWarning: libcuda not found, likely because no GPU available.
+  warnings.warn('libcuda not found, likely because no GPU available.', RuntimeWarning)
+Traceback (most recent call last):
+  File "pcmd_integrate.py", line 18, in <module>
+    setup = imp.load_source(setup_mod, setup_file)
+  File "setup_files/datatest_1.py", line 44, in <module>
+    gpu_utils.initialize_gpu(n=0)
+  File "/n/home01/bcook/pixcmd/pcmdpy/gpu_utils.py", line 85, in initialize_gpu
+    assert(_GPU_AVAIL)
+AssertionError

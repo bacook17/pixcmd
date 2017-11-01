@@ -180,6 +180,7 @@ def dynesty_run(func, out_df=None, out_file=None, save_every=100, param_names=No
         message += '\n Average call time: {:.2f} sec | Current time: {:s}'.format(ave_t, str(datetime.now()))
         message += '\n --------------------------'
         print(message)
+        sys.stdout.flush()
     #save remaining lines
     if out_df is not None:
         out_df.to_csv(out_file, mode='a', index=False, header=False, float_format='%.4e')

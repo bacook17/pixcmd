@@ -1,6 +1,5 @@
 # pcmd_integrate.py
 # Ben Cook (bcook@cfa.harvard.edu)
-
 import numpy as np
 from pcmdpy import fit_model
 
