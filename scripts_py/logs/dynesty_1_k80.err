@@ -1,7 +1,0 @@
-Vendor:  Continuum Analytics, Inc.
-Package: mkl
-Message: trial mode expires in 29 days
-/n/home01/bcook/.conda/envs/my_home/lib/python2.7/site-packages/matplotlib/font_manager.py:273: UserWarning: Matplotlib is building the font cache using fc-list. This may take a moment.
-  warnings.warn('Matplotlib is building the font cache using fc-list. This may take a moment.')
-/n/home01/bcook/dynesty/dynesty/bounding.py:348: FutureWarning: in the future, boolean array-likes will be handled as a boolean array index
-  idxs = np.arange(self.nells)[within]

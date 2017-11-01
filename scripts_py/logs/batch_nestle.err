@@ -1,7 +1,0 @@
-Vendor:  Continuum Analytics, Inc.
-Package: mkl
-Message: trial mode expires in 30 days
-Traceback (most recent call last):
-  File "pcmd_integrate.py", line 44, in <module>
-    param_names = model_class._param_names
-NameError: name 'model_class' is not defined
