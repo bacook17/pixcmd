@@ -1,8 +1,8 @@
-# setup_files/datatest_bulge.py
+# setup_files/datatest_5.py
 # Ben Cook (bcook@cfa.harvard.edu)
 
 ###############################################
-# SETUP FILE for Data Test on Bulge with tau model
+# SETUP FILE for Data Test on Bulge with full SFH model
 
 import pcmdpy.instrument as ins
 import pcmdpy.isochrones as iso
@@ -76,7 +76,7 @@ use_dynesty = True
 dynamic = False
 
 ## The number of dynesty live points
-N_points = 50
+N_points = 100
 
 ## The number of burn-in iterations, per walker
 N_burn = 0
@@ -98,13 +98,14 @@ N_scale = 1024
 ###### Using more than 2 filters is currently not implemented
 dmod = 24.47
 d_mpc = 10.**((dmod - 25.)/5.) #about 0.78
-filters = np.array([ins.Filter.HST_F475W(d_mpc), ins.Filter.HST_F814W(d_mpc)])
+filters = np.array([ins.ACS_WFC_F475W(d_mpc), ins.ACS_WFC_F814W(d_mpc)])
 
 ## Initialize the isochrone models for the current set of filters
-iso_model = iso.Isochrone_Model(filters, MIST_path='/n/home01/bcook/pixcmd/pcmdpy/isoc_MIST_v0.29_x5FEWER/')
+iso_model = iso.Isochrone_Model(filters,
+                                conversions=np.array([-0.0978757217, 0.4236631949]))
 
 ## The galaxy class to use to model the data
-model_class = gal.Tau_Model # Tau model
+model_class = gal.Galaxy_Model # Full 7-param SFH
 
 #### Initialize the emcee chains
 # p0 = None #will initialize randomly over the prior space
@@ -157,22 +158,26 @@ data_is_mock = False
 #logsfhs = np.log10(Npix * bin_widths / np.sum(bin_widths)) 
 #params_mock = np.append(np.array([-0.2, -2]), logsfhs)
 
-params_center = np.array([-0.5, -1., 3., 4.]) 
-params_width = np.array([1., 1.,  1., 3.])
+#center the prior_transform around a Tau model with log Npix = 2.5, tau=2
+params_tau = np.array([-0.5, -1., 2.5, 2.]) 
+galaxy_center = gal.Tau_Model(params_tau)
+
+params_center = np.array([-0.5, -1.])
+params_center = np.append(params_center, np.log10(galaxy_center.SFH))
+params_width = np.ones(len(params_center))
 
 def prior_trans(normed_params):
-    #+/- 0.5 around correct answer
     return params_center + params_width*(-1. + 2.*normed_params)
 
 def lnprior_func(params):
-    z, log_dust, log_Npix, tau = params
+    z, log_dust = params[:2]
+    logsfh = params[2:]
     if (z < -2.) or (z > 0.5):
         return -np.inf
     if (log_dust < -3.) or (log_dust > 0.5):
         return -np.inf
-    if (log_Npix < -1.) or (log_Npix > 8):
-        return -np.inf
-    if (tau < .1) or (tau > 20.):
+    #if any SFH bin is +/- 2dex from tau model
+    if np.any(np.abs(logsfh - np.log10(galaxy_center.SFH)) > 2.):
         return -np.inf
     return 0.
 
