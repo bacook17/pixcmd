@@ -76,7 +76,7 @@ use_dynesty = True
 dynamic = False
 
 ## The number of dynesty live points
-N_points = 100
+N_points = 200
 
 ## The number of burn-in iterations, per walker
 N_burn = 0
@@ -91,7 +91,7 @@ dlogz = 0.5
 ## MODELLING SETTINGS
 
 ## The size (N_scale x N_scale) of the simulated image
-N_scale = 1024
+N_scale = 512
 
 ## The filters (photometry bands) to model
 ## There should be at least 2 filters.
@@ -158,13 +158,13 @@ data_is_mock = False
 #logsfhs = np.log10(Npix * bin_widths / np.sum(bin_widths)) 
 #params_mock = np.append(np.array([-0.2, -2]), logsfhs)
 
-#center the prior_transform around a Tau model with log Npix = 2.5, tau=2
-params_tau = np.array([-0.5, -1., 2.5, 2.]) 
+#center the prior_transform around a Tau model with log Npix = 1.5, tau=3
+params_tau = np.array([-0.5, -1.5, 1.5, 3.]) 
 galaxy_center = gal.Tau_Model(params_tau)
 
-params_center = np.array([-0.5, -1.])
+params_center = params_tau[:2]
 params_center = np.append(params_center, np.log10(galaxy_center.SFH))
-params_width = np.ones(len(params_center))
+params_width = np.append([1.]*2, [1.5]*7)
 
 def prior_trans(normed_params):
     return params_center + params_width*(-1. + 2.*normed_params)
