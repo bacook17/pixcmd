@@ -4,7 +4,7 @@
 #SBATCH -N 1 #ensure that all cores are on one machine
 #SBATCH --gres=gpu:1 #Number of GPUs requested
 #SBATCH --constraint=cuda-7.5 #require CUDA
-#SBATCH -t 6-00:00 #runtime in D-HH:MM
+#SBATCH -t 7-00:00 #runtime in D-HH:MM
 #SBATCH --mem-per-cpu 2000 #memory pool for cores
 #SBATCH -o logs/datatest_%a.out
 #SBATCH -e logs/datatest_%a.err

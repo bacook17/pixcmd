@@ -11,8 +11,6 @@ import pcmdpy.galaxy as gal
 import pcmdpy.driver as driver
 import pcmdpy.utils as utils
 import pcmdpy.gpu_utils as gpu_utils
-
-from emcee.utils import sample_ball
 import multiprocessing
 
 import time
