@@ -76,7 +76,7 @@ use_dynesty = True
 dynamic = False
 
 ## The number of dynesty live points
-N_points = 50
+N_points = 200
 
 ## The number of burn-in iterations, per walker
 N_burn = 0
