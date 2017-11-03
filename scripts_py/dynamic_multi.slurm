@@ -5,7 +5,7 @@
 #SBATCH --gres=gpu:1 #Number of GPUs requested
 #SBATCH --constraint=cuda-7.5 #require CUDA
 #SBATCH -t 7-00:00 #runtime in D-HH:MM
-#SBATCH --mem-per-cpu 2000 #memory pool for cores
+#SBATCH --mem-per-cpu 4000 #memory pool for cores
 #SBATCH -o logs/dynamic_%a.out
 #SBATCH -e logs/dynamic_%a.err
 #SBATCH --mail-type=BEGIN,END,FAIL #alert when done
