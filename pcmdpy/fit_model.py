@@ -139,7 +139,7 @@ def lnprob(gal_params, driv, im_scale, gal_class=gal.Galaxy_Model, **kwargs):
     like = lnlike(gal_params, driv, im_scale, gal_class=gal_class, **kwargs)
     return pri + like
 
-def dynesty_run(func, out_df=None, out_file=None, save_every=100, param_names=None, ncall_start=0, tstart=0., **func_kwargs):
+def dynesty_run(func, out_df=None, out_file=None, save_every=10, param_names=None, ncall_start=0, tstart=0., **func_kwargs):
     ncall = ncall_start
     if 'dlogz' in func_kwargs.keys():
         dlogz = func_kwargs['dlogz']

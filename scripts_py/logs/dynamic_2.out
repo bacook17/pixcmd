@@ -2445,3 +2445,8 @@ iter: 2434 | batch: 0 | bound: 5478 | nc: 1020 | ncall: 353746 | eff(%):  0.688 
 iter: 2435 | batch: 0 | bound: 5546 | nc: 4060 | ncall: 357806 | eff(%):  0.680 | logz: -640.355 +/-  0.500 | dlogz: 19.172 >  5.000 
 iter: 2436 | batch: 0 | bound: 5755 | nc: 12590 | ncall: 370396 | eff(%):  0.657 | logz: -640.257 +/-  0.501 | dlogz: 19.060 >  5.000 
 iter: 2437 | batch: 0 | bound: 5792 | nc: 2226 | ncall: 372622 | eff(%):  0.654 | logz: -640.161 +/-  0.501 | dlogz: 18.953 >  5.000 
+Exception while calling loglikelihood function:
+  params: [-0.49415274 -1.00153851  3.00170292]
+  args: {}
+  kwargs: {}
+  exception:
