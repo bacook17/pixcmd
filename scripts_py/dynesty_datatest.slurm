@@ -12,3 +12,6 @@
 #SBATCH --mail-user=bcook@cfa.harvard.edu #Email to send to
 
 python pcmd_integrate.py setup_files/datatest_${SLURM_ARRAY_TASK_ID}.py
+RESULT=$?
+sacct -j "${SLURM_JOB_ID}".batch --format=JOBID%20,JobName,NTasks,AllocCPUs,AllocGRES,Partition,Elapsed,MaxRSS,MaxVMSize,MaxDiskRead,MaxDiskWrite,State 
+exit $RESULT

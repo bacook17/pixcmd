@@ -80,7 +80,7 @@ if __name__ == "__main__":
     out_df = pd.DataFrame(columns=results_cols)
     args['out_file'] = out_file
     args['out_df'] = out_df
-    args['save_every'] = 10 #fix this later
+    args['save_every'] = 100 #fix this later
     args['param_names'] = param_names
 
     print('Running Nested Sampling')
