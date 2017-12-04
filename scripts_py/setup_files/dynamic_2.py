@@ -64,7 +64,7 @@ if use_cudac:
 fixed_seed = True
 
 ##Add the binned hess values and the mean magnitude and color terms
-like_mode = 2
+like_mode = 0
 
 ## Cut out stars rarer than some limit (as fraction of total mass)
 lum_cut = np.inf
@@ -78,16 +78,16 @@ use_dynesty = True
 dynamic = True
 
 ## The number of dynesty live points
-N_points = 100
+N_points = 30
 
 ## The number of burn-in iterations, per walker
 N_batch = 20
 
 ## The number of max calls for dynesty
-N_max = 2000000
+N_max = 1000000
 
 ## The error tolerance for Nestle stopping criterion
-dlogz = 5.0
+dlogz = 10.0
 
 ###############################################
 ## MODELLING SETTINGS

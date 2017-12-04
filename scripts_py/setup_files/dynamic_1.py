@@ -84,10 +84,10 @@ N_points = 30
 N_batch = 20
 
 ## The number of max calls for dynesty
-N_max = 500000
+N_max = 1000000
 
 ## The error tolerance for Nestle stopping criterion
-dlogz = 5.0
+dlogz = 10.0
 
 ###############################################
 ## MODELLING SETTINGS
