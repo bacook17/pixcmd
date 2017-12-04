@@ -253,8 +253,8 @@ def nested_integrate(pcmd, filters, im_scale, N_points, method='multi', max_call
         print('-Running dynesty sampler')
         dlogz_final = dlogz
         ncall, dt = dynesty_run(sampler.sample, out_df=out_df, save_every=save_every,
-                            param_names=param_names, ncall_start=0,
-                            dlogz=dlogz_final, maxcall=max_call, out_file=out_file)
+                                param_names=param_names, ncall_start=0,
+                                dlogz=dlogz_final, maxcall=max_call, out_file=out_file)
         if save_live:
             print('-Adding live points at end of dynesty samping')
             _, _ = dynesty_run(sampler.add_live_points, out_df=out_df, save_every=save_every,
