@@ -188,7 +188,7 @@ def dynesty_run(func, out_df=None, out_file=None, save_every=10, param_names=Non
 
     return ncall, dt
 
-def nested_integrate(pcmd, filters, im_scale, N_points, method='multi', max_call=100000, gal_class=gal.Galaxy_Model, gpu=True, iso_model=None,
+def nested_integrate(pcmd, filters, im_scale, N_points, bound_method='multi', sample_method='unif', max_call=100000, gal_class=gal.Galaxy_Model, gpu=True, iso_model=None,
                      bins=None, verbose=False, small_prior=False, dlogz=None, dynamic=False, N_batch=0, save_live=True,
                      pool=None, out_df=None, out_file=None, save_every=100, param_names=None, prior_trans=None, lnprior_func=None, **kwargs):
     print('-initializing models')
@@ -236,15 +236,15 @@ def nested_integrate(pcmd, filters, im_scale, N_points, method='multi', max_call
     rstate = np.random.RandomState(1234)
 
     if dynamic:
-        sampler = dynesty.DynamicNestedSampler(this_lnlike, this_pri_transform, ndim=n_dim, bound=method,
-                                               sample='unif', rstate=rstate, pool=pool, nprocs=nprocs)
+        sampler = dynesty.DynamicNestedSampler(this_lnlike, this_pri_transform, ndim=n_dim, bound=bound_method,
+                                               sample=sample_method, rstate=rstate, pool=pool, nprocs=nprocs)
         print('-Running dynesty dynamic sampler')
         sampler.run_nested(nlive_init=N_points, maxcall=max_call, nlive_batch=N_batch,
                            wt_kwargs={'pfrac':1.0}, print_progress=True,
                            print_to_stderr=False, dlogz_init=dlogz)
     else:
         sampler = dynesty.NestedSampler(this_lnlike, this_pri_transform, ndim=n_dim,
-                                        bound=method, sample='unif', nlive=N_points,
+                                        bound=bound_method, sample=sample_method, nlive=N_points,
                                         update_interval=1, rstate=rstate, pool=pool,
                                         nprocs=nprocs, boostrap=0, enlarge=1.1, first_update={'min_eff':30.})
         if (out_df is not None) and (out_file is not None):
@@ -254,7 +254,8 @@ def nested_integrate(pcmd, filters, im_scale, N_points, method='multi', max_call
         dlogz_final = dlogz
         ncall, dt = dynesty_run(sampler.sample, out_df=out_df, save_every=save_every,
                             param_names=param_names, ncall_start=0,
-                            dlogz=dlogz_final, maxcall=max_call, out_file=out_file)
+                            dlogz=dlogz_final, maxcall=max_call, out_file=out_file, save_bounds=False,
+                                save_samples=False)
         if save_live:
             print('-Adding live points at end of dynesty samping')
             _, _ = dynesty_run(sampler.add_live_points, out_df=out_df, save_every=save_every,

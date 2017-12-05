@@ -1,0 +1,6 @@
+Vendor:  Continuum Analytics, Inc.
+Package: mkl
+Message: trial mode expires in 24 days
+sys:1: DtypeWarning: Columns (8) have mixed types. Specify dtype option on import or set low_memory=False.
+/n/home01/bcook/dynesty/dynesty/sampling.py:217: UserWarning: Random walk proposals appear to be extremely inefficient. Adjusting the scale-factor accordingly.
+  warnings.warn("Random walk proposals appear to be "

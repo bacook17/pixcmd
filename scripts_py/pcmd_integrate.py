@@ -62,6 +62,16 @@ if __name__ == "__main__":
     except:
         args['lnprior_func'] = None
 
+    try:
+        args['bound_method'] = setup.bound_method
+    except:
+        args['bound_method'] = 'multi'
+        
+    try:
+        args['sample_method'] = setup.sample_method
+    except:
+        args['sample_method'] = 'unif'
+
     args['iso_model'] = setup.iso_model
     args['gal_class'] = setup.model_class
     args['verbose'] = setup.verbose
