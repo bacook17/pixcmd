@@ -82,7 +82,7 @@ N_points = 200
 N_burn = 0
 
 ## The number of max calls for dynesty
-N_max = 500000
+N_max = 5000000
 
 ## The error tolerance for Nestle stopping criterion
 dlogz = 0.5
@@ -91,7 +91,7 @@ dlogz = 0.5
 ## MODELLING SETTINGS
 
 ## The size (N_scale x N_scale) of the simulated image
-N_scale = 512
+N_scale = 256
 
 ## The filters (photometry bands) to model
 ## There should be at least 2 filters.

@@ -91,7 +91,7 @@ dlogz = 0.5
 ## MODELLING SETTINGS
 
 ## The size (N_scale x N_scale) of the simulated image
-N_scale = 256
+N_scale = 1024
 
 ## The filters (photometry bands) to model
 ## There should be at least 2 filters.
@@ -194,6 +194,6 @@ data_pcmd = np.loadtxt('/n/home01/bcook/pixcmd/data/m31_b06-263.dat', unpack=Tru
 ## Directory to save results to
 results_dir = '/n/home01/bcook/pixcmd/scripts_py/results/'
 ## NAME OF THIS PARTICULAR RUN
-name = "datatest_10"
+name = "datatest_12"
 ## the file to save the data
 output_file = results_dir + name + '.csv'

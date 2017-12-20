@@ -2,4 +2,4 @@ Vendor:  Continuum Analytics, Inc.
 Package: mkl
 Message: trial mode expires in 30 days
 sys:1: DtypeWarning: Columns (8) have mixed types. Specify dtype option on import or set low_memory=False.
-slurmstepd: error: *** JOB 32939078 ON shakgpu10 CANCELLED AT 2017-12-05T11:27:36 ***
+slurmstepd: error: *** JOB 33138125 ON supermicgpu01 CANCELLED AT 2017-12-14T13:42:13 DUE TO TIME LIMIT ***

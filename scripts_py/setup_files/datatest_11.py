@@ -91,7 +91,7 @@ dlogz = 0.5
 ## MODELLING SETTINGS
 
 ## The size (N_scale x N_scale) of the simulated image
-N_scale = 256
+N_scale = 1024
 
 ## The filters (photometry bands) to model
 ## There should be at least 2 filters.
@@ -159,7 +159,7 @@ data_is_mock = False
 #params_mock = np.append(np.array([-0.2, -2]), logsfhs)
 
 #center the prior_transform around a Tau model with log Npix = 1.5, tau=3
-params_tau = np.array([-0.25, -2., 1.5, 4.]) 
+params_tau = np.array([0.0, -2., 2.25, 3.]) 
 galaxy_center = gal.Tau_Model(params_tau)
 
 params_center = params_tau[:2]
@@ -186,7 +186,7 @@ def lnprior_func(params):
 #mags, _ = driv.simulate(galaxy_mock, N_mock, fixed_seed=fixed_seed)
 
 ## The mock data
-data_pcmd = np.loadtxt('/n/home01/bcook/pixcmd/data/m31_b06-263.dat', unpack=True)
+data_pcmd = np.loadtxt('/n/home01/bcook/pixcmd/data/m31_bulge_M2.dat', unpack=True)
 
 ##############################################
 ## SAVE FILE SETTINGS
@@ -194,6 +194,6 @@ data_pcmd = np.loadtxt('/n/home01/bcook/pixcmd/data/m31_b06-263.dat', unpack=Tru
 ## Directory to save results to
 results_dir = '/n/home01/bcook/pixcmd/scripts_py/results/'
 ## NAME OF THIS PARTICULAR RUN
-name = "datatest_10"
+name = "datatest_11"
 ## the file to save the data
 output_file = results_dir + name + '.csv'
