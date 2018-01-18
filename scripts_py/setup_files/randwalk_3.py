@@ -3,7 +3,7 @@
 
 ###############################################
 # SETUP FILE for DYNESTY Test #1
-# Npix = 1e3, Nim = 256, Npoints=50, Gal=const, LL=binned
+# Npix = 1e3, Nim = 256, Npoints=150, Gal=const, LL=binned
 
 import pcmdpy.instrument as ins
 import pcmdpy.isochrones as iso
