@@ -116,12 +116,12 @@ params['fixed_seed'] = True
 
 prior_args = {}
 prior_args['z_bound'] = [-1.5, 0.5]
-prior_args['sigz_bound'] = [0., 1.]
+# prior_args['sigz_bound'] = [0., 1.]
 prior_args['dust_bound'] = [-2.5, -0.5]
 prior_args['npix_bound'] = [1., 4.]
 prior_args['tau_bound'] = [1., 9.]
 
-params['prior'] = priors.TauMDFFlatPrior(**prior_args)
+params['prior'] = priors.TauFlatPrior(**prior_args)
 
 ###############################################
 # DATA / MOCK SETTINGS
@@ -135,9 +135,9 @@ N_mock = 256
 # Tau model with [Fe/H]=-0.2, log E(B-V) = -2.
 # Npix = 1e2, tau=5 Gyr
 model_mock = galaxy.TauModelMDF
-params = np.array([-0.2, 0.5, -2., 2., 5.])
+gal_params = np.array([-0.2, 0.5, -2., 2., 5.])
 
-galaxy_mock = model_mock(params)
+galaxy_mock = model_mock(gal_params)
 
 # Create the mock data
 # temporary driver to make mock
