@@ -4,7 +4,7 @@
 ###############################################
 # CONFIG FILE for mock test of with Tau model
 # MOCK Galaxy: has MDF
-# MODEL Galaxy: no MDF
+# MODEL Galaxy: has MDF
 
 from pcmdpy import instrument, galaxy, gpu_utils, priors
 # only required for creating a mock
@@ -99,7 +99,7 @@ params['iso_model'] = Isochrone_Model(params['filters'],
                                                             0.4236631949]))
 
 # The galaxy class to use to model the data
-params['gal_class'] = galaxy.TauModel
+params['gal_class'] = galaxy.TauModelMDF
 
 # Add the binned hess values and the mean magnitude and color terms
 params['like_mode'] = 2
@@ -116,12 +116,12 @@ params['fixed_seed'] = True
 
 prior_args = {}
 prior_args['z_bound'] = [-1.5, 0.5]
-# prior_args['sigz_bound'] = [0., 1.]
+prior_args['sigz_bound'] = [0., 1.]
 prior_args['dust_bound'] = [-2.5, -0.5]
 prior_args['npix_bound'] = [1., 4.]
 prior_args['tau_bound'] = [1., 9.]
 
-params['prior'] = priors.TauFlatPrior(**prior_args)
+params['prior'] = priors.TauMDFFlatPrior(**prior_args)
 
 ###############################################
 # DATA / MOCK SETTINGS
