@@ -96,13 +96,10 @@ params['N_im'] = 1024
 # Using more than 2 filters is currently not implemented
 dmod = 24.47    # distance modulus to M31
 d_mpc = 10.**((dmod - 25.)/5.)   # about 0.78
-params['filters'] = np.array([instrument.ACS_WFC_F475W(d_mpc),
-                              instrument.ACS_WFC_F814W(d_mpc)])
+params['filters'] = instrument.m31_filters(dist=d_mpc)
 
 # Initialize the isochrone models for the current set of filters
-params['iso_model'] = Isochrone_Model(params['filters'],
-                                      conversions=np.array([-0.0978757217,
-                                                            0.4236631949]))
+params['iso_model'] = Isochrone_Model(params['filters'])
 
 # The galaxy class to use to model the data
 params['gal_class'] = galaxy.TauModelMDF
