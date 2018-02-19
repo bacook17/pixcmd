@@ -21,6 +21,8 @@ import sys
 # IMPLEMENTATION SETTINGS
 
 params = {}
+sampler_params = {}
+run_params = {}
 
 # Whether to use GPU acceleration
 params['use_gpu'] = True
@@ -41,7 +43,7 @@ if N_threads > 1:
         time.sleep(10)
     else:
         pool = multiprocessing.Pool(processes=N_threads)
-params['pool'] = pool
+sampler_params['pool'] = pool
 
 # Initialize the GPU with pycuda
 if params['use_gpu']:
@@ -63,25 +65,64 @@ if params['use_cudac']:
         sys.exit(2)
 
 ###############################################
-# DYNESTY SETTINGS
+# DYNESTY SAMPLER SETTINGS
+# These parameters are passed to initialization of
+# Dynesty Sampler object
 
 # Whether to use dynamic nested sampling
 params['dynamic'] = False
+DYNAMIC = params['dynamic']
 
 # The number of dynesty live points
-params['nlive'] = 50
+_nlive = 50
+if DYNAMIC:
+    run_params['nlive_init'] = _nlive
+else:
+    sampler_params['nlive'] = _nlive
+
+# How to bound the prior
+sampler_params['bound'] = 'multi'
+
+# How to sample within the prior bounds
+sampler_params['method'] = 'unif'
+
+# Number of parallel processes
+sampler_params['nprocs'] = N_threads
+
+# Only update the bounding distribution after this many calls
+sampler_params['update_interval'] = 1
+
+# Compute multiple realizations of bounding objects
+sampler_params['bootstrap'] = 0
+
+# Enlarge volume of bounding ellipsoids
+sampler_params['enlarge'] = 1.1
+
+# When should sampler update bounding from unit-cube
+sampler_params['first_update'] = {'min_eff': 30.}
+
+###############################################
+# DYNESTY RUN_NESTED SETTINGS
 
 # The number of max calls for dynesty
-params['maxcall'] = 200000
+run_params['maxcall'] = 200000
 
 # The error tolerance for dynesty stopping criterion
-params['dlogz'] = 0.5
+_dlogz = 0.5
+if DYNAMIC:
+    run_params['dlogz_init'] = _dlogz
+else:
+    run_params['dlogz'] = _dlogz
 
-# How many max calls per iteration?
-params['maxcall_per_it'] = 1000
-
-# How many batches??
-params['maxbatch'] = 0
+if DYNAMIC:
+    # How many batches?
+    run_params['maxbatch'] = 0
+    # How many live points per batch?
+    run_params['nlive_batch'] = 0
+    # weight function parameters
+    run_params['wt_kwargs'] = {'pfrac': 1.0}
+    # How many max calls per iteration?
+    run_params['maxcall_per_it'] = 1000
 
 ###############################################
 # PCMD MODELLING SETTINGS
