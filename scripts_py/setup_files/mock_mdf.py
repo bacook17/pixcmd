@@ -69,13 +69,19 @@ if params['use_cudac']:
 params['dynamic'] = False
 
 # The number of dynesty live points
-params['N_live'] = 50
+params['nlive'] = 50
 
 # The number of max calls for dynesty
-params['N_max'] = 20000
+params['maxcall'] = 200000
 
 # The error tolerance for dynesty stopping criterion
 params['dlogz'] = 0.5
+
+# How many max calls per iteration?
+params['maxcall_per_it'] = 1000
+
+# How many batches??
+params['maxbatch'] = 0
 
 ###############################################
 # PCMD MODELLING SETTINGS

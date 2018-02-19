@@ -64,7 +64,7 @@ if params['use_cudac']:
 # DYNESTY SETTINGS
 
 # Whether to use dynamic nested sampling
-params['dynamic'] = False
+params['dynamic'] = True
 
 # The number of dynesty live points
 params['nlive'] = 50
@@ -79,7 +79,7 @@ params['dlogz'] = 0.5
 params['maxcall_per_it'] = 1000
 
 # How many batches??
-params['maxbatch'] = 0
+params['maxbatch'] = 10
 
 ###############################################
 # PCMD MODELLING SETTINGS
