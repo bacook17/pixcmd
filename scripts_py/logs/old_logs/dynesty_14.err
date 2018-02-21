@@ -1,0 +1,7 @@
+Vendor:  Continuum Analytics, Inc.
+Package: mkl
+Message: trial mode expires in 30 days
+sys:1: DtypeWarning: Columns (8) have mixed types. Specify dtype option on import or set low_memory=False.
+slurmstepd: error: Job 30900334 exceeded memory limit (5123528 > 4096000), being killed
+slurmstepd: error: Exceeded job memory limit
+slurmstepd: error: *** JOB 30900334 ON holygpu05 CANCELLED AT 2017-11-05T05:04:13 ***
