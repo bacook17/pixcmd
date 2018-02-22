@@ -70,7 +70,7 @@ if params['use_cudac']:
 # Dynesty Sampler object
 
 # Whether to use dynamic nested sampling
-params['dynamic'] = False
+params['dynamic'] = True
 DYNAMIC = params['dynamic']
 
 # The number of dynesty live points
