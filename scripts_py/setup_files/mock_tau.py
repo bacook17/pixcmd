@@ -23,7 +23,7 @@ sampler_params = {}
 run_params = {}
 
 # Whether to use GPU acceleration
-params['use_gpu'] = True
+params['use_gpu'] = False
 
 # Whether to output progress steps
 params['verbose'] = True
@@ -54,7 +54,7 @@ if params['use_gpu']:
         sys.exit(2)
 
 # Whether to require CUDAC (fasetest) implementation
-params['use_cudac'] = True
+params['use_cudac'] = False
 
 # Check to see if CUDAC is available. If not, exit
 if params['use_cudac']:
@@ -126,7 +126,7 @@ if DYNAMIC:
 # PCMD MODELLING SETTINGS
 
 # The size (N_im x N_im) of the simulated image
-params['N_im'] = 1024
+params['N_im'] = 128
 
 # The filters (photometry bands) to model
 # There should be at least 2 filters.
@@ -170,7 +170,7 @@ params['prior'] = priors.TauFlatPrior(**prior_args)
 params['data_is_mock'] = True
 
 # scale of mock image (N_mock x N_mock)
-N_mock = 256
+N_mock = 128
 
 # model of the mock galaxy
 # Tau model with [Fe/H]=-0.2, log E(B-V) = -2.
