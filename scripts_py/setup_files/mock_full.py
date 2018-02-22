@@ -2,7 +2,7 @@
 # Ben Cook (bcook@cfa.harvard.edu)
 
 ###############################################
-# CONFIG FILE for mock test with Tau model
+# CONFIG FILE for mock test with Full model
 
 from pcmdpy import instrument, galaxy, gpu_utils, priors
 # only required for creating a mock
@@ -68,11 +68,11 @@ if params['use_cudac']:
 # Dynesty Sampler object
 
 # Whether to use dynamic nested sampling
-params['dynamic'] = False
+params['dynamic'] = True
 DYNAMIC = params['dynamic']
 
 # The number of dynesty live points
-_nlive = 50
+_nlive = 200
 if DYNAMIC:
     run_params['nlive_init'] = _nlive
 else:
@@ -114,9 +114,9 @@ else:
 
 if DYNAMIC:
     # How many batches?
-    run_params['maxbatch'] = 0
+    run_params['maxbatch'] = 10
     # How many live points per batch?
-    run_params['nlive_batch'] = 0
+    run_params['nlive_batch'] = 50
     # weight function parameters
     run_params['wt_kwargs'] = {'pfrac': 1.0}
     # How many max calls per iteration?
@@ -141,7 +141,7 @@ params['filters'] = instrument.m31_filters(dist=d_mpc)
 params['iso_model'] = Isochrone_Model(params['filters'])
 
 # The galaxy class to use to model the data
-params['gal_class'] = galaxy.TauModel
+params['gal_class'] = galaxy.NonParam
 
 # Add the binned hess values and the mean magnitude and color terms
 params['like_mode'] = 2
@@ -157,12 +157,7 @@ params['fixed_seed'] = True
 # PRIOR SETTINGS
 
 prior_args = {}
-prior_args['z_bound'] = [-1.5, 0.5]
-prior_args['dust_bound'] = [-2.5, -0.5]
-prior_args['npix_bound'] = [1., 4.]
-prior_args['tau_bound'] = [1., 9.]
-
-params['prior'] = priors.TauFlatPrior(**prior_args)
+params['prior'] = priors.FullFlatPrior()
 
 ###############################################
 # DATA / MOCK SETTINGS
