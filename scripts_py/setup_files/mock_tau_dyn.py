@@ -118,9 +118,9 @@ if DYNAMIC:
     # How many live points per batch?
     run_params['nlive_batch'] = 50
     # weight function parameters
-    run_params['wt_kwargs'] = {'pfrac': 1.0}
+    run_params['wt_kwargs'] = {'pfrac': 0.3}
     # How many max calls per iteration?
-    run_params['maxcall_per_it'] = 1000
+    run_params['maxcall_per_it'] = 2000
 
 ###############################################
 # PCMD MODELLING SETTINGS
