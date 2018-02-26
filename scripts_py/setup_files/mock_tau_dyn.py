@@ -72,7 +72,7 @@ params['dynamic'] = True
 DYNAMIC = params['dynamic']
 
 # The number of dynesty live points
-_nlive = 50
+_nlive = 200
 if DYNAMIC:
     run_params['nlive_init'] = _nlive
 else:
