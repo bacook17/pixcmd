@@ -1,12 +1,1 @@
-Traceback (most recent call last):
-  File "../pcmdpy/pcmdpy/pcmd_integrate.py", line 121, in <module>
-    fit_model.nested_integrate(**args)
-  File "/n/home01/bcook/pixcmd/pcmdpy/pcmdpy/fit_model.py", line 185, in nested_integrate
-    out_df.to_csv(out_file, index=False, float_format='%.4e')
-  File "/n/home01/bcook/dynesty/dynesty/dynamicsampler.py", line 1576, in run_nested
-    stop_val=stop_val)
-  File "/n/home01/bcook/dynesty/dynesty/dynamicsampler.py", line 1702, in add_batch
-    self.combine_runs()
-  File "/n/home01/bcook/dynesty/dynesty/dynamicsampler.py", line 1190, in combine_runs
-    raise ValueError("No new samples are currently saved.")
-ValueError: No new samples are currently saved.
+slurmstepd: error: *** JOB 38013853 ON holyseasgpu02 CANCELLED AT 2018-02-25T13:49:36 DUE TO TIME LIMIT ***
