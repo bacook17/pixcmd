@@ -70,7 +70,7 @@ if params['use_cudac']:
 # Dynesty Sampler object
 
 # Whether to use dynamic nested sampling
-params['dynamic'] = False
+params['dynamic'] = True
 DYNAMIC = params['dynamic']
 
 # The number of dynesty live points
@@ -160,7 +160,7 @@ params['fixed_seed'] = True
 
 prior_args = {}
 prior_args['z_bound'] = [-1.5, 0.5]
-prior_args['sigz_bound'] = [0., 1.]
+prior_args['sigz_bound'] = [0.1, 1.]
 prior_args['dust_bound'] = [-2.5, -0.5]
 prior_args['npix_bound'] = [1., 4.]
 prior_args['tau_bound'] = [1., 9.]
