@@ -1,10 +1,10 @@
-# mock_mdf.py configuration file
+# mock_lognorm_as_single.py configuration file
 # Ben Cook (bcook@cfa.harvard.edu)
 
 ###############################################
 # CONFIG FILE for mock test of with Tau model
-# MOCK Galaxy: has MDF
-# MODEL Galaxy: has MDF
+# MOCK Galaxy: has lognorm dust distribution
+# MODEL Galaxy: has SINGLE dust screen
 
 from pcmdpy import instrument, galaxy, gpu_utils, priors
 from pcmdpy import agemodels, dustmodels, metalmodels
@@ -144,8 +144,8 @@ params['filters'] = instrument.m31_filters(dist=d_mpc)
 params['iso_model'] = Isochrone_Model(params['filters'])
 
 # The galaxy class to use to model the data
-metals = metalmodels.NormMDF  # gaussian MDF
-dust = dustmodels.SingleDust  # single dust screen
+metals = metalmodels.SingleFeH  # single metallicity
+dust = dustmodels.SingleDust  # single dust screen model
 age = agemodels.TauModel  # tau SFH
 params['gal_class'] = galaxy.CustomGalaxy(metals, dust, age)
 
@@ -163,13 +163,12 @@ params['fixed_seed'] = True
 # PRIOR SETTINGS
 
 z_bound = [-1.5, 0.5]
-sigz_bound = [0.1, 1.]
-dust_med_bound = [-2.5, -0.5]
+dust_med_bound = [-2., 1.]
 npix_bound = [1., 4.]
 tau_bound = [1., 9.]
 
 prior_bounds = {}
-prior_bounds['feh_bounds'] = [z_bound, sigz_bound]
+prior_bounds['feh_bounds'] = [z_bound]
 prior_bounds['dust_bounds'] = [dust_med_bound]
 prior_bounds['age_bounds'] = [npix_bound, tau_bound]
 
@@ -184,14 +183,15 @@ params['data_is_mock'] = True
 N_mock = 256
 
 # model of the mock galaxy
-metals = metalmodels.NormMDF  # gaussian MDF
-dust = dustmodels.SingleDust  # single dust screen
+metals = metalmodels.SingleFeH  # single metallicity
+dust = dustmodels.LogNormDust  # lognormal dust model
 age = agemodels.TauModel  # tau SFH
 model_mock = galaxy.CustomGalaxy(metals, dust, age)
 
-# Tau model with [Fe/H]=-0.2, log E(B-V) = -2.
+# Tau model with [Fe/H]=-0.2, log E(B-V) = -0.5
+# width of log E(B-V) = 0.5
 # Npix = 1e2, tau=5 Gyr
-gal_params = np.array([-0.2, 0.5, -2., 2., 5.])
+gal_params = np.array([-0.2, -0.5, 0.5, 2., 5.])
 galaxy_mock = model_mock.get_model(gal_params)
 
 # Create the mock data
