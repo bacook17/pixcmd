@@ -11,7 +11,7 @@
 #SBATCH --mail-type=BEGIN,END,FAIL #alert when done
 #SBATCH --mail-user=bcook@cfa.harvard.edu #Email to send to
 
-python ../pcmdpy/pcmdpy/pcmd_integrate.py --config setup_files/mock_lognorm_single.py --results results/mock_lognorm_single.csv
+python ../pcmdpy/pcmdpy/pcmd_integrate.py --config setup_files/mock_lognorm_as_single.py --results results/mock_lognorm_single.csv
 RESULT=${PIPESTATUS[0]}
 sacct -j "${SLURM_JOB_ID}".batch --format=JOBID%20,JobName,NTasks,AllocCPUs,AllocGRES,Partition,Elapsed,MaxRSS,MaxVMSize,MaxDiskRead,MaxDiskWrite,State 
 exit $RESULT
