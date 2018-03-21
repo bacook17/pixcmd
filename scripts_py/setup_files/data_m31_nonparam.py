@@ -1,15 +1,15 @@
-# mockgrid_base_const.py configuration file
+# setup_files/datatest_bulge.py
 # Ben Cook (bcook@cfa.harvard.edu)
 
 ###############################################
-# CONFIG FILE for mock test
-# MOCK Galaxy: has constant SFH, single FeH
-# MODEL Galaxy: has NonParam SFH, single MDF, N_im = 256
+# SETUP FILE for Data Test with nonparam model
+# DATA: M31 (Bulge or Disk)
+# MODEL Galaxy: has NonParam SFH, single MDF
 
 from pcmdpy import instrument, galaxy, gpu_utils, priors
 from pcmdpy import agemodels, dustmodels, metalmodels
 # only required for creating a mock
-from pcmdpy import driver, utils
+# from pcmdpy import driver, utils
 from pcmdpy.isochrones import Isochrone_Model
 import multiprocessing
 
@@ -75,7 +75,7 @@ params['dynamic'] = False
 DYNAMIC = params['dynamic']
 
 # The number of dynesty live points
-_nlive = 300
+_nlive = 1000
 if DYNAMIC:
     run_params['nlive_init'] = _nlive
 else:
@@ -106,7 +106,7 @@ sampler_params['first_update'] = {'min_eff': 30.}
 # DYNESTY RUN_NESTED SETTINGS
 
 # The number of max calls for dynesty
-run_params['maxcall'] = 500000
+run_params['maxcall'] = 200000
 
 # The error tolerance for dynesty stopping criterion
 _dlogz = 0.5
@@ -129,7 +129,7 @@ if DYNAMIC:
 # PCMD MODELLING SETTINGS
 
 # The size (N_im x N_im) of the simulated image
-params['N_im'] = 256
+params['N_im'] = 1024
 
 # The filters (photometry bands) to model
 # There should be at least 2 filters.
@@ -146,7 +146,7 @@ params['iso_model'] = Isochrone_Model(params['filters'])
 # The galaxy class to use to model the data
 metals = metalmodels.SingleFeH  # Single Metallicity
 dust = dustmodels.SingleDust  # single dust screen
-age = agemodels.NonParam  # tau SFH
+age = agemodels.NonParam  # Non-parametric 
 params['gal_class'] = galaxy.CustomGalaxy(metals, dust, age)
 
 # Add the binned hess values and the mean magnitude and color terms
@@ -163,10 +163,10 @@ params['fixed_seed'] = True
 # PRIOR SETTINGS
 
 z_bound = [-1.5, 0.5]
-dust_med_bound = [-2.0, 0.5]
+dust_med_bound = [-2.0, 0.]
 
-lower_sfh = np.log10(agemodels.ConstantSFR(np.array([0.5]), iso_step=-1).SFH)
-upper_sfh = np.log10(agemodels.ConstantSFR(np.array([3.0]), iso_step=-1).SFH)
+lower_sfh = np.log10(agemodels.TauModel(np.array([1.0, 1.]), iso_step=-1).SFH)
+upper_sfh = np.log10(agemodels.TauModel(np.array([4.0, 9.]), iso_step=-1).SFH)
 SFH_bounds_arr = np.array([lower_sfh, upper_sfh]).T
 SFH_bounds = list(list(bound) for bound in SFH_bounds_arr)
 
@@ -180,27 +180,4 @@ params['prior'] = params['gal_class'].get_flat_prior(**prior_bounds)
 ###############################################
 # DATA / MOCK SETTINGS
 
-params['data_is_mock'] = True
-
-# scale of mock image (N_mock x N_mock)
-N_mock = 256
-
-# model of the mock galaxy
-metals = metalmodels.SingleFeH  # single metallicity
-dust = dustmodels.SingleDust  # single dust screen
-age = agemodels.ConstantSFR  # Constant SFR
-model_mock = galaxy.CustomGalaxy(metals, dust, age)
-
-# Tau model with [Fe/H]=-0.2, log E(B-V) = -.5
-# Npix = 1e2 constant SFR
-gal_params = np.array([-0.2, -0.5, 2.])
-galaxy_mock = model_mock.get_model(gal_params)
-
-# Create the mock data
-# temporary driver to make mock
-driv = driver.Driver(params['iso_model'], gpu=params['use_gpu'])
-# The mock data
-params['data_pcmd'], _ = driv.simulate(galaxy_mock, N_mock,
-                                       fixed_seed=params['fixed_seed'])
-
-del driv
+params['data_is_mock'] = False
