@@ -165,8 +165,8 @@ params['fixed_seed'] = True
 z_bound = [-1.5, 0.5]
 dust_med_bound = [-2.0, 0.5]
 
-lower_sfh = np.log10(agemodels.TauModel(np.array([0.5, -1.]), iso_step=-1).SFH)
-upper_sfh = np.log10(agemodels.TauModel(np.array([3.0, -1.]), iso_step=-1).SFH)
+lower_sfh = np.log10(agemodels.TauModel(np.array([0.5, 1.]), iso_step=-1).SFH)
+upper_sfh = np.log10(agemodels.TauModel(np.array([3.0, 1.]), iso_step=-1).SFH)
 SFH_bounds_arr = np.array([lower_sfh, upper_sfh]).T
 SFH_bounds = list(list(bound) for bound in SFH_bounds_arr)
 
