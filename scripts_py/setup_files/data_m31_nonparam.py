@@ -181,3 +181,4 @@ params['prior'] = params['gal_class'].get_flat_prior(**prior_bounds)
 # DATA / MOCK SETTINGS
 
 params['data_is_mock'] = False
+params['system'] = 'ab'
