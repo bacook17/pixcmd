@@ -1,5 +1,5 @@
 #!/bin/bash
-#SBATCH -p holyseasgpu
+#SBATCH -p gpu
 #SBATCH -n 1 # Number of cores requested
 #SBATCH -N 1 #ensure that all cores are on one machine
 #SBATCH --gres=gpu:1 #Number of GPUs requested
