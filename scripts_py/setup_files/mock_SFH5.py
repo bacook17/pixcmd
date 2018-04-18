@@ -202,9 +202,9 @@ prior_bounds = {}
 prior_bounds['feh_bounds'] = [z_bound]
 prior_bounds['dust_bounds'] = [dust_med_bound]
 prior_bounds['age_bounds'] = SFH_bounds
-prior_bounds['dmod_bound'] = dmod_bound
+prior_bounds['dmod_bounds'] = dmod_bound
 
-params['prior'] = params['gal_class'].get_flat_prior(**prior_bounds)
+params['prior'] = params['gal_model'].get_flat_prior(**prior_bounds)
 
 ###############################################
 # DATA / MOCK SETTINGS
