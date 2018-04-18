@@ -1,10 +1,15 @@
-# Template configuration file
+# mock_tau_dmod.py
 # Ben Cook (bcook@cfa.harvard.edu)
 
 ###############################################
 # CONFIG FILE for mock run
-# MOCK Galaxy: DETAILS HERE
-# MODEL Galaxy: DETAILS HERE
+# MOCK Galaxy: Tau Model, fixed MDF, fixed Dust width
+#              [Fe/H] = -0.2
+#          log E(B-V) = -0.5
+#            log Npix = 3.25
+#                 tau = 3.1
+#                dmod = 29.2
+# MODEL Galaxy: Tau model, fixed MDF, fixed dust width, variable distance
 
 import pcmdpy as ppy
 import multiprocessing
@@ -12,7 +17,6 @@ import multiprocessing
 import time
 
 import numpy as np
-import sys
 
 ###############################################
 # IMPLEMENTATION SETTINGS
@@ -136,30 +140,33 @@ params['iso_model'] = ppy.isochrones.Isochrone_Model(params['filters'])
 # Set a custom Galaxy Model with four parts
 
 # Metallicity model
-metalmodel = ppy.metalmodels.SingleFeH()  # Single Metallicity
+# metalmodel = ppy.metalmodels.SingleFeH()  # Single Metallicity
 # metalmodel = ppy.metalmodels.NormMDF()  # Gaussian MDF
-# metalmodel = ppy.metalmodels.FixedWidthNormMDF(0.3)  # fixed width MDF
+metalmodel = ppy.metalmodels.FixedWidthNormMDF(0.3)  # fixed width MDF
 
 # Dust model
-dustmodel = ppy.dustmodels.SingleDust()  # single dust screen
+# dustmodel = ppy.dustmodels.SingleDust()  # single dust screen
 # dustmodel = ppy.dustmodels.LogNormDust()  # lognormal screen
-# dustmodel = ppy.dustmodels.FixedWidthLogNormDust(0.3)  # fixed width lognorm
+dustmodel = ppy.dustmodels.FixedWidthLogNormDust(0.3)  # fixed width lognorm
 
 # Age model
-agemodel = ppy.agemodels.NonParam()  # Fully non-parametric model
+# agemodel = ppy.agemodels.NonParam()  # Fully non-parametric model
 # agemodel = ppy.agemodels.ConstantSFR()  # constant Star Formation Rate
-# agemodel = ppy.agemodels.TauModel()  # exponential SFR decline
+agemodel = ppy.agemodels.TauModel()  # exponential SFR decline
 # agemodel = ppy.agemodels.RisingTau()  # Linear x exponential decline
 # agemodel = ppy.agemodels.SSPModel()  # single age SSP
 
 # Distance model
-distancemodel = ppy.distancemodels.FixedDistance(30.)  # fixed dmod=30 (10 Mpc)
-# distancemodel = ppy.distancemodels.VariableDistance()  # dmod floats
+# distancemodel = ppy.distancemodels.FixedDistance(30.)  # fixed dmod=30 (10 Mpc)
+distancemodel = ppy.distancemodels.VariableDistance()  # dmod floats
 params['gal_model'] = ppy.galaxy.CustomGalaxy(metalmodel, dustmodel, agemodel,
                                               distancemodel)
 
 # Add the binned hess values and the mean magnitude and color terms
 params['like_mode'] = 2
+
+# Factor to downsample the isochrones
+params['downsample'] = 5
 
 # Cut out stars brighter than some limit (of mean luminosity)
 params['lum_cut'] = np.inf
@@ -175,28 +182,20 @@ params['fixed_seed'] = True
 z_bound = [-1.5, 0.5]  # metallicity
 dust_med_bound = [-2.0, 0.5]  # log dust median
 # Only set the distance bounds if allowed to float
-dmod_bound = None
-# dmod_bound = [[28., 30.]]
+# dmod_bound = None
+dmod_bound = [[26., 30.]]
 
-# Compute the 7-param SFH bound using tau models to bound
-Npix_low, tau = 0.5, 1.
-model = ppy.agemodels.TauModel(iso_step=-1)
-model.set_params([Npix_low, tau])
-lower_sfh = np.log10(model.SFH)
-Npix_high = 3.
-model.set_params([Npix_high, tau])
-upper_sfh = np.log10(model.SFH)
-SFH_bounds_arr = np.array([lower_sfh, upper_sfh]).T
-SFH_bounds = list(list(bound) for bound in SFH_bounds_arr)
+npix_bound = [1.0, 4.0]
+tau_bound = [1.0, 10.0]
 
 # Create a Prior object with given bounds
 prior_bounds = {}
 prior_bounds['feh_bounds'] = [z_bound]
 prior_bounds['dust_bounds'] = [dust_med_bound]
-prior_bounds['age_bounds'] = SFH_bounds
+prior_bounds['age_bounds'] = [npix_bound, tau_bound]
 prior_bounds['dmod_bound'] = dmod_bound
 
-params['prior'] = params['gal_model'].get_flat_prior(**prior_bounds)
+params['prior'] = params['gal_class'].get_flat_prior(**prior_bounds)
 
 ###############################################
 # DATA / MOCK SETTINGS
@@ -208,16 +207,16 @@ params['data_is_mock'] = True
 N_mock = 256
 
 # model of the mock galaxy
-metalmodel = ppy.metalmodels.SingleFeH()  # single metallicity
-dustmodel = ppy.dustmodels.SingleDust()  # single dust screen
+metalmodel = ppy.metalmodels.FixedWidthNormMDF(0.3)  # fixed width MDF
+dustmodel = ppy.dustmodels.FixedWidthLogNormDust(0.3)  # fixed width lognorm
 agemodel = ppy.agemodels.TauModel()  # tau SFH
-distancemodel = ppy.distancemodels.FixedDistance(30.)  # 10 Mpc distance
+distancemodel = ppy.distancemodels.VariableDistance()  # dmod floats
 model_mock = ppy.galaxy.CustomGalaxy(metalmodel, dustmodel, agemodel,
                                      distancemodel)
 
 # Tau model with [Fe/H]=-0.2, log E(B-V) = -.5
-# Npix = 1e2, tau=1 Gyr
-gal_params = np.array([-0.2, -0.5, 2., 1.])
+# Npix = 10**3.25, tau=3.1 Gyr, dmod=29.2
+gal_params = np.array([-0.2, -0.5, 3.25, 3.1, 29.2])
 model_mock.set_params(gal_params)
 
 # Create the mock data
