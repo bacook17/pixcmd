@@ -161,6 +161,13 @@ params['gal_model'] = ppy.galaxy.CustomGalaxy(metalmodel, dustmodel, agemodel,
 # Add the binned hess values and the mean magnitude and color terms
 params['like_mode'] = 2
 
+# The hess bins to compute the likelihood in
+# The magnitude upper/lower bounds are very important to consider
+# relative to distance
+magbins = np.arange(10, 45, 0.05)
+colorbins = np.arange(-1.5, 4.6, 0.05)  # fairly insensitive to distance
+params['bins'] = [magbins, colorbins]
+
 # Cut out stars brighter than some limit (of mean luminosity)
 params['lum_cut'] = np.inf
 
