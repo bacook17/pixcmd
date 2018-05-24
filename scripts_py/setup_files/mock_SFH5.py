@@ -107,9 +107,9 @@ else:
 
 if DYNAMIC:
     # How many batches?
-    run_params['maxbatch'] = 0
+    run_params['maxbatch'] = 10
     # How many live points per batch?
-    run_params['nlive_batch'] = 0
+    run_params['nlive_batch'] = 100
     # weight function parameters
     run_params['wt_kwargs'] = {'pfrac': 1.0}
     # How many max calls per iteration?

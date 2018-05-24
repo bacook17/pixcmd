@@ -4,7 +4,6 @@
 #SBATCH -n 4 # Number of cores requested
 #SBATCH -N 1 #ensure that all cores are on one machine
 #SBATCH --gres=gpu:4 #Number of GPUs requested
-#SBATCH --constraint=cuda-7.5 #require CUDA
 #SBATCH -t 2-00:00 #runtime in D-HH:MM
 #SBATCH --mem-per-cpu 1000 #memory pool for cores
 #SBATCH -o logs/batch_NscaleNpix%a.out
