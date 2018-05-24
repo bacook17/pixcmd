@@ -3,7 +3,6 @@
 #SBATCH -n 2 # Number of cores requested
 #SBATCH -N 1 #ensure that all cores are on one machine
 #SBATCH --gres=gpu:2 #Number of GPUs requested
-#SBATCH --constraint=cuda-7.5 #require CUDA
 #SBATCH -t 0-00:03 #runtime in D-HH:MM
 #SBATCH --mem 1000 #memory pool for cores
 #SBATCH -o logs/batch_multigpu.out
