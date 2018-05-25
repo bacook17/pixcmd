@@ -181,7 +181,7 @@ params['final_gal_model'] = ppy.galaxy.NonParamFull()
 #                                                     agemodel, distancemodel)
 
 # Add the binned hess values and the mean magnitude and color terms
-params['like_mode'] = 2
+params['like_mode'] = 1
 
 # The hess bins to compute the likelihood in
 # The magnitude upper/lower bounds are very important to consider

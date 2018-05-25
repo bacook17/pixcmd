@@ -1,5 +1,5 @@
 #!/bin/bash
-#SBATCH -p gpu_requeue
+#SBATCH -p gpu
 #SBATCH -J m51_arm2_twostage
 #SBATCH -n 1 # Number of cores requested
 #SBATCH -N 1 #ensure that all cores are on one machine
@@ -11,7 +11,7 @@
 #SBATCH --mail-type=BEGIN,END,FAIL #alert when done
 #SBATCH --mail-user=bcook@cfa.harvard.edu #Email to send to
 
-pcmd_integrate_twostage.py --config "setup_files/${SLURM_JOB_NAME}.py" --data ../data/m51_arm2_I-VI-BV.dat --results-init "results/${SLURM_JOB_NAME}_tau.csv" --results-final "results/${SLURM_JOB_NAME}_nonparam.csv"
+python ../pcmdpy/pcmdpy/pcmd_integrate_twostage.py --config "setup_files/${SLURM_JOB_NAME}.py" --data ../data/m51_arm2.dat --results-init results/m51_arm2_tau.csv --results-final results/m51_arm2_nonparam.csv
 RESULT=${PIPESTATUS[0]}
 sacct -j $SLURM_JOB_ID --format=JOBID%20,JobName,NTasks,AllocCPUs,AllocGRES,Partition,Elapsed,MaxRSS,MaxVMSize,MaxDiskRead,MaxDiskWrite,State 
 exit $RESULT

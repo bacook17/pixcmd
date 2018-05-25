@@ -132,6 +132,8 @@ params['N_im'] = 1024
 
 # Alternative choice: F814W, F555W, and F435W
 params['filters'] = ppy.instrument.default_m51_filters()
+for f in params['filters']:
+    f._exposure /= 4.
 
 # To manually set options:
 # filters = []
@@ -202,7 +204,7 @@ params['fixed_seed'] = True
 
 # Average counts of "sky noise" to add in each band
 # params['sky_noise'] = None
-params['sky_noise'] = [82., 41., 54.]
+params['sky_noise'] = np.array([82., 41., 54.]) / 4.
 
 # Should we simulate shot noise in the images?
 params['shot_noise'] = True
