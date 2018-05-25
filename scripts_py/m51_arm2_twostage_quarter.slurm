@@ -1,6 +1,6 @@
 #!/bin/bash
 #SBATCH -p gpu_requeue
-#SBATCH -J m51_arm2_twostage
+#SBATCH -J m51_arm2_twostage_quarter
 #SBATCH -n 1 # Number of cores requested
 #SBATCH -N 1 #ensure that all cores are on one machine
 #SBATCH --gres=gpu:1 #Number of GPUs requested
