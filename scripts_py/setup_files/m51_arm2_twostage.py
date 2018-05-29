@@ -63,7 +63,7 @@ if params['use_gpu']:
 # Dynesty Sampler object
 
 # Whether to use dynamic nested sampling
-params['dynamic'] = DYNAMIC = True
+params['dynamic'] = DYNAMIC = False
 
 # The number of dynesty live points
 _nlive = 300
@@ -128,10 +128,10 @@ params['N_im'] = 1024
 
 # The filters (photometry bands) to model. There should be at least 2 filters.
 # Default choice: F814W and F475W
-params['filters'] = ppy.instrument.default_m31_filters()
+# params['filters'] = ppy.instrument.default_m31_filters()
 
 # Alternative choice: F814W, F555W, and F435W
-# params['filters'] = ppy.instrument.default_m51_filters()
+params['filters'] = ppy.instrument.default_m51_filters()
 
 # To manually set options:
 # filters = []
@@ -188,7 +188,7 @@ params['like_mode'] = 2
 # relative to distance
 magbins = np.arange(10, 45, 0.05)
 colorbins = np.arange(-1.5, 4.6, 0.05)  # fairly insensitive to distance
-params['bins'] = [magbins, colorbins]
+params['bins'] = [magbins, colorbins, colorbins]
 
 # Factor to downsample the isochrones
 params['downsample'] = 5
@@ -200,33 +200,32 @@ params['lum_cut'] = np.inf
 # (decreases stochasticity of likelihood calls)
 params['fixed_seed'] = True
 
+# Average counts of "sky noise" to add in each band
+# params['sky_noise'] = None
+params['sky_noise'] = [82., 41., 54.]
+
+# Should we simulate shot noise in the images?
+params['shot_noise'] = True
+
 ###############################################
 # PRIOR SETTINGS
 
 # The bounds on the flat prior for each parameter
 z_bound = [-1.5, 0.5]  # metallicity
-dust_med_bound = [-2.0, 0.5]  # log dust median
+dust_med_bound = [-2.0, 0.]  # log dust median
 # Only set the distance bounds if allowed to float
 # dmod_bound = None
-dmod_bound = [[28., 30.]]
+dmod_bounds = [[28., 30.]]
 
-# Compute the 7-param SFH bound using tau models to bound
-Npix_low, tau = 0.5, 1.
-model = ppy.agemodels.TauModel(iso_step=-1)
-model.set_params([Npix_low, tau])
-lower_sfh = np.log10(model.SFH)
-Npix_high = 3.
-model.set_params([Npix_high, tau])
-upper_sfh = np.log10(model.SFH)
-SFH_bounds_arr = np.array([lower_sfh, upper_sfh]).T
-SFH_bounds = list(list(bound) for bound in SFH_bounds_arr)
+npix_bound = [2.0, 5.0]
+tau_bound = [0.1, 10.0]
 
 # Create a Prior object with given bounds
 prior_bounds = {}
 prior_bounds['feh_bounds'] = [z_bound]
 prior_bounds['dust_bounds'] = [dust_med_bound]
-prior_bounds['age_bounds'] = SFH_bounds
-prior_bounds['dmod_bound'] = dmod_bound
+prior_bounds['age_bounds'] = [npix_bound, tau_bound]
+prior_bounds['dmod_bounds'] = dmod_bounds
 
 # Set the prior boundary for the Initial (burn-in) phase
 params['init_prior'] = params['init_gal_model'].get_flat_prior(**prior_bounds)
@@ -235,34 +234,4 @@ params['init_prior'] = params['init_gal_model'].get_flat_prior(**prior_bounds)
 # DATA / MOCK SETTINGS
 
 # Is the data created manually, or should it be read from a file?
-params['data_is_mock'] = True
-
-# scale of mock image (N_mock x N_mock)
-N_mock = 256
-
-# model of the mock galaxy
-metalmodel = ppy.metalmodels.SingleFeH()  # single metallicity
-dustmodel = ppy.dustmodels.SingleDust()  # single dust screen
-agemodel = ppy.agemodels.TauModel()  # tau SFH
-distancemodel = ppy.distancemodels.FixedDistance(30.)  # 10 Mpc distance
-model_mock = ppy.galaxy.CustomGalaxy(metalmodel, dustmodel, agemodel,
-                                     distancemodel)
-
-# Tau model with [Fe/H]=-0.2, log E(B-V) = -.5
-# Npix = 1e2, tau=1 Gyr
-gal_params = np.array([-0.2, -0.5, 2., 1.])
-model_mock.set_params(gal_params)
-
-# Create the mock data
-# temporary driver to make mock
-driv = ppy.driver.Driver(params['iso_model'], gpu=params['use_gpu'])
-
-# Insert sky noise to simulated data?
-sky_noise = None
-
-# The mock data
-params['data_pcmd'], _ = driv.simulate(model_mock, N_mock,
-                                       fixed_seed=params['fixed_seed'],
-                                       shot_noise=True, sky_noise=sky_noise)
-
-del driv
+params['data_is_mock'] = False
