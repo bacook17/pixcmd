@@ -190,14 +190,14 @@ params['shot_noise'] = True
 
 # The bounds on the flat prior for each parameter
 z_bound = [-1.5, 0.5]  # metallicity
-dust_med_bound = [-2.0, -0.5]  # log dust median
+dust_med_bound = [-2.0, 0.]  # log dust median
 # Only set the distance bounds if allowed to float
 # dmod_bound = None
-dmod_bound = [[30., 33.]]
+dmod_bound = [[31., 32.]]
 
 # Compute the 7-param SFH bound using tau models to bound
-Npix_bound = [2., 5.]
-tau_bound = [0.1, 10.]
+Npix_bound = [2., 7.]
+tau_bound = [0.1, 20.]
 
 # Create a Prior object with given bounds
 prior_bounds = {}
