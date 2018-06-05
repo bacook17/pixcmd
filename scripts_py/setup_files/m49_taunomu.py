@@ -117,7 +117,7 @@ if DYNAMIC:
 # PCMD MODELLING SETTINGS
 
 # The size (N_im x N_im) of the simulated image
-params['N_im'] = 512
+params['N_im'] = 1024
 
 # The filters (photometry bands) to model. There should be at least 2 filters.
 # Default choice: F814W and F475W
@@ -166,7 +166,7 @@ params['like_mode'] = 2
 # The magnitude upper/lower bounds are very important to consider
 # relative to distance
 magbins = np.arange(10, 45, 0.05)
-colorbins = np.arange(-1.5, 4.6, 0.05)  # fairly insensitive to distance
+colorbins = np.arange(-1.5, 5.6, 0.05)  # fairly insensitive to distance
 params['bins'] = [magbins, colorbins]
 
 # Factor to downsample the isochrones
