@@ -142,9 +142,9 @@ params['iso_model'] = ppy.isochrones.Isochrone_Model(params['filters'])
 metalmodel = ppy.metalmodels.FixedWidthNormMDF(0.3)  # fixed width MDF
 
 # Dust model
-# dustmodel = ppy.dustmodels.SingleDust()  # single dust screen
+dustmodel = ppy.dustmodels.SingleDust()  # single dust screen
 # dustmodel = ppy.dustmodels.LogNormDust()  # lognormal screen
-dustmodel = ppy.dustmodels.FixedWidthLogNormDust(0.3)  # fixed width lognorm
+# dustmodel = ppy.dustmodels.FixedWidthLogNormDust(0.3)  # fixed width lognorm
 
 # Age model
 # agemodel = ppy.agemodels.NonParam()  # Fully non-parametric model
@@ -190,7 +190,7 @@ params['shot_noise'] = True
 
 # The bounds on the flat prior for each parameter
 z_bound = [-1.5, 0.5]  # metallicity
-dust_med_bound = [-2.0, 0.]  # log dust median
+dust_med_bound = [-2.0, -1.]  # log dust median
 # Only set the distance bounds if allowed to float
 # dmod_bound = None
 dmod_bound = [[31., 32.]]
