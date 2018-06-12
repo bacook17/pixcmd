@@ -137,9 +137,9 @@ params['iso_model'] = ppy.isochrones.Isochrone_Model(params['filters'])
 # Set a custom Galaxy Model with four parts
 
 # Metallicity model
-# metalmodel = ppy.metalmodels.SingleFeH()  # Single Metallicity
+metalmodel = ppy.metalmodels.SingleFeH()  # Single Metallicity
 # metalmodel = ppy.metalmodels.NormMDF()  # Gaussian MDF
-metalmodel = ppy.metalmodels.FixedWidthNormMDF(0.3)  # fixed width MDF
+# metalmodel = ppy.metalmodels.FixedWidthNormMDF(0.3)  # fixed width MDF
 
 # Dust model
 # dustmodel = ppy.dustmodels.SingleDust()  # single dust screen
@@ -190,7 +190,7 @@ params['shot_noise'] = True
 
 # The bounds on the flat prior for each parameter
 z_bound = [-1.5, 0.5]  # metallicity
-dust_med_bound = [-2.0, 0.]  # log dust median
+dust_med_bound = [-2.0, -1.]  # log dust median
 # Only set the distance bounds if allowed to float
 dmod_bound = None
 # dmod_bound = [[30., 33.]]
