@@ -1,0 +1,16 @@
+/n/home01/bcook/dynesty/dynesty/utils.py:301: RuntimeWarning: invalid value encountered in sqrt
+  new_res.logzerr = np.sqrt(np.array(saved_logzvar))
+/n/home01/bcook/dynesty/dynesty/utils.py:498: RuntimeWarning: invalid value encountered in sqrt
+  new_res.logzerr = np.sqrt(np.array(saved_logzvar))
+Traceback (most recent call last):
+  File "/n/home01/bcook/.conda/envs/py36/bin/pcmd_integrate.py", line 124, in <module>
+    fit_model.nested_integrate(**args)
+  File "/n/home01/bcook/pixcmd/pcmdpy/pcmdpy/fit_model.py", line 88, in nested_integrate
+    sampler.run_nested(**run_kwargs)
+  File "/n/home01/bcook/dynesty/dynesty/dynamicsampler.py", line 1576, in run_nested
+    stop_val=stop_val)
+  File "/n/home01/bcook/dynesty/dynesty/dynamicsampler.py", line 1674, in add_batch
+    save_bounds=save_bounds):
+  File "/n/home01/bcook/dynesty/dynesty/dynamicsampler.py", line 1114, in sample_batch
+    self.sampler.saved_logvol[-1] = bound_logvol
+IndexError: list assignment index out of range
