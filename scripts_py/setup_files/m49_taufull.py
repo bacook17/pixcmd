@@ -62,7 +62,7 @@ if params['use_gpu']:
 params['dynamic'] = DYNAMIC = True
 
 # The number of dynesty live points
-_nlive = 300
+_nlive = 500
 if DYNAMIC:
     run_params['nlive_init'] = _nlive
 else:
@@ -93,7 +93,7 @@ sampler_params['first_update'] = {'min_eff': 30.}
 # DYNESTY RUN_NESTED SETTINGS
 
 # The number of max calls for dynesty
-run_params['maxcall'] = 120000
+run_params['maxcall'] = 200000
 
 # The error tolerance for dynesty stopping criterion
 _dlogz = 0.5
@@ -139,7 +139,7 @@ params['iso_model'] = ppy.isochrones.Isochrone_Model(params['filters'])
 # Metallicity model
 # metalmodel = ppy.metalmodels.SingleFeH()  # Single Metallicity
 # metalmodel = ppy.metalmodels.NormMDF()  # Gaussian MDF
-metalmodel = ppy.metalmodels.FixedWidthNormMDF(0.3)  # fixed width MDF
+metalmodel = ppy.metalmodels.FixedWidthNormMDF(0.2)  # fixed width MDF
 
 # Dust model
 dustmodel = ppy.dustmodels.SingleDust()  # single dust screen
@@ -180,8 +180,8 @@ params['lum_cut'] = np.inf
 params['fixed_seed'] = True
 
 # Average counts of "sky noise" to add in each band
-params['sky_noise'] = None
-# params['sky_noise'] = [82., 41., 54.]
+# params['sky_noise'] = None
+params['sky_noise'] = [30.0, 27.6]
 
 params['shot_noise'] = True
 
@@ -193,7 +193,7 @@ z_bound = [-1.5, 0.5]  # metallicity
 dust_med_bound = [-2.0, -1.]  # log dust median
 # Only set the distance bounds if allowed to float
 # dmod_bound = None
-dmod_bound = [[31., 32.]]
+dmod_bound = [[30., 35.]]
 
 # Compute the 7-param SFH bound using tau models to bound
 Npix_bound = [2., 7.]
