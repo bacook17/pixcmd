@@ -1,0 +1,23 @@
+GPU acceleration enabled
+Loading Setup File: setup_files/m49_taufull.py
+using given n: 0
+Starting SourceModule Code
+Past the SourceModule code
+CUDAC Available
+starting manual interpolation
+done with interpolation
+Running Nested Sampling
+dynamic:  True
+{'pool': None, 'bound': 'multi', 'method': 'unif', 'nprocs': 1, 'update_interval': 1, 'bootstrap': 0, 'enlarge': 1.1, 'first_update': {'min_eff': 30.0}}
+{'nlive_init': 500, 'maxcall': 200000, 'dlogz_init': 0.5, 'maxbatch': 10, 'nlive_batch': 100, 'wt_kwargs': {'pfrac': 1.0}, 'maxcall_per_it': 1000, 'print_progress': True, 'save_bounds': False}
+-initializing models
+-Saving initial results dataframe
+Dynamic Sampler Initialized
+iter: 1 | batch: 0 | nc: 1 | ncalls: 1 | eff(%):  0.200 | logz: -6.4e+05 +/- 1.2e-01 | dlogz:    inf >  0.500
+ loglike: -6.4e+05 | params: [-1.48477705 -1.10366202  6.98776474 16.13948067 30.15083967]
+ Average call time: 2884.63 sec | Current time: 2018-09-27 11:42:17.190482
+ --------------------------
+iter: 2 | batch: 0 | nc: 1 | ncalls: 2 | eff(%):  0.398 | logz: -6.2e+05 +/- 1.2e-01 | dlogz: 308751.160 >  0.500
+ loglike: -6.2e+05 | params: [-0.68079092 -1.99428492  6.77007182 12.14452673 30.03273138]
+ Average call time: 6.01 sec | Current time: 2018-09-27 11:42:23.199792
+ --------------------------
