@@ -6,8 +6,8 @@
 #SBATCH --gres=gpu:1 #Number of GPUs requested
 #SBATCH -t 14-00:00 #runtime in D-HH:MM
 #SBATCH --mem-per-cpu 8000 #memory pool for cores
-#SBATCH -o logs/%x_r%a.out
-#SBATCH -e logs/%x_r%a.err
+#SBATCH -o logs/%x_t%a.out
+#SBATCH -e logs/%x_t%a.err
 #SBATCH --mail-type=BEGIN,END,FAIL #alert when done
 #SBATCH --mail-user=bcook@cfa.harvard.edu #Email to send to
 
