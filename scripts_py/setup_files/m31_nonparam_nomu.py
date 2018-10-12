@@ -144,12 +144,12 @@ metalmodel = ppy.metalmodels.FixedWidthNormMDF(0.2)  # fixed width MDF
 # Dust model
 dustmodel = ppy.dustmodels.SingleDust()  # single dust screen
 # dustmodel = ppy.dustmodels.LogNormDust()  # lognormal screen
-# dustmodel = ppy.dustmodels.FixedWidthLogNormDust(0.2)  # fixed width lognorm
+# dustmodel = ppy.dustmodels.FixedWidthLogNormDust(0.3)  # fixed width lognorm
 
 # Age model
-# agemodel = ppy.agemodels.NonParam()  # Fully non-parametric model
+agemodel = ppy.agemodels.NonParam()  # Fully non-parametric model
 # agemodel = ppy.agemodels.ConstantSFR()  # constant Star Formation Rate
-agemodel = ppy.agemodels.TauModel()  # exponential SFR decline
+# agemodel = ppy.agemodels.TauModel()  # exponential SFR decline
 # agemodel = ppy.agemodels.RisingTau()  # Linear x exponential decline
 # agemodel = ppy.agemodels.SSPModel()  # single age SSP
 
@@ -184,7 +184,6 @@ params['fixed_seed'] = True
 
 # Average counts of "sky noise" to add in each band
 params['sky_noise'] = None
-# params['sky_noise'] = [0., 0.]
 
 params['shot_noise'] = True
 
@@ -192,21 +191,29 @@ params['shot_noise'] = True
 # PRIOR SETTINGS
 
 # The bounds on the flat prior for each parameter
-z_bound = [-1.5, 0.5]  # metallicity
-dust_med_bound = [-2.0, -1.]  # log dust median
+z_bound = [-0.5, 0.5]  # metallicity
+dust_med_bound = [-2.0, -1.5]  # log dust median
 # Only set the distance bounds if allowed to float
 dmod_bound = None
-# dmod_bound = [[20., 30.]]
+# dmod_bound = [[23., 27.]]
 
 # Compute the 7-param SFH bound using tau models to bound
-Npix_bound = [1., 5.]
-tau_bound = [0.1, 10.]
+Npix_low, tau = 1.5, 3.
+model = ppy.agemodels.TauModel(iso_step=-1)
+model.update_edges(np.array([6., 8., 9., 9.5, 10., 10.2]))  # remove bin
+model.set_params([Npix_low, tau])
+lower_sfh = np.log10(model.SFH)
+Npix_high = 3.5
+model.set_params([Npix_high, tau])
+upper_sfh = np.log10(model.SFH)
+SFH_bounds_arr = np.array([lower_sfh, upper_sfh]).T
+SFH_bounds = list(list(bound) for bound in SFH_bounds_arr)
 
 # Create a Prior object with given bounds
 prior_bounds = {}
 prior_bounds['feh_bounds'] = [z_bound]
 prior_bounds['dust_bounds'] = [dust_med_bound]
-prior_bounds['age_bounds'] = [Npix_bound, tau_bound]
+prior_bounds['age_bounds'] = SFH_bounds
 prior_bounds['dmod_bounds'] = dmod_bound
 
 params['prior'] = params['gal_model'].get_flat_prior(**prior_bounds)
