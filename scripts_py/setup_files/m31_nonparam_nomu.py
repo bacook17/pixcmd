@@ -148,6 +148,7 @@ dustmodel = ppy.dustmodels.SingleDust()  # single dust screen
 
 # Age model
 agemodel = ppy.agemodels.NonParam()  # Fully non-parametric model
+agemodel.update_edges(np.array([6.0, 8.0, 9.0, 9.5, 10.0, 10.2]))  # remove bin
 # agemodel = ppy.agemodels.ConstantSFR()  # constant Star Formation Rate
 # agemodel = ppy.agemodels.TauModel()  # exponential SFR decline
 # agemodel = ppy.agemodels.RisingTau()  # Linear x exponential decline
