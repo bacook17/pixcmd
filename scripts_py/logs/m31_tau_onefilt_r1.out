@@ -1,0 +1,16 @@
+GPU acceleration enabled
+using given n: 0
+Starting SourceModule Code
+Past the SourceModule code
+CUDAC Available
+Loading Setup File: setup_files/m31_tau_onefilt.py
+using given n: 0
+Starting SourceModule Code
+Past the SourceModule code
+CUDAC Available
+Running Nested Sampling
+-initializing models
+               JobID    JobName   NTasks  AllocCPUS    AllocGRES  Partition    Elapsed     MaxRSS  MaxVMSize  MaxDiskRead MaxDiskWrite      State 
+-------------------- ---------- -------- ---------- ------------ ---------- ---------- ---------- ---------- ------------ ------------ ---------- 
+          56442155_1 m31_tau_o+                   2        gpu:1 holyseasg+   00:00:42                                                    RUNNING 
+   56442155_1.extern     extern        1          2        gpu:1              00:00:42                                                    RUNNING 

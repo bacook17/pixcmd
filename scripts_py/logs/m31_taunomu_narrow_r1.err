@@ -1,0 +1,5 @@
+slurmstepd: error: Job 55984014 exceeded memory limit (8228452 > 8192000), being killed
+/var/slurmd/spool/slurmd/job55984014/slurm_script: line 14:  4724 Killed                  pcmd_integrate.py --config "setup_files/m31_taunomu_narrow.py" --data "../data/m31/m31_r${SLURM_ARRAY_TASK_ID}.pcmd" --results "results/${SLURM_JOB_NAME}_r${SLURM_ARRAY_TASK_ID}.csv"
+slurmstepd: error: Exceeded job memory limit
+slurmstepd: error: *** JOB 55984014 ON holyseasgpu11 CANCELLED AT 2018-10-14T09:18:48 ***
+slurmstepd: error: Detected 1 oom-kill event(s) in step 55984014.batch cgroup.

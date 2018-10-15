@@ -1,0 +1,2 @@
+/var/slurmd/spool/slurmd/job55984010/slurm_script: line 14:  4709 Killed                  pcmd_integrate.py --config "setup_files/m31_taufull_narrow.py" --data "../data/m31/m31_r${SLURM_ARRAY_TASK_ID}.pcmd" --results "results/${SLURM_JOB_NAME}_r${SLURM_ARRAY_TASK_ID}.csv"
+slurmstepd: error: Detected 1 oom-kill event(s) in step 55984010.batch cgroup.
