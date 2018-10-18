@@ -184,6 +184,11 @@ params['lum_cut'] = np.inf
 # (decreases stochasticity of likelihood calls)
 params['fixed_seed'] = True
 
+# Average counts of "sky noise" to add in each band
+params['sky_noise'] = None
+
+params['shot_noise'] = True
+
 ###############################################
 # PRIOR SETTINGS
 
