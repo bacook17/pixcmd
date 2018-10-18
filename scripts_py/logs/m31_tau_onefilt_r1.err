@@ -1,6 +1,0 @@
-Traceback (most recent call last):
-  File "/n/home01/bcook/.conda/envs/py36/bin/pcmd_integrate.py", line 124, in <module>
-    fit_model.nested_integrate(**args)
-  File "/n/home01/bcook/.local/lib/python3.6/site-packages/pcmdpy/fit_model.py", line 43, in nested_integrate
-    assert pcmd.shape[0] == n_filters, "pcmd shape must match filter numbers"
-AssertionError: pcmd shape must match filter numbers
