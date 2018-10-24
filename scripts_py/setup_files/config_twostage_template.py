@@ -118,7 +118,9 @@ if DYNAMIC:
     # weight function parameters
     init_run_params['wt_kwargs'] = final_run_params['wt_kwargs'] = {'pfrac': 1.0}
     # How many max calls per iteration?
-    init_run_params['maxcall_per_it'] = final_run_params['maxcall_per_it'] = 500
+    init_run_params['maxcall_per_iter'] = final_run_params['maxcall_per_iter'] = 1000
+    # Don't keep boundaries
+    init_run_params['save_bounds'] = final_run_params['save_bounds'] = False
 
 ###############################################
 # PCMD MODELLING SETTINGS
@@ -203,6 +205,8 @@ params['fixed_seed'] = True
 # Average counts of "sky noise" to add in each band
 params['sky_noise'] = None
 # params['sky_noise'] = [82., 41., 54.]
+
+params['shot_noise'] = True
 
 ###############################################
 # PRIOR SETTINGS

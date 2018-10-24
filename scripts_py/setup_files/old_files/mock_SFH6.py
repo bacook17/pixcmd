@@ -113,7 +113,9 @@ if DYNAMIC:
     # weight function parameters
     run_params['wt_kwargs'] = {'pfrac': 1.0}
     # How many max calls per iteration?
-    run_params['maxcall_per_it'] = 1000
+    run_params['maxcall_per_iter'] = 1000
+    # Don't keep boundaries
+    run_params['save_bounds'] = False
 
 ###############################################
 # PCMD MODELLING SETTINGS
@@ -164,6 +166,13 @@ params['gal_model'] = ppy.galaxy.CustomGalaxy(metalmodel, dustmodel, agemodel,
 # Add the binned hess values and the mean magnitude and color terms
 params['like_mode'] = 2
 
+# The hess bins to compute the likelihood in
+# The magnitude upper/lower bounds are very important to consider
+# relative to distance
+magbins = np.arange(10, 45, 0.05)
+colorbins = np.arange(-1.5, 4.6, 0.05)  # fairly insensitive to distance
+params['bins'] = [magbins, colorbins]
+
 # Factor to downsample the isochrones
 params['downsample'] = 5
 
@@ -173,6 +182,10 @@ params['lum_cut'] = np.inf
 # Whether to use a fixed random-number seed
 # (decreases stochasticity of likelihood calls)
 params['fixed_seed'] = True
+# Average counts of "sky noise" to add in each band
+params['sky_noise'] = None
+
+params['shot_noise'] = True
 
 ###############################################
 # PRIOR SETTINGS
@@ -200,9 +213,9 @@ prior_bounds = {}
 prior_bounds['feh_bounds'] = [z_bound]
 prior_bounds['dust_bounds'] = [dust_med_bound]
 prior_bounds['age_bounds'] = SFH_bounds
-prior_bounds['dmod_bound'] = dmod_bound
+prior_bounds['dmod_bounds'] = dmod_bound
 
-params['prior'] = params['gal_class'].get_flat_prior(**prior_bounds)
+params['prior'] = params['gal_model'].get_flat_prior(**prior_bounds)
 
 ###############################################
 # DATA / MOCK SETTINGS
