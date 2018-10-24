@@ -108,9 +108,9 @@ else:
 
 if DYNAMIC:
     # How many batches?
-    run_params['maxbatch'] = 0
+    run_params['maxbatch'] = 10
     # How many live points per batch?
-    run_params['nlive_batch'] = 0
+    run_params['nlive_batch'] = 100
     # weight function parameters
     run_params['wt_kwargs'] = {'pfrac': 1.0}
     # How many max calls per iteration?
@@ -165,6 +165,13 @@ params['gal_model'] = ppy.galaxy.CustomGalaxy(metalmodel, dustmodel, agemodel,
 # Add the binned hess values and the mean magnitude and color terms
 params['like_mode'] = 2
 
+# The hess bins to compute the likelihood in
+# The magnitude upper/lower bounds are very important to consider
+# relative to distance
+magbins = np.arange(10, 45, 0.05)
+colorbins = np.arange(-1.5, 4.6, 0.05)  # fairly insensitive to distance
+params['bins'] = [magbins, colorbins]
+
 # Factor to downsample the isochrones
 params['downsample'] = 5
 
@@ -193,9 +200,9 @@ prior_bounds = {}
 prior_bounds['feh_bounds'] = [z_bound]
 prior_bounds['dust_bounds'] = [dust_med_bound]
 prior_bounds['age_bounds'] = [npix_bound, tau_bound]
-prior_bounds['dmod_bound'] = dmod_bound
+prior_bounds['dmod_bounds'] = dmod_bound
 
-params['prior'] = params['gal_class'].get_flat_prior(**prior_bounds)
+params['prior'] = params['gal_model'].get_flat_prior(**prior_bounds)
 
 ###############################################
 # DATA / MOCK SETTINGS
