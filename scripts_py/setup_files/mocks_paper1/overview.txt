@@ -1,0 +1,56 @@
+Mock Tests
+----------
+1 : Single [Fe/H], Single Dust, Tau, NO DIST
+      [-0.25, -0.5, 2.0, 3.0, 26.0]
+
+2 : Single [Fe/H], Single Dust, Tau, NO DIST
+      [-0.25, -0.5, 4.5, 1.2, 26.0]
+
+3 : Single [Fe/H], Single Dust, Tau, Dist
+      [-0.25, -0.5, 2.0, 3.0, 26.0]
+
+4 : Single [Fe/H], Single Dust, Tau, Dist
+      [-0.25, -0.5, 4.5, 1.2, 26.0]
+
+5 : Fixed (0.2) MDF, Fixed (0.1) LogNorm, Tau, Dist
+      [-0.25, -0.5, 2.0, 3.0, 26.0]
+
+6 : Full MDF, Full LogNorm, Tau, Dist
+      [-0.25, 0.2, -0.5, 0.1, 2.0, 3.0, 26.0]
+
+7 : Fixed (0.2) MDF, Fixed (0.1) LogNorm, NonParam (off Tau: 2.0, 3.0), NO DIST
+      [-0.25, -0.5, 2.0, 3.0, 26.0]
+
+8 : Fixed (0.2) MDF, Fixed (0.1) LogNorm, NonParam (off Tau: 2.0, 3.0), Dist
+      [-0.25, -0.5, 2.0, 3.0, 26.0]
+
+
+
+Mismatch Tests
+--------------
+Unless otherwise specified, uses same parameters as Mock Test #2
+
+1 : Mock: Single [Fe/H]
+    Model: Fixed (0.2) MDF
+
+2 : Mock: Fixed (0.2) MDF
+    Model: Single [Fe/H]
+
+3 : Mock: Single Dust (Fdust = 0.5)
+    Model: Fixed (0.1) LogNorm Dust (Fdust = 0.5)
+
+4 : Mock: Fixed (0.1) LogNorm Dust (Fdust = 0.5)
+    Model: Single Dust (Fdust = 0.5)
+
+5 : Mock: Fixed (0.1) LogNorm Dust (Fdust = 0.5)
+    Model: Fixed (0.1) LogNorm Dust (Fdust = 1.0)
+
+6 : Mock: Distance = 26.0
+    Model: Distance = 28.0
+
+7 : Exposure Overestimate (Model has 5x longer than Mock)
+
+8 : PSF Overestimate (Mock has 10% narrower than Model)
+
+9 : F814W PSF Overestimate (Mock has 10% narrower F814W than Model)
+
