@@ -262,7 +262,7 @@ f = ppy.instrument.default_m31_filters()
 for filt in f:
     filt._exposure /= 5.0
 
-iso_temp = ppy.isochrones.IsochroneModel(f)
+iso_temp = ppy.isochrones.Isochrone_Model(f)
 driv = ppy.driver.Driver(iso_temp, gpu=True)
 # The mock data
 params['data_pcmd'], _ = driv.simulate(model_mock, N_mock,
