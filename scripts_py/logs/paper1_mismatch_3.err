@@ -1,0 +1,9 @@
+rm: cannot remove ‘logs/paper1_mismatch_3.mem’: No such file or directory
+Traceback (most recent call last):
+  File "/n/home01/bcook/.conda/envs/py36/bin/pcmd_integrate.py", line 49, in <module>
+    spec.loader.exec_module(config)
+  File "<frozen importlib._bootstrap_external>", line 678, in exec_module
+  File "<frozen importlib._bootstrap>", line 205, in _call_with_frames_removed
+  File "setup_files/mocks_paper1/mismatch_3.py", line 157, in <module>
+    dustmodel = ppy.dustmodels.FixedWidthLogNormDust(0.1, dust_frac=0.5)  # fixed width lognorm
+TypeError: __init__() got an unexpected keyword argument 'dust_frac'

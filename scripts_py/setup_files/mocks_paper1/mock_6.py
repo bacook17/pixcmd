@@ -167,6 +167,7 @@ agemodel = ppy.agemodels.TauModel()  # exponential SFR decline
 # Distance model
 # distancemodel = ppy.distancemodels.FixedDistance(26.0)  # fixed dmod=26.0 (1.6 Mpc)
 distancemodel = ppy.distancemodels.VariableDistance()  # dmod floats
+
 params['gal_model'] = ppy.galaxy.CustomGalaxy(
     metalmodel,
     dustmodel,

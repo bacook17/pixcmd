@@ -210,8 +210,8 @@ z_bound = [-0.5, 0.25]  # metallicity
 dust_med_bound = [-1.0, 0.0]  # log dust
 
 # Only set the distance bounds if allowed to float
-# dmod_bound = None
-dmod_bound = [[22., 28.]]
+dmod_bound = None
+# dmod_bound = [[22., 28.]]
 
 # Compute the 7-param SFH bound using tau models to bound
 Npix_bound = [1.0, 5.0]
