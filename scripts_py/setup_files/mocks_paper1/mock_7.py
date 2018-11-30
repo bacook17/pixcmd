@@ -267,9 +267,7 @@ model_mock.set_params(gal_params)
 
 # Create the mock data
 # temporary driver to make mock
-f = ppy.instrument.default_m31_filters()
-iso_temp = ppy.isochrones.IsochroneModel(f)
-driv = ppy.driver.Driver(iso_temp, gpu=True)
+driv = ppy.driver.Driver(params['iso_model'], gpu=True)
 # The mock data
 params['data_pcmd'], _ = driv.simulate(model_mock, N_mock,
                                        fixed_seed=params['fixed_seed'],

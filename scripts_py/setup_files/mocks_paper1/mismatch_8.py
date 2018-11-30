@@ -261,7 +261,7 @@ model_mock.set_params(gal_params)
 f = ppy.instrument.m31_narrow_psf(alpha_F814W=1.234,
                                   alpha_F475W=1.234)
 
-iso_temp = ppy.isochrones.IsochroneModel(f)
+iso_temp = ppy.isochrones.Isochrone_Model(f)
 driv = ppy.driver.Driver(iso_temp, gpu=True)
 # The mock data
 params['data_pcmd'], _ = driv.simulate(model_mock, N_mock,
