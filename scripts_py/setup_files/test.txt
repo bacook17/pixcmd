@@ -1,0 +1,8 @@
+usage: pcmd_integrate [-h] --config CONFIG [--data DATA] --results RESULTS
+
+optional arguments:
+  -h, --help         show this help message and exit
+  --config CONFIG    Name of the configuration file (.py) (default: None)
+  --data DATA        Name of the PCMD data file (.dat). If not given, assume a
+                     mock run. (default: )
+  --results RESULTS  Name of the results file (.csv) (default: None)
