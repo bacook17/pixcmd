@@ -1,9 +1,16 @@
-Loading Setup File: setup_files/mocks_paper1/mismatch_6.py
-Other error when importing
-
-Check stderr for full traceback
+Loading Setup File: setup_files/mocks_paper1/mock_6.py
+Running Nested Sampling
+-initializing models
+-Saving initial results dataframe
+Dynamic Sampler Initialized
+Exception while calling loglikelihood function:
+  params: [-1.09330159e-01  2.34025606e-02 -5.69672605e-01  7.81633949e-02
+  2.92555662e+00  4.06757068e+00  2.74557111e+01]
+  args: {}
+  kwargs: {}
+  exception:
 mprof: Sampling memory every 10.0s
                JobID    JobName   NTasks  AllocCPUS    AllocGRES  Partition    Elapsed     MaxRSS  MaxVMSize  MaxDiskRead MaxDiskWrite      State 
 -------------------- ---------- -------- ---------- ------------ ---------- ---------- ---------- ---------- ------------ ------------ ---------- 
-          61001110_6 paper1_mo+                   1        gpu:1    fas_gpu   00:00:53                                                    RUNNING 
-   61001110_6.extern     extern        1          1        gpu:1              00:00:53                                                    RUNNING 
+          61001444_6 paper1_mo+                   1        gpu:1    fas_gpu   00:37:07                                                    RUNNING 
+   61001444_6.extern     extern        1          1        gpu:1              00:37:07                                                    RUNNING 
