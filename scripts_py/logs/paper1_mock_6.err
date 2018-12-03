@@ -1,11 +1,36 @@
-rm: cannot remove ‘logs/paper1_mock_6.mem’: No such file or directory
 Traceback (most recent call last):
-  File "/n/home01/bcook/.conda/envs/py36/bin/pcmd_integrate.py", line 49, in <module>
-    spec.loader.exec_module(config)
-  File "<frozen importlib._bootstrap_external>", line 678, in exec_module
-  File "<frozen importlib._bootstrap>", line 205, in _call_with_frames_removed
-  File "setup_files/mocks_paper1/mismatch_6.py", line 227, in <module>
-    params['prior'] = params['gal_model'].get_flat_prior(**prior_bounds)
-  File "/n/home01/bcook/pixcmd/pcmdpy/pcmdpy/galaxy/galaxy.py", line 115, in get_flat_prior
-    assert len(dmod_bounds) == self.p_distance
-AssertionError
+  File "/n/home01/bcook/dynesty/dynesty/dynesty.py", line 640, in __call__
+    return self.func(x, *self.args, **self.kwargs)
+  File "/n/home01/bcook/pixcmd/pcmdpy/pcmdpy/sampling/fit_model.py", line 66, in this_lnlike
+    **ln_kwargs)
+  File "/n/home01/bcook/pixcmd/pcmdpy/pcmdpy/sampling/fit_model.py", line 18, in lnlike
+    mag_system=mag_system, **kwargs)
+  File "/n/home01/bcook/pixcmd/pcmdpy/pcmdpy/simulation/driver.py", line 119, in simulate
+    downsample=downsample, mag_system=mag_system, **kwargs)
+  File "/n/home01/bcook/pixcmd/pcmdpy/pcmdpy/isochrones/isochrones.py", line 280, in model_galaxy
+    mean_lum = np.average(lum, weights=weights, axis=1)
+  File "/n/home01/bcook/.local/lib/python3.6/site-packages/numpy/lib/function_base.py", line 1146, in average
+    "1D weights expected when shapes of a and weights differ.")
+TypeError: 1D weights expected when shapes of a and weights differ.
+Traceback (most recent call last):
+  File "/n/home01/bcook/.conda/envs/py36/bin/pcmd_integrate.py", line 125, in <module>
+    fit_model.nested_integrate(**args)
+  File "/n/home01/bcook/pixcmd/pcmdpy/pcmdpy/sampling/fit_model.py", line 92, in nested_integrate
+    sampler.run_nested(**run_kwargs)
+  File "/n/home01/bcook/dynesty/dynesty/dynamicsampler.py", line 1580, in run_nested
+    live_points=live_points):
+  File "/n/home01/bcook/dynesty/dynesty/dynamicsampler.py", line 742, in sample_initial
+    np.array(self.live_v))))
+  File "/n/home01/bcook/dynesty/dynesty/dynesty.py", line 640, in __call__
+    return self.func(x, *self.args, **self.kwargs)
+  File "/n/home01/bcook/pixcmd/pcmdpy/pcmdpy/sampling/fit_model.py", line 66, in this_lnlike
+    **ln_kwargs)
+  File "/n/home01/bcook/pixcmd/pcmdpy/pcmdpy/sampling/fit_model.py", line 18, in lnlike
+    mag_system=mag_system, **kwargs)
+  File "/n/home01/bcook/pixcmd/pcmdpy/pcmdpy/simulation/driver.py", line 119, in simulate
+    downsample=downsample, mag_system=mag_system, **kwargs)
+  File "/n/home01/bcook/pixcmd/pcmdpy/pcmdpy/isochrones/isochrones.py", line 280, in model_galaxy
+    mean_lum = np.average(lum, weights=weights, axis=1)
+  File "/n/home01/bcook/.local/lib/python3.6/site-packages/numpy/lib/function_base.py", line 1146, in average
+    "1D weights expected when shapes of a and weights differ.")
+TypeError: 1D weights expected when shapes of a and weights differ.
