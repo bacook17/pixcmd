@@ -47,11 +47,11 @@ if params['use_gpu']:
     ppy.gpu_utils.initialize_gpu(n=0)
 
 # Check to see if GPU is available and properly initialized. If not, exit
-if params['use_gpu']:
-    assert ppy.gpu_utils._GPU_AVAIL, ('GPU NOT AVAILABLE, SEE ERROR LOGS. ',
-                                      'QUITTING')
-    assert ppy.gpu_utils._CUDAC_AVAIL, ('CUDAC COMPILATION FAILED, SEE ERROR ',
-                                        'LOGS. QUITTING')
+# if params['use_gpu']:
+#     assert ppy.gpu_utils._GPU_AVAIL, ('GPU NOT AVAILABLE, SEE ERROR LOGS. ',
+#                                       'QUITTING')
+#     assert ppy.gpu_utils._CUDAC_AVAIL, ('CUDAC COMPILATION FAILED, SEE ERROR ',
+#                                         'LOGS. QUITTING')
 
 ###############################################
 # DYNESTY SAMPLER SETTINGS
@@ -78,7 +78,7 @@ sampler_params['method'] = 'unif'
 sampler_params['nprocs'] = N_threads
 
 # Only update the bounding distribution after this many calls
-sampler_params['update_interval'] = 1
+sampler_params['update_interval'] = 100
 
 # Compute multiple realizations of bounding objects
 sampler_params['bootstrap'] = 0
