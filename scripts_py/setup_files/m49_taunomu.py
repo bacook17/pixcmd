@@ -149,16 +149,16 @@ dustmodel = ppy.dustmodels.SingleDust()  # single dust screen
 # dustmodel = ppy.dustmodels.FixedWidthLogNormDust(0.2)  # fixed width lognorm
 
 # Age model
-# agemodel = ppy.agemodels.NonParam()  # Fully non-parametric model
-# agemodel = ppy.agemodels.ConstantSFR()  # constant Star Formation Rate
-agemodel = ppy.agemodels.TauModel()  # exponential SFR decline
-# agemodel = ppy.agemodels.RisingTau()  # Linear x exponential decline
-# agemodel = ppy.agemodels.SSPModel()  # single age SSP
+# sfhmodel = ppy.sfhmodels.NonParam()  # Fully non-parametric model
+# sfhmodel = ppy.sfhmodels.ConstantSFR()  # constant Star Formation Rate
+sfhmodel = ppy.sfhmodels.TauModel()  # exponential SFR decline
+# sfhmodel = ppy.sfhmodels.RisingTau()  # Linear x exponential decline
+# sfhmodel = ppy.sfhmodels.SSPModel()  # single age SSP
 
 # Distance model
 distancemodel = ppy.distancemodels.FixedDistance(31.29)  # fixed dmod=31.29 (18.1 Mpc)
 # distancemodel = ppy.distancemodels.VariableDistance()  # dmod floats
-params['gal_model'] = ppy.galaxy.CustomGalaxy(metalmodel, dustmodel, agemodel,
+params['gal_model'] = ppy.galaxy.CustomGalaxy(metalmodel, dustmodel, sfhmodel,
                                               distancemodel)
 
 # Add the binned hess values and the mean magnitude and color terms
