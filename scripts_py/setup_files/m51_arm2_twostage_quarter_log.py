@@ -165,11 +165,11 @@ params['final_gal_model'] = ppy.galaxy.NonParamFull()
 # dustmodel = ppy.dustmodels.FixedWidthLogNormDust(0.2)  # fixed width lognorm
 
 # Age model (select one)
-# agemodel = ppy.agemodels.NonParam()  # Fully non-parametric model
-# agemodel = ppy.agemodels.ConstantSFR()  # constant Star Formation Rate
-# agemodel = ppy.agemodels.TauModel()  # exponential SFR decline
-# agemodel = ppy.agemodels.RisingTau()  # Linear x exponential decline
-# agemodel = ppy.agemodels.SSPModel()  # single age SSP
+# sfhmodel = ppy.sfhmodels.NonParam()  # Fully non-parametric model
+# sfhmodel = ppy.sfhmodels.ConstantSFR()  # constant Star Formation Rate
+# sfhmodel = ppy.sfhmodels.TauModel()  # exponential SFR decline
+# sfhmodel = ppy.sfhmodels.RisingTau()  # Linear x exponential decline
+# sfhmodel = ppy.sfhmodels.SSPModel()  # single age SSP
 
 # Distance model (select one)
 # distancemodel = ppy.distancemodels.FixedDistance(30.)  # fixed @ 10 Mpc
@@ -177,12 +177,12 @@ params['final_gal_model'] = ppy.galaxy.NonParamFull()
 
 # model for Initial (burn-in) phase
 # params['init_gal_model'] = ppy.galaxy.CustomGalaxy(metalmodel, dustmodel,
-#                                                    agemodel, distancemodel)
+#                                                    sfhmodel, distancemodel)
 
 # model for Final phase
-# agemodel = ppy.agemodels.NonParam()
+# sfhmodel = ppy.sfhmodels.NonParam()
 # params['final_gal_model'] = ppy.galaxy.CustomGalaxy(metalmodel, dustmodel,
-#                                                     agemodel, distancemodel)
+#                                                     sfhmodel, distancemodel)
 
 # Add the binned hess values and the mean magnitude and color terms
 params['like_mode'] = 1

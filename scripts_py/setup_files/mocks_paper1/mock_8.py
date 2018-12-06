@@ -156,11 +156,11 @@ metalmodel = ppy.metalmodels.FixedWidthNormMDF(0.2)  # fixed width MDF
 dustmodel = ppy.dustmodels.FixedWidthLogNormDust(0.1)  # fixed width lognorm
 
 # Age model
-agemodel = ppy.agemodels.NonParam()  # Fully non-parametric model
-# agemodel = ppy.agemodels.ConstantSFR()  # constant Star Formation Rate
-# agemodel = ppy.agemodels.TauModel()  # exponential SFR decline
-# agemodel = ppy.agemodels.RisingTau()  # Linear x exponential decline
-# agemodel = ppy.agemodels.SSPModel()  # single age SSP
+sfhmodel = ppy.sfhmodels.NonParam()  # Fully non-parametric model
+# sfhmodel = ppy.sfhmodels.ConstantSFR()  # constant Star Formation Rate
+# sfhmodel = ppy.sfhmodels.TauModel()  # exponential SFR decline
+# sfhmodel = ppy.sfhmodels.RisingTau()  # Linear x exponential decline
+# sfhmodel = ppy.sfhmodels.SSPModel()  # single age SSP
 
 # Distance model
 # distancemodel = ppy.distancemodels.FixedDistance(26.0)  # fixed dmod=26.0 (1.6 Mpc)
@@ -169,7 +169,7 @@ distancemodel = ppy.distancemodels.VariableDistance()  # dmod floats
 params['gal_model'] = ppy.galaxy.CustomGalaxy(
     metalmodel,
     dustmodel,
-    agemodel,
+    sfhmodel,
     distancemodel)
 
 # Add the binned hess values and the mean magnitude and color terms
@@ -214,7 +214,7 @@ dmod_bound = [[25.0, 30.0]]
 
 # Compute the 7-param SFH bound using tau models to bound
 Npix_low, tau = 1.0, 3.0
-model = ppy.agemodels.TauModel(iso_step=-1)
+model = ppy.sfhmodels.TauModel(iso_step=-1)
 model.set_params([Npix_low, tau])
 lower_sfh = np.log10(model.SFH)
 
@@ -253,12 +253,12 @@ dmod = 26.0
 # Mock data is generated with same model as is fit (except Tau Model)
 metalmodel = metalmodel
 dustmodel = dustmodel
-agemodel = ppy.agemodels.TauModel()
+sfhmodel = ppy.sfhmodels.TauModel()
 distancemodel = ppy.distancemodels.VariableDistance()  # dmod floats
 model_mock = ppy.galaxy.CustomGalaxy(
     metalmodel,
     dustmodel,
-    agemodel,
+    sfhmodel,
     distancemodel)
 
 gal_params = np.array([feh, log_ebv, log_npix, tau, dmod])
