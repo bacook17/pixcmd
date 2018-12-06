@@ -11,7 +11,7 @@
 #SBATCH --mail-type=BEGIN,END,FAIL #alert when done
 #SBATCH --mail-user=bcook@cfa.harvard.edu #Email to send to
 
-pcmd_integrate.py --config "setup_files/m31_taufull.py" --data "../data/m31/m31_r${SLURM_ARRAY_TASK_ID}.pcmd" --results "results/${SLURM_JOB_NAME}_r${SLURM_ARRAY_TASK_ID}.csv"
+pcmd_integrate --config "setup_files/m31_taufull.py" --data "../data/m31/m31_r${SLURM_ARRAY_TASK_ID}.pcmd" --results "results/${SLURM_JOB_NAME}_r${SLURM_ARRAY_TASK_ID}.csv"
 RESULT=${PIPESTATUS[0]}
 sacct -j $SLURM_JOB_ID --format=JOBID%20,JobName,NTasks,AllocCPUs,AllocGRES,Partition,Elapsed,MaxRSS,MaxVMSize,MaxDiskRead,MaxDiskWrite,State 
 exit $RESULT

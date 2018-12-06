@@ -18,7 +18,7 @@ CONFIG_FILE="setup_files/m31_taulm3_psf.py"
 DATA_FILE="../data/m31/pcmds/m31_r${SLURM_ARRAY_TASK_ID}.pcmd"
 RESULTS_FILE="results/${SLURM_JOB_NAME}_r${SLURM_ARRAY_TASK_ID}.csv"
 
-COMMAND="pcmd_integrate.py --config ${CONFIG_FILE} --data ${DATA_FILE} --results ${RESULTS_FILE}"
+COMMAND="pcmd_integrate --config ${CONFIG_FILE} --data ${DATA_FILE} --results ${RESULTS_FILE}"
 
 mprof run --nopython -T 10 -o $MPROF_FILE $COMMAND 
 

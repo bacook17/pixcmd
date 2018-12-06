@@ -1,8 +1,1 @@
-Traceback (most recent call last):
-  File "/n/home01/bcook/.conda/envs/py36/bin/pcmd_integrate.py", line 125, in <module>
-    fit_model.nested_integrate(**args)
-  File "/n/home01/bcook/pixcmd/pcmdpy/pcmdpy/sampling/fit_model.py", line 90, in nested_integrate
-    param_names=param_names)
-  File "/n/home01/bcook/pixcmd/pcmdpy/pcmdpy/sampling/results.py", line 37, in __init__
-    assert param_names in self.out_df.columns, (
-AttributeError: 'ResultsCollector' object has no attribute 'out_df'
+slurmstepd: error: *** JOB 61749630 ON holy2c1030 CANCELLED AT 2018-12-06T17:01:39 ***

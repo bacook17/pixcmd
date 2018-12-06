@@ -17,7 +17,7 @@ command rm $MPROF_FILE
 CONFIG_FILE="setup_files/mocks_paper1/mock_${SLURM_ARRAY_TASK_ID}.py"
 RESULTS_FILE="results/${SLURM_JOB_NAME}_${SLURM_ARRAY_TASK_ID}.csv"
 
-COMMAND="pcmd_integrate.py --config ${CONFIG_FILE} --results ${RESULTS_FILE}"
+COMMAND="pcmd_integrate --config ${CONFIG_FILE} --results ${RESULTS_FILE}"
 
 mprof run --nopython -T 10 -o $MPROF_FILE $COMMAND 
 

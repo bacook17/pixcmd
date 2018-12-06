@@ -78,7 +78,7 @@ sampler_params['pool'] = pool
 params['dynamic'] = DYNAMIC = True
 
 # The number of dynesty live points
-_nlive = 500
+_nlive = 50
 if DYNAMIC:
     run_params['nlive_init'] = _nlive
 else:
