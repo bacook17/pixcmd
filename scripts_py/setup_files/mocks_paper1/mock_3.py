@@ -108,7 +108,7 @@ sampler_params['first_update'] = {'min_eff': 30.}
 # DYNESTY RUN_NESTED SETTINGS
 
 # The number of max calls for dynesty
-run_params['maxcall'] = 200000
+run_params['maxcall'] = 150000
 
 # The error tolerance for dynesty stopping criterion
 _dlogz = 0.5
@@ -172,7 +172,7 @@ params['gal_model'] = ppy.galaxy.CustomGalaxy(
     distancemodel)
 
 # Add the binned hess values and the mean magnitude and color terms
-params['like_mode'] = 3
+params['like_mode'] = 2
 
 # The hess bins to compute the likelihood in
 # The magnitude upper/lower bounds are very important to consider
