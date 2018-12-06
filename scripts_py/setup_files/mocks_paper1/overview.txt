@@ -1,4 +1,4 @@
-Mock Tests
+Mock Tests (LogLike = 2, ShotNoise On, Nim=1024)
 ----------
 1 : Single [Fe/H], Single Dust, Tau, NO DIST
       [-0.25, -0.5, 2.0, 3.0, 26.0]
@@ -24,7 +24,11 @@ Mock Tests
 8 : Fixed (0.2) MDF, Fixed (0.1) LogNorm, NonParam (off Tau: 2.0, 3.0), Dist
       [-0.25, -0.5, 2.0, 3.0, 26.0]
 
+9 : same as (1) but with LogLike = 3
 
+10 : same as (5), but with Nim = 512
+
+11 : same as (11), but with Nim = 2048
 
 Mismatch Tests
 --------------
@@ -54,3 +58,6 @@ Unless otherwise specified, uses same parameters as Mock Test #2
 
 9 : F814W PSF Overestimate (Mock has 10% narrower F814W than Model)
 
+10 : Overestimate MDF sigma (Mock: 0.1, Model: 0.3)
+
+11 : Mock has no downsample (Model: downsample = 5)
