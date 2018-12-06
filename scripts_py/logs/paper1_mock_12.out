@@ -1,0 +1,10 @@
+Loading Setup File: setup_files/mocks_paper1/mock_12.py
+Running Nested Sampling
+-initializing models
+-Saving initial results dataframe
+Dynamic Sampler Initialized
+mprof: Sampling memory every 10.0s
+               JobID    JobName   NTasks  AllocCPUS    AllocGRES  Partition    Elapsed     MaxRSS  MaxVMSize  MaxDiskRead MaxDiskWrite      State 
+-------------------- ---------- -------- ---------- ------------ ---------- ---------- ---------- ---------- ------------ ------------ ---------- 
+         61746051_12 paper1_mo+                   2        gpu:1    fas_gpu   00:02:56                                                    RUNNING 
+  61746051_12.extern     extern        1          2        gpu:1              00:02:56                                                    RUNNING 
