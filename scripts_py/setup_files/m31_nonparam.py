@@ -149,17 +149,17 @@ dustmodel = ppy.dustmodels.SingleDust()  # single dust screen
 # dustmodel = ppy.dustmodels.FixedWidthLogNormDust(0.3)  # fixed width lognorm
 
 # Age model
-agemodel = ppy.agemodels.NonParam()  # Fully non-parametric model
-agemodel.update_edges(np.array([6.0, 8.0, 9.0, 9.5, 10.0, 10.2]))  # remove bin
-# agemodel = ppy.agemodels.ConstantSFR()  # constant Star Formation Rate
-# agemodel = ppy.agemodels.TauModel()  # exponential SFR decline
-# agemodel = ppy.agemodels.RisingTau()  # Linear x exponential decline
-# agemodel = ppy.agemodels.SSPModel()  # single age SSP
+sfhmodel = ppy.sfhmodels.NonParam()  # Fully non-parametric model
+sfhmodel.update_edges(np.array([6.0, 8.0, 9.0, 9.5, 10.0, 10.2]))  # remove bin
+# sfhmodel = ppy.sfhmodels.ConstantSFR()  # constant Star Formation Rate
+# sfhmodel = ppy.sfhmodels.TauModel()  # exponential SFR decline
+# sfhmodel = ppy.sfhmodels.RisingTau()  # Linear x exponential decline
+# sfhmodel = ppy.sfhmodels.SSPModel()  # single age SSP
 
 # Distance model
 # distancemodel = ppy.distancemodels.FixedDistance(24.42)  # fixed dmod=24.42 (766 kpc)
 distancemodel = ppy.distancemodels.VariableDistance()  # dmod floats
-params['gal_model'] = ppy.galaxy.CustomGalaxy(metalmodel, dustmodel, agemodel,
+params['gal_model'] = ppy.galaxy.CustomGalaxy(metalmodel, dustmodel, sfhmodel,
                                               distancemodel)
 
 # Add the binned hess values and the mean magnitude and color terms
@@ -202,7 +202,7 @@ dmod_bound = [[24., 26.]]
 
 # Compute the 7-param SFH bound using tau models to bound
 Npix_low, tau = 1.5, 3.
-model = ppy.agemodels.TauModel(iso_step=-1)
+model = ppy.sfhmodels.TauModel(iso_step=-1)
 model.update_edges(np.array([6., 8., 9., 9.5, 10., 10.2]))  # remove bin
 model.set_params([Npix_low, tau])
 lower_sfh = np.log10(model.SFH)

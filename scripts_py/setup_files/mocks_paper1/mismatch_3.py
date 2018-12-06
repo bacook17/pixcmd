@@ -157,11 +157,11 @@ metalmodel = ppy.metalmodels.SingleFeH()  # Single Metallicity
 dustmodel = ppy.dustmodels.FixedWidthLogNormDust(0.1, dust_frac=0.5)  # fixed width lognorm
 
 # Age model
-# agemodel = ppy.agemodels.NonParam()  # Fully non-parametric model
-# agemodel = ppy.agemodels.ConstantSFR()  # constant Star Formation Rate
-agemodel = ppy.agemodels.TauModel()  # exponential SFR decline
-# agemodel = ppy.agemodels.RisingTau()  # Linear x exponential decline
-# agemodel = ppy.agemodels.SSPModel()  # single age SSP
+# sfhmodel = ppy.sfhmodels.NonParam()  # Fully non-parametric model
+# sfhmodel = ppy.sfhmodels.ConstantSFR()  # constant Star Formation Rate
+sfhmodel = ppy.sfhmodels.TauModel()  # exponential SFR decline
+# sfhmodel = ppy.sfhmodels.RisingTau()  # Linear x exponential decline
+# sfhmodel = ppy.sfhmodels.SSPModel()  # single age SSP
 
 # Distance model
 # distancemodel = ppy.distancemodels.FixedDistance(26.0)  # fixed dmod=26.0 (1.6 Mpc)
@@ -169,7 +169,7 @@ distancemodel = ppy.distancemodels.VariableDistance()  # dmod floats
 params['gal_model'] = ppy.galaxy.CustomGalaxy(
     metalmodel,
     dustmodel,
-    agemodel,
+    sfhmodel,
     distancemodel)
 
 # Add the binned hess values and the mean magnitude and color terms
@@ -244,12 +244,12 @@ dmod = 26.0
 # Model Mismatch
 metalmodel = metalmodel
 dustmodel = ppy.dustmodels.SingleDust(dust_frac=0.5)  # single dust screen
-agemodel = agemodel
+sfhmodel = sfhmodel
 distancemodel = ppy.distancemodels.VariableDistance()  # dmod floats
 model_mock = ppy.galaxy.CustomGalaxy(
     metalmodel,
     dustmodel,
-    agemodel,
+    sfhmodel,
     distancemodel)
 
 gal_params = np.array([feh, log_ebv, log_npix, tau, dmod])
