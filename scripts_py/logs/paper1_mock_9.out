@@ -31371,3 +31371,11 @@ iter: 7842 | batch: 0 | nc: 4 | ncalls: 31622 | bounds: 276 | eff(%): 24.413 | l
  loglike: -2.3e+03 | params: [-0.3112821  -0.51118444  2.01612648  2.08248791]
  Average call time: 2.17 sec | Current time: 2018-12-06 12:14:29.753606
  --------------------------
+iter: 7843 | batch: 0 | nc: 130 | ncalls: 31752 | bounds: 277 | eff(%): 24.318 | logz: -2.3e+03 +/- 1.9e-01 | dlogz: 136.147 >  0.500
+ loglike: -2.3e+03 | params: [-0.26721446 -0.52086263  2.02193794  1.93828151]
+ Average call time: 2.37 sec | Current time: 2018-12-06 12:19:37.760525
+ --------------------------
+iter: 7844 | batch: 0 | nc: 20 | ncalls: 31772 | bounds: 277 | eff(%): 24.306 | logz: -2.3e+03 +/- 1.9e-01 | dlogz: 136.088 >  0.500
+ loglike: -2.3e+03 | params: [-0.22987557 -0.5347424   2.01766154  2.11202806]
+ Average call time: 2.51 sec | Current time: 2018-12-06 12:20:27.938720
+ --------------------------
