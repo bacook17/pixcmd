@@ -108,7 +108,7 @@ sampler_params['first_update'] = {'min_eff': 30.}
 # DYNESTY RUN_NESTED SETTINGS
 
 # The number of max calls for dynesty
-run_params['maxcall'] = 50000
+run_params['maxcall'] = 150000
 
 # The error tolerance for dynesty stopping criterion
 _dlogz = 0.5
@@ -134,7 +134,7 @@ if DYNAMIC:
 # PCMD MODELLING SETTINGS
 
 # The size (N_im x N_im) of the simulated image
-params['N_im'] = 1024
+params['N_im'] = 512
 
 # The filters (photometry bands) to model. There should be at least 2 filters.
 # Default choice: F814W and F475W
