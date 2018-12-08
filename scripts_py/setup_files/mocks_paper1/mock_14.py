@@ -2,25 +2,26 @@
 # Ben Cook (bcook@cfa.harvard.edu)
 
 ###############################################
-# CONFIG FILE for mock run #14
+# CONFIG FILE for mock run #2
 # MOCK Galaxy:
 #    Metallicity Model: Single
 #            [Fe/H] = -0.25
 #    Dust Model:        Single
 #        log E(B-V) = -0.5
 #    SFH Model: Tau
-#              Npix = 2.0
-#              tau  = 3.0
+#              Npix = 4.5
+#              tau  = 1.2
 #    Distance
 #              dmod = 26.0
 #
 # MODEL Galaxy: Matches input model
+#          Distance Fixed
 # Priors:
 #           [Fe/H] : [-0.5, 0.25]
 #       log E(B-V) : [-1.0, 0.0]
 #             Npix : [1.0, 5.0]
 #             tau  : [0.1, 8.0]
-#         distance : [25.0, 30.0]
+#         distance : Fixed (26.0)
 
 import pcmdpy_gpu as ppy
 import multiprocessing
@@ -38,6 +39,7 @@ run_params = {}  # arguments passed to sampler's run_nested()
 
 # Whether to use GPU acceleration
 params['use_gpu'] = True
+
 
 # Whether to output progress steps
 params['verbose'] = True
@@ -163,8 +165,8 @@ sfhmodel = ppy.sfhmodels.TauModel()  # exponential SFR decline
 # sfhmodel = ppy.sfhmodels.SSPModel()  # single age SSP
 
 # Distance model
-# distancemodel = ppy.distancemodels.FixedDistance(26.0)  # fixed dmod=26.0 (1.6 Mpc)
-distancemodel = ppy.distancemodels.VariableDistance()  # dmod floats
+distancemodel = ppy.distancemodels.FixedDistance(26.0)  # fixed dmod=26.0 (1.6 Mpc)
+# distancemodel = ppy.distancemodels.VariableDistance()  # dmod floats
 params['gal_model'] = ppy.galaxy.CustomGalaxy(
     metalmodel,
     dustmodel,
@@ -208,8 +210,8 @@ z_bound = [-0.5, 0.25]  # metallicity
 dust_med_bound = [-1.0, 0.0]  # log dust
 
 # Only set the distance bounds if allowed to float
-# dmod_bound = None
-dmod_bound = [[25.0, 30.0]]
+dmod_bound = None
+# dmod_bound = [[22., 28.]]
 
 # Compute the 7-param SFH bound using tau models to bound
 Npix_bound = [1.0, 5.0]
@@ -236,8 +238,8 @@ N_mock = 256
 # model of the mock galaxy
 feh = -0.25
 log_ebv = -0.5
-log_npix = 2.0
-tau = 3.0
+log_npix = 4.5
+tau = 1.2
 dmod = 26.0
 
 # Mock data is generated with same model as is fit (except possibly distance)
