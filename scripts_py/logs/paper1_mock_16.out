@@ -50244,3 +50244,11 @@ iter: 12552 | batch: 1 | nc: 6137 | ncalls: 114806 | bounds: 933 | eff(%): 10.93
  loglike: -9.8e+00 | params: [-0.27022746 -0.49520551  4.499538    0.63703152]
  Average call time: 1.18 sec | Current time: 2018-12-10 14:22:14.698526
  --------------------------
+iter: 12552 | batch: 1 | nc: 43794 | ncalls: 114806 | bounds: 933 | eff(%): 10.933 | logz: -3.8e+01 +/- 4.7e-01 | stop: 10.729
+ loglike: -1.1e+01 | params: [-0.26631699 -0.49599878  4.50027333  0.33597042]
+ Average call time: 1.17 sec | Current time: 2018-12-11 04:36:28.029745
+ --------------------------
+iter: 12552 | batch: 1 | nc: 8375 | ncalls: 114806 | bounds: 933 | eff(%): 10.933 | logz: -3.8e+01 +/- 4.7e-01 | stop: 10.729
+ loglike: -1.0e+01 | params: [-0.286923   -0.49061575  4.498556    0.77080617]
+ Average call time: 1.26 sec | Current time: 2018-12-11 07:31:43.022674
+ --------------------------
