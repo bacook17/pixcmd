@@ -50252,3 +50252,27 @@ iter: 12552 | batch: 1 | nc: 8375 | ncalls: 114806 | bounds: 933 | eff(%): 10.93
  loglike: -1.0e+01 | params: [-0.286923   -0.49061575  4.498556    0.77080617]
  Average call time: 1.26 sec | Current time: 2018-12-11 07:31:43.022674
  --------------------------
+iter: 12552 | batch: 1 | nc: 34338 | ncalls: 114806 | bounds: 933 | eff(%): 10.933 | logz: -3.8e+01 +/- 4.7e-01 | stop: 10.729
+ loglike: -9.2e+00 | params: [-0.28180133 -0.49197045  4.49869536  0.92053745]
+ Average call time: 1.24 sec | Current time: 2018-12-11 19:20:44.602497
+ --------------------------
+iter: 12552 | batch: 1 | nc: 24184 | ncalls: 114806 | bounds: 933 | eff(%): 10.933 | logz: -3.8e+01 +/- 4.7e-01 | stop: 10.729
+ loglike: -1.1e+01 | params: [-0.27715713 -0.49346124  4.49901108  0.61792562]
+ Average call time: 1.30 sec | Current time: 2018-12-12 04:03:58.105982
+ --------------------------
+iter: 12552 | batch: 1 | nc: 1639 | ncalls: 114806 | bounds: 933 | eff(%): 10.933 | logz: -3.8e+01 +/- 4.7e-01 | stop: 10.729
+ loglike: -1.1e+01 | params: [-0.27584366 -0.49357135  4.49944289  0.64657831]
+ Average call time: 1.76 sec | Current time: 2018-12-12 04:52:00.377167
+ --------------------------
+iter: 12552 | batch: 1 | nc: 949 | ncalls: 114806 | bounds: 933 | eff(%): 10.933 | logz: -3.8e+01 +/- 4.7e-01 | stop: 10.729
+ loglike: -9.1e+00 | params: [-0.28561968 -0.4904036   4.49791635  1.15470609]
+ Average call time: 1.79 sec | Current time: 2018-12-12 05:20:21.977451
+ --------------------------
+iter: 12552 | batch: 1 | nc: 2928 | ncalls: 114806 | bounds: 933 | eff(%): 10.933 | logz: -3.8e+01 +/- 4.7e-01 | stop: 10.729
+ loglike: -9.5e+00 | params: [-0.30161669 -0.48665946  4.49797625  0.34731956]
+ Average call time: 2.06 sec | Current time: 2018-12-12 07:00:55.263677
+ --------------------------
+iter: 12552 | batch: 1 | nc: 9381 | ncalls: 114806 | bounds: 933 | eff(%): 10.933 | logz: -3.8e+01 +/- 4.7e-01 | stop: 10.729
+ loglike: -1.1e+01 | params: [-0.27375378 -0.49387793  4.49984942  0.64538042]
+ Average call time: 2.62 sec | Current time: 2018-12-12 13:50:41.188158
+ --------------------------
