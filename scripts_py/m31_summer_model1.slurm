@@ -1,5 +1,5 @@
 #!/bin/bash
-#SBATCH -p holyseasgpu
+#SBATCH -p fas_gpu
 #SBATCH -J m31_summer_model1
 #SBATCH -n 1 # Number of cores requested
 #SBATCH -N 1 #ensure that all cores are on one machine

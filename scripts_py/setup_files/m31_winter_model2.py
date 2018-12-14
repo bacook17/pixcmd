@@ -206,7 +206,7 @@ dust_med_bound = [-2.0, -.5]  # log dust median
 dmod_bound = [[22., 28.]]
 
 # Compute the 7-param SFH bound using tau models to bound
-Npix_bound = [1., 4.]
+Npix_bound = [1.5, 4.]
 tau_bound = [0.1, 5.]
 
 # Create a Prior object with given bounds
