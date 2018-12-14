@@ -206,12 +206,12 @@ dust_med_bound = [-2.0, -.5]  # log dust median
 dmod_bound = [[22., 28.]]
 
 # Compute the 5-param SFH bound using tau models to bound
-Npix_low, tau = 1.0, 1.0
+Npix_low, tau = 1.5, 2.0
 model = ppy.sfhmodels.TauModel(iso_step=-1)
 model.set_params([Npix_low, tau])
 lower_sfh = np.log10(model.SFH)
 
-Npix_high = 3.0
+Npix_high = 3.5
 model.set_params([Npix_high, tau])
 upper_sfh = np.log10(model.SFH)
 
