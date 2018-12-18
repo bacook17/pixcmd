@@ -1,13 +1,13 @@
-# M31 Model 4 (Summer Exposures)
+# M31 Model 3 (Summer Exposures)
 # Ben Cook (bcook@cfa.harvard.edu)
 
 ###############################################
-# CONFIG FILE for M31 Model 4
+# CONFIG FILE for M31 Model 3
 # MODEL Galaxy:
 #    MDF (width=0.2)
 #    Single Dust
-#    Tau SFH
-#    Distance Free
+#    NonParam SFH
+#    Distance Fixed
 
 # Exposure:
 #   F814W = 3040
@@ -155,20 +155,20 @@ dustmodel = ppy.dustmodels.SingleDust()  # single dust screen
 # dustmodel = ppy.dustmodels.FixedWidthLogNormDust(0.3)  # fixed width lognorm
 
 # Age model
-# sfhmodel = ppy.sfhmodels.NonParam()  # Fully non-parametric model
+sfhmodel = ppy.sfhmodels.NonParam()  # Fully non-parametric model
 # sfhmodel = ppy.sfhmodels.ConstantSFR()  # constant Star Formation Rate
-sfhmodel = ppy.sfhmodels.TauModel()  # exponential SFR decline
+# sfhmodel = ppy.sfhmodels.TauModel()  # exponential SFR decline
 # sfhmodel = ppy.sfhmodels.RisingTau()  # Linear x exponential decline
 # sfhmodel = ppy.sfhmodels.SSPModel()  # single age SSP
 
 # Distance model
-# distancemodel = ppy.distancemodels.FixedDistance(24.42)  # fixed dmod=24.42 (766 kpc)
-distancemodel = ppy.distancemodels.VariableDistance()  # dmod floats
+distancemodel = ppy.distancemodels.FixedDistance(24.42)  # fixed dmod=24.42 (766 kpc)
+# distancemodel = ppy.distancemodels.VariableDistance()  # dmod floats
 params['gal_model'] = ppy.galaxy.CustomGalaxy(metalmodel, dustmodel, sfhmodel,
                                               distancemodel)
 
 # Add the binned hess values and the mean magnitude and color terms
-params['like_mode'] = 3
+params['like_mode'] = 2
 
 # The hess bins to compute the likelihood in
 # The magnitude upper/lower bounds are very important to consider
@@ -202,18 +202,27 @@ params['shot_noise'] = True
 z_bound = [-0.5, 0.5]  # metallicity
 dust_med_bound = [-2.0, -.5]  # log dust median
 # Only set the distance bounds if allowed to float
-# dmod_bound = None
-dmod_bound = [[22., 28.]]
+dmod_bound = None
+# dmod_bound = [[22., 28.]]
 
-# Compute the 7-param SFH bound using tau models to bound
-Npix_bound = [1.5, 4.]
-tau_bound = [0.1, 5.]
+# Compute the 5-param SFH bound using tau models to bound
+Npix_low, tau = 1.5, 2.0
+model = ppy.sfhmodels.TauModel(iso_step=-1)
+model.set_params([Npix_low, tau])
+lower_sfh = np.log10(model.SFH)
+
+Npix_high = 4.0
+model.set_params([Npix_high, tau])
+upper_sfh = np.log10(model.SFH)
+
+SFH_bounds_arr = np.array([lower_sfh, upper_sfh]).T
+SFH_bounds = list(list(bound) for bound in SFH_bounds_arr)
 
 # Create a Prior object with given bounds
 prior_bounds = {}
 prior_bounds['feh_bounds'] = [z_bound]
 prior_bounds['dust_bounds'] = [dust_med_bound]
-prior_bounds['age_bounds'] = [Npix_bound, tau_bound]
+prior_bounds['sfh_bounds'] = SFH_bounds
 prior_bounds['dmod_bounds'] = dmod_bound
 
 params['prior'] = params['gal_model'].get_flat_prior(**prior_bounds)
