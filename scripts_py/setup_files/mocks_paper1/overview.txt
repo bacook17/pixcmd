@@ -1,4 +1,4 @@
-Mock Tests (LogLike = 2, ShotNoise On, Nim=1024)
+Mock Tests (LogLike = 2, ShotNoise On, Nim=512)
 ----------
 1 : Single [Fe/H], Single Dust, Tau, NO DIST
       [-0.25, -0.5, 2.0, 3.0, 26.0]
@@ -26,9 +26,19 @@ Mock Tests (LogLike = 2, ShotNoise On, Nim=1024)
 
 9 : same as (1) but with LogLike = 3
 
-10 : same as (5), but with Nim = 512
+10 : same as (5), but with Nim = 256
 
-11 : same as (11), but with Nim = 2048
+11 : same as (11), but with Nim = 1024
+
+12, 13 : same as (2,4) with Nim = 1024
+
+14, 15 : same as (2,4) with 2000 livepoints
+
+16, 17 : same as (2,4) with narrower Npix prior
+
+18 - 24 : same as (5), but with different random seeds for Dynesty
+
+25 - 28 : same as (5), but with mock Npix = [1e3, 1e4, 1e5, 1e6]
 
 Mismatch Tests
 --------------
