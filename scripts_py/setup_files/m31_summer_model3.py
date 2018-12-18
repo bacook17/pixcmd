@@ -68,7 +68,7 @@ sampler_params['pool'] = pool
 params['dynamic'] = DYNAMIC = False
 
 # The number of dynesty live points
-_nlive = 1000
+_nlive = 100000
 if DYNAMIC:
     run_params['nlive_init'] = _nlive
 else:
@@ -117,7 +117,7 @@ if DYNAMIC:
     # weight function parameters
     run_params['wt_kwargs'] = {'pfrac': 1.0}
     # How many max calls per iteration?
-    run_params['maxcall_per_iter'] = 1000
+    run_params['maxcall_per_iter'] = 100000
     # Don't keep boundaries
     run_params['save_bounds'] = False
 
