@@ -130,7 +130,7 @@ if DYNAMIC:
     # weight function parameters
     run_params['wt_kwargs'] = {'pfrac': 1.0}
     # How many max calls per iteration?
-    run_params['maxcall_per_iter'] = 1000
+    run_params['maxcall_per_iter'] = 10000
     # Don't keep boundaries
     run_params['save_bounds'] = False
 

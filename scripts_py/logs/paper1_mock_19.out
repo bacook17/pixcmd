@@ -1,0 +1,11 @@
+Using pcmdpy version 0.8.1
+Loading Setup File: setup_files/mocks_paper1/mock_19.py
+Running Nested Sampling
+-initializing models
+-Saving initial results dataframe
+Dynamic Sampler Initialized
+mprof: Sampling memory every 10.0s
+               JobID    JobName   NTasks  AllocCPUS    AllocGRES  Partition    Elapsed     MaxRSS  MaxVMSize  MaxDiskRead MaxDiskWrite      State 
+-------------------- ---------- -------- ---------- ------------ ---------- ---------- ---------- ---------- ------------ ------------ ---------- 
+         62725921_19 paper1_mo+                   1        gpu:1    fas_gpu   00:02:01                                                    RUNNING 
+  62725921_19.extern     extern        1          1        gpu:1              00:02:01                                                    RUNNING 

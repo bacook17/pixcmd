@@ -97,7 +97,7 @@ init_sampler_params['first_update'] = final_sampler_params['first_update'] =  {'
 # DYNESTY RUN_NESTED SETTINGS
 
 # The number of max calls for burn-in phase
-init_run_params['maxcall'] = 10000
+init_run_params['maxcall'] = 1000000
 
 # The number of max calls for final phase
 final_run_params['maxcall'] = 120000
@@ -118,7 +118,7 @@ if DYNAMIC:
     # weight function parameters
     init_run_params['wt_kwargs'] = final_run_params['wt_kwargs'] = {'pfrac': 1.0}
     # How many max calls per iteration?
-    init_run_params['maxcall_per_iter'] = final_run_params['maxcall_per_iter'] = 1000
+    init_run_params['maxcall_per_iter'] = final_run_params['maxcall_per_iter'] = 100000
     # Don't keep boundaries
     init_run_params['save_bounds'] = final_run_params['save_bounds'] = False
 

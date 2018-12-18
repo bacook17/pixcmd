@@ -1,7 +1,7 @@
 #!/bin/bash
 
 echo "submitting Paper1 Mocks"
-sbatch --array=[1-17] paper1_mocks.slurm
+sbatch --array=[1-28] paper1_mocks.slurm
 
 sleep 2
 
