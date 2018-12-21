@@ -107,7 +107,7 @@ sampler_params['first_update'] = {'min_eff': 30.}
 ###############################################
 # DYNESTY RUN_NESTED SETTINGS
 
-run_params['sampler_seed'] = 99882  # Default is 12345
+params['sampler_seed'] = 99882  # Default is 12345
 
 # The number of max calls for dynesty
 run_params['maxcall'] = 150000
