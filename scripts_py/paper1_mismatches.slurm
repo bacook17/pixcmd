@@ -1,5 +1,5 @@
 #!/bin/bash
-#SBATCH -p fas_gpu
+#SBATCH -p fas_gpu,holyseasgpu,gpu
 #SBATCH -J paper1_mismatch
 #SBATCH -n 1 # Number of cores requested
 #SBATCH -N 1 #ensure that all cores are on one machine
