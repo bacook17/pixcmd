@@ -261,7 +261,7 @@ for key in models.keys():
     live_file = res_file.replace('.csv', '_live.csv')
     results[key] = ppy.results.ResultsPlotter(
         res_file, live_file=live_file, run_name=run_names[key],
-        gal_model=models[key], model_is_truth=True)
+        gal_model=models[key], model_is_truth=('mock in key'))
 
 assert np.all([k in models for k in run_names.keys()]), str([k for k in run_names.keys() if k not in models])
 assert np.all([k in run_names for k in models.keys()]), str([k for k in models.keys() if k not in run_names])
