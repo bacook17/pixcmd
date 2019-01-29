@@ -3,6 +3,8 @@ import numpy as np
 
 models = {}
 run_names = {}
+results = {}
+results_dir = '~/pCMDs/pixcmd/scripts_py/results/'
 
 models['mock_1'] = ppy.galaxy.CustomGalaxy(
         ppy.metalmodels.SingleFeH(-0.25),
@@ -70,48 +72,48 @@ models['mock_8'] = ppy.galaxy.CustomGalaxy(
     )
 run_names['mock_8'] = r'NonParam Model (Distance Free)'
 
-models['mock_9'] = models['mock_1']
+models['mock_9'] = models['mock_1'].copy()
 run_names['mock_9'] = 'Tau Model 1 (Distance Fixed, LikeMode=3)'
 
-models['mock_10'] = models['mock_5']
+models['mock_10'] = models['mock_5'].copy()
 run_names['mock_10'] = 'Tau-MDF Model (Distance Free, Nim=256)'
 
-models['mock_11'] = models['mock_5']
+models['mock_11'] = models['mock_5'].copy()
 run_names['mock_11'] = 'Tau-MDF Model (Distance Free, Nim=1024)'
 
-models['mock_12'] = models['mock_2']
+models['mock_12'] = models['mock_2'].copy()
 run_names['mock_12'] = 'Tau Model 2 (Distance Fixed, Nim=1024)'
 
-models['mock_13'] = models['mock_4']
+models['mock_13'] = models['mock_4'].copy()
 run_names['mock_13'] = 'Tau Model 2 (Distance Free, Nim=1024)'
 
-models['mock_14'] = models['mock_2']
+models['mock_14'] = models['mock_2'].copy()
 run_names['mock_14'] = 'Tau Model 2 (Distance Fixed, more live points)'
 
-models['mock_15'] = models['mock_4']
+models['mock_15'] = models['mock_4'].copy()
 run_names['mock_15'] = 'Tau Model 2 (Distance Free, more live points)'
 
-models['mock_16'] = models['mock_2']
+models['mock_16'] = models['mock_2'].copy()
 run_names['mock_16'] = 'Tau Model 2 (Distance Fixed, Narrow Npix prior)'
 
-models['mock_17'] = models['mock_4']
+models['mock_17'] = models['mock_4'].copy()
 run_names['mock_17'] = 'Tau Model 2 (Distance Free, Narrow Npix prior)'
 
 
 # initial conditions, same realization
-models['mock_18'] = models['mock_5']
+models['mock_18'] = models['mock_5'].copy()
 run_names['mock_18'] = 'Tau-MDF Model (Distance Fixed, Dynesty Seed 2)'
-models['mock_19'] = models['mock_5']
+models['mock_19'] = models['mock_5'].copy()
 run_names['mock_19'] = 'Tau-MDF Model (Distance Fixed, Dynesty Seed 3)'
-models['mock_20'] = models['mock_5']
+models['mock_20'] = models['mock_5'].copy()
 run_names['mock_20'] = 'Tau-MDF Model (Distance Fixed, Dynesty Seed 4)'
-models['mock_21'] = models['mock_5']
+models['mock_21'] = models['mock_5'].copy()
 run_names['mock_21'] = 'Tau-MDF Model (Distance Fixed, Dynesty Seed 5)'
-models['mock_22'] = models['mock_5']
+models['mock_22'] = models['mock_5'].copy()
 run_names['mock_22'] = 'Tau-MDF Model (Distance Fixed, Dynesty Seed 6)'
-models['mock_23'] = models['mock_5']
+models['mock_23'] = models['mock_5'].copy()
 run_names['mock_23'] = 'Tau-MDF Model (Distance Fixed, Dynesty Seed 7)'
-models['mock_24'] = models['mock_5']
+models['mock_24'] = models['mock_5'].copy()
 run_names['mock_24'] = 'Tau-MDF Model (Distance Fixed, Dynesty Seed 8)'
 
 # Npix
@@ -148,16 +150,16 @@ models['mock_28'] = ppy.galaxy.CustomGalaxy(
 run_names['mock_28'] = 'Tau-MDF Model (Distance Free, Npix=1e6)'
 
 # Hess Binning
-models['mock_29'] = models['mock_5']
+models['mock_29'] = models['mock_5'].copy()
 run_names['mock_29'] = 'Tau-MDF Model (Distance Free, Wide Hess Bins)'
 
-models['mock_30'] = models['mock_5']
+models['mock_30'] = models['mock_5'].copy()
 run_names['mock_30'] = 'Tau-MDF Model (Distance Free, Narrow Hess Bins)'
 
-models['mock_31'] = models['mock_8']
+models['mock_31'] = models['mock_8'].copy()
 run_names['mock_31'] = 'NonParam Model (Distance Free, Wide Hess Bins)'
 
-models['mock_32'] = models['mock_8']
+models['mock_32'] = models['mock_8'].copy()
 run_names['mock_32'] = 'NonParam Model (Distance Free, Narrow Hess Bins)'
 
 # Fixed Distance Model 5
@@ -170,25 +172,25 @@ models['mock_33'] = ppy.galaxy.CustomGalaxy(
 run_names['mock_33'] = 'Tau-MDF Model (Distance Fixed)'
 
 # Different realizations
-models['mock_34'] = models['mock_5']
+models['mock_34'] = models['mock_5'].copy()
 run_names['mock_34'] = 'Tau-MDF Model (Distance Free, Realization 2)'
 
-models['mock_35'] = models['mock_5']
+models['mock_35'] = models['mock_5'].copy()
 run_names['mock_35'] = 'Tau-MDF Model (Distance Free, Realization 3)'
 
-models['mock_36'] = models['mock_5']
+models['mock_36'] = models['mock_5'].copy()
 run_names['mock_36'] = 'Tau-MDF Model (Distance Free, Realization 4)'
 
-models['mock_37'] = models['mock_5']
+models['mock_37'] = models['mock_5'].copy()
 run_names['mock_37'] = 'Tau-MDF Model (Distance Free, Realization 5)'
 
-models['mock_38'] = models['mock_5']
+models['mock_38'] = models['mock_5'].copy()
 run_names['mock_38'] = 'Tau-MDF Model (Distance Free, Realization 6)'
 
-models['mock_39'] = models['mock_5']
+models['mock_39'] = models['mock_5'].copy()
 run_names['mock_39'] = 'Tau-MDF Model (Distance Free, Realization 7)'
 
-models['mock_40'] = models['mock_5']
+models['mock_40'] = models['mock_5'].copy()
 run_names['mock_40'] = 'Tau-MDF Model (Distance Free, Realization 8)'
 
 models['mismatch_1'] = ppy.galaxy.CustomGalaxy(
@@ -254,5 +256,13 @@ run_names['mismatch_10'] = 'Model: Overestimates MDF width (0.3 vs 0.1)'
 models['mismatch_11'] = models['mock_3']  # Mock has no downsample
 run_names['mismatch_11'] = 'Mock: no isochrone downsampling'
 
+for key in models.keys():
+    res_file = results_dir + 'paper1_' + key + '.csv'
+    live_file = res_file.replace('.csv', '_live.csv')
+    results[key] = ppy.results.ResultsPlotter(
+        res_file, live_file=live_file, run_name=run_names[key],
+        gal_model=models[key], model_is_truth=True)
+
 assert np.all([k in models for k in run_names.keys()]), str([k for k in run_names.keys() if k not in models])
 assert np.all([k in run_names for k in models.keys()]), str([k for k in models.keys() if k not in run_names])
+assert np.all([k in results for k in models.keys()]), str([k for k in models.keys() if k not in results])
