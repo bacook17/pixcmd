@@ -72,6 +72,7 @@ for m in range(1, 5):
             run_name=run_names[key])
         results[key].r_kpc = bulge_kpc[bulge_id]
         results[key].r_arcmin = bulge_arcmins[bulge_id]
+        results[key].season = season
     for disk_id, season_id in enumerate(disk_seasons):
         try:
             key = f'd{disk_id+1}-m{m}'
@@ -86,6 +87,7 @@ for m in range(1, 5):
                 gal_model=models[key], model_is_truth=False)
             results[key].r_kpc = disk_kpc[disk_id]
             results[key].r_arcmin = disk_arcmins[disk_id]
+            results[key].season = season
         except FileNotFoundError:
             models.pop(key)
             run_names.pop(key)
