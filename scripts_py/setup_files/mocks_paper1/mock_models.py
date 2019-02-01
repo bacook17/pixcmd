@@ -193,6 +193,104 @@ run_names['mock_39'] = 'Tau-MDF Model (Distance Free, Realization 7)'
 models['mock_40'] = models['mock_5'].copy()
 run_names['mock_40'] = 'Tau-MDF Model (Distance Free, Realization 8)'
 
+models['mock_41'] = models['mock_5'].copy()
+run_names['mock_41'] = 'Tau-MDF Model (Distance Free, Nim = 2048, Npix=1e2)'
+
+models['mock_42'] = models['mock_25'].copy()
+run_names['mock_42'] = 'Tau-MDF Model (Distance Free, Nim = 648, Npix=1e3)'
+
+models['mock_43'] = models['mock_26'].copy()
+run_names['mock_43'] = 'Tau-MDF Model (Distance Free, Nim = 205, Npix=1e4)'
+
+models['mock_44'] = models['mock_27'].copy()
+run_names['mock_44'] = 'Tau-MDF Model (Distance Free, Nim = 65, Npix=1e5)'
+
+models['mock_45'] = models['mock_28'].copy()
+run_names['mock_45'] = 'Tau-MDF Model (Distance Free, Nim = 21, Npix=1e6)'
+ 
+tau_SFHbins = ppy.sfhmodels.TauModel(np.array([3.0, 3.0]), iso_step=-1).logSFH
+models['mock_46'] = ppy.galaxy.CustomGalaxy(
+        ppy.metalmodels.FixedWidthNormMDF(0.2, -0.25),
+        ppy.dustmodels.FixedWidthLogNormDust(0.1, -0.5),
+        ppy.sfhmodels.NonParam(tau_SFHbins),
+        ppy.distancemodels.VariableDistance(26.0)
+    )
+run_names['mock_46'] = r'NonParam Model (Distance Free, Npix=1e3)'
+
+tau_SFHbins = ppy.sfhmodels.TauModel(np.array([4.0, 3.0]), iso_step=-1).logSFH
+models['mock_47'] = ppy.galaxy.CustomGalaxy(
+        ppy.metalmodels.FixedWidthNormMDF(0.2, -0.25),
+        ppy.dustmodels.FixedWidthLogNormDust(0.1, -0.5),
+        ppy.sfhmodels.NonParam(tau_SFHbins),
+        ppy.distancemodels.VariableDistance(26.0)
+    )
+run_names['mock_47'] = r'NonParam Model (Distance Free, Npix=1e4)'
+
+tau_SFHbins = ppy.sfhmodels.TauModel(np.array([5.0, 3.0]), iso_step=-1).logSFH
+models['mock_48'] = ppy.galaxy.CustomGalaxy(
+        ppy.metalmodels.FixedWidthNormMDF(0.2, -0.25),
+        ppy.dustmodels.FixedWidthLogNormDust(0.1, -0.5),
+        ppy.sfhmodels.NonParam(tau_SFHbins),
+        ppy.distancemodels.VariableDistance(26.0)
+    )
+run_names['mock_48'] = r'NonParam Model (Distance Free, Npix=1e5)'
+
+tau_SFHbins = ppy.sfhmodels.TauModel(np.array([6.0, 3.0]), iso_step=-1).logSFH
+models['mock_49'] = ppy.galaxy.CustomGalaxy(
+        ppy.metalmodels.FixedWidthNormMDF(0.2, -0.25),
+        ppy.dustmodels.FixedWidthLogNormDust(0.1, -0.5),
+        ppy.sfhmodels.NonParam(tau_SFHbins),
+        ppy.distancemodels.VariableDistance(26.0)
+    )
+run_names['mock_49'] = r'NonParam Model (Distance Free, Npix=1e6)'
+
+tau_SFHbins = ppy.sfhmodels.ConstantSFR(np.array([2.0]), iso_step=-1).logSFH
+models['mock_50'] = ppy.galaxy.CustomGalaxy(
+        ppy.metalmodels.FixedWidthNormMDF(0.2, -0.25),
+        ppy.dustmodels.FixedWidthLogNormDust(0.1, -0.5),
+        ppy.sfhmodels.NonParam(tau_SFHbins),
+        ppy.distancemodels.VariableDistance(26.0)
+    )
+run_names['mock_50'] = r'NonParam Model (Distance Free, Npix=1e2, Constant SFR)'
+
+tau_SFHbins = ppy.sfhmodels.ConstantSFR(np.array([3.0]), iso_step=-1).logSFH
+models['mock_51'] = ppy.galaxy.CustomGalaxy(
+        ppy.metalmodels.FixedWidthNormMDF(0.2, -0.25),
+        ppy.dustmodels.FixedWidthLogNormDust(0.1, -0.5),
+        ppy.sfhmodels.NonParam(tau_SFHbins),
+        ppy.distancemodels.VariableDistance(26.0)
+    )
+run_names['mock_51'] = r'NonParam Model (Distance Free, Npix=1e3, Constant SFR)'
+
+tau_SFHbins = ppy.sfhmodels.ConstantSFR(np.array([4.0]), iso_step=-1).logSFH
+models['mock_52'] = ppy.galaxy.CustomGalaxy(
+        ppy.metalmodels.FixedWidthNormMDF(0.2, -0.25),
+        ppy.dustmodels.FixedWidthLogNormDust(0.1, -0.5),
+        ppy.sfhmodels.NonParam(tau_SFHbins),
+        ppy.distancemodels.VariableDistance(26.0)
+    )
+run_names['mock_52'] = r'NonParam Model (Distance Free, Npix=1e4, Constant SFR)'
+
+tau_SFHbins = ppy.sfhmodels.ConstantSFR(np.array([5.0]), iso_step=-1).logSFH
+models['mock_53'] = ppy.galaxy.CustomGalaxy(
+        ppy.metalmodels.FixedWidthNormMDF(0.2, -0.25),
+        ppy.dustmodels.FixedWidthLogNormDust(0.1, -0.5),
+        ppy.sfhmodels.NonParam(tau_SFHbins),
+        ppy.distancemodels.VariableDistance(26.0)
+    )
+run_names['mock_53'] = r'NonParam Model (Distance Free, Npix=1e5, Constant SFR)'
+
+tau_SFHbins = ppy.sfhmodels.ConstantSFR(np.array([6.0]), iso_step=-1).logSFH
+models['mock_54'] = ppy.galaxy.CustomGalaxy(
+        ppy.metalmodels.FixedWidthNormMDF(0.2, -0.25),
+        ppy.dustmodels.FixedWidthLogNormDust(0.1, -0.5),
+        ppy.sfhmodels.NonParam(tau_SFHbins),
+        ppy.distancemodels.VariableDistance(26.0)
+    )
+run_names['mock_54'] = r'NonParam Model (Distance Free, Npix=1e6, Constant SFR)'
+
+#######
+
 models['mismatch_1'] = ppy.galaxy.CustomGalaxy(
         ppy.metalmodels.FixedWidthNormMDF(0.2, -0.25),  # model SingleFeH with FixedWidthNormMDF
         ppy.dustmodels.SingleDust(-0.5),
@@ -259,10 +357,12 @@ run_names['mismatch_11'] = 'Mock: no isochrone downsampling'
 for key in models.keys():
     res_file = results_dir + 'paper1_' + key + '.csv'
     live_file = res_file.replace('.csv', '_live.csv')
-    results[key] = ppy.results.ResultsPlotter(
-        res_file, live_file=live_file, run_name=run_names[key],
-        gal_model=models[key], model_is_truth=('mock in key'))
-
+    try:
+        results[key] = ppy.results.ResultsPlotter(
+            res_file, live_file=live_file, run_name=run_names[key],
+            gal_model=models[key], model_is_truth=('mock in key'))
+    except FileNotFoundError:
+        pass
+        
 assert np.all([k in models for k in run_names.keys()]), str([k for k in run_names.keys() if k not in models])
 assert np.all([k in run_names for k in models.keys()]), str([k for k in models.keys() if k not in run_names])
-assert np.all([k in results for k in models.keys()]), str([k for k in models.keys() if k not in results])

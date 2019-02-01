@@ -48,6 +48,12 @@ Mock Tests (LogLike = 2, ShotNoise On, Nim=512)
 
 34 - 40 : same as (5), different PCMD realizations, same Dynesty ICs
 
+41 - 45 : same as (5, 25-28), but with decreasing Nim with Npix
+
+46 - 49 : same as (8), but with mock Npix = [1e3, 1e4, 1e5, 1e6]
+
+50 - 54 : same as (8, 46-49), but with mock data from Constant SFR model
+
 Mismatch Tests
 --------------
 Unless otherwise specified, uses same parameters as Mock Test #2
