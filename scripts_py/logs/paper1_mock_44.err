@@ -1,0 +1,9 @@
+rm: cannot remove ‘logs/paper1_mock_44.mem’: No such file or directory
+Please wait while the GPU states are initializedTraceback (most recent call last):
+  File "/n/home01/bcook/pCMDs/pixcmd/pcmdpy/bin/pcmd_integrate", line 51, in <module>
+    spec.loader.exec_module(config)
+  File "<frozen importlib._bootstrap_external>", line 678, in exec_module
+  File "<frozen importlib._bootstrap>", line 219, in _call_with_frames_removed
+  File "setup_files/mocks_paper1/mock_44.py", line 269, in <module>
+    pcmd = pcmd[:65, :65].reshape((2, 65*65))
+ValueError: cannot reshape array of size 33280 into shape (2,4225)
