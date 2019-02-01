@@ -1,0 +1,10 @@
+Using pcmdpy version 0.8.8
+Loading Setup File: setup_files/mocks_paper1/mock_44.py
+Other error when importing
+cannot reshape array of size 33280 into shape (2,4225)
+Check stderr for full traceback
+mprof: Sampling memory every 10.0s
+               JobID    JobName   NTasks  AllocCPUS    AllocGRES  Partition    Elapsed     MaxRSS  MaxVMSize  MaxDiskRead MaxDiskWrite      State 
+-------------------- ---------- -------- ---------- ------------ ---------- ---------- ---------- ---------- ------------ ------------ ---------- 
+         66812760_44 paper1_mo+                   2        gpu:1 holyseasg+   00:00:58                                                    RUNNING 
+  66812760_44.extern     extern        1          2        gpu:1              00:00:58                                                    RUNNING 
