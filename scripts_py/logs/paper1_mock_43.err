@@ -1,0 +1,17 @@
+rm: cannot remove ‘logs/paper1_mock_43.mem’: No such file or directory
+Please wait while the GPU states are initializedTraceback (most recent call last):
+  File "/n/home01/bcook/pCMDs/pixcmd/pcmdpy/bin/pcmd_integrate", line 51, in <module>
+    spec.loader.exec_module(config)
+  File "<frozen importlib._bootstrap_external>", line 678, in exec_module
+  File "<frozen importlib._bootstrap>", line 219, in _call_with_frames_removed
+  File "setup_files/mocks_paper1/mock_43.py", line 267, in <module>
+    mag_system=params['mag_system'])
+  File "/n/home01/bcook/pCMDs/pixcmd/pcmdpy/pcmdpy/simulation/driver.py", line 162, in simulate
+    images = np.array([f.psf_convolve(im, **kwargs) for f,im in zip(self.filters,images)])
+  File "/n/home01/bcook/pCMDs/pixcmd/pcmdpy/pcmdpy/simulation/driver.py", line 162, in <listcomp>
+    images = np.array([f.psf_convolve(im, **kwargs) for f,im in zip(self.filters,images)])
+  File "/n/home01/bcook/pCMDs/pixcmd/pcmdpy/pcmdpy/instrument/psf.py", line 70, in convolve
+    w_border=self._d_psf-1)
+  File "/n/home01/bcook/pCMDs/pixcmd/pcmdpy/pcmdpy/instrument/psf.py", line 183, in _subdivide_image
+    raise NotImplementedError(message)
+NotImplementedError: subdivide_image is only implemented if image can be cleanly subdivided
