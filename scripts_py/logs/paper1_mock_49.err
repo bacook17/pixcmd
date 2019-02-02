@@ -1,0 +1,7 @@
+rm: cannot remove ‘logs/paper1_mock_49.mem’: No such file or directory
+Please wait while the GPU states are initializedTraceback (most recent call last):
+  File "/n/home01/bcook/.conda/envs/py36/bin/pcmd_integrate", line 6, in <module>
+    exec(compile(open(__file__).read(), __file__, 'exec'))
+  File "/n/home01/bcook/pCMDs/pixcmd/pcmdpy/bin/pcmd_integrate", line 129, in <module>
+    fit_model.nested_integrate(**args)
+TypeError: nested_integrate() missing 1 required positional argument: 'Nim'

@@ -1,0 +1,47 @@
+Using pcmdpy version 0.8.8
+Loading Setup File: setup_files/mocks_paper1/mock_54.py
+Running Nested Sampling
+mprof: Sampling memory every 10.0s
+               JobID    JobName   NTasks  AllocCPUS    AllocGRES  Partition    Elapsed     MaxRSS  MaxVMSize  MaxDiskRead MaxDiskWrite      State 
+-------------------- ---------- -------- ---------- ------------ ---------- ---------- ---------- ---------- ------------ ------------ ---------- 
+         66812760_54 paper1_mo+                   2        gpu:1 holyseasg+   00:00:44                                                    RUNNING 
+  66812760_54.extern     extern        1          2        gpu:1              00:00:44                                                    RUNNING 
+         66812760_41 paper1_mo+                   2        gpu:1 holyseasg+   00:02:32                                                  COMPLETED 
+   66812760_41.batch      batch        1          2        gpu:1              00:02:32    675796K 123552648K      708.91M        2.10M  COMPLETED 
+  66812760_41.extern     extern        1          2        gpu:1              00:02:32      1140K    156624K        0.00M            0  COMPLETED 
+         66812760_42 paper1_mo+                   2        gpu:1 holyseasg+   00:00:59                                                  COMPLETED 
+   66812760_42.batch      batch        1          2        gpu:1              00:00:59    611748K 123500976K      496.16M        1.10M  COMPLETED 
+  66812760_42.extern     extern        1          2        gpu:1              00:00:59      1144K    156624K        0.00M            0  COMPLETED 
+         66812760_43 paper1_mo+                   2        gpu:1 holyseasg+   00:00:59                                                  COMPLETED 
+   66812760_43.batch      batch        1          2        gpu:1              00:00:59    515768K 123348288K      520.90M        1.10M  COMPLETED 
+  66812760_43.extern     extern        1          2        gpu:1              00:00:59      1148K    156624K        0.00M            0  COMPLETED 
+         66812760_44 paper1_mo+                   2        gpu:1 holyseasg+   00:00:58                                                  COMPLETED 
+   66812760_44.batch      batch        1          2        gpu:1              00:00:58    649908K 123510108K      520.90M        1.10M  COMPLETED 
+  66812760_44.extern     extern        1          2        gpu:1              00:00:58      1140K    156624K        0.00M            0  COMPLETED 
+         66812760_45 paper1_mo+                   2        gpu:1 holyseasg+   00:00:45                                                  COMPLETED 
+   66812760_45.batch      batch        1          2        gpu:1              00:00:45    535820K 123369700K      708.90M        2.10M  COMPLETED 
+  66812760_45.extern     extern        1          2        gpu:1              00:00:45      1140K    156624K        0.00M            0  COMPLETED 
+         66812760_46 paper1_mo+                   2        gpu:1 holyseasg+   00:01:00                                                  COMPLETED 
+   66812760_46.batch      batch        1          2        gpu:1              00:01:00    534688K 123367200K      631.42M        1.10M  COMPLETED 
+  66812760_46.extern     extern        1          2        gpu:1              00:01:01      1148K    156624K        0.00M            0  COMPLETED 
+         66812760_47 paper1_mo+                   2        gpu:1 holyseasg+   00:00:47                                                  COMPLETED 
+   66812760_47.batch      batch        1          2        gpu:1              00:00:47    535864K 123369696K      708.90M        2.10M  COMPLETED 
+  66812760_47.extern     extern        1          2        gpu:1              00:00:48      1140K    156624K        0.00M            0  COMPLETED 
+         66812760_48 paper1_mo+                   2        gpu:1 holyseasg+   00:01:01                                                  COMPLETED 
+   66812760_48.batch      batch        1          2        gpu:1              00:01:01    505420K 123337924K      522.40M        1.10M  COMPLETED 
+  66812760_48.extern     extern        1          2        gpu:1              00:01:02      1144K    156624K        0.00M            0  COMPLETED 
+         66812760_49 paper1_mo+                   2        gpu:1 holyseasg+   00:00:58                                                  COMPLETED 
+   66812760_49.batch      batch        1          2        gpu:1              00:00:58    592636K 123510108K      520.90M        1.10M  COMPLETED 
+  66812760_49.extern     extern        1          2        gpu:1              00:00:58      1152K    156624K        0.00M            0  COMPLETED 
+         66812760_50 paper1_mo+                   2        gpu:1 holyseasg+   00:01:01                                                  COMPLETED 
+   66812760_50.batch      batch        1          2        gpu:1              00:01:01    475972K 123308488K      496.16M        1.10M  COMPLETED 
+  66812760_50.extern     extern        1          2        gpu:1              00:01:02      1140K    156624K        0.00M            0  COMPLETED 
+         66812760_51 paper1_mo+                   2        gpu:1 holyseasg+   00:00:57                                                  COMPLETED 
+   66812760_51.batch      batch        1          2        gpu:1              00:00:57    597120K 123510108K      520.90M        1.10M  COMPLETED 
+  66812760_51.extern     extern        1          2        gpu:1              00:00:57      1144K    156624K        0.00M            0  COMPLETED 
+         66812760_52 paper1_mo+                   2        gpu:1 holyseasg+   00:01:00                                                  COMPLETED 
+   66812760_52.batch      batch        1          2        gpu:1              00:01:00    600012K 123510104K      704.22M        1.10M  COMPLETED 
+  66812760_52.extern     extern        1          2        gpu:1              00:01:01      1144K    156624K        0.00M            0  COMPLETED 
+         66812760_53 paper1_mo+                   2        gpu:1 holyseasg+   00:00:59                                                  COMPLETED 
+   66812760_53.batch      batch        1          2        gpu:1              00:00:59    515788K 123348288K      510.66M        1.10M  COMPLETED 
+  66812760_53.extern     extern        1          2        gpu:1              00:00:59      1148K    156624K        0.00M            0  COMPLETED 
