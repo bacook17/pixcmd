@@ -4,7 +4,7 @@
 ###############################################
 # CONFIG FILE for mock test
 # MOCK Galaxy: has constant SFH, single FeH
-# MODEL Galaxy: has NonParam SFH, single MDF, N_im = 256
+# MODEL Galaxy: has NonParam SFH, single MDF, Nim = 256
 
 from pcmdpy import instrument, galaxy, gpu_utils, priors
 from pcmdpy import agemodels, dustmodels, metalmodels
@@ -128,8 +128,8 @@ if DYNAMIC:
 ###############################################
 # PCMD MODELLING SETTINGS
 
-# The size (N_im x N_im) of the simulated image
-params['N_im'] = 256
+# The size (Nim x Nim) of the simulated image
+params['Nim'] = 256
 
 # The filters (photometry bands) to model
 # There should be at least 2 filters.
