@@ -134,8 +134,8 @@ if DYNAMIC:
 ###############################################
 # PCMD MODELLING SETTINGS
 
-# The size (N_im x N_im) of the simulated image
-params['N_im'] = 512
+# The size (Nim x Nim) of the simulated image
+params['Nim'] = 512
 
 # The filters (photometry bands) to model. There should be at least 2 filters.
 # Default choice: F814W and F475W
@@ -266,5 +266,5 @@ pcmd, _ = driv.simulate(model_mock, N_mock,
                         downsample=params['downsample'],
                         mag_system=params['mag_system'])
 pcmd = pcmd.reshape(2, 256, 256)
-pcmd = pcmd[:21, :21].reshape((2, 21*21))
+pcmd = pcmd[:, :21, :21].reshape((2, 21*21))
 del driv
