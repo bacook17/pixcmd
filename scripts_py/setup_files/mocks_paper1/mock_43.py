@@ -134,8 +134,8 @@ if DYNAMIC:
 ###############################################
 # PCMD MODELLING SETTINGS
 
-# The size (N_im x N_im) of the simulated image
-params['N_im'] = 512
+# The size (Nim x Nim) of the simulated image
+params['Nim'] = 512
 
 # The filters (photometry bands) to model. There should be at least 2 filters.
 # Default choice: F814W and F475W
@@ -232,7 +232,7 @@ params['prior'] = params['gal_model'].get_flat_prior(**prior_bounds)
 params['data_is_mock'] = True
 
 # scale of mock image (N_mock x N_mock)
-N_mock = 205
+N_mock = 256
 
 # model of the mock galaxy
 feh = -0.25
@@ -259,11 +259,14 @@ model_mock.set_params(gal_params)
 # temporary driver to make mock
 driv = ppy.driver.Driver(params['iso_model'], gpu=True)
 # The mock data
-params['data_pcmd'], _ = driv.simulate(model_mock, N_mock,
-                                       fixed_seed=params['fixed_seed'],
-                                       shot_noise=params['shot_noise'],
-                                       sky_noise=params['sky_noise'],
-                                       downsample=params['downsample'],
-                                       mag_system=params['mag_system'])
+pcmd, _ = driv.simulate(model_mock, N_mock,
+                        fixed_seed=params['fixed_seed'],
+                        shot_noise=params['shot_noise'],
+                        sky_noise=params['sky_noise'],
+                        downsample=params['downsample'],
+                        mag_system=params['mag_system'])
+pcmd = pcmd.reshape(2, 256, 256)
+pcmd = pcmd[:, :205, :205].reshape((2, 205*205))
+params['data_pcmd'] = pcmd
 
 del driv
