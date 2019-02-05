@@ -1,10 +1,12 @@
-Using pcmdpy version 0.8.8
+Using pcmdpy version 0.9.0
 Loading Setup File: setup_files/mocks_paper1/mock_45.py
-Other error when importing
-cannot reshape array of size 10752 into shape (2,441)
-Check stderr for full traceback
+No --data option provided, but setup_files/mocks_paper1/mock_45.py does not have data_is_mock set to True
 mprof: Sampling memory every 10.0s
                JobID    JobName   NTasks  AllocCPUS    AllocGRES  Partition    Elapsed     MaxRSS  MaxVMSize  MaxDiskRead MaxDiskWrite      State 
 -------------------- ---------- -------- ---------- ------------ ---------- ---------- ---------- ---------- ------------ ------------ ---------- 
-         66812760_45 paper1_mo+                   2        gpu:1 holyseasg+   00:00:45                                                    RUNNING 
-  66812760_45.extern     extern        1          2        gpu:1              00:00:45                                                    RUNNING 
+         66915262_45 paper1_mo+                   1        gpu:1    fas_gpu   00:01:16                                                    RUNNING 
+  66915262_45.extern     extern        1          1        gpu:1              00:01:16                                                    RUNNING 
+         66915262_43 paper1_mo+                   1        gpu:1    fas_gpu   00:01:16                                                    RUNNING 
+  66915262_43.extern     extern        1          1        gpu:1              00:01:16                                                    RUNNING 
+         66915262_44 paper1_mo+                   1        gpu:1    fas_gpu   00:01:16                                                    RUNNING 
+  66915262_44.extern     extern        1          1        gpu:1              00:01:16                                                    RUNNING 

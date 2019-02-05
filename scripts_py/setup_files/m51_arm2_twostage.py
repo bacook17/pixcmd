@@ -125,8 +125,8 @@ if DYNAMIC:
 ###############################################
 # PCMD MODELLING SETTINGS
 
-# The size (N_im x N_im) of the simulated image
-params['N_im'] = 1024
+# The size (Nim x Nim) of the simulated image
+params['Nim'] = 1024
 
 # The filters (photometry bands) to model. There should be at least 2 filters.
 # Default choice: F814W and F475W
