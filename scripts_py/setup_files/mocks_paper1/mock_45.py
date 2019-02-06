@@ -267,4 +267,5 @@ pcmd, _ = driv.simulate(model_mock, N_mock,
                         mag_system=params['mag_system'])
 pcmd = pcmd.reshape(2, 256, 256)
 pcmd = pcmd[:, :21, :21].reshape((2, 21*21))
+params['data_pcmd'] = pcmd
 del driv
