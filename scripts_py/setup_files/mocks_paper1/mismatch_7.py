@@ -257,10 +257,10 @@ model_mock.set_params(gal_params)
 
 # Create the mock data
 # temporary driver to make mock
-# ACTUAL EXPOSURE: 5x lower
+# ACTUAL EXPOSURE: 2x lower
 f = ppy.instrument.default_m31_filters()
 for filt in f:
-    filt._exposure /= 5.0
+    filt._exposure /= 2.0
 
 iso_temp = ppy.isochrones.Isochrone_Model(f)
 driv = ppy.driver.Driver(iso_temp, gpu=True)
