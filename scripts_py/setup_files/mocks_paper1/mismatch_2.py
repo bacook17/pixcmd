@@ -152,9 +152,9 @@ metalmodel = ppy.metalmodels.SingleFeH()  # Single Metallicity
 # metalmodel = ppy.metalmodels.FixedWidthNormMDF(0.2)  # fixed width MDF
 
 # Dust model
-dustmodel = ppy.dustmodels.SingleDust()  # single dust screen
+# dustmodel = ppy.dustmodels.SingleDust()  # single dust screen
 # dustmodel = ppy.dustmodels.LogNormDust()  # lognormal screen
-# dustmodel = ppy.dustmodels.FixedWidthLogNormDust(0.3)  # fixed width lognorm
+dustmodel = ppy.dustmodels.FixedWidthLogNormDust(0.1)  # fixed width lognorm
 
 # Age model
 # sfhmodel = ppy.sfhmodels.NonParam()  # Fully non-parametric model

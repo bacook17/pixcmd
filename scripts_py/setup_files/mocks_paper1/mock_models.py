@@ -293,17 +293,17 @@ run_names['mock_54'] = r'NonParam Model (Distance Free, Npix=1e6, Constant SFR)'
 
 models['mismatch_1'] = ppy.galaxy.CustomGalaxy(
         ppy.metalmodels.FixedWidthNormMDF(0.2, -0.25),  # model SingleFeH with FixedWidthNormMDF
-        ppy.dustmodels.SingleDust(-0.5),
+        ppy.dustmodels.FixedWidthLogNormDust(0.1, -0.5),
         ppy.sfhmodels.TauModel(np.array([2.0, 3.0])),
         ppy.distancemodels.VariableDistance(26.0)
     )
 run_names['mismatch_1'] = 'Model: MDF, Truth: Single [Fe/H]'
 
-models['mismatch_2'] = models['mock_3']  # model FixedWidthNormMDF with SingleFeH
+models['mismatch_2'] = models['mock_5'].copy()  # model FixedWidthNormMDF with SingleFeH
 run_names['mismatch_2'] = 'Model: Single [Fe/H], Truth: MDF'
 
 models['mismatch_3'] = ppy.galaxy.CustomGalaxy(
-        ppy.metalmodels.SingleFeH(-0.25),
+        ppy.metalmodels.FixedWidthNormMDF(0.2, -0.25),
         ppy.dustmodels.FixedWidthLogNormDust(0.1, -0.5),  # model SingleDust (Fdust=0.5) with FixedWidthLogNormDust
         ppy.sfhmodels.TauModel(np.array([2.0, 3.0])),
         ppy.distancemodels.VariableDistance(26.0)
@@ -311,7 +311,7 @@ models['mismatch_3'] = ppy.galaxy.CustomGalaxy(
 run_names['mismatch_3'] = 'Model: LogNorm Dust, Truth: Single Dust'
 
 models['mismatch_4'] = ppy.galaxy.CustomGalaxy(
-        ppy.metalmodels.SingleFeH(-0.25),
+        ppy.metalmodels.FixedWidthNormMDF(0.2, -0.25),
         ppy.dustmodels.SingleDust(-0.5, dust_frac=0.5),  # model FixedWidthLogNormDust with SingleDust (Fdust=0.5)
         ppy.sfhmodels.TauModel(np.array([2.0, 3.0])),
         ppy.distancemodels.VariableDistance(26.0)
@@ -319,7 +319,7 @@ models['mismatch_4'] = ppy.galaxy.CustomGalaxy(
 run_names['mismatch_4'] = 'Model: Single Dust, Truth: LogNorm Dust'
 
 models['mismatch_5'] = ppy.galaxy.CustomGalaxy(
-        ppy.metalmodels.SingleFeH(-0.25),
+        ppy.metalmodels.FixedWidthNormMDF(0.2, -0.25),
         ppy.dustmodels.FixedWidthLogNormDust(0.1, -0.5, dust_frac=1.0),  # model Fdust=0.5 with Fdust=1.0
         ppy.sfhmodels.TauModel(np.array([2.0, 3.0])),
         ppy.distancemodels.VariableDistance(26.0)
@@ -327,31 +327,31 @@ models['mismatch_5'] = ppy.galaxy.CustomGalaxy(
 run_names['mismatch_5'] = 'Model: DustFrac = 1, Truth: DustFrac = 0.5'
 
 models['mismatch_6'] = ppy.galaxy.CustomGalaxy(
-        ppy.metalmodels.SingleFeH(-0.25),
-        ppy.dustmodels.SingleDust(-0.5),
+        ppy.metalmodels.FixedWidthNormMDF(0.2, -0.25),
+        ppy.dustmodels.FixedWidthLogNormDust(0.1, -0.5),
         ppy.sfhmodels.TauModel(np.array([2.0, 3.0])),
         ppy.distancemodels.FixedDistance(28.0)  # model has wrong distance
     )
 run_names['mismatch_6'] = 'Model: Dmod=28, Truth: Dmod=26'
 
-models['mismatch_7'] = models['mock_3']  # Exposure overestimated in model
+models['mismatch_7'] = models['mock_5'].copy()  # Exposure overestimated in model
 run_names['mismatch_7'] = 'Model: Overestimates Exposure Time by 5x'
 
-models['mismatch_8'] = models['mock_3']  # mock has PSF 10% narrower
+models['mismatch_8'] = models['mock_5'].copy()  # mock has PSF 10% narrower
 run_names['mismatch_8'] = 'Model: Overestimates PSF width by 10%'
 
-models['mismatch_9'] = models['mock_3']  # mock has PSF 10% narrower in F814W
+models['mismatch_9'] = models['mock_5'].copy()  # mock has PSF 10% narrower in F814W
 run_names['mismatch_9'] = 'Model: Overestimates F814W PSF width by 10%'
 
 models['mismatch_10'] = ppy.galaxy.CustomGalaxy(
         ppy.metalmodels.FixedWidthNormMDF(0.3, -0.25),  # model sig=0.1 with sig=0.3
-        ppy.dustmodels.SingleDust(-0.5),
+        ppy.dustmodels.FixedWidthLogNormDust(0.1, -0.5),
         ppy.sfhmodels.TauModel(np.array([2.0, 3.0])),
         ppy.distancemodels.VariableDistance(26.0)
     )
 run_names['mismatch_10'] = 'Model: Overestimates MDF width (0.3 vs 0.1)'
 
-models['mismatch_11'] = models['mock_3']  # Mock has no downsample
+models['mismatch_11'] = models['mock_5'].copy()  # Mock has no downsample
 run_names['mismatch_11'] = 'Mock: no isochrone downsampling'
 
 for key in models.keys():
