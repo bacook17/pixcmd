@@ -361,7 +361,7 @@ for key in models.keys():
         results[key] = ppy.results.ResultsPlotter(
             res_file, live_file=live_file, run_name=run_names[key],
             gal_model=models[key], model_is_truth=('mock in key'))
-    except FileNotFoundError:
+    except (FileNotFoundError, ValueError, AttributeError):
         pass
         
 assert np.all([k in models for k in run_names.keys()]), str([k for k in run_names.keys() if k not in models])
