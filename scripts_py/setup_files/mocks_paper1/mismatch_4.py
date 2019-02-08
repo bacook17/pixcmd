@@ -147,9 +147,9 @@ params['iso_model'] = ppy.isochrones.Isochrone_Model(params['filters'])
 # Set a custom Galaxy Model with four parts
 
 # Metallicity model
-metalmodel = ppy.metalmodels.SingleFeH()  # Single Metallicity
+# metalmodel = ppy.metalmodels.SingleFeH()  # Single Metallicity
 # metalmodel = ppy.metalmodels.NormMDF()  # Gaussian MDF
-# metalmodel = ppy.metalmodels.FixedWidthNormMDF(0.2)  # fixed width MDF
+metalmodel = ppy.metalmodels.FixedWidthNormMDF(0.2)  # fixed width MDF
 
 # Dust model
 dustmodel = ppy.dustmodels.SingleDust(dust_frac=0.5)  # single dust screen

@@ -153,9 +153,9 @@ params['iso_model'] = ppy.isochrones.Isochrone_Model(params['filters'])
 metalmodel = ppy.metalmodels.FixedWidthNormMDF(0.3)  # fixed width MDF
 
 # Dust model
-dustmodel = ppy.dustmodels.SingleDust()  # single dust screen
+# dustmodel = ppy.dustmodels.SingleDust()  # single dust screen
 # dustmodel = ppy.dustmodels.LogNormDust()  # lognormal screen
-# dustmodel = ppy.dustmodels.FixedWidthLogNormDust(0.1, dust_frac=1.0)  # fixed width lognorm
+dustmodel = ppy.dustmodels.FixedWidthLogNormDust(0.1)  # fixed width lognorm
 
 # Age model
 # sfhmodel = ppy.sfhmodels.NonParam()  # Fully non-parametric model
