@@ -54,6 +54,10 @@ Mock Tests (LogLike = 2, ShotNoise On, Nim=512)
 
 50 - 54 : same as (8, 46-49), but with mock data from Constant SFR model
 
+55 - 59 : same as (41 - 45), but with increasing dmod [25, 27.5, 30, 32.5, 35]
+
+60 : Poisson Likelihood
+
 Mismatch Tests
 --------------
 Unless otherwise specified, uses same parameters as Mock Test #2
@@ -85,3 +89,5 @@ Unless otherwise specified, uses same parameters as Mock Test #2
 10 : Overestimate MDF sigma (Mock: 0.1, Model: 0.3)
 
 11 : Mock has no downsample (Model: downsample = 5)
+
+12 : Mock has FeH that increases linearly with log time
