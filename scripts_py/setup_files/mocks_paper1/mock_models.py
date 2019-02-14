@@ -363,6 +363,9 @@ for key in models.keys():
             gal_model=models[key], model_is_truth=('mock in key'))
     except (FileNotFoundError, ValueError, AttributeError):
         pass
+    except Exception as e:
+        print(key, e)
+        raise e
         
 assert np.all([k in models for k in run_names.keys()]), str([k for k in run_names.keys() if k not in models])
 assert np.all([k in run_names for k in models.keys()]), str([k for k in models.keys() if k not in run_names])
