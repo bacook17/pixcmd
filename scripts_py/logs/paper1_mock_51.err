@@ -1,2 +1,14 @@
-slurmstepd: error: *** JOB 19568 ON holygpu12 CANCELLED AT 2019-02-13T20:01:47 DUE TO TIME LIMIT ***
-slurmstepd: error: *** JOB 19568 STEPD TERMINATED ON holygpu12 AT 2019-02-13T20:02:47 DUE TO JOB NOT ENDING WITH SIGNALS ***
+Please wait while the GPU states are initializedPlease wait while the GPU states are initializedTraceback (most recent call last):
+  File "/n/home01/bcook/.conda/envs/py36/bin/pcmd_integrate", line 6, in <module>
+    exec(compile(open(__file__).read(), __file__, 'exec'))
+  File "/n/home01/bcook/pCMDs/pixcmd/pcmdpy/bin/pcmd_integrate", line 129, in <module>
+    fit_model.nested_integrate(**args)
+  File "/n/home01/bcook/pCMDs/pixcmd/pcmdpy/pcmdpy/sampling/fit_model.py", line 94, in nested_integrate
+    original_res.restart_sampler(sampler, prior.inverse_prior_transform)
+  File "/n/home01/bcook/pCMDs/pixcmd/pcmdpy/pcmdpy/results/results.py", line 847, in restart_sampler
+    sampler.saved_u = [pri_inv_trans(v) for v in sampler.saved_v]
+  File "/n/home01/bcook/pCMDs/pixcmd/pcmdpy/pcmdpy/results/results.py", line 847, in <listcomp>
+    sampler.saved_u = [pri_inv_trans(v) for v in sampler.saved_v]
+  File "/n/home01/bcook/pCMDs/pixcmd/pcmdpy/pcmdpy/sampling/priors.py", line 141, in inverse_prior_transform
+    '{1:d}'.format(self.ndim, len(params)))
+ValueError: len(params) must equal 8. Instead is 11
