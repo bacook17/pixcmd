@@ -107,7 +107,7 @@ sampler_params['first_update'] = {'min_eff': 30.}
 # DYNESTY RUN_NESTED SETTINGS
 
 # The number of max calls for dynesty
-run_params['maxcall'] = 150000
+run_params['maxcall'] = 250000
 
 # The error tolerance for dynesty stopping criterion
 _dlogz = 0.5
