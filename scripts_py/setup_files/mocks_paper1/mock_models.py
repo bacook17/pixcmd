@@ -289,20 +289,45 @@ models['mock_54'] = ppy.galaxy.CustomGalaxy(
     )
 run_names['mock_54'] = r'NonParam Model (Distance Free, Npix=1e6, Constant SFR)'
 
-models['mock_55'] = models['mock_5'].copy()
-run_names['mock_55'] = 'Tau-MDF Model (Distance Free, Nim = 2048, Npix=1e2)'
+models['mock_55'] = ppy.galaxy.CustomGalaxy(
+        ppy.metalmodels.FixedWidthNormMDF(0.2, -0.25),
+        ppy.dustmodels.FixedWidthLogNormDust(0.1, -0.5),
+        ppy.sfhmodels.TauModel(np.array([2.0, 3.0])),
+        ppy.distancemodels.VariableDistance(25.0)
+    )
+run_names['mock_55'] = 'Tau-MDF Model (Distance Free, Nim = 2048, Npix=1e2, Dmod=25)'
 
-models['mock_56'] = models['mock_25'].copy()
-run_names['mock_56'] = 'Tau-MDF Model (Distance Free, Nim = 648, Npix=1e3)'
+models['mock_56'] = ppy.galaxy.CustomGalaxy(
+        ppy.metalmodels.FixedWidthNormMDF(0.2, -0.25),
+        ppy.dustmodels.FixedWidthLogNormDust(0.1, -0.5),
+        ppy.sfhmodels.TauModel(np.array([3.0, 3.0])),
+        ppy.distancemodels.VariableDistance(27.5)
+    )
+run_names['mock_56'] = 'Tau-MDF Model (Distance Free, Nim = 658, Npix=1e3, Dmod=27.5)'
 
-models['mock_57'] = models['mock_26'].copy()
-run_names['mock_57'] = 'Tau-MDF Model (Distance Free, Nim = 205, Npix=1e4)'
+models['mock_57'] = ppy.galaxy.CustomGalaxy(
+        ppy.metalmodels.FixedWidthNormMDF(0.2, -0.25),
+        ppy.dustmodels.FixedWidthLogNormDust(0.1, -0.5),
+        ppy.sfhmodels.TauModel(np.array([4.0, 3.0])),
+        ppy.distancemodels.VariableDistance(30.0)
+    )
+run_names['mock_57'] = 'Tau-MDF Model (Distance Free, Nim = 205, Npix=1e4, Dmod=30)'
 
-models['mock_58'] = models['mock_27'].copy()
-run_names['mock_58'] = 'Tau-MDF Model (Distance Free, Nim = 65, Npix=1e5)'
+models['mock_58'] = ppy.galaxy.CustomGalaxy(
+        ppy.metalmodels.FixedWidthNormMDF(0.2, -0.25),
+        ppy.dustmodels.FixedWidthLogNormDust(0.1, -0.5),
+        ppy.sfhmodels.TauModel(np.array([5.0, 3.0])),
+        ppy.distancemodels.VariableDistance(32.5)
+    )
+run_names['mock_58'] = 'Tau-MDF Model (Distance Free, Nim = 66, Npix=1e5, Dmod=32.5)'
 
-models['mock_59'] = models['mock_28'].copy()
-run_names['mock_59'] = 'Tau-MDF Model (Distance Free, Nim = 21, Npix=1e6)'
+models['mock_59'] = ppy.galaxy.CustomGalaxy(
+        ppy.metalmodels.FixedWidthNormMDF(0.2, -0.25),
+        ppy.dustmodels.FixedWidthLogNormDust(0.1, -0.5),
+        ppy.sfhmodels.TauModel(np.array([6.0, 3.0])),
+        ppy.distancemodels.VariableDistance(35.0)
+    )
+run_names['mock_59'] = 'Tau-MDF Model (Distance Free, Nim = 21, Npix=1e6, Dmod=35)'
 
 models['mock_60'] = models['mock_5'].copy()
 run_names['mock_60'] = 'Tau-MDF Model (Poisson Likelihood)'
