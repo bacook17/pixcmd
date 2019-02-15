@@ -13,8 +13,6 @@ def get_max_logl(key, n_samples=100, verbose=True):
     spec.loader.exec_module(config)
     params = config.params
     
-    for k in params.keys():
-        assert (k in known_keys), f"Key unknown: {k}"
     assert params['data_is_mock'], "Have not implemented data runs yet"
     
     driv.filters = params['filters']
@@ -50,18 +48,15 @@ def add_max_logl(key, max_logl):
 
 
 if __name__ == '__main__':
-    known_keys = ['use_gpu', 'verbose', 'dynamic', 'Nim', 'filters',
-                  'iso_model', 'gal_model', 'like_mode', 'bins',
-                  'downsample', 'mag_system', 'lum_cut', 'fixed_seed',
-                  'sky_noise', 'shot_noise', 'prior',
-                  'data_is_mock', 'data_pcmd', 'continue_run']
-
     f_mock = ppy.instrument.default_m31_filters()
     iso_model = ppy.isochrones.Isochrone_Model(f_mock, mag_system='vega')
     driv = ppy.driver.Driver(iso_model, gpu=True)
 
     max_logls = {}
+    finished = [f'mock_{i}' for i in range(1, 18)]
     for i, k in enumerate(list(results.keys())):
+        if k in finished:
+            continue
         print(f'{k}, {i} of {len(results)}')
         max_logl = get_max_logl(k, n_samples=100, verbose=False)
         max_logls[k] = max_logl
