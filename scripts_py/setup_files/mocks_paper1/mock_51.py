@@ -76,7 +76,7 @@ sampler_params['pool'] = pool
 params['dynamic'] = DYNAMIC = True
 
 # The number of dynesty live points
-_nlive = 2000
+_nlive = 1000
 if DYNAMIC:
     run_params['nlive_init'] = _nlive
 else:
@@ -107,8 +107,8 @@ sampler_params['first_update'] = {'min_eff': 30.}
 # DYNESTY RUN_NESTED SETTINGS
 
 # The number of max calls for dynesty
-run_params['maxcall'] = 100000
-params['continue_run'] = True
+run_params['maxcall'] = 200000
+params['continue_run'] = False
 
 # The error tolerance for dynesty stopping criterion
 _dlogz = 0.5
