@@ -53,10 +53,7 @@ if __name__ == '__main__':
     driv = ppy.driver.Driver(iso_model, gpu=True)
 
     max_logls = {}
-    finished = [f'mock_{i}' for i in range(1, 18)]
-    for i, k in enumerate(list(results.keys())):
-        if k in finished:
-            continue
+    for i, k in enumerate(['mock_11']):
         print(f'{k}, {i} of {len(results)}')
         max_logl = get_max_logl(k, n_samples=100, verbose=False)
         max_logls[k] = max_logl
