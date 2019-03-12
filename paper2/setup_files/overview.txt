@@ -1,0 +1,76 @@
+M31 Models (Loglike = 2, ShotNoise On, Nim=512)
+--------------
+Summer :
+       F814W = 3040s
+       F475W = 3440s
+       s1 - Bulge 1
+       s2 - Disk 4
+       s3 - Disk 5
+       s4 - Disk 7
+       s5 - Disk 8
+       s6 - Disk 9
+       s7 - Disk 10
+       s8 - Bulge 4
+       s9 - Bulge 5
+
+Winter :
+       F814W = 3430s
+       F475W = 3800s
+       w1 - Bulge 2
+       w2 - Bulge 3
+       w3 - Disk 1
+       w4 - Disk 2
+       w5 - Disk 3
+       w6 - Disk 6
+       w7 - Bulge 6
+       w8 - Bulge 7
+       w9 - Bulge 8
+       w10 - Bulge 9
+
+Bulge Regions:
+      1 - s1
+      2 - w1
+      3 - w2
+      4 - s8
+      5 - s9
+      6 - w7
+      7 - w8
+      8 - w9
+      9 - w10
+
+Disk Regions :
+     1 - w3
+     2 - w4
+     3 - w5
+     4 - s2
+     5 - s3
+     6 - w6
+     7 - s4
+     8 - s5
+     9 - s6
+     10 - s7
+     
+
+Model1 :
+       MDF (sigma=0.2)
+       Single Dust Screen
+       Tau Model
+       Fixed Distance
+
+Model2 :
+       MDF (sigma=0.2)
+       Single Dust Screen
+       Tau Model
+       Distance Free
+
+Model3 :
+       MDF (sigma=0.2)
+       Single Dust Screen
+       NonParam SFH
+       Fixed Distance
+
+Model4 :
+       MDF (sigma=0.2)
+       Single Dust Screen
+       NonParam SFH
+       Distance Free
