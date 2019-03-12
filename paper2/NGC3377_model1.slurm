@@ -1,6 +1,6 @@
 #!/bin/bash
 #SBATCH -p fas_gpu,holyseasgpu,gpu
-#SBATCH -J m31_summer_model1
+#SBATCH -J NGC3377_m1
 #SBATCH -n 1 # Number of cores requested
 #SBATCH -N 1 #ensure that all cores are on one machine
 #SBATCH --gres=gpu:1 #Number of GPUs requested
@@ -14,8 +14,8 @@
 MPROF_FILE="logs/${SLURM_JOB_NAME}_r${SLURM_ARRAY_TASK_ID}.mem"
 command rm $MPROF_FILE
 
-CONFIG_FILE="setup_files/m31_paper2/m31_summer_model1.py"
-DATA_FILE="../data/m31/pcmds/m31_summer_r${SLURM_ARRAY_TASK_ID}.pcmd"
+CONFIG_FILE="setup_files/NGC3377/NGC3377_model1.py"
+DATA_FILE="../data/NGC3377/pcmds/NGC3377_z_gz_${SLURM_ARRAY_TASK_ID}.pcmd"
 RESULTS_FILE="results/${SLURM_JOB_NAME}_r${SLURM_ARRAY_TASK_ID}.csv"
 
 COMMAND="pcmd_integrate --config ${CONFIG_FILE} --data ${DATA_FILE} --results ${RESULTS_FILE}"
