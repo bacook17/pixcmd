@@ -7,7 +7,7 @@
 #    Single FeH
 #    Single Dust
 #    Tau SFH
-#    Distance Fixed
+#    Distance Free
 
 import pcmdpy_gpu as ppy
 import multiprocessing
@@ -158,8 +158,8 @@ sfhmodel = ppy.sfhmodels.TauModel()  # exponential SFR decline
 # sfhmodel = ppy.sfhmodels.SSPModel()  # single age SSP
 
 # Distance model
-distancemodel = ppy.distancemodels.FixedDistance(30.21)  # fixed dmod=30.21 (11.144 Mpc)
-# distancemodel = ppy.distancemodels.VariableDistance()  # dmod floats
+# distancemodel = ppy.distancemodels.FixedDistance(24.42)  # fixed dmod=24.42 (766 kpc)
+distancemodel = ppy.distancemodels.VariableDistance()  # dmod floats
 params['gal_model'] = ppy.galaxy.CustomGalaxy(metalmodel, dustmodel, sfhmodel,
                                               distancemodel)
 
@@ -198,8 +198,8 @@ params['shot_noise'] = True
 z_bound = [-0.5, 0.5]  # metallicity
 dust_med_bound = [-2.0, -.5]  # log dust median
 # Only set the distance bounds if allowed to float
-dmod_bound = None
-# dmod_bound = [[27., 34.]]
+# dmod_bound = None
+dmod_bound = [[27., 34.]]
 
 # Compute the 7-param SFH bound using tau models to bound
 Npix_bound = [2., 5.]
