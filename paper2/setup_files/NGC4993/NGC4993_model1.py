@@ -125,7 +125,7 @@ params['Nim'] = 512
 
 # The filters (photometry bands) to model. There should be at least 2 filters.
 # Default choice: F814W and F475W
-params['filters'] = ppy.instrument.default_NGC4993_filters()
+params['filters'] = ppy.instrument.default_ngc4993_filters()
 
 # Alternative choice: F814W, F555W, and F435W
 # params['filters'] = ppy.instrument.default_m51_filters()
