@@ -158,7 +158,7 @@ sfhmodel = ppy.sfhmodels.TauModel()  # exponential SFR decline
 # sfhmodel = ppy.sfhmodels.SSPModel()  # single age SSP
 
 # Distance model
-distancemodel = ppy.distancemodels.FixedDistance(30.21)  # fixed dmod=30.21 (11.144 Mpc)
+distancemodel = ppy.distancemodels.FixedDistance(31.0)  # fixed dmod=31.0
 # distancemodel = ppy.distancemodels.VariableDistance()  # dmod floats
 params['gal_model'] = ppy.galaxy.CustomGalaxy(metalmodel, dustmodel, sfhmodel,
                                               distancemodel)
@@ -187,7 +187,7 @@ params['lum_cut'] = np.inf
 params['fixed_seed'] = True
 
 # Average counts of "sky noise" to add in each band
-params['sky_noise'] = [89.4, 67.5]
+params['sky_noise'] = [56.9, 50.1]
 
 params['shot_noise'] = True
 

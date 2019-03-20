@@ -187,7 +187,7 @@ params['lum_cut'] = np.inf
 params['fixed_seed'] = True
 
 # Average counts of "sky noise" to add in each band
-params['sky_noise'] = [140., 90.]
+params['sky_noise'] = [126.9, 76.5]
 
 params['shot_noise'] = True
 
