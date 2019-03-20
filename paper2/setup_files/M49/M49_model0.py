@@ -1,13 +1,13 @@
-# M87 Model 1 (Tau Model, Narrow Mu Prior)
+# M49 Model 1 (Tau Model)
 # Ben Cook (bcook@cfa.harvard.edu)
 
 ###############################################
-# CONFIG FILE for M87 Model 1
+# CONFIG FILE for M49 Model 1
 # MODEL Galaxy:
 #    Single FeH
 #    Single Dust
 #    Tau SFH
-#    Distance Free
+#    Distance Fixed
 
 import pcmdpy_gpu as ppy
 import multiprocessing
@@ -95,7 +95,7 @@ sampler_params['first_update'] = {'min_eff': 30.}
 # DYNESTY RUN_NESTED SETTINGS
 
 # The number of max calls for dynesty
-run_params['maxcall'] = 200000
+run_params['maxcall'] = 100000
 
 # The error tolerance for dynesty stopping criterion
 _dlogz = 0.5
@@ -125,7 +125,7 @@ params['Nim'] = 512
 
 # The filters (photometry bands) to model. There should be at least 2 filters.
 # Default choice: F814W and F475W
-params['filters'] = ppy.instrument.default_m87_filters()
+params['filters'] = ppy.instrument.default_m49_filters()
 
 # Alternative choice: F814W, F555W, and F435W
 # params['filters'] = ppy.instrument.default_m51_filters()
@@ -158,8 +158,8 @@ sfhmodel = ppy.sfhmodels.TauModel()  # exponential SFR decline
 # sfhmodel = ppy.sfhmodels.SSPModel()  # single age SSP
 
 # Distance model
-distancemodel = ppy.distancemodels.FixedDistance(31.0)  # fixed dmod=31
-distancemodel = ppy.distancemodels.VariableDistance()  # dmod floats
+distancemodel = ppy.distancemodels.FixedDistance(31.0)  # fixed dmod=31.0
+# distancemodel = ppy.distancemodels.VariableDistance()  # dmod floats
 params['gal_model'] = ppy.galaxy.CustomGalaxy(metalmodel, dustmodel, sfhmodel,
                                               distancemodel)
 
@@ -187,7 +187,7 @@ params['lum_cut'] = np.inf
 params['fixed_seed'] = True
 
 # Average counts of "sky noise" to add in each band
-params['sky_noise'] = [292.8, 377.1]
+params['sky_noise'] = [56.9, 50.1]
 
 params['shot_noise'] = True
 
@@ -198,12 +198,12 @@ params['shot_noise'] = True
 z_bound = [-0.5, 0.5]  # metallicity
 dust_med_bound = [-2.0, -.5]  # log dust median
 # Only set the distance bounds if allowed to float
-# dmod_bound = None
-dmod_bound = [[30., 32.]]
+dmod_bound = None
+# dmod_bound = [[27., 34.]]
 
 # Compute the 7-param SFH bound using tau models to bound
-Npix_bound = [3., 6.]
-tau_bound = [0.1, 4.]
+Npix_bound = [2., 5.]
+tau_bound = [0.1, 5.]
 
 # Create a Prior object with given bounds
 prior_bounds = {}

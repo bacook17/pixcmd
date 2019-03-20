@@ -1,4 +1,4 @@
-# NGC3377 Model 1 (Tau Model)
+# NGC3377 Model 1 (Tau Model, Narrow Mu Prior)
 # Ben Cook (bcook@cfa.harvard.edu)
 
 ###############################################
@@ -7,7 +7,7 @@
 #    Single FeH
 #    Single Dust
 #    Tau SFH
-#    Distance Fixed
+#    Distance Free
 
 import pcmdpy_gpu as ppy
 import multiprocessing
@@ -95,7 +95,7 @@ sampler_params['first_update'] = {'min_eff': 30.}
 # DYNESTY RUN_NESTED SETTINGS
 
 # The number of max calls for dynesty
-run_params['maxcall'] = 100000
+run_params['maxcall'] = 200000
 
 # The error tolerance for dynesty stopping criterion
 _dlogz = 0.5
@@ -158,8 +158,8 @@ sfhmodel = ppy.sfhmodels.TauModel()  # exponential SFR decline
 # sfhmodel = ppy.sfhmodels.SSPModel()  # single age SSP
 
 # Distance model
-distancemodel = ppy.distancemodels.FixedDistance(30.21)  # fixed dmod=30.21 (11.144 Mpc)
-# distancemodel = ppy.distancemodels.VariableDistance()  # dmod floats
+# distancemodel = ppy.distancemodels.FixedDistance(30.21)  # fixed dmod=30.21 (11.144 Mpc)
+distancemodel = ppy.distancemodels.VariableDistance()  # dmod floats
 params['gal_model'] = ppy.galaxy.CustomGalaxy(metalmodel, dustmodel, sfhmodel,
                                               distancemodel)
 
@@ -198,12 +198,12 @@ params['shot_noise'] = True
 z_bound = [-0.5, 0.5]  # metallicity
 dust_med_bound = [-2.0, -.5]  # log dust median
 # Only set the distance bounds if allowed to float
-dmod_bound = None
-# dmod_bound = [[27., 34.]]
+# dmod_bound = None
+dmod_bound = [[29., 31.]]
 
 # Compute the 7-param SFH bound using tau models to bound
-Npix_bound = [2., 5.]
-tau_bound = [0.1, 5.]
+Npix_bound = [3., 6.]
+tau_bound = [0.1, 4.]
 
 # Create a Prior object with given bounds
 prior_bounds = {}
