@@ -202,7 +202,7 @@ dmod_bound = None
 # dmod_bound = [[27., 34.]]
 
 # Compute the 7-param SFH bound using tau models to bound
-Npix_bound = [2., 5.]
+Npix_bound = [3., 6.]
 tau_bound = [0.1, 5.]
 
 # Create a Prior object with given bounds
