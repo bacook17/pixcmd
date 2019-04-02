@@ -1,12 +1,12 @@
-# DF2 Model 0 (SSP Model)
+# DF2 Model 2 (Custom NonParam Model)
 # Ben Cook (bcook@cfa.harvard.edu)
 
 ###############################################
-# CONFIG FILE for DF2 Model 0
+# CONFIG FILE for DF2 Model 2
 # MODEL Galaxy:
 #    Single FeH
 #    Single Dust
-#    SSP SFH
+#    Custom NonParam
 #    Distance Free
 
 import pcmdpy_gpu as ppy
@@ -95,7 +95,7 @@ sampler_params['first_update'] = {'min_eff': 30.}
 # DYNESTY RUN_NESTED SETTINGS
 
 # The number of max calls for dynesty
-run_params['maxcall'] = 200000
+run_params['maxcall'] = 400000
 
 # The error tolerance for dynesty stopping criterion
 _dlogz = 0.5
@@ -151,11 +151,15 @@ dustmodel = ppy.dustmodels.SingleDust()  # single dust screen
 # dustmodel = ppy.dustmodels.FixedWidthLogNormDust(0.3)  # fixed width lognorm
 
 # Age model
-# sfhmodel = ppy.sfhmodels.NonParam()  # Fully non-parametric model
+sfhmodel = ppy.sfhmodels.NonParam()  # Fully non-parametric model
+# Isochrones to use are 9.1, 9.3, 9.5, 9.7, 9.9, 10.1
+sfhmodel.update_edges(np.arange(9.0, 10.3, 0.1))
+# Use 3 SFH bins from 9.5-9.75, 9.75-10.0, 10.0-10.2
+sfhmodel.update_sfh_edges(np.array([9.5, 9.75, 10.0, 10.2]))
 # sfhmodel = ppy.sfhmodels.ConstantSFR()  # constant Star Formation Rate
 # sfhmodel = ppy.sfhmodels.TauModel()  # exponential SFR decline
 # sfhmodel = ppy.sfhmodels.RisingTau()  # Linear x exponential decline
-sfhmodel = ppy.sfhmodels.SSPModel()  # single age SSP
+# sfhmodel = ppy.sfhmodels.SSPModel()  # single age SSP
 
 # Distance model
 # distancemodel = ppy.distancemodels.FixedDistance(31.505)  # fixed dmod=31.505
@@ -164,7 +168,7 @@ params['gal_model'] = ppy.galaxy.CustomGalaxy(metalmodel, dustmodel, sfhmodel,
                                               distancemodel)
 
 # Add the binned hess values and the mean magnitude and color terms
-params['like_mode'] = 0
+params['like_mode'] = 2
 
 # The hess bins to compute the likelihood in
 # The magnitude upper/lower bounds are very important to consider
@@ -202,14 +206,15 @@ dust_med_bound = [-2.0, -1.5]  # log dust median
 dmod_bound = [[30., 32.]]
 
 # Compute the 7-param SFH bound using tau models to bound
-Npix_bound = [1., 4.]
-age_bound = [9.5, 10.1]
+# Npix_bound = [1., 4.]
+# age_bound = [9.5, 10.1]
+SFH_bounds = [[0.0, 2.5], [1.0, 3.5], [1.0, 3.5]]
 
 # Create a Prior object with given bounds
 prior_bounds = {}
 prior_bounds['feh_bounds'] = [z_bound]
 prior_bounds['dust_bounds'] = [dust_med_bound]
-prior_bounds['age_bounds'] = [Npix_bound, age_bound]
+prior_bounds['age_bounds'] = SFH_bounds
 prior_bounds['dmod_bounds'] = dmod_bound
 
 params['prior'] = params['gal_model'].get_flat_prior(**prior_bounds)
