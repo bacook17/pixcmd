@@ -1,0 +1,10 @@
+Using pcmdpy version 0.9.0
+Loading Setup File: setup_files/M87/M87_model10.py
+Other error when importing
+cuInit failed: no CUDA-capable device is detected
+Check stderr for full traceback
+mprof: Sampling memory every 10.0s
+               JobID    JobName   NTasks  AllocCPUS    AllocGRES  Partition    Elapsed     MaxRSS  MaxVMSize  MaxDiskRead MaxDiskWrite      State 
+-------------------- ---------- -------- ---------- ------------ ---------- ---------- ---------- ---------- ------------ ------------ ---------- 
+         5662705_104    M87_m10                   2        gpu:1    fas_gpu   00:02:14                                                    RUNNING 
+  5662705_104.extern     extern        1          2        gpu:1              00:02:14                                                    RUNNING 
