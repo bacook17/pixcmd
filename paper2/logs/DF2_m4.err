@@ -1,0 +1,17 @@
+rm: cannot remove ‘logs/DF2_m4.mem’: No such file or directory
+/n/home01/bcook/.conda/envs/py36/lib/python3.6/site-packages/pysynphot/locations.py:46: UserWarning: PYSYN_CDBS is undefined; functionality will be SEVERELY crippled.
+  warnings.warn("PYSYN_CDBS is undefined; functionality will be SEVERELY "
+/n/home01/bcook/.conda/envs/py36/lib/python3.6/site-packages/pysynphot/locations.py:329: UserWarning: Extinction files not found in extinction
+  warnings.warn('Extinction files not found in %s' % (extdir, ))
+Traceback (most recent call last):
+  File "/n/home01/bcook/pCMDs/pixcmd/pcmdpy/bin/pcmd_integrate", line 51, in <module>
+    spec.loader.exec_module(config)
+  File "<frozen importlib._bootstrap_external>", line 678, in exec_module
+  File "<frozen importlib._bootstrap>", line 219, in _call_with_frames_removed
+  File "setup_files/DF2/DF2_model4.py", line 156, in <module>
+    sfhmodel.update_edges(np.arange(9.0, 10.3, 0.1))
+  File "/n/home01/bcook/pCMDs/pixcmd/pcmdpy/pcmdpy/galaxy/sfhmodels.py", line 164, in update_edges
+    self.set_params(self._params)
+  File "/n/home01/bcook/pCMDs/pixcmd/pcmdpy/pcmdpy/galaxy/sfhmodels.py", line 147, in set_params
+    assert np.isclose(self.Npix, np.sum(10.**sfh_params))
+AssertionError
