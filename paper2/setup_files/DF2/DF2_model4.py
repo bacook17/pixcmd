@@ -152,10 +152,10 @@ dustmodel = ppy.dustmodels.SingleDust()  # single dust screen
 
 # Age model
 sfhmodel = ppy.sfhmodels.NonParam()  # Fully non-parametric model
-# Isochrones to use are 9.1, 9.3, 9.5, 9.7, 9.9, 10.1
-sfhmodel.update_edges(np.arange(9.0, 10.3, 0.1))
 # Use 3 SFH bins from 9.5-9.75, 9.75-10.0, 10.0-10.2
 sfhmodel.update_sfh_edges(np.array([9.5, 9.75, 10.0, 10.2]))
+# Isochrones to use are 9.1, 9.3, 9.5, 9.7, 9.9, 10.1
+sfhmodel.update_edges(np.arange(9.0, 10.3, 0.1))
 # sfhmodel = ppy.sfhmodels.ConstantSFR()  # constant Star Formation Rate
 # sfhmodel = ppy.sfhmodels.TauModel()  # exponential SFR decline
 # sfhmodel = ppy.sfhmodels.RisingTau()  # Linear x exponential decline
