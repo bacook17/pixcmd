@@ -1,12 +1,12 @@
-# m49 Model 2 (NonParam Model)
+# M49 Model 4 (Tau Model, Free, Single)
 # Ben Cook (bcook@cfa.harvard.edu)
 
 ###############################################
-# CONFIG FILE for m49 Model 2
+# CONFIG FILE for M49 Model 1
 # MODEL Galaxy:
 #    Single FeH
 #    Single Dust
-#    NonParam SFH
+#    Tau SFH
 #    Distance Free
 
 import pcmdpy_gpu as ppy
@@ -151,9 +151,9 @@ dustmodel = ppy.dustmodels.SingleDust()  # single dust screen
 # dustmodel = ppy.dustmodels.FixedWidthLogNormDust(0.3)  # fixed width lognorm
 
 # Age model
-sfhmodel = ppy.sfhmodels.NonParam()  # Fully non-parametric model
+# sfhmodel = ppy.sfhmodels.NonParam()  # Fully non-parametric model
 # sfhmodel = ppy.sfhmodels.ConstantSFR()  # constant Star Formation Rate
-# sfhmodel = ppy.sfhmodels.TauModel()  # exponential SFR decline
+sfhmodel = ppy.sfhmodels.TauModel()  # exponential SFR decline
 # sfhmodel = ppy.sfhmodels.RisingTau()  # Linear x exponential decline
 # sfhmodel = ppy.sfhmodels.SSPModel()  # single age SSP
 
@@ -190,37 +190,27 @@ params['fixed_seed'] = True
 params['sky_noise'] = [56.9, 50.1]
 
 params['shot_noise'] = True
+params['dither'] = False
 
 ###############################################
 # PRIOR SETTINGS
 
 # The bounds on the flat prior for each parameter
-z_bound = [-1.0, 0.5]  # metallicity
+z_bound = [-1.0, 0.25]  # metallicity
 dust_med_bound = [-2.0, -1.0]  # log dust median
 # Only set the distance bounds if allowed to float
 # dmod_bound = None
 dmod_bound = [[30., 32.]]
 
 # Compute the 7-param SFH bound using tau models to bound
-# Npix_bound = [2., 5.]
-# tau_bound = [0.1, 5.]
-Npix_low, tau = 3.3, 2.0
-model = ppy.sfhmodels.TauModel(iso_step=-1)
-model.set_params([Npix_low, tau])
-lower_sfh = np.log10(model.SFH)
-
-Npix_high = 6.3
-model.set_params([Npix_high, tau])
-upper_sfh = np.log10(model.SFH)
-
-SFH_bounds_arr = np.array([lower_sfh, upper_sfh]).T
-SFH_bounds = list(list(bound) for bound in SFH_bounds_arr)
+Npix_bound = [3.3, 6.3]
+tau_bound = [0.1, 4.]
 
 # Create a Prior object with given bounds
 prior_bounds = {}
 prior_bounds['feh_bounds'] = [z_bound]
 prior_bounds['dust_bounds'] = [dust_med_bound]
-prior_bounds['age_bounds'] = SFH_bounds
+prior_bounds['age_bounds'] = [Npix_bound, tau_bound]
 prior_bounds['dmod_bounds'] = dmod_bound
 
 params['prior'] = params['gal_model'].get_flat_prior(**prior_bounds)

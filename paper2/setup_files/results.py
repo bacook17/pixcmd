@@ -100,6 +100,10 @@ add_set('M87', 14, 104, 'M87_m14', model=model_ssp, colors='I_VI')
 add_set('M87', 15, 104, 'M87_m15', model=model_ssp_mdf, colors='I_VI')
 add_set('M87', 16, 104, 'M87_m16', model=model_ssp, colors='I_VI')
 add_set('M87', 17, 104, 'M87_m17', model=model_ssp, colors='I_VI')
+add_set('M87', 18, 44, 'M87_m18_1', model=model_ssp, colors='I_VI')
+add_set('M87', 18, 104, 'M87_m18_2', model=model_ssp, colors='I_VI')
+add_set('M87', 18, 204, 'M87_m18_3', model=model_ssp, colors='I_VI')
+add_set('M87', 18, 264, 'M87_m18_4', model=model_ssp, colors='I_VI')
 
 # M49
 print('M49')
@@ -114,6 +118,10 @@ add_set('M49', 7, 100, 'M49_m7', model=model_fixeddist)
 add_set('M49', 8, 100, 'M49_m8', model=model_tau)
 add_set('M49', 9, 100, 'M49_m9', model=model_ssp)
 add_set('M49', 10, 100, 'M49_m10', model=model_ssp)
+add_set('M49', 11, 40, 'M49_m11_1', model=model_ssp)
+add_set('M49', 11, 100, 'M49_m11_2', model=model_ssp)
+add_set('M49', 11, 204, 'M49_m11_3', model=model_ssp)
+add_set('M49', 11, 256, 'M49_m11_4', model=model_ssp)
 
 # NGC 3377
 print('NGC3377')
@@ -128,6 +136,10 @@ add_set('NGC3377', 7, 97, 'NGC3377_m7', model=model_fixeddist)
 add_set('NGC3377', 8, 97, 'NGC3377_m8', model=model_tau)
 add_set('NGC3377', 9, 97, 'NGC3377_m9', model=model_ssp)
 add_set('NGC3377', 10, 97, 'NGC3377_m10', model=model_ssp)
+add_set('NGC3377', 11, 41, 'NGC3377_m11_1', model=model_ssp)
+add_set('NGC3377', 11, 97, 'NGC3377_m11_2', model=model_ssp)
+add_set('NGC3377', 11, 173, 'NGC3377_m11_3', model=model_ssp)
+add_set('NGC3377', 11, 241, 'NGC3377_m11_4', model=model_ssp)
 
 # NGC 4993
 print('NGC4993')
@@ -144,7 +156,7 @@ add_set('NGC4993', 9, 83, 'NGC4993_m9', model=model_ssp)
 
 # DF2
 print('DF2')
-for i in range(1, 5):
+for i in range(1, 6):
     df2_res = results_dir + f'DF2_m{i}.csv'
     df2_live = df2_res.replace('.csv', '_live.csv')
     df2_data = data_dir + 'DF2/pcmds/DF2_I_VI_1.pcmd'

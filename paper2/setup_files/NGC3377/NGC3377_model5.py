@@ -1,12 +1,12 @@
-# NGC3377 Model 2 (NonParam Model)
+# NGC3377 Model 5 (SSP, Free, Single)
 # Ben Cook (bcook@cfa.harvard.edu)
 
 ###############################################
-# CONFIG FILE for NGC3377 Model 2
+# CONFIG FILE for NGC3377 Model 1
 # MODEL Galaxy:
 #    Single FeH
 #    Single Dust
-#    NonParam SFH
+#    SSP SFH
 #    Distance Free
 
 import pcmdpy_gpu as ppy
@@ -151,14 +151,14 @@ dustmodel = ppy.dustmodels.SingleDust()  # single dust screen
 # dustmodel = ppy.dustmodels.FixedWidthLogNormDust(0.3)  # fixed width lognorm
 
 # Age model
-sfhmodel = ppy.sfhmodels.NonParam()  # Fully non-parametric model
+# sfhmodel = ppy.sfhmodels.NonParam()  # Fully non-parametric model
 # sfhmodel = ppy.sfhmodels.ConstantSFR()  # constant Star Formation Rate
 # sfhmodel = ppy.sfhmodels.TauModel()  # exponential SFR decline
 # sfhmodel = ppy.sfhmodels.RisingTau()  # Linear x exponential decline
-# sfhmodel = ppy.sfhmodels.SSPModel()  # single age SSP
+sfhmodel = ppy.sfhmodels.SSPModel()  # single age SSP
 
 # Distance model
-# distancemodel = ppy.distancemodels.FixedDistance(24.42)  # fixed dmod=24.42 (766 kpc)
+# distancemodel = ppy.distancemodels.FixedDistance(30.21)  # fixed dmod=30.21 (11.144 Mpc)
 distancemodel = ppy.distancemodels.VariableDistance()  # dmod floats
 params['gal_model'] = ppy.galaxy.CustomGalaxy(metalmodel, dustmodel, sfhmodel,
                                               distancemodel)
@@ -191,6 +191,8 @@ params['sky_noise'] = [126.9, 76.5]
 
 params['shot_noise'] = True
 
+params['dither'] = False
+
 ###############################################
 # PRIOR SETTINGS
 
@@ -202,25 +204,14 @@ dust_med_bound = [-2.0, -1.0]  # log dust median
 dmod_bound = [[29., 31.]]
 
 # Compute the 7-param SFH bound using tau models to bound
-# Npix_bound = [2., 5.]
-# tau_bound = [0.1, 5.]
-Npix_low, tau = 3.0, 2.0
-model = ppy.sfhmodels.TauModel(iso_step=-1)
-model.set_params([Npix_low, tau])
-lower_sfh = np.log10(model.SFH)
-
-Npix_high = 6.0
-model.set_params([Npix_high, tau])
-upper_sfh = np.log10(model.SFH)
-
-SFH_bounds_arr = np.array([lower_sfh, upper_sfh]).T
-SFH_bounds = list(list(bound) for bound in SFH_bounds_arr)
+Npix_bound = [2.5, 5.5]
+age_bound = [9.5, 10.2]
 
 # Create a Prior object with given bounds
 prior_bounds = {}
 prior_bounds['feh_bounds'] = [z_bound]
 prior_bounds['dust_bounds'] = [dust_med_bound]
-prior_bounds['age_bounds'] = SFH_bounds
+prior_bounds['age_bounds'] = [Npix_bound, age_bound]
 prior_bounds['dmod_bounds'] = dmod_bound
 
 params['prior'] = params['gal_model'].get_flat_prior(**prior_bounds)
