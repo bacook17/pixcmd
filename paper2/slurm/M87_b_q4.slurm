@@ -1,6 +1,6 @@
 #!/bin/bash
 #SBATCH -p fas_gpu,holyseasgpu,gpu
-#SBATCH -J M87_r103
+#SBATCH -J M87_r127
 #SBATCH -n 1 # Number of cores requested
 #SBATCH -N 1 #ensure that all cores are on one machine
 #SBATCH --gres=gpu:1 #Number of GPUs requested
@@ -15,7 +15,7 @@ MPROF_FILE="logs/${SLURM_JOB_NAME}_m${SLURM_ARRAY_TASK_ID}.mem"
 command rm $MPROF_FILE
 
 CONFIG_FILE="setup_files/M87/M87_model${SLURM_ARRAY_TASK_ID}b.py"
-DATA_FILE="../data/M87/pcmds/M87_I_VI_103.pcmd"
+DATA_FILE="../data/M87/pcmds/M87_I_VI_127.pcmd"
 RESULTS_FILE="results/${SLURM_JOB_NAME}_m${SLURM_ARRAY_TASK_ID}.csv"
 
 COMMAND="pcmd_integrate --config ${CONFIG_FILE} --data ${DATA_FILE} --results ${RESULTS_FILE}"
