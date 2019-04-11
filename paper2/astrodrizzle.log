@@ -1,0 +1,1236 @@
+[INFO    ] Setting up logfile :  astrodrizzle.log
+[INFO    ] AstroDrizzle Version 2.2.6 (2018-11-02 15:37:13 -0400) started at: 12:10:34.991 (11/04/2019)
+[INFO    ] 
+[INFO    ] Version Information
+[INFO    ] --------------------
+[INFO    ] Python Version [GCC 4.2.1 Compatible Clang 4.0.1 (tags/RELEASE_401/final)]
+[INFO    ] 3.6.4 |Anaconda custom (64-bit)| (default, Jan 16 2018, 12:04:33) 
+[INFO    ] numpy Version -> 1.15.1 
+[INFO    ] astropy Version -> 3.1.2 
+[INFO    ] stwcs Version -> 1.4.2 
+[INFO    ] ==== Processing Step  Initialization  started at  12:10:34.994 (11/04/2019)
+[INFO    ] Executing serially
+[INFO    ] Setting up output name: ../data/M87_v2/reduced/M87_F814W_drc.fits
+[INFO    ] -Creating imageObject List as input for processing steps.
+[WARNING ] /Users/bcook/anaconda/envs/py36/lib/python3.6/site-packages/astropy/wcs/wcs.py:2691: AstropyDeprecationWarning: 
+Private attributes "_naxis1" and "_naxis2" have been deprecated since v3.1.
+Instead use the "pixel_shape" property which returns a list of NAXISj keyword values.
+
+  warnings.warn(NAXIS_DEPRECATE_MESSAGE, AstropyDeprecationWarning)
+
+[WARNING ] /Users/bcook/anaconda/envs/py36/lib/python3.6/site-packages/astropy/wcs/wcs.py:2701: AstropyDeprecationWarning: 
+Private attributes "_naxis1" and "_naxis2" have been deprecated since v3.1.
+Instead use the "pixel_shape" property which returns a list of NAXISj keyword values.
+
+  warnings.warn(NAXIS_DEPRECATE_MESSAGE, AstropyDeprecationWarning)
+
+[INFO    ] Reading in MDRIZSKY of 124.7164688110352
+[INFO    ] Reading in MDRIZSKY of 124.7164688110352
+[WARNING ] /Users/bcook/anaconda/envs/py36/lib/python3.6/site-packages/astropy/wcs/wcs.py:2686: AstropyDeprecationWarning: 
+Private attributes "_naxis1" and "_naxis2" have been deprecated since v3.1.
+Instead use the "pixel_shape" property which returns a list of NAXISj keyword values.
+
+  warnings.warn(NAXIS_DEPRECATE_MESSAGE, AstropyDeprecationWarning)
+
+[WARNING ] /Users/bcook/anaconda/envs/py36/lib/python3.6/site-packages/astropy/wcs/wcs.py:2696: AstropyDeprecationWarning: 
+Private attributes "_naxis1" and "_naxis2" have been deprecated since v3.1.
+Instead use the "pixel_shape" property which returns a list of NAXISj keyword values.
+
+  warnings.warn(NAXIS_DEPRECATE_MESSAGE, AstropyDeprecationWarning)
+
+[INFO    ] Reading in MDRIZSKY of 124.3256454467773
+[INFO    ] Reading in MDRIZSKY of 124.3256454467773
+[INFO    ] Reading in MDRIZSKY of 124.4684295654297
+[INFO    ] Reading in MDRIZSKY of 124.4684295654297
+[INFO    ] Reading in MDRIZSKY of 124.6174926757813
+[INFO    ] Reading in MDRIZSKY of 124.6174926757813
+[INFO    ] Reading in MDRIZSKY of 122.9511489868164
+[INFO    ] Reading in MDRIZSKY of 122.9511489868164
+[INFO    ] Reading in MDRIZSKY of 122.3172836303711
+[INFO    ] Reading in MDRIZSKY of 122.3172836303711
+[INFO    ] Reading in MDRIZSKY of 123.2267379760742
+[INFO    ] Reading in MDRIZSKY of 123.2267379760742
+[INFO    ] Reading in MDRIZSKY of 123.0519866943359
+[INFO    ] Reading in MDRIZSKY of 123.0519866943359
+[INFO    ] Reset bit values of 4096 to a value of 0 in /Users/bcook/pCMDs/pixcmd/data/M87/raw/M87_F814W_EXP1_flc.fits[DQ,1]
+[INFO    ] Reset bit values of 4096 to a value of 0 in /Users/bcook/pCMDs/pixcmd/data/M87/raw/M87_F814W_EXP1_flc.fits[DQ,2]
+[INFO    ] Reset bit values of 4096 to a value of 0 in /Users/bcook/pCMDs/pixcmd/data/M87/raw/M87_F814W_EXP2_flc.fits[DQ,1]
+[INFO    ] Reset bit values of 4096 to a value of 0 in /Users/bcook/pCMDs/pixcmd/data/M87/raw/M87_F814W_EXP2_flc.fits[DQ,2]
+[INFO    ] Reset bit values of 4096 to a value of 0 in /Users/bcook/pCMDs/pixcmd/data/M87/raw/M87_F814W_EXP3_flc.fits[DQ,1]
+[INFO    ] Reset bit values of 4096 to a value of 0 in /Users/bcook/pCMDs/pixcmd/data/M87/raw/M87_F814W_EXP3_flc.fits[DQ,2]
+[INFO    ] Reset bit values of 4096 to a value of 0 in /Users/bcook/pCMDs/pixcmd/data/M87/raw/M87_F814W_EXP4_flc.fits[DQ,1]
+[INFO    ] Reset bit values of 4096 to a value of 0 in /Users/bcook/pCMDs/pixcmd/data/M87/raw/M87_F814W_EXP4_flc.fits[DQ,2]
+[INFO    ] Reset bit values of 4096 to a value of 0 in /Users/bcook/pCMDs/pixcmd/data/M87/raw/M87_F814W_EXP5_flc.fits[DQ,1]
+[INFO    ] Reset bit values of 4096 to a value of 0 in /Users/bcook/pCMDs/pixcmd/data/M87/raw/M87_F814W_EXP5_flc.fits[DQ,2]
+[INFO    ] Reset bit values of 4096 to a value of 0 in /Users/bcook/pCMDs/pixcmd/data/M87/raw/M87_F814W_EXP6_flc.fits[DQ,1]
+[INFO    ] Reset bit values of 4096 to a value of 0 in /Users/bcook/pCMDs/pixcmd/data/M87/raw/M87_F814W_EXP6_flc.fits[DQ,2]
+[INFO    ] Reset bit values of 4096 to a value of 0 in /Users/bcook/pCMDs/pixcmd/data/M87/raw/M87_F814W_EXP7_flc.fits[DQ,1]
+[INFO    ] Reset bit values of 4096 to a value of 0 in /Users/bcook/pCMDs/pixcmd/data/M87/raw/M87_F814W_EXP7_flc.fits[DQ,2]
+[INFO    ] Reset bit values of 4096 to a value of 0 in /Users/bcook/pCMDs/pixcmd/data/M87/raw/M87_F814W_EXP8_flc.fits[DQ,1]
+[INFO    ] Reset bit values of 4096 to a value of 0 in /Users/bcook/pCMDs/pixcmd/data/M87/raw/M87_F814W_EXP8_flc.fits[DQ,2]
+[INFO    ] -Creating output WCS.
+[INFO    ] WCS Keywords
+[INFO    ] 
+[INFO    ] Number of WCS axes: 2
+[INFO    ] CTYPE : 'RA---TAN'  'DEC--TAN'  
+[INFO    ] CRVAL : 187.70941879455785  12.390853579803094  
+[INFO    ] CRPIX : 2566.2667072987538  2558.133319436742  
+[INFO    ] CD1_1 CD1_2  : -1.388888888888889e-05  -9.679855764906373e-23  
+[INFO    ] CD2_1 CD2_2  : -4.860482250751445e-23  1.3888888888888891e-05  
+[INFO    ] NAXIS : 5133  5115
+[INFO    ] ********************************************************************************
+[INFO    ] *
+[INFO    ] *  Estimated memory usage:  up to 1457 Mb.
+[INFO    ] *  Output image size:       5133 X 5115 pixels. 
+[INFO    ] *  Output image file:       ~ 300 Mb. 
+[INFO    ] *  Cores available:         4
+[INFO    ] *
+[INFO    ] ********************************************************************************
+[INFO    ] ==== Processing Step  Initialization  finished at  12:10:40.279 (11/04/2019)
+[INFO    ] 
+[INFO    ] USER INPUT PARAMETERS common to all Processing Steps:
+[INFO    ] 	build :	True
+[INFO    ] 	coeffs :	True
+[INFO    ] 	context :	True
+[INFO    ] 	crbit :	4096
+[INFO    ] 	group :	
+[INFO    ] 	in_memory :	False
+[INFO    ] 	input :	['../data/M87/raw/M87_F814W_EXP1_flc.fits', '../data/M87/raw/M87_F814W_EXP2_flc.fits', '../data/M87/raw/M87_F814W_EXP3_flc.fits', '../data/M87/raw/M87_F814W_EXP4_flc.fits', '../data/M87/raw/M87_F814W_EXP5_flc.fits', '../data/M87/raw/M87_F814W_EXP6_flc.fits', '../data/M87/raw/M87_F814W_EXP7_flc.fits', '../data/M87/raw/M87_F814W_EXP8_flc.fits']
+[INFO    ] 	mdriztab :	False
+[INFO    ] 	num_cores :	None
+[INFO    ] 	output :	../data/M87_v2/reduced/M87_F814W_drc.fits
+[INFO    ] 	proc_unit :	native
+[INFO    ] 	resetbits :	4096
+[INFO    ] 	runfile :	astrodrizzle.log
+[INFO    ] 	stepsize :	10
+[INFO    ] 	updatewcs :	False
+[INFO    ] 	wcskey :	
+[INFO    ] ==== Processing Step  Static Mask  started at  12:10:40.282 (11/04/2019)
+[INFO    ] USER INPUT PARAMETERS for Static Mask Step:
+[INFO    ] 	static :	True
+[INFO    ] 	static_sig :	4.0
+[INFO    ] Computing static mask:
+
+[INFO    ]   mode = 94.481859;   rms = 77.931580;   static_sig = 4.00
+[INFO    ]   mode = 124.429541;   rms = 131.945541;   static_sig = 4.00
+[INFO    ] Computing static mask:
+
+[INFO    ]   mode = 93.803472;   rms = 78.791641;   static_sig = 4.00
+[INFO    ]   mode = 118.927203;   rms = 131.773666;   static_sig = 4.00
+[INFO    ] Computing static mask:
+
+[INFO    ]   mode = 95.003603;   rms = 78.139015;   static_sig = 4.00
+[INFO    ]   mode = 123.482225;   rms = 132.498077;   static_sig = 4.00
+[INFO    ] Computing static mask:
+
+[INFO    ]   mode = 92.871217;   rms = 79.461426;   static_sig = 4.00
+[INFO    ]   mode = 120.072570;   rms = 132.039352;   static_sig = 4.00
+[INFO    ] Computing static mask:
+
+[INFO    ]   mode = 92.249310;   rms = 79.050858;   static_sig = 4.00
+[INFO    ]   mode = 120.328103;   rms = 131.487030;   static_sig = 4.00
+[INFO    ] Computing static mask:
+
+[INFO    ]   mode = 92.280025;   rms = 78.051903;   static_sig = 4.00
+[INFO    ]   mode = 122.021035;   rms = 131.771652;   static_sig = 4.00
+[INFO    ] Computing static mask:
+
+[INFO    ]   mode = 93.655225;   rms = 80.144836;   static_sig = 4.00
+[INFO    ]   mode = 118.621150;   rms = 131.110443;   static_sig = 4.00
+[INFO    ] Computing static mask:
+
+[INFO    ]   mode = 92.983414;   rms = 80.215431;   static_sig = 4.00
+[INFO    ]   mode = 117.996970;   rms = 132.006989;   static_sig = 4.00
+[INFO    ] Saving static mask to disk: ./ACSWFC_2048x4096_1_staticMask.fits
+[INFO    ] Saving static mask to disk: ./ACSWFC_2048x4096_2_staticMask.fits
+[INFO    ] ==== Processing Step  Static Mask  finished at  12:10:44.193 (11/04/2019)
+[INFO    ] 
+[INFO    ] ==== Processing Step  Subtract Sky  started at  12:10:44.195 (11/04/2019)
+[INFO    ] Sky Subtraction step not performed.
+[INFO    ] ==== Processing Step  Subtract Sky  finished at  12:10:44.864 (11/04/2019)
+[INFO    ] 
+[INFO    ] ==== Processing Step  Separate Drizzle  started at  12:10:44.865 (11/04/2019)
+[INFO    ] Interpreted paramDict with single=True as:
+{'build': True, 'stepsize': 10, 'coeffs': True, 'wcskey': '', 'kernel': 'turbo', 'wt_scl': 'exptime', 'pixfrac': 1.0, 'fillval': None, 'bits': 0, 'compress': False, 'units': 'cps'}
+[INFO    ] USER INPUT PARAMETERS for Separate Drizzle Step:
+[INFO    ] 	bits :	0
+[INFO    ] 	build :	False
+[INFO    ] 	clean :	True
+[INFO    ] 	coeffs :	True
+[INFO    ] 	compress :	False
+[INFO    ] 	crbit :	None
+[INFO    ] 	fillval :	None
+[INFO    ] 	kernel :	turbo
+[INFO    ] 	num_cores :	None
+[INFO    ] 	pixfrac :	1.0
+[INFO    ] 	proc_unit :	electrons
+[INFO    ] 	stepsize :	10
+[INFO    ] 	units :	cps
+[INFO    ] 	wcskey :	
+[INFO    ] 	wht_type :	None
+[INFO    ] 	wt_scl :	exptime
+[INFO    ]   **Using sub-sampling value of 10 for kernel turbo
+[INFO    ] Running Drizzle to create output frame with WCS of: 
+[INFO    ] WCS Keywords
+[INFO    ] 
+[INFO    ] Number of WCS axes: 2
+[INFO    ] CTYPE : 'RA---TAN'  'DEC--TAN'  
+[INFO    ] CRVAL : 187.70941879455785  12.390853579803094  
+[INFO    ] CRPIX : 2107.0  2119.5  
+[INFO    ] CD1_1 CD1_2  : -3.360920425848507e-06  -1.347610657641945e-05  
+[INFO    ] CD2_1 CD2_2  : -1.347610657641945e-05  3.360920425848507e-06  
+[INFO    ] NAXIS : 4214  4239
+[INFO    ] Executing 4 parallel workers
+[INFO    ] -Drizzle input: /Users/bcook/pCMDs/pixcmd/data/M87/raw/M87_F814W_EXP1_flc.fits[sci,1]
+[INFO    ] -Drizzle input: /Users/bcook/pCMDs/pixcmd/data/M87/raw/M87_F814W_EXP2_flc.fits[sci,1]
+[INFO    ] -Drizzle input: /Users/bcook/pCMDs/pixcmd/data/M87/raw/M87_F814W_EXP4_flc.fits[sci,1]
+[INFO    ] -Drizzle input: /Users/bcook/pCMDs/pixcmd/data/M87/raw/M87_F814W_EXP3_flc.fits[sci,1]
+[INFO    ] Using WCSLIB-based coordinate transformation...
+[INFO    ] stepsize = 10
+[INFO    ] Using WCSLIB-based coordinate transformation...
+[INFO    ] stepsize = 10
+[INFO    ] Using WCSLIB-based coordinate transformation...
+[INFO    ] stepsize = 10
+[INFO    ] Using WCSLIB-based coordinate transformation...
+[INFO    ] stepsize = 10
+[INFO    ] -Drizzling using kernel = turbo
+
+[INFO    ] -Drizzling using kernel = turbo
+
+[INFO    ] -Drizzling using kernel = turbo
+
+[INFO    ] -Drizzling using kernel = turbo
+
+[INFO    ] -Drizzle input: /Users/bcook/pCMDs/pixcmd/data/M87/raw/M87_F814W_EXP3_flc.fits[sci,2]
+[INFO    ] -Drizzle input: /Users/bcook/pCMDs/pixcmd/data/M87/raw/M87_F814W_EXP1_flc.fits[sci,2]
+[INFO    ] -Drizzle input: /Users/bcook/pCMDs/pixcmd/data/M87/raw/M87_F814W_EXP4_flc.fits[sci,2]
+[INFO    ] -Drizzle input: /Users/bcook/pCMDs/pixcmd/data/M87/raw/M87_F814W_EXP2_flc.fits[sci,2]
+[INFO    ] Using WCSLIB-based coordinate transformation...
+[INFO    ] stepsize = 10
+[INFO    ] Using WCSLIB-based coordinate transformation...
+[INFO    ] stepsize = 10
+[INFO    ] Using WCSLIB-based coordinate transformation...
+[INFO    ] stepsize = 10
+[INFO    ] Using WCSLIB-based coordinate transformation...
+[INFO    ] stepsize = 10
+[INFO    ] -Drizzling using kernel = turbo
+
+[INFO    ] -Drizzling using kernel = turbo
+
+[INFO    ] -Drizzling using kernel = turbo
+
+[INFO    ] -Drizzling using kernel = turbo
+
+[INFO    ] -Generating simple FITS output: /Users/bcook/pCMDs/pixcmd/data/M87/raw/M87_F814W_EXP3_single_sci.fits
+[INFO    ] -Generating simple FITS output: /Users/bcook/pCMDs/pixcmd/data/M87/raw/M87_F814W_EXP4_single_sci.fits
+[INFO    ] -Generating simple FITS output: /Users/bcook/pCMDs/pixcmd/data/M87/raw/M87_F814W_EXP1_single_sci.fits
+[INFO    ] -Generating simple FITS output: /Users/bcook/pCMDs/pixcmd/data/M87/raw/M87_F814W_EXP2_single_sci.fits
+[WARNING ] /Users/bcook/anaconda/envs/py36/lib/python3.6/site-packages/astropy/io/fits/card.py:979: VerifyWarning: Card is too long, comment will be truncated.
+  VerifyWarning)
+
+[WARNING ] /Users/bcook/anaconda/envs/py36/lib/python3.6/site-packages/astropy/io/fits/card.py:979: VerifyWarning: Card is too long, comment will be truncated.
+  VerifyWarning)
+
+[WARNING ] /Users/bcook/anaconda/envs/py36/lib/python3.6/site-packages/astropy/io/fits/card.py:979: VerifyWarning: Card is too long, comment will be truncated.
+  VerifyWarning)
+
+[WARNING ] /Users/bcook/anaconda/envs/py36/lib/python3.6/site-packages/astropy/io/fits/card.py:979: VerifyWarning: Card is too long, comment will be truncated.
+  VerifyWarning)
+
+[INFO    ] Writing out image to disk: /Users/bcook/pCMDs/pixcmd/data/M87/raw/M87_F814W_EXP4_single_sci.fits
+[INFO    ] Writing out image to disk: /Users/bcook/pCMDs/pixcmd/data/M87/raw/M87_F814W_EXP3_single_sci.fits
+[INFO    ] Writing out image to disk: /Users/bcook/pCMDs/pixcmd/data/M87/raw/M87_F814W_EXP1_single_sci.fits
+[INFO    ] Writing out image to disk: /Users/bcook/pCMDs/pixcmd/data/M87/raw/M87_F814W_EXP2_single_sci.fits
+[INFO    ] Writing out image to disk: /Users/bcook/pCMDs/pixcmd/data/M87/raw/M87_F814W_EXP4_single_wht.fits
+[INFO    ] Writing out image to disk: /Users/bcook/pCMDs/pixcmd/data/M87/raw/M87_F814W_EXP3_single_wht.fits
+[INFO    ] Writing out image to disk: /Users/bcook/pCMDs/pixcmd/data/M87/raw/M87_F814W_EXP1_single_wht.fits
+[INFO    ] Writing out image to disk: /Users/bcook/pCMDs/pixcmd/data/M87/raw/M87_F814W_EXP2_single_wht.fits
+[INFO    ] -Drizzle input: /Users/bcook/pCMDs/pixcmd/data/M87/raw/M87_F814W_EXP5_flc.fits[sci,1]
+[INFO    ] -Drizzle input: /Users/bcook/pCMDs/pixcmd/data/M87/raw/M87_F814W_EXP6_flc.fits[sci,1]
+[INFO    ] -Drizzle input: /Users/bcook/pCMDs/pixcmd/data/M87/raw/M87_F814W_EXP7_flc.fits[sci,1]
+[INFO    ] -Drizzle input: /Users/bcook/pCMDs/pixcmd/data/M87/raw/M87_F814W_EXP8_flc.fits[sci,1]
+[INFO    ] Using WCSLIB-based coordinate transformation...
+[INFO    ] stepsize = 10
+[INFO    ] Using WCSLIB-based coordinate transformation...
+[INFO    ] stepsize = 10
+[INFO    ] Using WCSLIB-based coordinate transformation...
+[INFO    ] stepsize = 10
+[INFO    ] Using WCSLIB-based coordinate transformation...
+[INFO    ] stepsize = 10
+[INFO    ] -Drizzling using kernel = turbo
+
+[INFO    ] -Drizzling using kernel = turbo
+
+[INFO    ] -Drizzling using kernel = turbo
+
+[INFO    ] -Drizzling using kernel = turbo
+
+[INFO    ] -Drizzle input: /Users/bcook/pCMDs/pixcmd/data/M87/raw/M87_F814W_EXP6_flc.fits[sci,2]
+[INFO    ] -Drizzle input: /Users/bcook/pCMDs/pixcmd/data/M87/raw/M87_F814W_EXP5_flc.fits[sci,2]
+[INFO    ] -Drizzle input: /Users/bcook/pCMDs/pixcmd/data/M87/raw/M87_F814W_EXP7_flc.fits[sci,2]
+[INFO    ] -Drizzle input: /Users/bcook/pCMDs/pixcmd/data/M87/raw/M87_F814W_EXP8_flc.fits[sci,2]
+[INFO    ] Using WCSLIB-based coordinate transformation...
+[INFO    ] stepsize = 10
+[INFO    ] Using WCSLIB-based coordinate transformation...
+[INFO    ] stepsize = 10
+[INFO    ] Using WCSLIB-based coordinate transformation...
+[INFO    ] stepsize = 10
+[INFO    ] Using WCSLIB-based coordinate transformation...
+[INFO    ] stepsize = 10
+[INFO    ] -Drizzling using kernel = turbo
+
+[INFO    ] -Drizzling using kernel = turbo
+
+[INFO    ] -Drizzling using kernel = turbo
+
+[INFO    ] -Drizzling using kernel = turbo
+
+[INFO    ] -Generating simple FITS output: /Users/bcook/pCMDs/pixcmd/data/M87/raw/M87_F814W_EXP5_single_sci.fits
+[INFO    ] -Generating simple FITS output: /Users/bcook/pCMDs/pixcmd/data/M87/raw/M87_F814W_EXP7_single_sci.fits
+[INFO    ] -Generating simple FITS output: /Users/bcook/pCMDs/pixcmd/data/M87/raw/M87_F814W_EXP6_single_sci.fits
+[INFO    ] -Generating simple FITS output: /Users/bcook/pCMDs/pixcmd/data/M87/raw/M87_F814W_EXP8_single_sci.fits
+[WARNING ] /Users/bcook/anaconda/envs/py36/lib/python3.6/site-packages/astropy/io/fits/card.py:979: VerifyWarning: Card is too long, comment will be truncated.
+  VerifyWarning)
+
+[WARNING ] /Users/bcook/anaconda/envs/py36/lib/python3.6/site-packages/astropy/io/fits/card.py:979: VerifyWarning: Card is too long, comment will be truncated.
+  VerifyWarning)
+
+[WARNING ] /Users/bcook/anaconda/envs/py36/lib/python3.6/site-packages/astropy/io/fits/card.py:979: VerifyWarning: Card is too long, comment will be truncated.
+  VerifyWarning)
+
+[WARNING ] /Users/bcook/anaconda/envs/py36/lib/python3.6/site-packages/astropy/io/fits/card.py:979: VerifyWarning: Card is too long, comment will be truncated.
+  VerifyWarning)
+
+[INFO    ] Writing out image to disk: /Users/bcook/pCMDs/pixcmd/data/M87/raw/M87_F814W_EXP5_single_sci.fits
+[INFO    ] Writing out image to disk: /Users/bcook/pCMDs/pixcmd/data/M87/raw/M87_F814W_EXP7_single_sci.fits
+[INFO    ] Writing out image to disk: /Users/bcook/pCMDs/pixcmd/data/M87/raw/M87_F814W_EXP6_single_sci.fits
+[INFO    ] Writing out image to disk: /Users/bcook/pCMDs/pixcmd/data/M87/raw/M87_F814W_EXP8_single_sci.fits
+[INFO    ] Writing out image to disk: /Users/bcook/pCMDs/pixcmd/data/M87/raw/M87_F814W_EXP5_single_wht.fits
+[INFO    ] Writing out image to disk: /Users/bcook/pCMDs/pixcmd/data/M87/raw/M87_F814W_EXP7_single_wht.fits
+[INFO    ] Writing out image to disk: /Users/bcook/pCMDs/pixcmd/data/M87/raw/M87_F814W_EXP6_single_wht.fits
+[INFO    ] Writing out image to disk: /Users/bcook/pCMDs/pixcmd/data/M87/raw/M87_F814W_EXP8_single_wht.fits
+[INFO    ] ==== Processing Step  Separate Drizzle  finished at  12:11:01.499 (11/04/2019)
+[INFO    ] 
+[INFO    ] ==== Processing Step  Create Median  started at  12:11:01.50 (11/04/2019)
+[INFO    ] USER INPUT PARAMETERS for Create Median Step:
+[INFO    ] 	combine_bufsize :	None
+[INFO    ] 	combine_grow :	1
+[INFO    ] 	combine_hthresh :	None
+[INFO    ] 	combine_lthresh :	None
+[INFO    ] 	combine_maskpt :	0.3
+[INFO    ] 	combine_nhigh :	0
+[INFO    ] 	combine_nlow :	0
+[INFO    ] 	combine_nsigma :	4 3
+[INFO    ] 	combine_type :	median
+[INFO    ] 	compress :	False
+[INFO    ] 	median :	True
+[INFO    ] 	median_newmasks :	True
+[INFO    ] 	proc_unit :	native
+[INFO    ] reference sky value for image '/Users/bcook/pCMDs/pixcmd/data/M87/raw/M87_F814W_EXP1_flc.fits' is 124.7164688110352
+[INFO    ] reference sky value for image '/Users/bcook/pCMDs/pixcmd/data/M87/raw/M87_F814W_EXP2_flc.fits' is 124.3256454467773
+[INFO    ] reference sky value for image '/Users/bcook/pCMDs/pixcmd/data/M87/raw/M87_F814W_EXP3_flc.fits' is 124.4684295654297
+[INFO    ] reference sky value for image '/Users/bcook/pCMDs/pixcmd/data/M87/raw/M87_F814W_EXP4_flc.fits' is 124.6174926757813
+[INFO    ] reference sky value for image '/Users/bcook/pCMDs/pixcmd/data/M87/raw/M87_F814W_EXP5_flc.fits' is 122.9511489868164
+[INFO    ] reference sky value for image '/Users/bcook/pCMDs/pixcmd/data/M87/raw/M87_F814W_EXP6_flc.fits' is 122.3172836303711
+[INFO    ] reference sky value for image '/Users/bcook/pCMDs/pixcmd/data/M87/raw/M87_F814W_EXP7_flc.fits' is 123.2267379760742
+[INFO    ] reference sky value for image '/Users/bcook/pCMDs/pixcmd/data/M87/raw/M87_F814W_EXP8_flc.fits' is 123.0519866943359
+[INFO    ] Saving output median image to: '../data/M87_v2/reduced/M87_F814W_med.fits'
+[INFO    ] ==== Processing Step  Create Median  finished at  12:11:21.69 (11/04/2019)
+[INFO    ] 
+[INFO    ] ==== Processing Step  Blot  started at  12:11:21.698 (11/04/2019)
+[INFO    ] USER INPUT PARAMETERS for Blot Step:
+[INFO    ] 	blot_addsky :	True
+[INFO    ] 	blot_interp :	poly5
+[INFO    ] 	blot_sinscl :	1.0
+[INFO    ] 	blot_skyval :	0.0
+[INFO    ] 	coeffs :	True
+[INFO    ]     Blot: creating blotted image:  /Users/bcook/pCMDs/pixcmd/data/M87/raw/M87_F814W_EXP1_flc.fits[sci,1]
+[INFO    ] Using default C-based coordinate transformation...
+[INFO    ] -Generating simple FITS output: /Users/bcook/pCMDs/pixcmd/data/M87/raw/M87_F814W_EXP1_sci1_blt.fits
+[WARNING ] /Users/bcook/anaconda/envs/py36/lib/python3.6/site-packages/astropy/io/fits/card.py:979: VerifyWarning: Card is too long, comment will be truncated.
+  VerifyWarning)
+
+[INFO    ] Writing out image to disk: /Users/bcook/pCMDs/pixcmd/data/M87/raw/M87_F814W_EXP1_sci1_blt.fits
+[INFO    ]     Blot: creating blotted image:  /Users/bcook/pCMDs/pixcmd/data/M87/raw/M87_F814W_EXP1_flc.fits[sci,2]
+[INFO    ] Using default C-based coordinate transformation...
+[INFO    ] -Generating simple FITS output: /Users/bcook/pCMDs/pixcmd/data/M87/raw/M87_F814W_EXP1_sci2_blt.fits
+[INFO    ] Writing out image to disk: /Users/bcook/pCMDs/pixcmd/data/M87/raw/M87_F814W_EXP1_sci2_blt.fits
+[INFO    ]     Blot: creating blotted image:  /Users/bcook/pCMDs/pixcmd/data/M87/raw/M87_F814W_EXP2_flc.fits[sci,1]
+[INFO    ] Using default C-based coordinate transformation...
+[INFO    ] -Generating simple FITS output: /Users/bcook/pCMDs/pixcmd/data/M87/raw/M87_F814W_EXP2_sci1_blt.fits
+[INFO    ] Writing out image to disk: /Users/bcook/pCMDs/pixcmd/data/M87/raw/M87_F814W_EXP2_sci1_blt.fits
+[INFO    ]     Blot: creating blotted image:  /Users/bcook/pCMDs/pixcmd/data/M87/raw/M87_F814W_EXP2_flc.fits[sci,2]
+[INFO    ] Using default C-based coordinate transformation...
+[INFO    ] -Generating simple FITS output: /Users/bcook/pCMDs/pixcmd/data/M87/raw/M87_F814W_EXP2_sci2_blt.fits
+[INFO    ] Writing out image to disk: /Users/bcook/pCMDs/pixcmd/data/M87/raw/M87_F814W_EXP2_sci2_blt.fits
+[INFO    ]     Blot: creating blotted image:  /Users/bcook/pCMDs/pixcmd/data/M87/raw/M87_F814W_EXP3_flc.fits[sci,1]
+[INFO    ] Using default C-based coordinate transformation...
+[INFO    ] -Generating simple FITS output: /Users/bcook/pCMDs/pixcmd/data/M87/raw/M87_F814W_EXP3_sci1_blt.fits
+[INFO    ] Writing out image to disk: /Users/bcook/pCMDs/pixcmd/data/M87/raw/M87_F814W_EXP3_sci1_blt.fits
+[INFO    ]     Blot: creating blotted image:  /Users/bcook/pCMDs/pixcmd/data/M87/raw/M87_F814W_EXP3_flc.fits[sci,2]
+[INFO    ] Using default C-based coordinate transformation...
+[INFO    ] -Generating simple FITS output: /Users/bcook/pCMDs/pixcmd/data/M87/raw/M87_F814W_EXP3_sci2_blt.fits
+[INFO    ] Writing out image to disk: /Users/bcook/pCMDs/pixcmd/data/M87/raw/M87_F814W_EXP3_sci2_blt.fits
+[INFO    ]     Blot: creating blotted image:  /Users/bcook/pCMDs/pixcmd/data/M87/raw/M87_F814W_EXP4_flc.fits[sci,1]
+[INFO    ] Using default C-based coordinate transformation...
+[INFO    ] -Generating simple FITS output: /Users/bcook/pCMDs/pixcmd/data/M87/raw/M87_F814W_EXP4_sci1_blt.fits
+[INFO    ] Writing out image to disk: /Users/bcook/pCMDs/pixcmd/data/M87/raw/M87_F814W_EXP4_sci1_blt.fits
+[INFO    ]     Blot: creating blotted image:  /Users/bcook/pCMDs/pixcmd/data/M87/raw/M87_F814W_EXP4_flc.fits[sci,2]
+[INFO    ] Using default C-based coordinate transformation...
+[INFO    ] -Generating simple FITS output: /Users/bcook/pCMDs/pixcmd/data/M87/raw/M87_F814W_EXP4_sci2_blt.fits
+[INFO    ] Writing out image to disk: /Users/bcook/pCMDs/pixcmd/data/M87/raw/M87_F814W_EXP4_sci2_blt.fits
+[INFO    ]     Blot: creating blotted image:  /Users/bcook/pCMDs/pixcmd/data/M87/raw/M87_F814W_EXP5_flc.fits[sci,1]
+[INFO    ] Using default C-based coordinate transformation...
+[INFO    ] -Generating simple FITS output: /Users/bcook/pCMDs/pixcmd/data/M87/raw/M87_F814W_EXP5_sci1_blt.fits
+[INFO    ] Writing out image to disk: /Users/bcook/pCMDs/pixcmd/data/M87/raw/M87_F814W_EXP5_sci1_blt.fits
+[INFO    ]     Blot: creating blotted image:  /Users/bcook/pCMDs/pixcmd/data/M87/raw/M87_F814W_EXP5_flc.fits[sci,2]
+[INFO    ] Using default C-based coordinate transformation...
+[INFO    ] -Generating simple FITS output: /Users/bcook/pCMDs/pixcmd/data/M87/raw/M87_F814W_EXP5_sci2_blt.fits
+[INFO    ] Writing out image to disk: /Users/bcook/pCMDs/pixcmd/data/M87/raw/M87_F814W_EXP5_sci2_blt.fits
+[INFO    ]     Blot: creating blotted image:  /Users/bcook/pCMDs/pixcmd/data/M87/raw/M87_F814W_EXP6_flc.fits[sci,1]
+[INFO    ] Using default C-based coordinate transformation...
+[INFO    ] -Generating simple FITS output: /Users/bcook/pCMDs/pixcmd/data/M87/raw/M87_F814W_EXP6_sci1_blt.fits
+[INFO    ] Writing out image to disk: /Users/bcook/pCMDs/pixcmd/data/M87/raw/M87_F814W_EXP6_sci1_blt.fits
+[INFO    ]     Blot: creating blotted image:  /Users/bcook/pCMDs/pixcmd/data/M87/raw/M87_F814W_EXP6_flc.fits[sci,2]
+[INFO    ] Using default C-based coordinate transformation...
+[INFO    ] -Generating simple FITS output: /Users/bcook/pCMDs/pixcmd/data/M87/raw/M87_F814W_EXP6_sci2_blt.fits
+[INFO    ] Writing out image to disk: /Users/bcook/pCMDs/pixcmd/data/M87/raw/M87_F814W_EXP6_sci2_blt.fits
+[INFO    ]     Blot: creating blotted image:  /Users/bcook/pCMDs/pixcmd/data/M87/raw/M87_F814W_EXP7_flc.fits[sci,1]
+[INFO    ] Using default C-based coordinate transformation...
+[INFO    ] -Generating simple FITS output: /Users/bcook/pCMDs/pixcmd/data/M87/raw/M87_F814W_EXP7_sci1_blt.fits
+[INFO    ] Writing out image to disk: /Users/bcook/pCMDs/pixcmd/data/M87/raw/M87_F814W_EXP7_sci1_blt.fits
+[INFO    ]     Blot: creating blotted image:  /Users/bcook/pCMDs/pixcmd/data/M87/raw/M87_F814W_EXP7_flc.fits[sci,2]
+[INFO    ] Using default C-based coordinate transformation...
+[INFO    ] -Generating simple FITS output: /Users/bcook/pCMDs/pixcmd/data/M87/raw/M87_F814W_EXP7_sci2_blt.fits
+[INFO    ] Writing out image to disk: /Users/bcook/pCMDs/pixcmd/data/M87/raw/M87_F814W_EXP7_sci2_blt.fits
+[INFO    ]     Blot: creating blotted image:  /Users/bcook/pCMDs/pixcmd/data/M87/raw/M87_F814W_EXP8_flc.fits[sci,1]
+[INFO    ] Using default C-based coordinate transformation...
+[INFO    ] -Generating simple FITS output: /Users/bcook/pCMDs/pixcmd/data/M87/raw/M87_F814W_EXP8_sci1_blt.fits
+[INFO    ] Writing out image to disk: /Users/bcook/pCMDs/pixcmd/data/M87/raw/M87_F814W_EXP8_sci1_blt.fits
+[INFO    ]     Blot: creating blotted image:  /Users/bcook/pCMDs/pixcmd/data/M87/raw/M87_F814W_EXP8_flc.fits[sci,2]
+[INFO    ] Using default C-based coordinate transformation...
+[INFO    ] -Generating simple FITS output: /Users/bcook/pCMDs/pixcmd/data/M87/raw/M87_F814W_EXP8_sci2_blt.fits
+[INFO    ] Writing out image to disk: /Users/bcook/pCMDs/pixcmd/data/M87/raw/M87_F814W_EXP8_sci2_blt.fits
+[INFO    ] ==== Processing Step  Blot  finished at  12:11:52.562 (11/04/2019)
+[INFO    ] 
+[INFO    ] ==== Processing Step  Driz_CR  started at  12:11:52.564 (11/04/2019)
+[INFO    ] USER INPUT PARAMETERS for Driz_CR Step:
+[INFO    ] 	crbit :	4096
+[INFO    ] 	driz_cr :	True
+[INFO    ] 	driz_cr_corr :	False
+[INFO    ] 	driz_cr_ctegrow :	0
+[INFO    ] 	driz_cr_grow :	1
+[INFO    ] 	driz_cr_scale :	1.2 0.7
+[INFO    ] 	driz_cr_snr :	3.5 3.0
+[INFO    ] 	inmemory :	False
+[INFO    ] Executing 4 parallel workers
+[INFO    ] Creating output :  /Users/bcook/pCMDs/pixcmd/data/M87/raw/M87_F814W_EXP1_sci1_crmask.fits
+[INFO    ] Creating output :  /Users/bcook/pCMDs/pixcmd/data/M87/raw/M87_F814W_EXP2_sci1_crmask.fits
+[INFO    ] Creating output :  /Users/bcook/pCMDs/pixcmd/data/M87/raw/M87_F814W_EXP4_sci1_crmask.fits
+[INFO    ] Creating output :  /Users/bcook/pCMDs/pixcmd/data/M87/raw/M87_F814W_EXP3_sci1_crmask.fits
+[INFO    ] Creating output :  /Users/bcook/pCMDs/pixcmd/data/M87/raw/M87_F814W_EXP1_sci2_crmask.fits
+[INFO    ] Creating output :  /Users/bcook/pCMDs/pixcmd/data/M87/raw/M87_F814W_EXP2_sci2_crmask.fits
+[INFO    ] Creating output :  /Users/bcook/pCMDs/pixcmd/data/M87/raw/M87_F814W_EXP4_sci2_crmask.fits
+[INFO    ] Creating output :  /Users/bcook/pCMDs/pixcmd/data/M87/raw/M87_F814W_EXP3_sci2_crmask.fits
+[INFO    ] Creating output :  /Users/bcook/pCMDs/pixcmd/data/M87/raw/M87_F814W_EXP5_sci1_crmask.fits
+[INFO    ] Creating output :  /Users/bcook/pCMDs/pixcmd/data/M87/raw/M87_F814W_EXP6_sci1_crmask.fits
+[INFO    ] Creating output :  /Users/bcook/pCMDs/pixcmd/data/M87/raw/M87_F814W_EXP7_sci1_crmask.fits
+[INFO    ] Creating output :  /Users/bcook/pCMDs/pixcmd/data/M87/raw/M87_F814W_EXP8_sci1_crmask.fits
+[INFO    ] Creating output :  /Users/bcook/pCMDs/pixcmd/data/M87/raw/M87_F814W_EXP5_sci2_crmask.fits
+[INFO    ] Creating output :  /Users/bcook/pCMDs/pixcmd/data/M87/raw/M87_F814W_EXP6_sci2_crmask.fits
+[INFO    ] Creating output :  /Users/bcook/pCMDs/pixcmd/data/M87/raw/M87_F814W_EXP7_sci2_crmask.fits
+[INFO    ] Creating output :  /Users/bcook/pCMDs/pixcmd/data/M87/raw/M87_F814W_EXP8_sci2_crmask.fits
+[INFO    ] ==== Processing Step  Driz_CR  finished at  12:12:08.245 (11/04/2019)
+[INFO    ] 
+[INFO    ] ==== Processing Step  Final Drizzle  started at  12:12:08.260 (11/04/2019)
+[INFO    ] Interpreted paramDict with single=False as:
+{'build': True, 'stepsize': 10, 'coeffs': True, 'wcskey': '', 'wht_type': 'EXP', 'kernel': 'lanczos3', 'wt_scl': 'exptime', 'pixfrac': 1.0, 'fillval': None, 'maskval': None, 'bits': 0, 'units': 'counts'}
+[INFO    ] USER INPUT PARAMETERS for Final Drizzle Step:
+[INFO    ] 	bits :	0
+[INFO    ] 	build :	True
+[INFO    ] 	clean :	True
+[INFO    ] 	coeffs :	True
+[INFO    ] 	crbit :	4096
+[INFO    ] 	fillval :	None
+[INFO    ] 	kernel :	lanczos3
+[INFO    ] 	maskval :	None
+[INFO    ] 	pixfrac :	1.0
+[INFO    ] 	proc_unit :	native
+[INFO    ] 	stepsize :	10
+[INFO    ] 	units :	counts
+[INFO    ] 	wcskey :	
+[INFO    ] 	wht_type :	EXP
+[INFO    ] 	wt_scl :	exptime
+[INFO    ]   **Using sub-sampling value of 10 for kernel lanczos3
+[INFO    ] Running Drizzle to create output frame with WCS of: 
+[INFO    ] WCS Keywords
+[INFO    ] 
+[INFO    ] Number of WCS axes: 2
+[INFO    ] CTYPE : 'RA---TAN'  'DEC--TAN'  
+[INFO    ] CRVAL : 187.70941879455785  12.390853579803094  
+[INFO    ] CRPIX : 2566.2667072987538  2558.133319436742  
+[INFO    ] CD1_1 CD1_2  : -1.388888888888889e-05  -9.679855764906373e-23  
+[INFO    ] CD2_1 CD2_2  : -4.860482250751445e-23  1.3888888888888891e-05  
+[INFO    ] NAXIS : 5133  5115
+[INFO    ] -Drizzle input: /Users/bcook/pCMDs/pixcmd/data/M87/raw/M87_F814W_EXP1_flc.fits[sci,1]
+[INFO    ] Applying EXPTIME weighting to DQ mask for chip 1
+[INFO    ] Using WCSLIB-based coordinate transformation...
+[INFO    ] stepsize = 10
+[INFO    ] -Drizzling using kernel = lanczos3
+
+[INFO    ] -Drizzle input: /Users/bcook/pCMDs/pixcmd/data/M87/raw/M87_F814W_EXP1_flc.fits[sci,2]
+[INFO    ] Applying EXPTIME weighting to DQ mask for chip 2
+[INFO    ] Using WCSLIB-based coordinate transformation...
+[INFO    ] stepsize = 10
+[INFO    ] -Drizzling using kernel = lanczos3
+
+[INFO    ] -Drizzle input: /Users/bcook/pCMDs/pixcmd/data/M87/raw/M87_F814W_EXP2_flc.fits[sci,1]
+[INFO    ] Applying EXPTIME weighting to DQ mask for chip 1
+[INFO    ] Using WCSLIB-based coordinate transformation...
+[INFO    ] stepsize = 10
+[INFO    ] -Drizzling using kernel = lanczos3
+
+[INFO    ] -Drizzle input: /Users/bcook/pCMDs/pixcmd/data/M87/raw/M87_F814W_EXP2_flc.fits[sci,2]
+[INFO    ] Applying EXPTIME weighting to DQ mask for chip 2
+[INFO    ] Using WCSLIB-based coordinate transformation...
+[INFO    ] stepsize = 10
+[INFO    ] -Drizzling using kernel = lanczos3
+
+[INFO    ] -Drizzle input: /Users/bcook/pCMDs/pixcmd/data/M87/raw/M87_F814W_EXP3_flc.fits[sci,1]
+[INFO    ] Applying EXPTIME weighting to DQ mask for chip 1
+[INFO    ] Using WCSLIB-based coordinate transformation...
+[INFO    ] stepsize = 10
+[INFO    ] -Drizzling using kernel = lanczos3
+
+[INFO    ] -Drizzle input: /Users/bcook/pCMDs/pixcmd/data/M87/raw/M87_F814W_EXP3_flc.fits[sci,2]
+[INFO    ] Applying EXPTIME weighting to DQ mask for chip 2
+[INFO    ] Using WCSLIB-based coordinate transformation...
+[INFO    ] stepsize = 10
+[INFO    ] -Drizzling using kernel = lanczos3
+
+[INFO    ] -Drizzle input: /Users/bcook/pCMDs/pixcmd/data/M87/raw/M87_F814W_EXP4_flc.fits[sci,1]
+[INFO    ] Applying EXPTIME weighting to DQ mask for chip 1
+[INFO    ] Using WCSLIB-based coordinate transformation...
+[INFO    ] stepsize = 10
+[INFO    ] -Drizzling using kernel = lanczos3
+
+[INFO    ] -Drizzle input: /Users/bcook/pCMDs/pixcmd/data/M87/raw/M87_F814W_EXP4_flc.fits[sci,2]
+[INFO    ] Applying EXPTIME weighting to DQ mask for chip 2
+[INFO    ] Using WCSLIB-based coordinate transformation...
+[INFO    ] stepsize = 10
+[INFO    ] -Drizzling using kernel = lanczos3
+
+[INFO    ] -Drizzle input: /Users/bcook/pCMDs/pixcmd/data/M87/raw/M87_F814W_EXP5_flc.fits[sci,1]
+[INFO    ] Applying EXPTIME weighting to DQ mask for chip 1
+[INFO    ] Using WCSLIB-based coordinate transformation...
+[INFO    ] stepsize = 10
+[INFO    ] -Drizzling using kernel = lanczos3
+
+[INFO    ] -Drizzle input: /Users/bcook/pCMDs/pixcmd/data/M87/raw/M87_F814W_EXP5_flc.fits[sci,2]
+[INFO    ] Applying EXPTIME weighting to DQ mask for chip 2
+[INFO    ] Using WCSLIB-based coordinate transformation...
+[INFO    ] stepsize = 10
+[INFO    ] -Drizzling using kernel = lanczos3
+
+[INFO    ] -Drizzle input: /Users/bcook/pCMDs/pixcmd/data/M87/raw/M87_F814W_EXP6_flc.fits[sci,1]
+[INFO    ] Applying EXPTIME weighting to DQ mask for chip 1
+[INFO    ] Using WCSLIB-based coordinate transformation...
+[INFO    ] stepsize = 10
+[INFO    ] -Drizzling using kernel = lanczos3
+
+[INFO    ] -Drizzle input: /Users/bcook/pCMDs/pixcmd/data/M87/raw/M87_F814W_EXP6_flc.fits[sci,2]
+[INFO    ] Applying EXPTIME weighting to DQ mask for chip 2
+[INFO    ] Using WCSLIB-based coordinate transformation...
+[INFO    ] stepsize = 10
+[INFO    ] -Drizzling using kernel = lanczos3
+
+[INFO    ] -Drizzle input: /Users/bcook/pCMDs/pixcmd/data/M87/raw/M87_F814W_EXP7_flc.fits[sci,1]
+[INFO    ] Applying EXPTIME weighting to DQ mask for chip 1
+[INFO    ] Using WCSLIB-based coordinate transformation...
+[INFO    ] stepsize = 10
+[INFO    ] -Drizzling using kernel = lanczos3
+
+[INFO    ] -Drizzle input: /Users/bcook/pCMDs/pixcmd/data/M87/raw/M87_F814W_EXP7_flc.fits[sci,2]
+[INFO    ] Applying EXPTIME weighting to DQ mask for chip 2
+[INFO    ] Using WCSLIB-based coordinate transformation...
+[INFO    ] stepsize = 10
+[INFO    ] -Drizzling using kernel = lanczos3
+
+[INFO    ] -Drizzle input: /Users/bcook/pCMDs/pixcmd/data/M87/raw/M87_F814W_EXP8_flc.fits[sci,1]
+[INFO    ] Applying EXPTIME weighting to DQ mask for chip 1
+[INFO    ] Using WCSLIB-based coordinate transformation...
+[INFO    ] stepsize = 10
+[INFO    ] -Drizzling using kernel = lanczos3
+
+[INFO    ] -Drizzle input: /Users/bcook/pCMDs/pixcmd/data/M87/raw/M87_F814W_EXP8_flc.fits[sci,2]
+[INFO    ] Applying EXPTIME weighting to DQ mask for chip 2
+[INFO    ] Using WCSLIB-based coordinate transformation...
+[INFO    ] stepsize = 10
+[INFO    ] -Drizzling using kernel = lanczos3
+
+[INFO    ] -Generating multi-extension output file:  ../data/M87_v2/reduced/M87_F814W_drc.fits
+[INFO    ] Deleted all instances of WCS with key A in extensions [1]
+[INFO    ] Deleted all instances of WCS with key B in extensions [1]
+[INFO    ] Writing out to disk: ../data/M87_v2/reduced/M87_F814W_drc.fits
+[INFO    ] ==== Processing Step  Final Drizzle  finished at  12:14:34.713 (11/04/2019)
+[INFO    ] 
+[INFO    ] 
+[INFO    ] AstroDrizzle Version 2.2.6 is finished processing at 12:14:34.71 (11/04/2019).
+[INFO    ] 
+[INFO    ] 
+[INFO    ]    --------------------          --------------------
+[INFO    ]                    Step          Elapsed time
+[INFO    ]    --------------------          --------------------
+[INFO    ] 
+[INFO    ]          Initialization          5.2844 sec.
+[INFO    ]             Static Mask          3.9105 sec.
+[INFO    ]            Subtract Sky          0.6689 sec.
+[INFO    ]        Separate Drizzle          16.6337 sec.
+[INFO    ]           Create Median          20.1888 sec.
+[INFO    ]                    Blot          30.8644 sec.
+[INFO    ]                 Driz_CR          15.6810 sec.
+[INFO    ]           Final Drizzle          146.4529 sec.
+[INFO    ]    ====================          ====================
+[INFO    ]                   Total          239.6846 sec.
+[INFO    ] Removing intermediate files for /Users/bcook/pCMDs/pixcmd/data/M87/raw/M87_F814W_EXP1_flc.fits
+[INFO    ] Removing intermediate files for /Users/bcook/pCMDs/pixcmd/data/M87/raw/M87_F814W_EXP2_flc.fits
+[INFO    ] Removing intermediate files for /Users/bcook/pCMDs/pixcmd/data/M87/raw/M87_F814W_EXP3_flc.fits
+[INFO    ] Removing intermediate files for /Users/bcook/pCMDs/pixcmd/data/M87/raw/M87_F814W_EXP4_flc.fits
+[INFO    ] Removing intermediate files for /Users/bcook/pCMDs/pixcmd/data/M87/raw/M87_F814W_EXP5_flc.fits
+[INFO    ] Removing intermediate files for /Users/bcook/pCMDs/pixcmd/data/M87/raw/M87_F814W_EXP6_flc.fits
+[INFO    ] Removing intermediate files for /Users/bcook/pCMDs/pixcmd/data/M87/raw/M87_F814W_EXP7_flc.fits
+[INFO    ] Removing intermediate files for /Users/bcook/pCMDs/pixcmd/data/M87/raw/M87_F814W_EXP8_flc.fits
+[INFO    ] Trailer file written to:  astrodrizzle.log
+[INFO    ] Setting up logfile :  astrodrizzle.log
+[INFO    ] AstroDrizzle Version 2.2.6 (2018-11-02 15:37:13 -0400) started at: 12:14:42.18 (11/04/2019)
+[INFO    ] 
+[INFO    ] Version Information
+[INFO    ] --------------------
+[INFO    ] Python Version [GCC 4.2.1 Compatible Clang 4.0.1 (tags/RELEASE_401/final)]
+[INFO    ] 3.6.4 |Anaconda custom (64-bit)| (default, Jan 16 2018, 12:04:33) 
+[INFO    ] numpy Version -> 1.15.1 
+[INFO    ] astropy Version -> 3.1.2 
+[INFO    ] stwcs Version -> 1.4.2 
+[INFO    ] ==== Processing Step  Initialization  started at  12:14:42.18 (11/04/2019)
+[INFO    ] Executing serially
+[INFO    ] Setting up output name: ../data/M87_v2/reduced/M87_F475W_drc.fits
+[INFO    ] -Creating imageObject List as input for processing steps.
+[WARNING ] /Users/bcook/anaconda/envs/py36/lib/python3.6/site-packages/astropy/wcs/wcs.py:2691: AstropyDeprecationWarning: 
+Private attributes "_naxis1" and "_naxis2" have been deprecated since v3.1.
+Instead use the "pixel_shape" property which returns a list of NAXISj keyword values.
+
+  warnings.warn(NAXIS_DEPRECATE_MESSAGE, AstropyDeprecationWarning)
+
+[WARNING ] /Users/bcook/anaconda/envs/py36/lib/python3.6/site-packages/astropy/wcs/wcs.py:2701: AstropyDeprecationWarning: 
+Private attributes "_naxis1" and "_naxis2" have been deprecated since v3.1.
+Instead use the "pixel_shape" property which returns a list of NAXISj keyword values.
+
+  warnings.warn(NAXIS_DEPRECATE_MESSAGE, AstropyDeprecationWarning)
+
+[INFO    ] Reading in MDRIZSKY of 48.53977584838867
+[INFO    ] Reading in MDRIZSKY of 48.53977584838867
+[WARNING ] /Users/bcook/anaconda/envs/py36/lib/python3.6/site-packages/astropy/wcs/wcs.py:2686: AstropyDeprecationWarning: 
+Private attributes "_naxis1" and "_naxis2" have been deprecated since v3.1.
+Instead use the "pixel_shape" property which returns a list of NAXISj keyword values.
+
+  warnings.warn(NAXIS_DEPRECATE_MESSAGE, AstropyDeprecationWarning)
+
+[WARNING ] /Users/bcook/anaconda/envs/py36/lib/python3.6/site-packages/astropy/wcs/wcs.py:2696: AstropyDeprecationWarning: 
+Private attributes "_naxis1" and "_naxis2" have been deprecated since v3.1.
+Instead use the "pixel_shape" property which returns a list of NAXISj keyword values.
+
+  warnings.warn(NAXIS_DEPRECATE_MESSAGE, AstropyDeprecationWarning)
+
+[INFO    ] Reading in MDRIZSKY of 54.05532455444336
+[INFO    ] Reading in MDRIZSKY of 54.05532455444336
+[INFO    ] Reset bit values of 4096 to a value of 0 in /Users/bcook/pCMDs/pixcmd/data/M87/raw/M87_F475W_EXP1_flc.fits[DQ,1]
+[INFO    ] Reset bit values of 4096 to a value of 0 in /Users/bcook/pCMDs/pixcmd/data/M87/raw/M87_F475W_EXP1_flc.fits[DQ,2]
+[INFO    ] Reset bit values of 4096 to a value of 0 in /Users/bcook/pCMDs/pixcmd/data/M87/raw/M87_F475W_EXP2_flc.fits[DQ,1]
+[INFO    ] Reset bit values of 4096 to a value of 0 in /Users/bcook/pCMDs/pixcmd/data/M87/raw/M87_F475W_EXP2_flc.fits[DQ,2]
+[INFO    ] -Creating output WCS.
+[INFO    ] WCS Keywords
+[INFO    ] 
+[INFO    ] Number of WCS axes: 2
+[INFO    ] CTYPE : 'RA---TAN'  'DEC--TAN'  
+[INFO    ] CRVAL : 187.71219253262944  12.391103502844832  
+[INFO    ] CRPIX : 2119.1610073675356  2108.161924638063  
+[INFO    ] CD1_1 CD1_2  : -1.388888888888889e-05  1.0904689401549755e-25  
+[INFO    ] CD2_1 CD2_2  : 1.1006064401890658e-25  1.388888888888889e-05  
+[INFO    ] NAXIS : 4238  4214
+[INFO    ] ********************************************************************************
+[INFO    ] *
+[INFO    ] *  Estimated memory usage:  up to 1073 Mb.
+[INFO    ] *  Output image size:       4238 X 4214 pixels. 
+[INFO    ] *  Output image file:       ~ 204 Mb. 
+[INFO    ] *  Cores available:         4
+[INFO    ] *
+[INFO    ] ********************************************************************************
+[INFO    ] ==== Processing Step  Initialization  finished at  12:14:43.802 (11/04/2019)
+[INFO    ] 
+[INFO    ] USER INPUT PARAMETERS common to all Processing Steps:
+[INFO    ] 	build :	True
+[INFO    ] 	coeffs :	True
+[INFO    ] 	context :	True
+[INFO    ] 	crbit :	4096
+[INFO    ] 	group :	
+[INFO    ] 	in_memory :	False
+[INFO    ] 	input :	['../data/M87/raw/M87_F475W_EXP1_flc.fits', '../data/M87/raw/M87_F475W_EXP2_flc.fits']
+[INFO    ] 	mdriztab :	False
+[INFO    ] 	num_cores :	None
+[INFO    ] 	output :	../data/M87_v2/reduced/M87_F475W_drc.fits
+[INFO    ] 	proc_unit :	native
+[INFO    ] 	resetbits :	4096
+[INFO    ] 	runfile :	astrodrizzle.log
+[INFO    ] 	stepsize :	10
+[INFO    ] 	updatewcs :	False
+[INFO    ] 	wcskey :	
+[INFO    ] ==== Processing Step  Static Mask  started at  12:14:43.808 (11/04/2019)
+[INFO    ] USER INPUT PARAMETERS for Static Mask Step:
+[INFO    ] 	static :	True
+[INFO    ] 	static_sig :	4.0
+[INFO    ] Computing static mask:
+
+[INFO    ]   mode = 40.130479;   rms = 24.423849;   static_sig = 4.00
+[INFO    ]   mode = 56.734727;   rms = 59.860317;   static_sig = 4.00
+[INFO    ] Computing static mask:
+
+[INFO    ]   mode = 46.819801;   rms = 25.323389;   static_sig = 4.00
+[INFO    ]   mode = 62.821316;   rms = 60.324871;   static_sig = 4.00
+[INFO    ] Saving static mask to disk: ./ACSWFC_2048x4096_1_staticMask.fits
+[INFO    ] Saving static mask to disk: ./ACSWFC_2048x4096_2_staticMask.fits
+[INFO    ] ==== Processing Step  Static Mask  finished at  12:14:45.087 (11/04/2019)
+[INFO    ] 
+[INFO    ] ==== Processing Step  Subtract Sky  started at  12:14:45.090 (11/04/2019)
+[INFO    ] Sky Subtraction step not performed.
+[INFO    ] ==== Processing Step  Subtract Sky  finished at  12:14:45.391 (11/04/2019)
+[INFO    ] 
+[INFO    ] ==== Processing Step  Separate Drizzle  started at  12:14:45.396 (11/04/2019)
+[INFO    ] Interpreted paramDict with single=True as:
+{'build': True, 'stepsize': 10, 'coeffs': True, 'wcskey': '', 'kernel': 'turbo', 'wt_scl': 'exptime', 'pixfrac': 1.0, 'fillval': None, 'bits': 0, 'compress': False, 'units': 'cps'}
+[INFO    ] USER INPUT PARAMETERS for Separate Drizzle Step:
+[INFO    ] 	bits :	0
+[INFO    ] 	build :	False
+[INFO    ] 	clean :	True
+[INFO    ] 	coeffs :	True
+[INFO    ] 	compress :	False
+[INFO    ] 	crbit :	None
+[INFO    ] 	fillval :	None
+[INFO    ] 	kernel :	turbo
+[INFO    ] 	num_cores :	None
+[INFO    ] 	pixfrac :	1.0
+[INFO    ] 	proc_unit :	electrons
+[INFO    ] 	stepsize :	10
+[INFO    ] 	units :	cps
+[INFO    ] 	wcskey :	
+[INFO    ] 	wht_type :	None
+[INFO    ] 	wt_scl :	exptime
+[INFO    ]   **Using sub-sampling value of 10 for kernel turbo
+[INFO    ] Running Drizzle to create output frame with WCS of: 
+[INFO    ] WCS Keywords
+[INFO    ] 
+[INFO    ] Number of WCS axes: 2
+[INFO    ] CTYPE : 'RA---TAN'  'DEC--TAN'  
+[INFO    ] CRVAL : 187.71219253262944  12.391103502844832  
+[INFO    ] CRPIX : 2107.0  2119.0  
+[INFO    ] CD1_1 CD1_2  : -1.0616185104958543e-09  -1.3888888848315671e-05  
+[INFO    ] CD2_1 CD2_2  : -1.3888888848315671e-05  1.0616185104958543e-09  
+[INFO    ] NAXIS : 4214  4238
+[INFO    ] Executing 2 parallel workers
+[INFO    ] -Drizzle input: /Users/bcook/pCMDs/pixcmd/data/M87/raw/M87_F475W_EXP1_flc.fits[sci,1]
+[INFO    ] -Drizzle input: /Users/bcook/pCMDs/pixcmd/data/M87/raw/M87_F475W_EXP2_flc.fits[sci,1]
+[INFO    ] Using WCSLIB-based coordinate transformation...
+[INFO    ] stepsize = 10
+[INFO    ] Using WCSLIB-based coordinate transformation...
+[INFO    ] stepsize = 10
+[INFO    ] -Drizzling using kernel = turbo
+
+[INFO    ] -Drizzling using kernel = turbo
+
+[INFO    ] -Drizzle input: /Users/bcook/pCMDs/pixcmd/data/M87/raw/M87_F475W_EXP1_flc.fits[sci,2]
+[INFO    ] -Drizzle input: /Users/bcook/pCMDs/pixcmd/data/M87/raw/M87_F475W_EXP2_flc.fits[sci,2]
+[INFO    ] Using WCSLIB-based coordinate transformation...
+[INFO    ] stepsize = 10
+[INFO    ] -Drizzling using kernel = turbo
+
+[INFO    ] Using WCSLIB-based coordinate transformation...
+[INFO    ] stepsize = 10
+[INFO    ] -Drizzling using kernel = turbo
+
+[INFO    ] -Generating simple FITS output: /Users/bcook/pCMDs/pixcmd/data/M87/raw/M87_F475W_EXP1_single_sci.fits
+[WARNING ] /Users/bcook/anaconda/envs/py36/lib/python3.6/site-packages/astropy/io/fits/card.py:979: VerifyWarning: Card is too long, comment will be truncated.
+  VerifyWarning)
+
+[INFO    ] -Generating simple FITS output: /Users/bcook/pCMDs/pixcmd/data/M87/raw/M87_F475W_EXP2_single_sci.fits
+[WARNING ] /Users/bcook/anaconda/envs/py36/lib/python3.6/site-packages/astropy/io/fits/card.py:979: VerifyWarning: Card is too long, comment will be truncated.
+  VerifyWarning)
+
+[INFO    ] Writing out image to disk: /Users/bcook/pCMDs/pixcmd/data/M87/raw/M87_F475W_EXP1_single_sci.fits
+[INFO    ] Writing out image to disk: /Users/bcook/pCMDs/pixcmd/data/M87/raw/M87_F475W_EXP2_single_sci.fits
+[INFO    ] Writing out image to disk: /Users/bcook/pCMDs/pixcmd/data/M87/raw/M87_F475W_EXP1_single_wht.fits
+[INFO    ] Writing out image to disk: /Users/bcook/pCMDs/pixcmd/data/M87/raw/M87_F475W_EXP2_single_wht.fits
+[INFO    ] ==== Processing Step  Separate Drizzle  finished at  12:14:50.345 (11/04/2019)
+[INFO    ] 
+[INFO    ] ==== Processing Step  Create Median  started at  12:14:50.353 (11/04/2019)
+[INFO    ] USER INPUT PARAMETERS for Create Median Step:
+[INFO    ] 	combine_bufsize :	None
+[INFO    ] 	combine_grow :	1
+[INFO    ] 	combine_hthresh :	None
+[INFO    ] 	combine_lthresh :	None
+[INFO    ] 	combine_maskpt :	0.3
+[INFO    ] 	combine_nhigh :	0
+[INFO    ] 	combine_nlow :	0
+[INFO    ] 	combine_nsigma :	4 3
+[INFO    ] 	combine_type :	minmed
+[INFO    ] 	compress :	False
+[INFO    ] 	median :	True
+[INFO    ] 	median_newmasks :	True
+[INFO    ] 	proc_unit :	native
+[INFO    ] reference sky value for image '/Users/bcook/pCMDs/pixcmd/data/M87/raw/M87_F475W_EXP1_flc.fits' is 48.53977584838867
+[INFO    ] reference sky value for image '/Users/bcook/pCMDs/pixcmd/data/M87/raw/M87_F475W_EXP2_flc.fits' is 54.05532455444336
+[INFO    ] Saving output median image to: '../data/M87_v2/reduced/M87_F475W_med.fits'
+[INFO    ] ==== Processing Step  Create Median  finished at  12:14:57.592 (11/04/2019)
+[INFO    ] 
+[INFO    ] ==== Processing Step  Blot  started at  12:14:57.594 (11/04/2019)
+[INFO    ] USER INPUT PARAMETERS for Blot Step:
+[INFO    ] 	blot_addsky :	True
+[INFO    ] 	blot_interp :	poly5
+[INFO    ] 	blot_sinscl :	1.0
+[INFO    ] 	blot_skyval :	0.0
+[INFO    ] 	coeffs :	True
+[INFO    ]     Blot: creating blotted image:  /Users/bcook/pCMDs/pixcmd/data/M87/raw/M87_F475W_EXP1_flc.fits[sci,1]
+[INFO    ] Using default C-based coordinate transformation...
+[INFO    ] -Generating simple FITS output: /Users/bcook/pCMDs/pixcmd/data/M87/raw/M87_F475W_EXP1_sci1_blt.fits
+[WARNING ] /Users/bcook/anaconda/envs/py36/lib/python3.6/site-packages/astropy/io/fits/card.py:979: VerifyWarning: Card is too long, comment will be truncated.
+  VerifyWarning)
+
+[INFO    ] Writing out image to disk: /Users/bcook/pCMDs/pixcmd/data/M87/raw/M87_F475W_EXP1_sci1_blt.fits
+[INFO    ]     Blot: creating blotted image:  /Users/bcook/pCMDs/pixcmd/data/M87/raw/M87_F475W_EXP1_flc.fits[sci,2]
+[INFO    ] Using default C-based coordinate transformation...
+[INFO    ] -Generating simple FITS output: /Users/bcook/pCMDs/pixcmd/data/M87/raw/M87_F475W_EXP1_sci2_blt.fits
+[INFO    ] Writing out image to disk: /Users/bcook/pCMDs/pixcmd/data/M87/raw/M87_F475W_EXP1_sci2_blt.fits
+[INFO    ]     Blot: creating blotted image:  /Users/bcook/pCMDs/pixcmd/data/M87/raw/M87_F475W_EXP2_flc.fits[sci,1]
+[INFO    ] Using default C-based coordinate transformation...
+[INFO    ] -Generating simple FITS output: /Users/bcook/pCMDs/pixcmd/data/M87/raw/M87_F475W_EXP2_sci1_blt.fits
+[INFO    ] Writing out image to disk: /Users/bcook/pCMDs/pixcmd/data/M87/raw/M87_F475W_EXP2_sci1_blt.fits
+[INFO    ]     Blot: creating blotted image:  /Users/bcook/pCMDs/pixcmd/data/M87/raw/M87_F475W_EXP2_flc.fits[sci,2]
+[INFO    ] Using default C-based coordinate transformation...
+[INFO    ] -Generating simple FITS output: /Users/bcook/pCMDs/pixcmd/data/M87/raw/M87_F475W_EXP2_sci2_blt.fits
+[INFO    ] Writing out image to disk: /Users/bcook/pCMDs/pixcmd/data/M87/raw/M87_F475W_EXP2_sci2_blt.fits
+[INFO    ] ==== Processing Step  Blot  finished at  12:15:05.623 (11/04/2019)
+[INFO    ] 
+[INFO    ] ==== Processing Step  Driz_CR  started at  12:15:05.626 (11/04/2019)
+[INFO    ] USER INPUT PARAMETERS for Driz_CR Step:
+[INFO    ] 	crbit :	4096
+[INFO    ] 	driz_cr :	True
+[INFO    ] 	driz_cr_corr :	False
+[INFO    ] 	driz_cr_ctegrow :	0
+[INFO    ] 	driz_cr_grow :	1
+[INFO    ] 	driz_cr_scale :	1.2 0.7
+[INFO    ] 	driz_cr_snr :	3.5 3.0
+[INFO    ] 	inmemory :	False
+[INFO    ] Executing 2 parallel workers
+[INFO    ] Creating output :  /Users/bcook/pCMDs/pixcmd/data/M87/raw/M87_F475W_EXP2_sci1_crmask.fits
+[INFO    ] Creating output :  /Users/bcook/pCMDs/pixcmd/data/M87/raw/M87_F475W_EXP1_sci1_crmask.fits
+[INFO    ] Creating output :  /Users/bcook/pCMDs/pixcmd/data/M87/raw/M87_F475W_EXP2_sci2_crmask.fits
+[INFO    ] Creating output :  /Users/bcook/pCMDs/pixcmd/data/M87/raw/M87_F475W_EXP1_sci2_crmask.fits
+[INFO    ] ==== Processing Step  Driz_CR  finished at  12:15:09.301 (11/04/2019)
+[INFO    ] 
+[INFO    ] ==== Processing Step  Final Drizzle  started at  12:15:09.313 (11/04/2019)
+[INFO    ] Interpreted paramDict with single=False as:
+{'build': True, 'stepsize': 10, 'coeffs': True, 'wcskey': '', 'wht_type': 'EXP', 'kernel': 'lanczos3', 'wt_scl': 'exptime', 'pixfrac': 1.0, 'fillval': None, 'maskval': None, 'bits': 0, 'units': 'counts'}
+[INFO    ] USER INPUT PARAMETERS for Final Drizzle Step:
+[INFO    ] 	bits :	0
+[INFO    ] 	build :	True
+[INFO    ] 	clean :	True
+[INFO    ] 	coeffs :	True
+[INFO    ] 	crbit :	4096
+[INFO    ] 	fillval :	None
+[INFO    ] 	kernel :	lanczos3
+[INFO    ] 	maskval :	None
+[INFO    ] 	pixfrac :	1.0
+[INFO    ] 	proc_unit :	native
+[INFO    ] 	stepsize :	10
+[INFO    ] 	units :	counts
+[INFO    ] 	wcskey :	
+[INFO    ] 	wht_type :	EXP
+[INFO    ] 	wt_scl :	exptime
+[INFO    ]   **Using sub-sampling value of 10 for kernel lanczos3
+[INFO    ] Running Drizzle to create output frame with WCS of: 
+[INFO    ] WCS Keywords
+[INFO    ] 
+[INFO    ] Number of WCS axes: 2
+[INFO    ] CTYPE : 'RA---TAN'  'DEC--TAN'  
+[INFO    ] CRVAL : 187.71219253262944  12.391103502844832  
+[INFO    ] CRPIX : 2119.1610073675356  2108.161924638063  
+[INFO    ] CD1_1 CD1_2  : -1.388888888888889e-05  1.0904689401549755e-25  
+[INFO    ] CD2_1 CD2_2  : 1.1006064401890658e-25  1.388888888888889e-05  
+[INFO    ] NAXIS : 4238  4214
+[INFO    ] -Drizzle input: /Users/bcook/pCMDs/pixcmd/data/M87/raw/M87_F475W_EXP1_flc.fits[sci,1]
+[INFO    ] Applying EXPTIME weighting to DQ mask for chip 1
+[INFO    ] Using WCSLIB-based coordinate transformation...
+[INFO    ] stepsize = 10
+[INFO    ] -Drizzling using kernel = lanczos3
+
+[INFO    ] -Drizzle input: /Users/bcook/pCMDs/pixcmd/data/M87/raw/M87_F475W_EXP1_flc.fits[sci,2]
+[INFO    ] Applying EXPTIME weighting to DQ mask for chip 2
+[INFO    ] Using WCSLIB-based coordinate transformation...
+[INFO    ] stepsize = 10
+[INFO    ] -Drizzling using kernel = lanczos3
+
+[INFO    ] -Drizzle input: /Users/bcook/pCMDs/pixcmd/data/M87/raw/M87_F475W_EXP2_flc.fits[sci,1]
+[INFO    ] Applying EXPTIME weighting to DQ mask for chip 1
+[INFO    ] Using WCSLIB-based coordinate transformation...
+[INFO    ] stepsize = 10
+[INFO    ] -Drizzling using kernel = lanczos3
+
+[INFO    ] -Drizzle input: /Users/bcook/pCMDs/pixcmd/data/M87/raw/M87_F475W_EXP2_flc.fits[sci,2]
+[INFO    ] Applying EXPTIME weighting to DQ mask for chip 2
+[INFO    ] Using WCSLIB-based coordinate transformation...
+[INFO    ] stepsize = 10
+[INFO    ] -Drizzling using kernel = lanczos3
+
+[INFO    ] -Generating multi-extension output file:  ../data/M87_v2/reduced/M87_F475W_drc.fits
+[INFO    ] Deleted all instances of WCS with key A in extensions [1]
+[INFO    ] Deleted all instances of WCS with key B in extensions [1]
+[INFO    ] Writing out to disk: ../data/M87_v2/reduced/M87_F475W_drc.fits
+[INFO    ] ==== Processing Step  Final Drizzle  finished at  12:15:45.62 (11/04/2019)
+[INFO    ] 
+[INFO    ] 
+[INFO    ] AstroDrizzle Version 2.2.6 is finished processing at 12:15:45.625 (11/04/2019).
+[INFO    ] 
+[INFO    ] 
+[INFO    ]    --------------------          --------------------
+[INFO    ]                    Step          Elapsed time
+[INFO    ]    --------------------          --------------------
+[INFO    ] 
+[INFO    ]          Initialization          1.6135 sec.
+[INFO    ]             Static Mask          1.2787 sec.
+[INFO    ]            Subtract Sky          0.3013 sec.
+[INFO    ]        Separate Drizzle          4.9492 sec.
+[INFO    ]           Create Median          7.2397 sec.
+[INFO    ]                    Blot          8.0293 sec.
+[INFO    ]                 Driz_CR          3.6756 sec.
+[INFO    ]           Final Drizzle          36.3089 sec.
+[INFO    ]    ====================          ====================
+[INFO    ]                   Total          63.3963 sec.
+[INFO    ] Removing intermediate files for /Users/bcook/pCMDs/pixcmd/data/M87/raw/M87_F475W_EXP1_flc.fits
+[INFO    ] Removing intermediate files for /Users/bcook/pCMDs/pixcmd/data/M87/raw/M87_F475W_EXP2_flc.fits
+[INFO    ] Trailer file written to:  astrodrizzle.log
+[INFO    ] Setting up logfile :  astrodrizzle.log
+[INFO    ] AstroDrizzle Version 2.2.6 (2018-11-02 15:37:13 -0400) started at: 12:15:54.33 (11/04/2019)
+[INFO    ] 
+[INFO    ] Version Information
+[INFO    ] --------------------
+[INFO    ] Python Version [GCC 4.2.1 Compatible Clang 4.0.1 (tags/RELEASE_401/final)]
+[INFO    ] 3.6.4 |Anaconda custom (64-bit)| (default, Jan 16 2018, 12:04:33) 
+[INFO    ] numpy Version -> 1.15.1 
+[INFO    ] astropy Version -> 3.1.2 
+[INFO    ] stwcs Version -> 1.4.2 
+[INFO    ] ==== Processing Step  Initialization  started at  12:15:54.337 (11/04/2019)
+[INFO    ] Executing serially
+[INFO    ] Setting up output name: ../data/M87_v2/reduced/M87_F475W_drc.fits
+[WARNING ] /Users/bcook/anaconda/envs/py36/lib/python3.6/site-packages/astropy/wcs/wcs.py:2691: AstropyDeprecationWarning: 
+Private attributes "_naxis1" and "_naxis2" have been deprecated since v3.1.
+Instead use the "pixel_shape" property which returns a list of NAXISj keyword values.
+
+  warnings.warn(NAXIS_DEPRECATE_MESSAGE, AstropyDeprecationWarning)
+
+[WARNING ] /Users/bcook/anaconda/envs/py36/lib/python3.6/site-packages/astropy/wcs/wcs.py:2701: AstropyDeprecationWarning: 
+Private attributes "_naxis1" and "_naxis2" have been deprecated since v3.1.
+Instead use the "pixel_shape" property which returns a list of NAXISj keyword values.
+
+  warnings.warn(NAXIS_DEPRECATE_MESSAGE, AstropyDeprecationWarning)
+
+[INFO    ] -Creating imageObject List as input for processing steps.
+[INFO    ] Reading in MDRIZSKY of 48.53977584838867
+[INFO    ] Reading in MDRIZSKY of 48.53977584838867
+[WARNING ] /Users/bcook/anaconda/envs/py36/lib/python3.6/site-packages/astropy/wcs/wcs.py:2686: AstropyDeprecationWarning: 
+Private attributes "_naxis1" and "_naxis2" have been deprecated since v3.1.
+Instead use the "pixel_shape" property which returns a list of NAXISj keyword values.
+
+  warnings.warn(NAXIS_DEPRECATE_MESSAGE, AstropyDeprecationWarning)
+
+[WARNING ] /Users/bcook/anaconda/envs/py36/lib/python3.6/site-packages/astropy/wcs/wcs.py:2696: AstropyDeprecationWarning: 
+Private attributes "_naxis1" and "_naxis2" have been deprecated since v3.1.
+Instead use the "pixel_shape" property which returns a list of NAXISj keyword values.
+
+  warnings.warn(NAXIS_DEPRECATE_MESSAGE, AstropyDeprecationWarning)
+
+[INFO    ] Reading in MDRIZSKY of 54.05532455444336
+[INFO    ] Reading in MDRIZSKY of 54.05532455444336
+[INFO    ] Reset bit values of 4096 to a value of 0 in /Users/bcook/pCMDs/pixcmd/data/M87/raw/M87_F475W_EXP1_flc.fits[DQ,1]
+[INFO    ] Reset bit values of 4096 to a value of 0 in /Users/bcook/pCMDs/pixcmd/data/M87/raw/M87_F475W_EXP1_flc.fits[DQ,2]
+[INFO    ] Reset bit values of 4096 to a value of 0 in /Users/bcook/pCMDs/pixcmd/data/M87/raw/M87_F475W_EXP2_flc.fits[DQ,1]
+[INFO    ] Reset bit values of 4096 to a value of 0 in /Users/bcook/pCMDs/pixcmd/data/M87/raw/M87_F475W_EXP2_flc.fits[DQ,2]
+[INFO    ] -Creating output WCS.
+[INFO    ] Creating OUTPUT WCS from ../data/M87_v2/reduced/M87_F814W_drc.fits[1]
+[INFO    ] WCS Keywords
+[INFO    ] 
+[INFO    ] CD_11  CD_12: -1.3888888888888e-05 -9.6798557649063e-23
+[INFO    ] CD_21  CD_22: -4.8604822507514e-23 1.38888888888888e-05
+[INFO    ] CRVAL    : 187.7094187945578 12.39085357980309
+[INFO    ] CRPIX    : 2566.266707298754 2558.133319436742
+[INFO    ] NAXIS    : 5133 5115
+[INFO    ] Plate Scale : 0.049999999999996804
+[INFO    ] ORIENTAT : -3.993227147696499e-16
+[INFO    ] ********************************************************************************
+[INFO    ] *
+[INFO    ] *  Estimated memory usage:  up to 1457 Mb.
+[INFO    ] *  Output image size:       5133 X 5115 pixels. 
+[INFO    ] *  Output image file:       ~ 300 Mb. 
+[INFO    ] *  Cores available:         4
+[INFO    ] *
+[INFO    ] ********************************************************************************
+[INFO    ] ==== Processing Step  Initialization  finished at  12:15:55.934 (11/04/2019)
+[INFO    ] 
+[INFO    ] USER INPUT PARAMETERS common to all Processing Steps:
+[INFO    ] 	build :	True
+[INFO    ] 	coeffs :	True
+[INFO    ] 	context :	True
+[INFO    ] 	crbit :	4096
+[INFO    ] 	group :	
+[INFO    ] 	in_memory :	False
+[INFO    ] 	input :	['../data/M87/raw/M87_F475W_EXP1_flc.fits', '../data/M87/raw/M87_F475W_EXP2_flc.fits']
+[INFO    ] 	mdriztab :	False
+[INFO    ] 	num_cores :	None
+[INFO    ] 	output :	../data/M87_v2/reduced/M87_F475W_drc.fits
+[INFO    ] 	proc_unit :	native
+[INFO    ] 	resetbits :	4096
+[INFO    ] 	runfile :	astrodrizzle.log
+[INFO    ] 	stepsize :	10
+[INFO    ] 	updatewcs :	False
+[INFO    ] 	wcskey :	
+[INFO    ] ==== Processing Step  Static Mask  started at  12:15:55.938 (11/04/2019)
+[INFO    ] USER INPUT PARAMETERS for Static Mask Step:
+[INFO    ] 	static :	True
+[INFO    ] 	static_sig :	4.0
+[INFO    ] Computing static mask:
+
+[INFO    ]   mode = 40.130479;   rms = 24.423849;   static_sig = 4.00
+[INFO    ]   mode = 56.734727;   rms = 59.860317;   static_sig = 4.00
+[INFO    ] Computing static mask:
+
+[INFO    ]   mode = 46.819801;   rms = 25.323389;   static_sig = 4.00
+[INFO    ]   mode = 62.821316;   rms = 60.324871;   static_sig = 4.00
+[INFO    ] Saving static mask to disk: ./ACSWFC_2048x4096_1_staticMask.fits
+[INFO    ] Saving static mask to disk: ./ACSWFC_2048x4096_2_staticMask.fits
+[INFO    ] ==== Processing Step  Static Mask  finished at  12:15:57.090 (11/04/2019)
+[INFO    ] 
+[INFO    ] ==== Processing Step  Subtract Sky  started at  12:15:57.092 (11/04/2019)
+[INFO    ] Sky Subtraction step not performed.
+[INFO    ] ==== Processing Step  Subtract Sky  finished at  12:15:57.246 (11/04/2019)
+[INFO    ] 
+[INFO    ] ==== Processing Step  Separate Drizzle  started at  12:15:57.247 (11/04/2019)
+[INFO    ] Interpreted paramDict with single=True as:
+{'build': True, 'stepsize': 10, 'coeffs': True, 'wcskey': '', 'kernel': 'turbo', 'wt_scl': 'exptime', 'pixfrac': 1.0, 'fillval': None, 'bits': 0, 'compress': False, 'units': 'cps'}
+[INFO    ] USER INPUT PARAMETERS for Separate Drizzle Step:
+[INFO    ] 	bits :	0
+[INFO    ] 	build :	False
+[INFO    ] 	clean :	True
+[INFO    ] 	coeffs :	True
+[INFO    ] 	compress :	False
+[INFO    ] 	crbit :	None
+[INFO    ] 	fillval :	None
+[INFO    ] 	kernel :	turbo
+[INFO    ] 	num_cores :	None
+[INFO    ] 	pixfrac :	1.0
+[INFO    ] 	proc_unit :	electrons
+[INFO    ] 	stepsize :	10
+[INFO    ] 	units :	cps
+[INFO    ] 	wcskey :	
+[INFO    ] 	wht_type :	None
+[INFO    ] 	wt_scl :	exptime
+[INFO    ]   **Using sub-sampling value of 10 for kernel turbo
+[INFO    ] Running Drizzle to create output frame with WCS of: 
+[INFO    ] WCS Keywords
+[INFO    ] 
+[INFO    ] Number of WCS axes: 2
+[INFO    ] CTYPE : 'RA---TAN'  'DEC--TAN'  
+[INFO    ] CRVAL : 187.7122098642304  12.391300184697592  
+[INFO    ] CRPIX : 2106.5  2119.0  
+[INFO    ] CD1_1 CD1_2  : -1.0616898369373125e-09  -1.3888888848310218e-05  
+[INFO    ] CD2_1 CD2_2  : -1.3888888848310218e-05  1.0616898369373125e-09  
+[INFO    ] NAXIS : 4213  4238
+[INFO    ] Executing 2 parallel workers
+[INFO    ] -Drizzle input: /Users/bcook/pCMDs/pixcmd/data/M87/raw/M87_F475W_EXP1_flc.fits[sci,1]
+[INFO    ] -Drizzle input: /Users/bcook/pCMDs/pixcmd/data/M87/raw/M87_F475W_EXP2_flc.fits[sci,1]
+[INFO    ] Using WCSLIB-based coordinate transformation...
+[INFO    ] Using WCSLIB-based coordinate transformation...
+[INFO    ] stepsize = 10
+[INFO    ] stepsize = 10
+[INFO    ] -Drizzling using kernel = turbo
+
+[INFO    ] -Drizzling using kernel = turbo
+
+[INFO    ] -Drizzle input: /Users/bcook/pCMDs/pixcmd/data/M87/raw/M87_F475W_EXP2_flc.fits[sci,2]
+[INFO    ] -Drizzle input: /Users/bcook/pCMDs/pixcmd/data/M87/raw/M87_F475W_EXP1_flc.fits[sci,2]
+[INFO    ] Using WCSLIB-based coordinate transformation...
+[INFO    ] stepsize = 10
+[INFO    ] -Drizzling using kernel = turbo
+
+[INFO    ] Using WCSLIB-based coordinate transformation...
+[INFO    ] stepsize = 10
+[INFO    ] -Drizzling using kernel = turbo
+
+[INFO    ] -Generating simple FITS output: /Users/bcook/pCMDs/pixcmd/data/M87/raw/M87_F475W_EXP2_single_sci.fits
+[INFO    ] -Generating simple FITS output: /Users/bcook/pCMDs/pixcmd/data/M87/raw/M87_F475W_EXP1_single_sci.fits
+[WARNING ] /Users/bcook/anaconda/envs/py36/lib/python3.6/site-packages/astropy/io/fits/card.py:979: VerifyWarning: Card is too long, comment will be truncated.
+  VerifyWarning)
+
+[WARNING ] /Users/bcook/anaconda/envs/py36/lib/python3.6/site-packages/astropy/io/fits/card.py:979: VerifyWarning: Card is too long, comment will be truncated.
+  VerifyWarning)
+
+[INFO    ] Writing out image to disk: /Users/bcook/pCMDs/pixcmd/data/M87/raw/M87_F475W_EXP2_single_sci.fits
+[INFO    ] Writing out image to disk: /Users/bcook/pCMDs/pixcmd/data/M87/raw/M87_F475W_EXP1_single_sci.fits
+[INFO    ] Writing out image to disk: /Users/bcook/pCMDs/pixcmd/data/M87/raw/M87_F475W_EXP2_single_wht.fits
+[INFO    ] Writing out image to disk: /Users/bcook/pCMDs/pixcmd/data/M87/raw/M87_F475W_EXP1_single_wht.fits
+[INFO    ] ==== Processing Step  Separate Drizzle  finished at  12:16:01.270 (11/04/2019)
+[INFO    ] 
+[INFO    ] ==== Processing Step  Create Median  started at  12:16:01.275 (11/04/2019)
+[INFO    ] USER INPUT PARAMETERS for Create Median Step:
+[INFO    ] 	combine_bufsize :	None
+[INFO    ] 	combine_grow :	1
+[INFO    ] 	combine_hthresh :	None
+[INFO    ] 	combine_lthresh :	None
+[INFO    ] 	combine_maskpt :	0.3
+[INFO    ] 	combine_nhigh :	0
+[INFO    ] 	combine_nlow :	0
+[INFO    ] 	combine_nsigma :	4 3
+[INFO    ] 	combine_type :	minmed
+[INFO    ] 	compress :	False
+[INFO    ] 	median :	True
+[INFO    ] 	median_newmasks :	True
+[INFO    ] 	proc_unit :	native
+[INFO    ] reference sky value for image '/Users/bcook/pCMDs/pixcmd/data/M87/raw/M87_F475W_EXP1_flc.fits' is 48.53977584838867
+[INFO    ] reference sky value for image '/Users/bcook/pCMDs/pixcmd/data/M87/raw/M87_F475W_EXP2_flc.fits' is 54.05532455444336
+[INFO    ] Saving output median image to: '../data/M87_v2/reduced/M87_F475W_med.fits'
+[INFO    ] ==== Processing Step  Create Median  finished at  12:16:07.546 (11/04/2019)
+[INFO    ] 
+[INFO    ] ==== Processing Step  Blot  started at  12:16:07.547 (11/04/2019)
+[INFO    ] USER INPUT PARAMETERS for Blot Step:
+[INFO    ] 	blot_addsky :	True
+[INFO    ] 	blot_interp :	poly5
+[INFO    ] 	blot_sinscl :	1.0
+[INFO    ] 	blot_skyval :	0.0
+[INFO    ] 	coeffs :	True
+[INFO    ]     Blot: creating blotted image:  /Users/bcook/pCMDs/pixcmd/data/M87/raw/M87_F475W_EXP1_flc.fits[sci,1]
+[INFO    ] Using default C-based coordinate transformation...
+[INFO    ] -Generating simple FITS output: /Users/bcook/pCMDs/pixcmd/data/M87/raw/M87_F475W_EXP1_sci1_blt.fits
+[WARNING ] /Users/bcook/anaconda/envs/py36/lib/python3.6/site-packages/astropy/io/fits/card.py:979: VerifyWarning: Card is too long, comment will be truncated.
+  VerifyWarning)
+
+[INFO    ] Writing out image to disk: /Users/bcook/pCMDs/pixcmd/data/M87/raw/M87_F475W_EXP1_sci1_blt.fits
+[INFO    ]     Blot: creating blotted image:  /Users/bcook/pCMDs/pixcmd/data/M87/raw/M87_F475W_EXP1_flc.fits[sci,2]
+[INFO    ] Using default C-based coordinate transformation...
+[INFO    ] -Generating simple FITS output: /Users/bcook/pCMDs/pixcmd/data/M87/raw/M87_F475W_EXP1_sci2_blt.fits
+[INFO    ] Writing out image to disk: /Users/bcook/pCMDs/pixcmd/data/M87/raw/M87_F475W_EXP1_sci2_blt.fits
+[INFO    ]     Blot: creating blotted image:  /Users/bcook/pCMDs/pixcmd/data/M87/raw/M87_F475W_EXP2_flc.fits[sci,1]
+[INFO    ] Using default C-based coordinate transformation...
+[INFO    ] -Generating simple FITS output: /Users/bcook/pCMDs/pixcmd/data/M87/raw/M87_F475W_EXP2_sci1_blt.fits
+[INFO    ] Writing out image to disk: /Users/bcook/pCMDs/pixcmd/data/M87/raw/M87_F475W_EXP2_sci1_blt.fits
+[INFO    ]     Blot: creating blotted image:  /Users/bcook/pCMDs/pixcmd/data/M87/raw/M87_F475W_EXP2_flc.fits[sci,2]
+[INFO    ] Using default C-based coordinate transformation...
+[INFO    ] -Generating simple FITS output: /Users/bcook/pCMDs/pixcmd/data/M87/raw/M87_F475W_EXP2_sci2_blt.fits
+[INFO    ] Writing out image to disk: /Users/bcook/pCMDs/pixcmd/data/M87/raw/M87_F475W_EXP2_sci2_blt.fits
+[INFO    ] ==== Processing Step  Blot  finished at  12:16:15.261 (11/04/2019)
+[INFO    ] 
+[INFO    ] ==== Processing Step  Driz_CR  started at  12:16:15.263 (11/04/2019)
+[INFO    ] USER INPUT PARAMETERS for Driz_CR Step:
+[INFO    ] 	crbit :	4096
+[INFO    ] 	driz_cr :	True
+[INFO    ] 	driz_cr_corr :	False
+[INFO    ] 	driz_cr_ctegrow :	0
+[INFO    ] 	driz_cr_grow :	1
+[INFO    ] 	driz_cr_scale :	1.2 0.7
+[INFO    ] 	driz_cr_snr :	3.5 3.0
+[INFO    ] 	inmemory :	False
+[INFO    ] Executing 2 parallel workers
+[INFO    ] Creating output :  /Users/bcook/pCMDs/pixcmd/data/M87/raw/M87_F475W_EXP1_sci1_crmask.fits
+[INFO    ] Creating output :  /Users/bcook/pCMDs/pixcmd/data/M87/raw/M87_F475W_EXP2_sci1_crmask.fits
+[INFO    ] Creating output :  /Users/bcook/pCMDs/pixcmd/data/M87/raw/M87_F475W_EXP2_sci2_crmask.fits
+[INFO    ] Creating output :  /Users/bcook/pCMDs/pixcmd/data/M87/raw/M87_F475W_EXP1_sci2_crmask.fits
+[INFO    ] ==== Processing Step  Driz_CR  finished at  12:16:18.772 (11/04/2019)
+[INFO    ] 
+[INFO    ] ==== Processing Step  Final Drizzle  started at  12:16:18.783 (11/04/2019)
+[INFO    ] Interpreted paramDict with single=False as:
+{'build': True, 'stepsize': 10, 'coeffs': True, 'wcskey': '', 'wht_type': 'EXP', 'kernel': 'lanczos3', 'wt_scl': 'exptime', 'pixfrac': 1.0, 'fillval': None, 'maskval': None, 'bits': 0, 'units': 'counts'}
+[INFO    ] USER INPUT PARAMETERS for Final Drizzle Step:
+[INFO    ] 	bits :	0
+[INFO    ] 	build :	True
+[INFO    ] 	clean :	True
+[INFO    ] 	coeffs :	True
+[INFO    ] 	crbit :	4096
+[INFO    ] 	fillval :	None
+[INFO    ] 	kernel :	lanczos3
+[INFO    ] 	maskval :	None
+[INFO    ] 	pixfrac :	1.0
+[INFO    ] 	proc_unit :	native
+[INFO    ] 	stepsize :	10
+[INFO    ] 	units :	counts
+[INFO    ] 	wcskey :	
+[INFO    ] 	wht_type :	EXP
+[INFO    ] 	wt_scl :	exptime
+[INFO    ]   **Using sub-sampling value of 10 for kernel lanczos3
+[INFO    ] Removing previous output product...
+[INFO    ] Running Drizzle to create output frame with WCS of: 
+[INFO    ] WCS Keywords
+[INFO    ] 
+[INFO    ] CD_11  CD_12: -1.3888888888888e-05 -9.6798557649063e-23
+[INFO    ] CD_21  CD_22: -4.8604822507514e-23 1.38888888888888e-05
+[INFO    ] CRVAL    : 187.7094187945578 12.39085357980309
+[INFO    ] CRPIX    : 2566.266707298754 2558.133319436742
+[INFO    ] NAXIS    : 5133 5115
+[INFO    ] Plate Scale : 0.049999999999996804
+[INFO    ] ORIENTAT : -3.993227147696499e-16
+[INFO    ] -Drizzle input: /Users/bcook/pCMDs/pixcmd/data/M87/raw/M87_F475W_EXP1_flc.fits[sci,1]
+[INFO    ] Applying EXPTIME weighting to DQ mask for chip 1
+[INFO    ] Using WCSLIB-based coordinate transformation...
+[INFO    ] stepsize = 10
+[INFO    ] -Drizzling using kernel = lanczos3
+
+[INFO    ] -Drizzle input: /Users/bcook/pCMDs/pixcmd/data/M87/raw/M87_F475W_EXP1_flc.fits[sci,2]
+[INFO    ] Applying EXPTIME weighting to DQ mask for chip 2
+[INFO    ] Using WCSLIB-based coordinate transformation...
+[INFO    ] stepsize = 10
+[INFO    ] -Drizzling using kernel = lanczos3
+
+[INFO    ] -Drizzle input: /Users/bcook/pCMDs/pixcmd/data/M87/raw/M87_F475W_EXP2_flc.fits[sci,1]
+[INFO    ] Applying EXPTIME weighting to DQ mask for chip 1
+[INFO    ] Using WCSLIB-based coordinate transformation...
+[INFO    ] stepsize = 10
+[INFO    ] -Drizzling using kernel = lanczos3
+
+[INFO    ] -Drizzle input: /Users/bcook/pCMDs/pixcmd/data/M87/raw/M87_F475W_EXP2_flc.fits[sci,2]
+[INFO    ] Applying EXPTIME weighting to DQ mask for chip 2
+[INFO    ] Using WCSLIB-based coordinate transformation...
+[INFO    ] stepsize = 10
+[INFO    ] -Drizzling using kernel = lanczos3
+
+[INFO    ] -Generating multi-extension output file:  ../data/M87_v2/reduced/M87_F475W_drc.fits
+[INFO    ] Deleted all instances of WCS with key A in extensions [1]
+[INFO    ] Deleted all instances of WCS with key B in extensions [1]
+[INFO    ] Deleted all instances of WCS with key C in extensions [1]
+[INFO    ] Writing out to disk: ../data/M87_v2/reduced/M87_F475W_drc.fits
+[INFO    ] ==== Processing Step  Final Drizzle  finished at  12:16:54.292 (11/04/2019)
+[INFO    ] 
+[INFO    ] 
+[INFO    ] AstroDrizzle Version 2.2.6 is finished processing at 12:16:54.295 (11/04/2019).
+[INFO    ] 
+[INFO    ] 
+[INFO    ]    --------------------          --------------------
+[INFO    ]                    Step          Elapsed time
+[INFO    ]    --------------------          --------------------
+[INFO    ] 
+[INFO    ]          Initialization          1.5967 sec.
+[INFO    ]             Static Mask          1.1520 sec.
+[INFO    ]            Subtract Sky          0.1541 sec.
+[INFO    ]        Separate Drizzle          4.0228 sec.
+[INFO    ]           Create Median          6.2708 sec.
+[INFO    ]                    Blot          7.7135 sec.
+[INFO    ]                 Driz_CR          3.5094 sec.
+[INFO    ]           Final Drizzle          35.5089 sec.
+[INFO    ]    ====================          ====================
+[INFO    ]                   Total          59.9283 sec.
+[INFO    ] Removing intermediate files for /Users/bcook/pCMDs/pixcmd/data/M87/raw/M87_F475W_EXP1_flc.fits
+[INFO    ] Removing intermediate files for /Users/bcook/pCMDs/pixcmd/data/M87/raw/M87_F475W_EXP2_flc.fits
+[INFO    ] Trailer file written to:  astrodrizzle.log

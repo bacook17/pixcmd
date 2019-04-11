@@ -1,0 +1,2007 @@
+[INFO    ] Setting up logfile :  tweakreg.log
+[INFO    ] TweakReg Version 1.4.7(18-April-2018) started at: 12:10:04.212 (11/04/2019) 
+[INFO    ] 
+[INFO    ] Version Information
+[INFO    ] --------------------
+[INFO    ] Python Version [GCC 4.2.1 Compatible Clang 4.0.1 (tags/RELEASE_401/final)]
+[INFO    ] 3.6.4 |Anaconda custom (64-bit)| (default, Jan 16 2018, 12:04:33) 
+[INFO    ] numpy Version -> 1.15.1 
+[INFO    ] astropy Version -> 3.1.2 
+[INFO    ] stwcs Version -> 1.4.2 
+[INFO    ] 
+[INFO    ] USER INPUT PARAMETERS common to all Processing Steps:
+[INFO    ] 	clean :	True
+[INFO    ] 	enforce_user_order :	True
+[INFO    ] 	exclusions :	
+[INFO    ] 	expand_refcat :	True
+[INFO    ] 	input :	['../data/M87/raw/M87_F814W_EXP1_flc.fits', '../data/M87/raw/M87_F814W_EXP2_flc.fits', '../data/M87/raw/M87_F814W_EXP3_flc.fits', '../data/M87/raw/M87_F814W_EXP4_flc.fits', '../data/M87/raw/M87_F814W_EXP5_flc.fits', '../data/M87/raw/M87_F814W_EXP6_flc.fits', '../data/M87/raw/M87_F814W_EXP7_flc.fits', '../data/M87/raw/M87_F814W_EXP8_flc.fits']
+[INFO    ] 	interactive :	False
+[INFO    ] 	refimage :	
+[INFO    ] 	runfile :	tweakreg.log
+[INFO    ] 	updatewcs :	False
+[INFO    ] 	verbose :	False
+[INFO    ] 	writecat :	False
+[INFO    ] 
+[INFO    ] Finding shifts for: 
+[INFO    ]     /Users/bcook/pCMDs/pixcmd/data/M87/raw/M87_F814W_EXP1_flc.fits
+[INFO    ]     /Users/bcook/pCMDs/pixcmd/data/M87/raw/M87_F814W_EXP2_flc.fits
+[INFO    ]     /Users/bcook/pCMDs/pixcmd/data/M87/raw/M87_F814W_EXP3_flc.fits
+[INFO    ]     /Users/bcook/pCMDs/pixcmd/data/M87/raw/M87_F814W_EXP4_flc.fits
+[INFO    ]     /Users/bcook/pCMDs/pixcmd/data/M87/raw/M87_F814W_EXP5_flc.fits
+[INFO    ]     /Users/bcook/pCMDs/pixcmd/data/M87/raw/M87_F814W_EXP6_flc.fits
+[INFO    ]     /Users/bcook/pCMDs/pixcmd/data/M87/raw/M87_F814W_EXP7_flc.fits
+[INFO    ]     /Users/bcook/pCMDs/pixcmd/data/M87/raw/M87_F814W_EXP8_flc.fits
+[INFO    ] 
+[INFO    ] USER INPUT PARAMETERS for finding sources for each input image:
+[INFO    ] 	clean :	True
+[INFO    ] 	computesig :	True
+[INFO    ] 	conv_width :	4.0
+[INFO    ] 	dqbits :	
+[INFO    ] 	enforce_user_order :	True
+[INFO    ] 	expand_refcat :	True
+[INFO    ] 	fluxmax :	None
+[INFO    ] 	fluxmin :	None
+[INFO    ] 	input :	['../data/M87/raw/M87_F814W_EXP1_flc.fits', '../data/M87/raw/M87_F814W_EXP2_flc.fits', '../data/M87/raw/M87_F814W_EXP3_flc.fits', '../data/M87/raw/M87_F814W_EXP4_flc.fits', '../data/M87/raw/M87_F814W_EXP5_flc.fits', '../data/M87/raw/M87_F814W_EXP6_flc.fits', '../data/M87/raw/M87_F814W_EXP7_flc.fits', '../data/M87/raw/M87_F814W_EXP8_flc.fits']
+[INFO    ] 	interactive :	False
+[INFO    ] 	nsigma :	1.5
+[INFO    ] 	peakmax :	None
+[INFO    ] 	peakmin :	None
+[INFO    ] 	ratio :	1.0
+[INFO    ] 	refimage :	
+[INFO    ] 	roundhi :	1.0
+[INFO    ] 	roundlo :	-1.0
+[INFO    ] 	runfile :	tweakreg.log
+[INFO    ] 	sharphi :	1.0
+[INFO    ] 	sharplo :	0.2
+[INFO    ] 	skysigma :	0.0
+[INFO    ] 	theta :	0.0
+[INFO    ] 	threshold :	200
+[INFO    ] 	updatehdr :	True
+[INFO    ] 	updatewcs :	False
+[INFO    ] 	use_sharp_round :	False
+[INFO    ] 	verbose :	False
+[INFO    ] 	writecat :	False
+[INFO    ] 	xyunits :	pixels
+[INFO    ] 
+[WARNING ] /Users/bcook/anaconda/envs/py36/lib/python3.6/site-packages/astropy/wcs/wcs.py:2691: AstropyDeprecationWarning: 
+Private attributes "_naxis1" and "_naxis2" have been deprecated since v3.1.
+Instead use the "pixel_shape" property which returns a list of NAXISj keyword values.
+
+  warnings.warn(NAXIS_DEPRECATE_MESSAGE, AstropyDeprecationWarning)
+
+[WARNING ] /Users/bcook/anaconda/envs/py36/lib/python3.6/site-packages/astropy/wcs/wcs.py:2701: AstropyDeprecationWarning: 
+Private attributes "_naxis1" and "_naxis2" have been deprecated since v3.1.
+Instead use the "pixel_shape" property which returns a list of NAXISj keyword values.
+
+  warnings.warn(NAXIS_DEPRECATE_MESSAGE, AstropyDeprecationWarning)
+
+[INFO    ] ===  Source finding for image '/Users/bcook/pCMDs/pixcmd/data/M87/raw/M87_F814W_EXP1_flc.fits':
+[INFO    ]   #  Source finding for '/Users/bcook/pCMDs/pixcmd/data/M87/raw/M87_F814W_EXP1_flc.fits', EXT=('SCI', 1) started at: 12:10:04.58 (11/04/2019)
+[INFO    ]    Finding sources using sky sigma = 13.687474
+[INFO    ] ###Source finding finished at: 12:10:05.395 (11/04/2019)
+[INFO    ]      Found 762 objects.
+[INFO    ]   #  Source finding for '/Users/bcook/pCMDs/pixcmd/data/M87/raw/M87_F814W_EXP1_flc.fits', EXT=('SCI', 2) started at: 12:10:05.545 (11/04/2019)
+[INFO    ]    Finding sources using sky sigma = 15.745906
+[INFO    ] ###Source finding finished at: 12:10:06.167 (11/04/2019)
+[INFO    ]      Found 709 objects.
+[INFO    ] ===  FINAL number of objects in image '/Users/bcook/pCMDs/pixcmd/data/M87/raw/M87_F814W_EXP1_flc.fits': 1471
+[INFO    ] 
+[INFO    ] ===  Source finding for image '/Users/bcook/pCMDs/pixcmd/data/M87/raw/M87_F814W_EXP2_flc.fits':
+[INFO    ]   #  Source finding for '/Users/bcook/pCMDs/pixcmd/data/M87/raw/M87_F814W_EXP2_flc.fits', EXT=('SCI', 1) started at: 12:10:06.534 (11/04/2019)
+[INFO    ]    Finding sources using sky sigma = 13.832387
+[INFO    ] ###Source finding finished at: 12:10:07.168 (11/04/2019)
+[INFO    ]      Found 764 objects.
+[INFO    ]   #  Source finding for '/Users/bcook/pCMDs/pixcmd/data/M87/raw/M87_F814W_EXP2_flc.fits', EXT=('SCI', 2) started at: 12:10:07.323 (11/04/2019)
+[INFO    ]    Finding sources using sky sigma = 15.730464
+[INFO    ] ###Source finding finished at: 12:10:07.951 (11/04/2019)
+[INFO    ]      Found 730 objects.
+[INFO    ] ===  FINAL number of objects in image '/Users/bcook/pCMDs/pixcmd/data/M87/raw/M87_F814W_EXP2_flc.fits': 1494
+[INFO    ] 
+[INFO    ] ===  Source finding for image '/Users/bcook/pCMDs/pixcmd/data/M87/raw/M87_F814W_EXP3_flc.fits':
+[INFO    ]   #  Source finding for '/Users/bcook/pCMDs/pixcmd/data/M87/raw/M87_F814W_EXP3_flc.fits', EXT=('SCI', 1) started at: 12:10:08.336 (11/04/2019)
+[INFO    ]    Finding sources using sky sigma = 13.851124
+[INFO    ] ###Source finding finished at: 12:10:08.958 (11/04/2019)
+[INFO    ]      Found 789 objects.
+[INFO    ]   #  Source finding for '/Users/bcook/pCMDs/pixcmd/data/M87/raw/M87_F814W_EXP3_flc.fits', EXT=('SCI', 2) started at: 12:10:09.115 (11/04/2019)
+[INFO    ]    Finding sources using sky sigma = 15.677851
+[INFO    ] ###Source finding finished at: 12:10:09.734 (11/04/2019)
+[INFO    ]      Found 811 objects.
+[INFO    ] ===  FINAL number of objects in image '/Users/bcook/pCMDs/pixcmd/data/M87/raw/M87_F814W_EXP3_flc.fits': 1600
+[INFO    ] 
+[INFO    ] ===  Source finding for image '/Users/bcook/pCMDs/pixcmd/data/M87/raw/M87_F814W_EXP4_flc.fits':
+[INFO    ]   #  Source finding for '/Users/bcook/pCMDs/pixcmd/data/M87/raw/M87_F814W_EXP4_flc.fits', EXT=('SCI', 1) started at: 12:10:10.134 (11/04/2019)
+[INFO    ]    Finding sources using sky sigma = 13.670612
+[INFO    ] ###Source finding finished at: 12:10:10.802 (11/04/2019)
+[INFO    ]      Found 805 objects.
+[INFO    ]   #  Source finding for '/Users/bcook/pCMDs/pixcmd/data/M87/raw/M87_F814W_EXP4_flc.fits', EXT=('SCI', 2) started at: 12:10:10.967 (11/04/2019)
+[INFO    ]    Finding sources using sky sigma = 15.860266
+[INFO    ] ###Source finding finished at: 12:10:11.601 (11/04/2019)
+[INFO    ]      Found 728 objects.
+[INFO    ] ===  FINAL number of objects in image '/Users/bcook/pCMDs/pixcmd/data/M87/raw/M87_F814W_EXP4_flc.fits': 1533
+[INFO    ] 
+[INFO    ] ===  Source finding for image '/Users/bcook/pCMDs/pixcmd/data/M87/raw/M87_F814W_EXP5_flc.fits':
+[INFO    ]   #  Source finding for '/Users/bcook/pCMDs/pixcmd/data/M87/raw/M87_F814W_EXP5_flc.fits', EXT=('SCI', 1) started at: 12:10:11.992 (11/04/2019)
+[INFO    ]    Finding sources using sky sigma = 13.767236
+[INFO    ] ###Source finding finished at: 12:10:12.668 (11/04/2019)
+[INFO    ]      Found 824 objects.
+[INFO    ]   #  Source finding for '/Users/bcook/pCMDs/pixcmd/data/M87/raw/M87_F814W_EXP5_flc.fits', EXT=('SCI', 2) started at: 12:10:12.824 (11/04/2019)
+[INFO    ]    Finding sources using sky sigma = 15.592197
+[INFO    ] ###Source finding finished at: 12:10:13.457 (11/04/2019)
+[INFO    ]      Found 770 objects.
+[INFO    ] ===  FINAL number of objects in image '/Users/bcook/pCMDs/pixcmd/data/M87/raw/M87_F814W_EXP5_flc.fits': 1594
+[INFO    ] 
+[INFO    ] ===  Source finding for image '/Users/bcook/pCMDs/pixcmd/data/M87/raw/M87_F814W_EXP6_flc.fits':
+[INFO    ]   #  Source finding for '/Users/bcook/pCMDs/pixcmd/data/M87/raw/M87_F814W_EXP6_flc.fits', EXT=('SCI', 1) started at: 12:10:13.837 (11/04/2019)
+[INFO    ]    Finding sources using sky sigma = 13.687445
+[INFO    ] ###Source finding finished at: 12:10:14.474 (11/04/2019)
+[INFO    ]      Found 850 objects.
+[INFO    ]   #  Source finding for '/Users/bcook/pCMDs/pixcmd/data/M87/raw/M87_F814W_EXP6_flc.fits', EXT=('SCI', 2) started at: 12:10:14.65 (11/04/2019)
+[INFO    ]    Finding sources using sky sigma = 15.507187
+[INFO    ] ###Source finding finished at: 12:10:15.34 (11/04/2019)
+[INFO    ]      Found 802 objects.
+[INFO    ] ===  FINAL number of objects in image '/Users/bcook/pCMDs/pixcmd/data/M87/raw/M87_F814W_EXP6_flc.fits': 1652
+[INFO    ] 
+[INFO    ] ===  Source finding for image '/Users/bcook/pCMDs/pixcmd/data/M87/raw/M87_F814W_EXP7_flc.fits':
+[INFO    ]   #  Source finding for '/Users/bcook/pCMDs/pixcmd/data/M87/raw/M87_F814W_EXP7_flc.fits', EXT=('SCI', 1) started at: 12:10:15.781 (11/04/2019)
+[INFO    ]    Finding sources using sky sigma = 13.702931
+[INFO    ] ###Source finding finished at: 12:10:16.430 (11/04/2019)
+[INFO    ]      Found 702 objects.
+[INFO    ]   #  Source finding for '/Users/bcook/pCMDs/pixcmd/data/M87/raw/M87_F814W_EXP7_flc.fits', EXT=('SCI', 2) started at: 12:10:16.596 (11/04/2019)
+[INFO    ]    Finding sources using sky sigma = 15.293061
+[INFO    ] ###Source finding finished at: 12:10:17.249 (11/04/2019)
+[INFO    ]      Found 729 objects.
+[INFO    ] ===  FINAL number of objects in image '/Users/bcook/pCMDs/pixcmd/data/M87/raw/M87_F814W_EXP7_flc.fits': 1431
+[INFO    ] 
+[INFO    ] ===  Source finding for image '/Users/bcook/pCMDs/pixcmd/data/M87/raw/M87_F814W_EXP8_flc.fits':
+[INFO    ]   #  Source finding for '/Users/bcook/pCMDs/pixcmd/data/M87/raw/M87_F814W_EXP8_flc.fits', EXT=('SCI', 1) started at: 12:10:17.719 (11/04/2019)
+[INFO    ]    Finding sources using sky sigma = 13.935042
+[INFO    ] ###Source finding finished at: 12:10:18.375 (11/04/2019)
+[INFO    ]      Found 765 objects.
+[INFO    ]   #  Source finding for '/Users/bcook/pCMDs/pixcmd/data/M87/raw/M87_F814W_EXP8_flc.fits', EXT=('SCI', 2) started at: 12:10:18.565 (11/04/2019)
+[INFO    ]    Finding sources using sky sigma = 15.573353
+[INFO    ] ###Source finding finished at: 12:10:19.339 (11/04/2019)
+[INFO    ]      Found 760 objects.
+[INFO    ] ===  FINAL number of objects in image '/Users/bcook/pCMDs/pixcmd/data/M87/raw/M87_F814W_EXP8_flc.fits': 1525
+[INFO    ] 
+[WARNING ] /Users/bcook/anaconda/envs/py36/lib/python3.6/site-packages/astropy/wcs/wcs.py:2686: AstropyDeprecationWarning: 
+Private attributes "_naxis1" and "_naxis2" have been deprecated since v3.1.
+Instead use the "pixel_shape" property which returns a list of NAXISj keyword values.
+
+  warnings.warn(NAXIS_DEPRECATE_MESSAGE, AstropyDeprecationWarning)
+
+[WARNING ] /Users/bcook/anaconda/envs/py36/lib/python3.6/site-packages/astropy/wcs/wcs.py:2696: AstropyDeprecationWarning: 
+Private attributes "_naxis1" and "_naxis2" have been deprecated since v3.1.
+Instead use the "pixel_shape" property which returns a list of NAXISj keyword values.
+
+  warnings.warn(NAXIS_DEPRECATE_MESSAGE, AstropyDeprecationWarning)
+
+[INFO    ] Converting RA/Dec positions of reference sources from "/Users/bcook/pCMDs/pixcmd/data/M87/raw/M87_F814W_EXP1_flc.fits" to X,Y positions in reference WCS...
+[INFO    ] 
+[INFO    ] ===============================================================
+[INFO    ] Performing alignment in the projection plane defined by the WCS
+[INFO    ] derived from '/Users/bcook/pCMDs/pixcmd/data/M87/raw/M87_F814W_EXP1_flc.fits'
+[INFO    ] ===============================================================
+[INFO    ] 
+[INFO    ] USER INPUT PARAMETERS for matching sources:
+[INFO    ] 	minobj :	15
+[INFO    ] 	residplot :	NoPlot
+[INFO    ] 	searchrad :	1.0
+[INFO    ] 	searchunits :	arcseconds
+[INFO    ] 	see2dplot :	False
+[INFO    ] 	separation :	0.5
+[INFO    ] 	tolerance :	1.0
+[INFO    ] 	use2dhist :	True
+[INFO    ] 	xoffset :	0.0
+[INFO    ] 	yoffset :	0.0
+[INFO    ] 
+[INFO    ] USER INPUT PARAMETERS for fitting source lists:
+[INFO    ] 	fitgeometry :	rscale
+[INFO    ] 	labelsize :	8
+[INFO    ] 	minobj :	15
+[INFO    ] 	nclip :	3
+[INFO    ] 	residplot :	NoPlot
+[INFO    ] 	sigma :	3.0
+[INFO    ] 	ylimit :	None
+[INFO    ] 
+[INFO    ] ====================
+[INFO    ] Performing fit for: /Users/bcook/pCMDs/pixcmd/data/M87/raw/M87_F814W_EXP2_flc.fits
+[INFO    ] 
+[INFO    ] Matching sources from '/Users/bcook/pCMDs/pixcmd/data/M87/raw/M87_F814W_EXP2_flc.fits' with sources from reference image '/Users/bcook/pCMDs/pixcmd/data/M87/raw/M87_F814W_EXP1_flc.fits'
+[INFO    ] Computing initial guess for X and Y shifts...
+[INFO    ] Found initial X and Y shifts of  -0.3115264797507784 -0.5420560747663536
+[INFO    ]     with significance of  909.083515248371 and  120.0  matches
+[INFO    ] Found 310 matches for /Users/bcook/pCMDs/pixcmd/data/M87/raw/M87_F814W_EXP2_flc.fits...
+[INFO    ] Performing "rscale" fit
+[INFO    ] Performing "rscale" fit
+[INFO    ] Performing "rscale" fit
+[INFO    ] Performing "rscale" fit
+[INFO    ] Computed  rscale  fit for  /Users/bcook/pCMDs/pixcmd/data/M87/raw/M87_F814W_EXP2_flc.fits : 
+[INFO    ] XSH: 0.0000  YSH: -0.0000    ROT: 360    SCALE: 1.000000
+[INFO    ] XRMS: 0.26    YRMS: 0.022
+[INFO    ] 
+[INFO    ] RMS_RA: 1.2e-06 (deg)   RMS_DEC: 3.5e-06 (deg)
+[INFO    ] 
+[INFO    ] Final solution based on  300  objects.
+[INFO    ] Adding 1184 new sources to the reference catalog for a total of 2655 sources.
+[INFO    ] 
+[INFO    ] ....Updating header for /Users/bcook/pCMDs/pixcmd/data/M87/raw/M87_F814W_EXP2_flc.fits...
+[INFO    ] 
+[INFO    ] 
+[INFO    ] Processing /Users/bcook/pCMDs/pixcmd/data/M87/raw/M87_F814W_EXP2_flc.fits['SCI',1]
+[INFO    ] 
+[INFO    ] Updating header for /Users/bcook/pCMDs/pixcmd/data/M87/raw/M87_F814W_EXP2_flc.fits[1]
+[INFO    ]     with WCS of
+[INFO    ] WCS Keywords
+[INFO    ] 
+[INFO    ] CD_11  CD_12: -3.7516832326519763e-06 -1.3682214863920408e-05
+[INFO    ] CD_21  CD_22: -1.3330653813374984e-05 2.8507559552529705e-06
+[INFO    ] CRVAL    : 187.72382144265802 12.388181518533111
+[INFO    ] CRPIX    : 2048.0 1024.0
+[INFO    ] NAXIS    : 4096 2048
+[INFO    ] Plate Scale : 0.049854665757294706
+[INFO    ] ORIENTAT : -78.23052902046787
+[INFO    ] WCSNAME  :  INITIAL_F814W
+[INFO    ] 
+[INFO    ] Processing /Users/bcook/pCMDs/pixcmd/data/M87/raw/M87_F814W_EXP2_flc.fits['SCI',2]
+[INFO    ] 
+[WARNING ] /Users/bcook/anaconda/envs/py36/lib/python3.6/site-packages/astropy/wcs/wcs.py:2691: AstropyDeprecationWarning: 
+Private attributes "_naxis1" and "_naxis2" have been deprecated since v3.1.
+Instead use the "pixel_shape" property which returns a list of NAXISj keyword values.
+
+  warnings.warn(NAXIS_DEPRECATE_MESSAGE, AstropyDeprecationWarning)
+
+[WARNING ] /Users/bcook/anaconda/envs/py36/lib/python3.6/site-packages/astropy/wcs/wcs.py:2701: AstropyDeprecationWarning: 
+Private attributes "_naxis1" and "_naxis2" have been deprecated since v3.1.
+Instead use the "pixel_shape" property which returns a list of NAXISj keyword values.
+
+  warnings.warn(NAXIS_DEPRECATE_MESSAGE, AstropyDeprecationWarning)
+
+[WARNING ] /Users/bcook/anaconda/envs/py36/lib/python3.6/site-packages/astropy/wcs/wcs.py:2686: AstropyDeprecationWarning: 
+Private attributes "_naxis1" and "_naxis2" have been deprecated since v3.1.
+Instead use the "pixel_shape" property which returns a list of NAXISj keyword values.
+
+  warnings.warn(NAXIS_DEPRECATE_MESSAGE, AstropyDeprecationWarning)
+
+[WARNING ] /Users/bcook/anaconda/envs/py36/lib/python3.6/site-packages/astropy/wcs/wcs.py:2696: AstropyDeprecationWarning: 
+Private attributes "_naxis1" and "_naxis2" have been deprecated since v3.1.
+Instead use the "pixel_shape" property which returns a list of NAXISj keyword values.
+
+  warnings.warn(NAXIS_DEPRECATE_MESSAGE, AstropyDeprecationWarning)
+
+[INFO    ] Updating header for /Users/bcook/pCMDs/pixcmd/data/M87/raw/M87_F814W_EXP2_flc.fits[4]
+[INFO    ]     with WCS of
+[INFO    ] WCS Keywords
+[INFO    ] 
+[INFO    ] CD_11  CD_12: -3.882390962525164e-06 -1.3246749872325345e-05
+[INFO    ] CD_21  CD_22: -1.3124454090676009e-05 2.6532455391779277e-06
+[INFO    ] CRVAL    : 187.69485683660093 12.39401271066644
+[INFO    ] CRPIX    : 2048.0 1024.0
+[INFO    ] NAXIS    : 4096 2048
+[INFO    ] Plate Scale : 0.04927192244821972
+[INFO    ] ORIENTAT : -78.67386712333193
+[INFO    ] WCSNAME  :  INITIAL_F814W
+[INFO    ]     Writing out new WCS to alternate WCS: "B"
+[INFO    ] Updating WCSCORR table with new WCS solution "INITIAL_F814W"
+[WARNING ] /Users/bcook/anaconda/envs/py36/lib/python3.6/site-packages/astropy/wcs/wcs.py:2691: AstropyDeprecationWarning: 
+Private attributes "_naxis1" and "_naxis2" have been deprecated since v3.1.
+Instead use the "pixel_shape" property which returns a list of NAXISj keyword values.
+
+  warnings.warn(NAXIS_DEPRECATE_MESSAGE, AstropyDeprecationWarning)
+
+[WARNING ] /Users/bcook/anaconda/envs/py36/lib/python3.6/site-packages/astropy/wcs/wcs.py:2701: AstropyDeprecationWarning: 
+Private attributes "_naxis1" and "_naxis2" have been deprecated since v3.1.
+Instead use the "pixel_shape" property which returns a list of NAXISj keyword values.
+
+  warnings.warn(NAXIS_DEPRECATE_MESSAGE, AstropyDeprecationWarning)
+
+[WARNING ] /Users/bcook/anaconda/envs/py36/lib/python3.6/site-packages/astropy/wcs/wcs.py:2691: AstropyDeprecationWarning: 
+Private attributes "_naxis1" and "_naxis2" have been deprecated since v3.1.
+Instead use the "pixel_shape" property which returns a list of NAXISj keyword values.
+
+  warnings.warn(NAXIS_DEPRECATE_MESSAGE, AstropyDeprecationWarning)
+
+[WARNING ] /Users/bcook/anaconda/envs/py36/lib/python3.6/site-packages/astropy/wcs/wcs.py:2701: AstropyDeprecationWarning: 
+Private attributes "_naxis1" and "_naxis2" have been deprecated since v3.1.
+Instead use the "pixel_shape" property which returns a list of NAXISj keyword values.
+
+  warnings.warn(NAXIS_DEPRECATE_MESSAGE, AstropyDeprecationWarning)
+
+[WARNING ] /Users/bcook/anaconda/envs/py36/lib/python3.6/site-packages/astropy/io/fits/card.py:266: VerifyWarning: Keyword name 'IDCSCALEB' is greater than 8 characters or contains characters not allowed by the FITS standard; a HIERARCH card will be created.
+  keyword), VerifyWarning)
+
+[WARNING ] /Users/bcook/anaconda/envs/py36/lib/python3.6/site-packages/astropy/wcs/wcs.py:2691: AstropyDeprecationWarning: 
+Private attributes "_naxis1" and "_naxis2" have been deprecated since v3.1.
+Instead use the "pixel_shape" property which returns a list of NAXISj keyword values.
+
+  warnings.warn(NAXIS_DEPRECATE_MESSAGE, AstropyDeprecationWarning)
+
+[WARNING ] /Users/bcook/anaconda/envs/py36/lib/python3.6/site-packages/astropy/wcs/wcs.py:2701: AstropyDeprecationWarning: 
+Private attributes "_naxis1" and "_naxis2" have been deprecated since v3.1.
+Instead use the "pixel_shape" property which returns a list of NAXISj keyword values.
+
+  warnings.warn(NAXIS_DEPRECATE_MESSAGE, AstropyDeprecationWarning)
+
+[WARNING ] /Users/bcook/anaconda/envs/py36/lib/python3.6/site-packages/astropy/io/fits/card.py:266: VerifyWarning: Keyword name 'IDCSCALEB' is greater than 8 characters or contains characters not allowed by the FITS standard; a HIERARCH card will be created.
+  keyword), VerifyWarning)
+
+[INFO    ] 
+[INFO    ] ====================
+[INFO    ] Performing fit for: /Users/bcook/pCMDs/pixcmd/data/M87/raw/M87_F814W_EXP3_flc.fits
+[INFO    ] 
+[INFO    ] Matching sources from '/Users/bcook/pCMDs/pixcmd/data/M87/raw/M87_F814W_EXP3_flc.fits' with sources from reference image '/Users/bcook/pCMDs/pixcmd/data/M87/raw/M87_F814W_EXP1_flc.fits'
+[INFO    ] Computing initial guess for X and Y shifts...
+[INFO    ] Found initial X and Y shifts of  -0.37575757575757507 -0.32727272727272805
+[INFO    ]     with significance of  1201.7159904649395 and  204.0  matches
+[INFO    ] Found 320 matches for /Users/bcook/pCMDs/pixcmd/data/M87/raw/M87_F814W_EXP3_flc.fits...
+[INFO    ] Performing "rscale" fit
+[INFO    ] Performing "rscale" fit
+[INFO    ] Performing "rscale" fit
+[INFO    ] Performing "rscale" fit
+[INFO    ] Computed  rscale  fit for  /Users/bcook/pCMDs/pixcmd/data/M87/raw/M87_F814W_EXP3_flc.fits : 
+[INFO    ] XSH: 0.0000  YSH: -0.0001    ROT: 5.511163085e-08    SCALE: 0.999999
+[INFO    ] XRMS: 0.25    YRMS: 0.22
+[INFO    ] 
+[INFO    ] RMS_RA: 3.8e-06 (deg)   RMS_DEC: 2.6e-06 (deg)
+[INFO    ] 
+[INFO    ] Final solution based on  319  objects.
+[INFO    ] Adding 1280 new sources to the reference catalog for a total of 3935 sources.
+[INFO    ] 
+[INFO    ] ....Updating header for /Users/bcook/pCMDs/pixcmd/data/M87/raw/M87_F814W_EXP3_flc.fits...
+[INFO    ] 
+[INFO    ] 
+[INFO    ] Processing /Users/bcook/pCMDs/pixcmd/data/M87/raw/M87_F814W_EXP3_flc.fits['SCI',1]
+[INFO    ] 
+[WARNING ] /Users/bcook/anaconda/envs/py36/lib/python3.6/site-packages/astropy/wcs/wcs.py:2691: AstropyDeprecationWarning: 
+Private attributes "_naxis1" and "_naxis2" have been deprecated since v3.1.
+Instead use the "pixel_shape" property which returns a list of NAXISj keyword values.
+
+  warnings.warn(NAXIS_DEPRECATE_MESSAGE, AstropyDeprecationWarning)
+
+[WARNING ] /Users/bcook/anaconda/envs/py36/lib/python3.6/site-packages/astropy/wcs/wcs.py:2701: AstropyDeprecationWarning: 
+Private attributes "_naxis1" and "_naxis2" have been deprecated since v3.1.
+Instead use the "pixel_shape" property which returns a list of NAXISj keyword values.
+
+  warnings.warn(NAXIS_DEPRECATE_MESSAGE, AstropyDeprecationWarning)
+
+[WARNING ] /Users/bcook/anaconda/envs/py36/lib/python3.6/site-packages/astropy/wcs/wcs.py:2686: AstropyDeprecationWarning: 
+Private attributes "_naxis1" and "_naxis2" have been deprecated since v3.1.
+Instead use the "pixel_shape" property which returns a list of NAXISj keyword values.
+
+  warnings.warn(NAXIS_DEPRECATE_MESSAGE, AstropyDeprecationWarning)
+
+[WARNING ] /Users/bcook/anaconda/envs/py36/lib/python3.6/site-packages/astropy/wcs/wcs.py:2696: AstropyDeprecationWarning: 
+Private attributes "_naxis1" and "_naxis2" have been deprecated since v3.1.
+Instead use the "pixel_shape" property which returns a list of NAXISj keyword values.
+
+  warnings.warn(NAXIS_DEPRECATE_MESSAGE, AstropyDeprecationWarning)
+
+[INFO    ] Updating header for /Users/bcook/pCMDs/pixcmd/data/M87/raw/M87_F814W_EXP3_flc.fits[1]
+[INFO    ]     with WCS of
+[INFO    ] WCS Keywords
+[INFO    ] 
+[INFO    ] CD_11  CD_12: -3.7517062784712766e-06 -1.3682106264829391e-05
+[INFO    ] CD_21  CD_22: -1.3330544382427079e-05 2.8507867382162567e-06
+[INFO    ] CRVAL    : 187.72382535057864 12.388180390908973
+[INFO    ] CRPIX    : 2048.0 1024.0
+[INFO    ] NAXIS    : 4096 2048
+[INFO    ] Plate Scale : 0.04985428327320239
+[INFO    ] ORIENTAT : -78.23031466375014
+[INFO    ] WCSNAME  :  INITIAL_F814W
+[INFO    ] 
+[INFO    ] Processing /Users/bcook/pCMDs/pixcmd/data/M87/raw/M87_F814W_EXP3_flc.fits['SCI',2]
+[INFO    ] 
+[WARNING ] /Users/bcook/anaconda/envs/py36/lib/python3.6/site-packages/astropy/wcs/wcs.py:2691: AstropyDeprecationWarning: 
+Private attributes "_naxis1" and "_naxis2" have been deprecated since v3.1.
+Instead use the "pixel_shape" property which returns a list of NAXISj keyword values.
+
+  warnings.warn(NAXIS_DEPRECATE_MESSAGE, AstropyDeprecationWarning)
+
+[WARNING ] /Users/bcook/anaconda/envs/py36/lib/python3.6/site-packages/astropy/wcs/wcs.py:2701: AstropyDeprecationWarning: 
+Private attributes "_naxis1" and "_naxis2" have been deprecated since v3.1.
+Instead use the "pixel_shape" property which returns a list of NAXISj keyword values.
+
+  warnings.warn(NAXIS_DEPRECATE_MESSAGE, AstropyDeprecationWarning)
+
+[WARNING ] /Users/bcook/anaconda/envs/py36/lib/python3.6/site-packages/astropy/wcs/wcs.py:2686: AstropyDeprecationWarning: 
+Private attributes "_naxis1" and "_naxis2" have been deprecated since v3.1.
+Instead use the "pixel_shape" property which returns a list of NAXISj keyword values.
+
+  warnings.warn(NAXIS_DEPRECATE_MESSAGE, AstropyDeprecationWarning)
+
+[WARNING ] /Users/bcook/anaconda/envs/py36/lib/python3.6/site-packages/astropy/wcs/wcs.py:2696: AstropyDeprecationWarning: 
+Private attributes "_naxis1" and "_naxis2" have been deprecated since v3.1.
+Instead use the "pixel_shape" property which returns a list of NAXISj keyword values.
+
+  warnings.warn(NAXIS_DEPRECATE_MESSAGE, AstropyDeprecationWarning)
+
+[INFO    ] Updating header for /Users/bcook/pCMDs/pixcmd/data/M87/raw/M87_F814W_EXP3_flc.fits[4]
+[INFO    ]     with WCS of
+[INFO    ] WCS Keywords
+[INFO    ] 
+[INFO    ] CD_11  CD_12: -3.882412270993165e-06 -1.3246645166594992e-05
+[INFO    ] CD_21  CD_22: -1.3124345635707817e-05 2.653276109272992e-06
+[INFO    ] CRVAL    : 187.6948609742529 12.394011647156178
+[INFO    ] CRPIX    : 2048.0 1024.0
+[INFO    ] NAXIS    : 4096 2048
+[INFO    ] Plate Scale : 0.049271544367416986
+[INFO    ] ORIENTAT : -78.673652787169
+[INFO    ] WCSNAME  :  INITIAL_F814W
+[INFO    ]     Writing out new WCS to alternate WCS: "B"
+[INFO    ] Updating WCSCORR table with new WCS solution "INITIAL_F814W"
+[WARNING ] /Users/bcook/anaconda/envs/py36/lib/python3.6/site-packages/astropy/wcs/wcs.py:2691: AstropyDeprecationWarning: 
+Private attributes "_naxis1" and "_naxis2" have been deprecated since v3.1.
+Instead use the "pixel_shape" property which returns a list of NAXISj keyword values.
+
+  warnings.warn(NAXIS_DEPRECATE_MESSAGE, AstropyDeprecationWarning)
+
+[WARNING ] /Users/bcook/anaconda/envs/py36/lib/python3.6/site-packages/astropy/wcs/wcs.py:2701: AstropyDeprecationWarning: 
+Private attributes "_naxis1" and "_naxis2" have been deprecated since v3.1.
+Instead use the "pixel_shape" property which returns a list of NAXISj keyword values.
+
+  warnings.warn(NAXIS_DEPRECATE_MESSAGE, AstropyDeprecationWarning)
+
+[WARNING ] /Users/bcook/anaconda/envs/py36/lib/python3.6/site-packages/astropy/wcs/wcs.py:2691: AstropyDeprecationWarning: 
+Private attributes "_naxis1" and "_naxis2" have been deprecated since v3.1.
+Instead use the "pixel_shape" property which returns a list of NAXISj keyword values.
+
+  warnings.warn(NAXIS_DEPRECATE_MESSAGE, AstropyDeprecationWarning)
+
+[WARNING ] /Users/bcook/anaconda/envs/py36/lib/python3.6/site-packages/astropy/wcs/wcs.py:2701: AstropyDeprecationWarning: 
+Private attributes "_naxis1" and "_naxis2" have been deprecated since v3.1.
+Instead use the "pixel_shape" property which returns a list of NAXISj keyword values.
+
+  warnings.warn(NAXIS_DEPRECATE_MESSAGE, AstropyDeprecationWarning)
+
+[WARNING ] /Users/bcook/anaconda/envs/py36/lib/python3.6/site-packages/astropy/io/fits/card.py:266: VerifyWarning: Keyword name 'IDCSCALEB' is greater than 8 characters or contains characters not allowed by the FITS standard; a HIERARCH card will be created.
+  keyword), VerifyWarning)
+
+[WARNING ] /Users/bcook/anaconda/envs/py36/lib/python3.6/site-packages/astropy/wcs/wcs.py:2691: AstropyDeprecationWarning: 
+Private attributes "_naxis1" and "_naxis2" have been deprecated since v3.1.
+Instead use the "pixel_shape" property which returns a list of NAXISj keyword values.
+
+  warnings.warn(NAXIS_DEPRECATE_MESSAGE, AstropyDeprecationWarning)
+
+[WARNING ] /Users/bcook/anaconda/envs/py36/lib/python3.6/site-packages/astropy/wcs/wcs.py:2701: AstropyDeprecationWarning: 
+Private attributes "_naxis1" and "_naxis2" have been deprecated since v3.1.
+Instead use the "pixel_shape" property which returns a list of NAXISj keyword values.
+
+  warnings.warn(NAXIS_DEPRECATE_MESSAGE, AstropyDeprecationWarning)
+
+[WARNING ] /Users/bcook/anaconda/envs/py36/lib/python3.6/site-packages/astropy/io/fits/card.py:266: VerifyWarning: Keyword name 'IDCSCALEB' is greater than 8 characters or contains characters not allowed by the FITS standard; a HIERARCH card will be created.
+  keyword), VerifyWarning)
+
+[INFO    ] 
+[INFO    ] ====================
+[INFO    ] Performing fit for: /Users/bcook/pCMDs/pixcmd/data/M87/raw/M87_F814W_EXP4_flc.fits
+[INFO    ] 
+[INFO    ] Matching sources from '/Users/bcook/pCMDs/pixcmd/data/M87/raw/M87_F814W_EXP4_flc.fits' with sources from reference image '/Users/bcook/pCMDs/pixcmd/data/M87/raw/M87_F814W_EXP1_flc.fits'
+[INFO    ] Computing initial guess for X and Y shifts...
+[INFO    ] Found initial X and Y shifts of  -0.5 -0.33832335329341134
+[INFO    ]     with significance of  963.8863324471683 and  140.0  matches
+[INFO    ] Found 319 matches for /Users/bcook/pCMDs/pixcmd/data/M87/raw/M87_F814W_EXP4_flc.fits...
+[INFO    ] Performing "rscale" fit
+[INFO    ] Performing "rscale" fit
+[INFO    ] Performing "rscale" fit
+[INFO    ] Performing "rscale" fit
+[INFO    ] Computed  rscale  fit for  /Users/bcook/pCMDs/pixcmd/data/M87/raw/M87_F814W_EXP4_flc.fits : 
+[INFO    ] XSH: -0.0000  YSH: -0.0000    ROT: 360    SCALE: 1.000000
+[INFO    ] XRMS: 0.032    YRMS: 0.2
+[INFO    ] 
+[INFO    ] RMS_RA: 2.8e-06 (deg)   RMS_DEC: 2.3e-07 (deg)
+[INFO    ] 
+[INFO    ] Final solution based on  303  objects.
+[INFO    ] Adding 1214 new sources to the reference catalog for a total of 5149 sources.
+[INFO    ] 
+[INFO    ] ....Updating header for /Users/bcook/pCMDs/pixcmd/data/M87/raw/M87_F814W_EXP4_flc.fits...
+[INFO    ] 
+[INFO    ] 
+[INFO    ] Processing /Users/bcook/pCMDs/pixcmd/data/M87/raw/M87_F814W_EXP4_flc.fits['SCI',1]
+[INFO    ] 
+[WARNING ] /Users/bcook/anaconda/envs/py36/lib/python3.6/site-packages/astropy/wcs/wcs.py:2691: AstropyDeprecationWarning: 
+Private attributes "_naxis1" and "_naxis2" have been deprecated since v3.1.
+Instead use the "pixel_shape" property which returns a list of NAXISj keyword values.
+
+  warnings.warn(NAXIS_DEPRECATE_MESSAGE, AstropyDeprecationWarning)
+
+[WARNING ] /Users/bcook/anaconda/envs/py36/lib/python3.6/site-packages/astropy/wcs/wcs.py:2701: AstropyDeprecationWarning: 
+Private attributes "_naxis1" and "_naxis2" have been deprecated since v3.1.
+Instead use the "pixel_shape" property which returns a list of NAXISj keyword values.
+
+  warnings.warn(NAXIS_DEPRECATE_MESSAGE, AstropyDeprecationWarning)
+
+[WARNING ] /Users/bcook/anaconda/envs/py36/lib/python3.6/site-packages/astropy/wcs/wcs.py:2686: AstropyDeprecationWarning: 
+Private attributes "_naxis1" and "_naxis2" have been deprecated since v3.1.
+Instead use the "pixel_shape" property which returns a list of NAXISj keyword values.
+
+  warnings.warn(NAXIS_DEPRECATE_MESSAGE, AstropyDeprecationWarning)
+
+[WARNING ] /Users/bcook/anaconda/envs/py36/lib/python3.6/site-packages/astropy/wcs/wcs.py:2696: AstropyDeprecationWarning: 
+Private attributes "_naxis1" and "_naxis2" have been deprecated since v3.1.
+Instead use the "pixel_shape" property which returns a list of NAXISj keyword values.
+
+  warnings.warn(NAXIS_DEPRECATE_MESSAGE, AstropyDeprecationWarning)
+
+[INFO    ] Updating header for /Users/bcook/pCMDs/pixcmd/data/M87/raw/M87_F814W_EXP4_flc.fits[1]
+[INFO    ]     with WCS of
+[INFO    ] WCS Keywords
+[INFO    ] 
+[INFO    ] CD_11  CD_12: -3.751670562603078e-06 -1.3681981994876336e-05
+[INFO    ] CD_21  CD_22: -1.3330423395842532e-05 2.850759206130721e-06
+[INFO    ] CRVAL    : 187.72382370116912 12.388176097303573
+[INFO    ] CRPIX    : 2048.0 1024.0
+[INFO    ] NAXIS    : 4096 2048
+[INFO    ] Plate Scale : 0.04985385491012031
+[INFO    ] ORIENTAT : -78.23032124319721
+[INFO    ] WCSNAME  :  INITIAL_F814W
+[INFO    ] 
+[INFO    ] Processing /Users/bcook/pCMDs/pixcmd/data/M87/raw/M87_F814W_EXP4_flc.fits['SCI',2]
+[INFO    ] 
+[WARNING ] /Users/bcook/anaconda/envs/py36/lib/python3.6/site-packages/astropy/wcs/wcs.py:2691: AstropyDeprecationWarning: 
+Private attributes "_naxis1" and "_naxis2" have been deprecated since v3.1.
+Instead use the "pixel_shape" property which returns a list of NAXISj keyword values.
+
+  warnings.warn(NAXIS_DEPRECATE_MESSAGE, AstropyDeprecationWarning)
+
+[WARNING ] /Users/bcook/anaconda/envs/py36/lib/python3.6/site-packages/astropy/wcs/wcs.py:2701: AstropyDeprecationWarning: 
+Private attributes "_naxis1" and "_naxis2" have been deprecated since v3.1.
+Instead use the "pixel_shape" property which returns a list of NAXISj keyword values.
+
+  warnings.warn(NAXIS_DEPRECATE_MESSAGE, AstropyDeprecationWarning)
+
+[WARNING ] /Users/bcook/anaconda/envs/py36/lib/python3.6/site-packages/astropy/wcs/wcs.py:2686: AstropyDeprecationWarning: 
+Private attributes "_naxis1" and "_naxis2" have been deprecated since v3.1.
+Instead use the "pixel_shape" property which returns a list of NAXISj keyword values.
+
+  warnings.warn(NAXIS_DEPRECATE_MESSAGE, AstropyDeprecationWarning)
+
+[WARNING ] /Users/bcook/anaconda/envs/py36/lib/python3.6/site-packages/astropy/wcs/wcs.py:2696: AstropyDeprecationWarning: 
+Private attributes "_naxis1" and "_naxis2" have been deprecated since v3.1.
+Instead use the "pixel_shape" property which returns a list of NAXISj keyword values.
+
+  warnings.warn(NAXIS_DEPRECATE_MESSAGE, AstropyDeprecationWarning)
+
+[INFO    ] Updating header for /Users/bcook/pCMDs/pixcmd/data/M87/raw/M87_F814W_EXP4_flc.fits[4]
+[INFO    ]     with WCS of
+[INFO    ] WCS Keywords
+[INFO    ] 
+[INFO    ] CD_11  CD_12: -3.882375412562398e-06 -1.324652482476402e-05
+[INFO    ] CD_21  CD_22: -1.3124226539700063e-05 2.653250417806757e-06
+[INFO    ] CRVAL    : 187.69485958845715 12.394007297184233
+[INFO    ] CRPIX    : 2048.0 1024.0
+[INFO    ] NAXIS    : 4096 2048
+[INFO    ] Plate Scale : 0.04927112103240772
+[INFO    ] ORIENTAT : -78.67365938772767
+[INFO    ] WCSNAME  :  INITIAL_F814W
+[INFO    ]     Writing out new WCS to alternate WCS: "B"
+[INFO    ] Updating WCSCORR table with new WCS solution "INITIAL_F814W"
+[WARNING ] /Users/bcook/anaconda/envs/py36/lib/python3.6/site-packages/astropy/wcs/wcs.py:2691: AstropyDeprecationWarning: 
+Private attributes "_naxis1" and "_naxis2" have been deprecated since v3.1.
+Instead use the "pixel_shape" property which returns a list of NAXISj keyword values.
+
+  warnings.warn(NAXIS_DEPRECATE_MESSAGE, AstropyDeprecationWarning)
+
+[WARNING ] /Users/bcook/anaconda/envs/py36/lib/python3.6/site-packages/astropy/wcs/wcs.py:2701: AstropyDeprecationWarning: 
+Private attributes "_naxis1" and "_naxis2" have been deprecated since v3.1.
+Instead use the "pixel_shape" property which returns a list of NAXISj keyword values.
+
+  warnings.warn(NAXIS_DEPRECATE_MESSAGE, AstropyDeprecationWarning)
+
+[WARNING ] /Users/bcook/anaconda/envs/py36/lib/python3.6/site-packages/astropy/wcs/wcs.py:2691: AstropyDeprecationWarning: 
+Private attributes "_naxis1" and "_naxis2" have been deprecated since v3.1.
+Instead use the "pixel_shape" property which returns a list of NAXISj keyword values.
+
+  warnings.warn(NAXIS_DEPRECATE_MESSAGE, AstropyDeprecationWarning)
+
+[WARNING ] /Users/bcook/anaconda/envs/py36/lib/python3.6/site-packages/astropy/wcs/wcs.py:2701: AstropyDeprecationWarning: 
+Private attributes "_naxis1" and "_naxis2" have been deprecated since v3.1.
+Instead use the "pixel_shape" property which returns a list of NAXISj keyword values.
+
+  warnings.warn(NAXIS_DEPRECATE_MESSAGE, AstropyDeprecationWarning)
+
+[WARNING ] /Users/bcook/anaconda/envs/py36/lib/python3.6/site-packages/astropy/io/fits/card.py:266: VerifyWarning: Keyword name 'IDCSCALEB' is greater than 8 characters or contains characters not allowed by the FITS standard; a HIERARCH card will be created.
+  keyword), VerifyWarning)
+
+[WARNING ] /Users/bcook/anaconda/envs/py36/lib/python3.6/site-packages/astropy/wcs/wcs.py:2691: AstropyDeprecationWarning: 
+Private attributes "_naxis1" and "_naxis2" have been deprecated since v3.1.
+Instead use the "pixel_shape" property which returns a list of NAXISj keyword values.
+
+  warnings.warn(NAXIS_DEPRECATE_MESSAGE, AstropyDeprecationWarning)
+
+[WARNING ] /Users/bcook/anaconda/envs/py36/lib/python3.6/site-packages/astropy/wcs/wcs.py:2701: AstropyDeprecationWarning: 
+Private attributes "_naxis1" and "_naxis2" have been deprecated since v3.1.
+Instead use the "pixel_shape" property which returns a list of NAXISj keyword values.
+
+  warnings.warn(NAXIS_DEPRECATE_MESSAGE, AstropyDeprecationWarning)
+
+[WARNING ] /Users/bcook/anaconda/envs/py36/lib/python3.6/site-packages/astropy/io/fits/card.py:266: VerifyWarning: Keyword name 'IDCSCALEB' is greater than 8 characters or contains characters not allowed by the FITS standard; a HIERARCH card will be created.
+  keyword), VerifyWarning)
+
+[INFO    ] 
+[INFO    ] ====================
+[INFO    ] Performing fit for: /Users/bcook/pCMDs/pixcmd/data/M87/raw/M87_F814W_EXP5_flc.fits
+[INFO    ] 
+[INFO    ] Matching sources from '/Users/bcook/pCMDs/pixcmd/data/M87/raw/M87_F814W_EXP5_flc.fits' with sources from reference image '/Users/bcook/pCMDs/pixcmd/data/M87/raw/M87_F814W_EXP1_flc.fits'
+[INFO    ] Computing initial guess for X and Y shifts...
+[INFO    ] Found initial X and Y shifts of  -0.34492753623188577 -0.6927536231884055
+[INFO    ]     with significance of  1236.7903159850039 and  212.0  matches
+[INFO    ] Found 327 matches for /Users/bcook/pCMDs/pixcmd/data/M87/raw/M87_F814W_EXP5_flc.fits...
+[INFO    ] Performing "rscale" fit
+[INFO    ] Performing "rscale" fit
+[INFO    ] Performing "rscale" fit
+[INFO    ] Performing "rscale" fit
+[INFO    ] Computed  rscale  fit for  /Users/bcook/pCMDs/pixcmd/data/M87/raw/M87_F814W_EXP5_flc.fits : 
+[INFO    ] XSH: 0.0002  YSH: 0.0001    ROT: 359.9999995    SCALE: 0.999999
+[INFO    ] XRMS: 0.25    YRMS: 0.32
+[INFO    ] 
+[INFO    ] RMS_RA: 5.3e-06 (deg)   RMS_DEC: 2.3e-06 (deg)
+[INFO    ] 
+[INFO    ] Final solution based on  325  objects.
+[INFO    ] Adding 1267 new sources to the reference catalog for a total of 6416 sources.
+[INFO    ] 
+[INFO    ] ....Updating header for /Users/bcook/pCMDs/pixcmd/data/M87/raw/M87_F814W_EXP5_flc.fits...
+[INFO    ] 
+[INFO    ] 
+[INFO    ] Processing /Users/bcook/pCMDs/pixcmd/data/M87/raw/M87_F814W_EXP5_flc.fits['SCI',1]
+[INFO    ] 
+[WARNING ] /Users/bcook/anaconda/envs/py36/lib/python3.6/site-packages/astropy/wcs/wcs.py:2691: AstropyDeprecationWarning: 
+Private attributes "_naxis1" and "_naxis2" have been deprecated since v3.1.
+Instead use the "pixel_shape" property which returns a list of NAXISj keyword values.
+
+  warnings.warn(NAXIS_DEPRECATE_MESSAGE, AstropyDeprecationWarning)
+
+[WARNING ] /Users/bcook/anaconda/envs/py36/lib/python3.6/site-packages/astropy/wcs/wcs.py:2701: AstropyDeprecationWarning: 
+Private attributes "_naxis1" and "_naxis2" have been deprecated since v3.1.
+Instead use the "pixel_shape" property which returns a list of NAXISj keyword values.
+
+  warnings.warn(NAXIS_DEPRECATE_MESSAGE, AstropyDeprecationWarning)
+
+[WARNING ] /Users/bcook/anaconda/envs/py36/lib/python3.6/site-packages/astropy/wcs/wcs.py:2686: AstropyDeprecationWarning: 
+Private attributes "_naxis1" and "_naxis2" have been deprecated since v3.1.
+Instead use the "pixel_shape" property which returns a list of NAXISj keyword values.
+
+  warnings.warn(NAXIS_DEPRECATE_MESSAGE, AstropyDeprecationWarning)
+
+[WARNING ] /Users/bcook/anaconda/envs/py36/lib/python3.6/site-packages/astropy/wcs/wcs.py:2696: AstropyDeprecationWarning: 
+Private attributes "_naxis1" and "_naxis2" have been deprecated since v3.1.
+Instead use the "pixel_shape" property which returns a list of NAXISj keyword values.
+
+  warnings.warn(NAXIS_DEPRECATE_MESSAGE, AstropyDeprecationWarning)
+
+[INFO    ] Updating header for /Users/bcook/pCMDs/pixcmd/data/M87/raw/M87_F814W_EXP5_flc.fits[1]
+[INFO    ]     with WCS of
+[INFO    ] WCS Keywords
+[INFO    ] 
+[INFO    ] CD_11  CD_12: -3.7516472685921423e-06 -1.368221810748369e-05
+[INFO    ] CD_21  CD_22: -1.3330655764276796e-05 2.850710521572111e-06
+[INFO    ] CRVAL    : 187.72381491107265 12.388183294783866
+[INFO    ] CRPIX    : 2048.0 1024.0
+[INFO    ] NAXIS    : 4096 2048
+[INFO    ] Plate Scale : 0.049854601897991964
+[INFO    ] ORIENTAT : -78.23071407556029
+[INFO    ] WCSNAME  :  INITIAL_F814W
+[INFO    ] 
+[INFO    ] Processing /Users/bcook/pCMDs/pixcmd/data/M87/raw/M87_F814W_EXP5_flc.fits['SCI',2]
+[INFO    ] 
+[WARNING ] /Users/bcook/anaconda/envs/py36/lib/python3.6/site-packages/astropy/wcs/wcs.py:2691: AstropyDeprecationWarning: 
+Private attributes "_naxis1" and "_naxis2" have been deprecated since v3.1.
+Instead use the "pixel_shape" property which returns a list of NAXISj keyword values.
+
+  warnings.warn(NAXIS_DEPRECATE_MESSAGE, AstropyDeprecationWarning)
+
+[WARNING ] /Users/bcook/anaconda/envs/py36/lib/python3.6/site-packages/astropy/wcs/wcs.py:2701: AstropyDeprecationWarning: 
+Private attributes "_naxis1" and "_naxis2" have been deprecated since v3.1.
+Instead use the "pixel_shape" property which returns a list of NAXISj keyword values.
+
+  warnings.warn(NAXIS_DEPRECATE_MESSAGE, AstropyDeprecationWarning)
+
+[WARNING ] /Users/bcook/anaconda/envs/py36/lib/python3.6/site-packages/astropy/wcs/wcs.py:2686: AstropyDeprecationWarning: 
+Private attributes "_naxis1" and "_naxis2" have been deprecated since v3.1.
+Instead use the "pixel_shape" property which returns a list of NAXISj keyword values.
+
+  warnings.warn(NAXIS_DEPRECATE_MESSAGE, AstropyDeprecationWarning)
+
+[WARNING ] /Users/bcook/anaconda/envs/py36/lib/python3.6/site-packages/astropy/wcs/wcs.py:2696: AstropyDeprecationWarning: 
+Private attributes "_naxis1" and "_naxis2" have been deprecated since v3.1.
+Instead use the "pixel_shape" property which returns a list of NAXISj keyword values.
+
+  warnings.warn(NAXIS_DEPRECATE_MESSAGE, AstropyDeprecationWarning)
+
+[INFO    ] Updating header for /Users/bcook/pCMDs/pixcmd/data/M87/raw/M87_F814W_EXP5_flc.fits[4]
+[INFO    ]     with WCS of
+[INFO    ] WCS Keywords
+[INFO    ] 
+[INFO    ] CD_11  CD_12: -3.882355811553254e-06 -1.3246752693587647e-05
+[INFO    ] CD_21  CD_22: -1.312445651596261e-05 2.6532016059992876e-06
+[INFO    ] CRVAL    : 187.69485029811867 12.394014393006326
+[INFO    ] CRPIX    : 2048.0 1024.0
+[INFO    ] NAXIS    : 4096 2048
+[INFO    ] Plate Scale : 0.04927185977322686
+[INFO    ] ORIENTAT : -78.67405216691424
+[INFO    ] WCSNAME  :  INITIAL_F814W
+[INFO    ]     Writing out new WCS to alternate WCS: "B"
+[INFO    ] Updating WCSCORR table with new WCS solution "INITIAL_F814W"
+[WARNING ] /Users/bcook/anaconda/envs/py36/lib/python3.6/site-packages/astropy/wcs/wcs.py:2691: AstropyDeprecationWarning: 
+Private attributes "_naxis1" and "_naxis2" have been deprecated since v3.1.
+Instead use the "pixel_shape" property which returns a list of NAXISj keyword values.
+
+  warnings.warn(NAXIS_DEPRECATE_MESSAGE, AstropyDeprecationWarning)
+
+[WARNING ] /Users/bcook/anaconda/envs/py36/lib/python3.6/site-packages/astropy/wcs/wcs.py:2701: AstropyDeprecationWarning: 
+Private attributes "_naxis1" and "_naxis2" have been deprecated since v3.1.
+Instead use the "pixel_shape" property which returns a list of NAXISj keyword values.
+
+  warnings.warn(NAXIS_DEPRECATE_MESSAGE, AstropyDeprecationWarning)
+
+[WARNING ] /Users/bcook/anaconda/envs/py36/lib/python3.6/site-packages/astropy/wcs/wcs.py:2691: AstropyDeprecationWarning: 
+Private attributes "_naxis1" and "_naxis2" have been deprecated since v3.1.
+Instead use the "pixel_shape" property which returns a list of NAXISj keyword values.
+
+  warnings.warn(NAXIS_DEPRECATE_MESSAGE, AstropyDeprecationWarning)
+
+[WARNING ] /Users/bcook/anaconda/envs/py36/lib/python3.6/site-packages/astropy/wcs/wcs.py:2701: AstropyDeprecationWarning: 
+Private attributes "_naxis1" and "_naxis2" have been deprecated since v3.1.
+Instead use the "pixel_shape" property which returns a list of NAXISj keyword values.
+
+  warnings.warn(NAXIS_DEPRECATE_MESSAGE, AstropyDeprecationWarning)
+
+[WARNING ] /Users/bcook/anaconda/envs/py36/lib/python3.6/site-packages/astropy/io/fits/card.py:266: VerifyWarning: Keyword name 'IDCSCALEB' is greater than 8 characters or contains characters not allowed by the FITS standard; a HIERARCH card will be created.
+  keyword), VerifyWarning)
+
+[WARNING ] /Users/bcook/anaconda/envs/py36/lib/python3.6/site-packages/astropy/wcs/wcs.py:2691: AstropyDeprecationWarning: 
+Private attributes "_naxis1" and "_naxis2" have been deprecated since v3.1.
+Instead use the "pixel_shape" property which returns a list of NAXISj keyword values.
+
+  warnings.warn(NAXIS_DEPRECATE_MESSAGE, AstropyDeprecationWarning)
+
+[WARNING ] /Users/bcook/anaconda/envs/py36/lib/python3.6/site-packages/astropy/wcs/wcs.py:2701: AstropyDeprecationWarning: 
+Private attributes "_naxis1" and "_naxis2" have been deprecated since v3.1.
+Instead use the "pixel_shape" property which returns a list of NAXISj keyword values.
+
+  warnings.warn(NAXIS_DEPRECATE_MESSAGE, AstropyDeprecationWarning)
+
+[WARNING ] /Users/bcook/anaconda/envs/py36/lib/python3.6/site-packages/astropy/io/fits/card.py:266: VerifyWarning: Keyword name 'IDCSCALEB' is greater than 8 characters or contains characters not allowed by the FITS standard; a HIERARCH card will be created.
+  keyword), VerifyWarning)
+
+[INFO    ] 
+[INFO    ] ====================
+[INFO    ] Performing fit for: /Users/bcook/pCMDs/pixcmd/data/M87/raw/M87_F814W_EXP6_flc.fits
+[INFO    ] 
+[INFO    ] Matching sources from '/Users/bcook/pCMDs/pixcmd/data/M87/raw/M87_F814W_EXP6_flc.fits' with sources from reference image '/Users/bcook/pCMDs/pixcmd/data/M87/raw/M87_F814W_EXP1_flc.fits'
+[INFO    ] Computing initial guess for X and Y shifts...
+[INFO    ] Found initial X and Y shifts of  -0.2977099236641223 -0.7175572519083957
+[INFO    ]     with significance of  1233.7012804220756 and  223.0  matches
+[INFO    ] Found 365 matches for /Users/bcook/pCMDs/pixcmd/data/M87/raw/M87_F814W_EXP6_flc.fits...
+[INFO    ] Performing "rscale" fit
+[INFO    ] Performing "rscale" fit
+[INFO    ] Performing "rscale" fit
+[INFO    ] Performing "rscale" fit
+[INFO    ] Computed  rscale  fit for  /Users/bcook/pCMDs/pixcmd/data/M87/raw/M87_F814W_EXP6_flc.fits : 
+[INFO    ] XSH: -0.0001  YSH: -0.0002    ROT: 2.755206612e-07    SCALE: 0.999998
+[INFO    ] XRMS: 0.45    YRMS: 0.3
+[INFO    ] 
+[INFO    ] RMS_RA: 5.6e-06 (deg)   RMS_DEC: 5e-06 (deg)
+[INFO    ] 
+[INFO    ] Final solution based on  362  objects.
+[INFO    ] Adding 1287 new sources to the reference catalog for a total of 7703 sources.
+[INFO    ] 
+[INFO    ] ....Updating header for /Users/bcook/pCMDs/pixcmd/data/M87/raw/M87_F814W_EXP6_flc.fits...
+[INFO    ] 
+[INFO    ] 
+[INFO    ] Processing /Users/bcook/pCMDs/pixcmd/data/M87/raw/M87_F814W_EXP6_flc.fits['SCI',1]
+[INFO    ] 
+[WARNING ] /Users/bcook/anaconda/envs/py36/lib/python3.6/site-packages/astropy/wcs/wcs.py:2691: AstropyDeprecationWarning: 
+Private attributes "_naxis1" and "_naxis2" have been deprecated since v3.1.
+Instead use the "pixel_shape" property which returns a list of NAXISj keyword values.
+
+  warnings.warn(NAXIS_DEPRECATE_MESSAGE, AstropyDeprecationWarning)
+
+[WARNING ] /Users/bcook/anaconda/envs/py36/lib/python3.6/site-packages/astropy/wcs/wcs.py:2701: AstropyDeprecationWarning: 
+Private attributes "_naxis1" and "_naxis2" have been deprecated since v3.1.
+Instead use the "pixel_shape" property which returns a list of NAXISj keyword values.
+
+  warnings.warn(NAXIS_DEPRECATE_MESSAGE, AstropyDeprecationWarning)
+
+[WARNING ] /Users/bcook/anaconda/envs/py36/lib/python3.6/site-packages/astropy/wcs/wcs.py:2686: AstropyDeprecationWarning: 
+Private attributes "_naxis1" and "_naxis2" have been deprecated since v3.1.
+Instead use the "pixel_shape" property which returns a list of NAXISj keyword values.
+
+  warnings.warn(NAXIS_DEPRECATE_MESSAGE, AstropyDeprecationWarning)
+
+[WARNING ] /Users/bcook/anaconda/envs/py36/lib/python3.6/site-packages/astropy/wcs/wcs.py:2696: AstropyDeprecationWarning: 
+Private attributes "_naxis1" and "_naxis2" have been deprecated since v3.1.
+Instead use the "pixel_shape" property which returns a list of NAXISj keyword values.
+
+  warnings.warn(NAXIS_DEPRECATE_MESSAGE, AstropyDeprecationWarning)
+
+[INFO    ] Updating header for /Users/bcook/pCMDs/pixcmd/data/M87/raw/M87_F814W_EXP6_flc.fits[1]
+[INFO    ]     with WCS of
+[INFO    ] WCS Keywords
+[INFO    ] 
+[INFO    ] CD_11  CD_12: -3.75161286908998e-06 -1.3682238303750524e-05
+[INFO    ] CD_21  CD_22: -1.333067818911335e-05 2.8506743435325684e-06
+[INFO    ] CRVAL    : 187.72381621301477 12.38818709384254
+[INFO    ] CRPIX    : 2048.0 1024.0
+[INFO    ] NAXIS    : 4096 2048
+[INFO    ] Plate Scale : 0.049854568474688665
+[INFO    ] ORIENTAT : -78.2308761598906
+[INFO    ] WCSNAME  :  INITIAL_F814W
+[INFO    ] 
+[INFO    ] Processing /Users/bcook/pCMDs/pixcmd/data/M87/raw/M87_F814W_EXP6_flc.fits['SCI',2]
+[INFO    ] 
+[WARNING ] /Users/bcook/anaconda/envs/py36/lib/python3.6/site-packages/astropy/wcs/wcs.py:2691: AstropyDeprecationWarning: 
+Private attributes "_naxis1" and "_naxis2" have been deprecated since v3.1.
+Instead use the "pixel_shape" property which returns a list of NAXISj keyword values.
+
+  warnings.warn(NAXIS_DEPRECATE_MESSAGE, AstropyDeprecationWarning)
+
+[WARNING ] /Users/bcook/anaconda/envs/py36/lib/python3.6/site-packages/astropy/wcs/wcs.py:2701: AstropyDeprecationWarning: 
+Private attributes "_naxis1" and "_naxis2" have been deprecated since v3.1.
+Instead use the "pixel_shape" property which returns a list of NAXISj keyword values.
+
+  warnings.warn(NAXIS_DEPRECATE_MESSAGE, AstropyDeprecationWarning)
+
+[WARNING ] /Users/bcook/anaconda/envs/py36/lib/python3.6/site-packages/astropy/wcs/wcs.py:2686: AstropyDeprecationWarning: 
+Private attributes "_naxis1" and "_naxis2" have been deprecated since v3.1.
+Instead use the "pixel_shape" property which returns a list of NAXISj keyword values.
+
+  warnings.warn(NAXIS_DEPRECATE_MESSAGE, AstropyDeprecationWarning)
+
+[WARNING ] /Users/bcook/anaconda/envs/py36/lib/python3.6/site-packages/astropy/wcs/wcs.py:2696: AstropyDeprecationWarning: 
+Private attributes "_naxis1" and "_naxis2" have been deprecated since v3.1.
+Instead use the "pixel_shape" property which returns a list of NAXISj keyword values.
+
+  warnings.warn(NAXIS_DEPRECATE_MESSAGE, AstropyDeprecationWarning)
+
+[INFO    ] Updating header for /Users/bcook/pCMDs/pixcmd/data/M87/raw/M87_F814W_EXP6_flc.fits[4]
+[INFO    ]     with WCS of
+[INFO    ] WCS Keywords
+[INFO    ] 
+[INFO    ] CD_11  CD_12: -3.8823221178264125e-06 -1.3246771927107497e-05
+[INFO    ] CD_21  CD_22: -1.312447912692864e-05 2.653166457266644e-06
+[INFO    ] CRVAL    : 187.69485155711084 12.394018117182213
+[INFO    ] CRPIX    : 2048.0 1024.0
+[INFO    ] NAXIS    : 4096 2048
+[INFO    ] Plate Scale : 0.049271826768613296
+[INFO    ] ORIENTAT : -78.67421435051688
+[INFO    ] WCSNAME  :  INITIAL_F814W
+[INFO    ]     Writing out new WCS to alternate WCS: "B"
+[INFO    ] Updating WCSCORR table with new WCS solution "INITIAL_F814W"
+[WARNING ] /Users/bcook/anaconda/envs/py36/lib/python3.6/site-packages/astropy/wcs/wcs.py:2691: AstropyDeprecationWarning: 
+Private attributes "_naxis1" and "_naxis2" have been deprecated since v3.1.
+Instead use the "pixel_shape" property which returns a list of NAXISj keyword values.
+
+  warnings.warn(NAXIS_DEPRECATE_MESSAGE, AstropyDeprecationWarning)
+
+[WARNING ] /Users/bcook/anaconda/envs/py36/lib/python3.6/site-packages/astropy/wcs/wcs.py:2701: AstropyDeprecationWarning: 
+Private attributes "_naxis1" and "_naxis2" have been deprecated since v3.1.
+Instead use the "pixel_shape" property which returns a list of NAXISj keyword values.
+
+  warnings.warn(NAXIS_DEPRECATE_MESSAGE, AstropyDeprecationWarning)
+
+[WARNING ] /Users/bcook/anaconda/envs/py36/lib/python3.6/site-packages/astropy/wcs/wcs.py:2691: AstropyDeprecationWarning: 
+Private attributes "_naxis1" and "_naxis2" have been deprecated since v3.1.
+Instead use the "pixel_shape" property which returns a list of NAXISj keyword values.
+
+  warnings.warn(NAXIS_DEPRECATE_MESSAGE, AstropyDeprecationWarning)
+
+[WARNING ] /Users/bcook/anaconda/envs/py36/lib/python3.6/site-packages/astropy/wcs/wcs.py:2701: AstropyDeprecationWarning: 
+Private attributes "_naxis1" and "_naxis2" have been deprecated since v3.1.
+Instead use the "pixel_shape" property which returns a list of NAXISj keyword values.
+
+  warnings.warn(NAXIS_DEPRECATE_MESSAGE, AstropyDeprecationWarning)
+
+[WARNING ] /Users/bcook/anaconda/envs/py36/lib/python3.6/site-packages/astropy/io/fits/card.py:266: VerifyWarning: Keyword name 'IDCSCALEB' is greater than 8 characters or contains characters not allowed by the FITS standard; a HIERARCH card will be created.
+  keyword), VerifyWarning)
+
+[WARNING ] /Users/bcook/anaconda/envs/py36/lib/python3.6/site-packages/astropy/wcs/wcs.py:2691: AstropyDeprecationWarning: 
+Private attributes "_naxis1" and "_naxis2" have been deprecated since v3.1.
+Instead use the "pixel_shape" property which returns a list of NAXISj keyword values.
+
+  warnings.warn(NAXIS_DEPRECATE_MESSAGE, AstropyDeprecationWarning)
+
+[WARNING ] /Users/bcook/anaconda/envs/py36/lib/python3.6/site-packages/astropy/wcs/wcs.py:2701: AstropyDeprecationWarning: 
+Private attributes "_naxis1" and "_naxis2" have been deprecated since v3.1.
+Instead use the "pixel_shape" property which returns a list of NAXISj keyword values.
+
+  warnings.warn(NAXIS_DEPRECATE_MESSAGE, AstropyDeprecationWarning)
+
+[WARNING ] /Users/bcook/anaconda/envs/py36/lib/python3.6/site-packages/astropy/io/fits/card.py:266: VerifyWarning: Keyword name 'IDCSCALEB' is greater than 8 characters or contains characters not allowed by the FITS standard; a HIERARCH card will be created.
+  keyword), VerifyWarning)
+
+[INFO    ] 
+[INFO    ] ====================
+[INFO    ] Performing fit for: /Users/bcook/pCMDs/pixcmd/data/M87/raw/M87_F814W_EXP7_flc.fits
+[INFO    ] 
+[INFO    ] Matching sources from '/Users/bcook/pCMDs/pixcmd/data/M87/raw/M87_F814W_EXP7_flc.fits' with sources from reference image '/Users/bcook/pCMDs/pixcmd/data/M87/raw/M87_F814W_EXP1_flc.fits'
+[INFO    ] Computing initial guess for X and Y shifts...
+[INFO    ] Found initial X and Y shifts of  -0.3059125964010292 -0.13110539845758495
+[INFO    ]     with significance of  1146.171591329233 and  199.0  matches
+[INFO    ] Found 359 matches for /Users/bcook/pCMDs/pixcmd/data/M87/raw/M87_F814W_EXP7_flc.fits...
+[INFO    ] Performing "rscale" fit
+[INFO    ] Performing "rscale" fit
+[INFO    ] Performing "rscale" fit
+[INFO    ] Performing "rscale" fit
+[INFO    ] Computed  rscale  fit for  /Users/bcook/pCMDs/pixcmd/data/M87/raw/M87_F814W_EXP7_flc.fits : 
+[INFO    ] XSH: -0.0017  YSH: -0.0028    ROT: 2.203414791e-05    SCALE: 1.000000
+[INFO    ] XRMS: 0.41    YRMS: 0.14
+[INFO    ] 
+[INFO    ] RMS_RA: 3.4e-06 (deg)   RMS_DEC: 5.1e-06 (deg)
+[INFO    ] 
+[INFO    ] Final solution based on  352  objects.
+[INFO    ] Adding 1072 new sources to the reference catalog for a total of 8775 sources.
+[INFO    ] 
+[INFO    ] ....Updating header for /Users/bcook/pCMDs/pixcmd/data/M87/raw/M87_F814W_EXP7_flc.fits...
+[INFO    ] 
+[INFO    ] 
+[INFO    ] Processing /Users/bcook/pCMDs/pixcmd/data/M87/raw/M87_F814W_EXP7_flc.fits['SCI',1]
+[INFO    ] 
+[WARNING ] /Users/bcook/anaconda/envs/py36/lib/python3.6/site-packages/astropy/wcs/wcs.py:2691: AstropyDeprecationWarning: 
+Private attributes "_naxis1" and "_naxis2" have been deprecated since v3.1.
+Instead use the "pixel_shape" property which returns a list of NAXISj keyword values.
+
+  warnings.warn(NAXIS_DEPRECATE_MESSAGE, AstropyDeprecationWarning)
+
+[WARNING ] /Users/bcook/anaconda/envs/py36/lib/python3.6/site-packages/astropy/wcs/wcs.py:2701: AstropyDeprecationWarning: 
+Private attributes "_naxis1" and "_naxis2" have been deprecated since v3.1.
+Instead use the "pixel_shape" property which returns a list of NAXISj keyword values.
+
+  warnings.warn(NAXIS_DEPRECATE_MESSAGE, AstropyDeprecationWarning)
+
+[WARNING ] /Users/bcook/anaconda/envs/py36/lib/python3.6/site-packages/astropy/wcs/wcs.py:2686: AstropyDeprecationWarning: 
+Private attributes "_naxis1" and "_naxis2" have been deprecated since v3.1.
+Instead use the "pixel_shape" property which returns a list of NAXISj keyword values.
+
+  warnings.warn(NAXIS_DEPRECATE_MESSAGE, AstropyDeprecationWarning)
+
+[WARNING ] /Users/bcook/anaconda/envs/py36/lib/python3.6/site-packages/astropy/wcs/wcs.py:2696: AstropyDeprecationWarning: 
+Private attributes "_naxis1" and "_naxis2" have been deprecated since v3.1.
+Instead use the "pixel_shape" property which returns a list of NAXISj keyword values.
+
+  warnings.warn(NAXIS_DEPRECATE_MESSAGE, AstropyDeprecationWarning)
+
+[INFO    ] Updating header for /Users/bcook/pCMDs/pixcmd/data/M87/raw/M87_F814W_EXP7_flc.fits[1]
+[INFO    ]     with WCS of
+[INFO    ] WCS Keywords
+[INFO    ] 
+[INFO    ] CD_11  CD_12: -3.751769043854138e-06 -1.3682274191917842e-05
+[INFO    ] CD_21  CD_22: -1.3330703076725822e-05 2.850829822127151e-06
+[INFO    ] CRVAL    : 187.7238213460199 12.388184852831225
+[INFO    ] CRPIX    : 2048.0 1024.0
+[INFO    ] NAXIS    : 4096 2048
+[INFO    ] Plate Scale : 0.04985493779738988
+[INFO    ] ORIENTAT : -78.23028217629826
+[INFO    ] WCSNAME  :  INITIAL_F814W
+[INFO    ] 
+[INFO    ] Processing /Users/bcook/pCMDs/pixcmd/data/M87/raw/M87_F814W_EXP7_flc.fits['SCI',2]
+[INFO    ] 
+[WARNING ] /Users/bcook/anaconda/envs/py36/lib/python3.6/site-packages/astropy/wcs/wcs.py:2691: AstropyDeprecationWarning: 
+Private attributes "_naxis1" and "_naxis2" have been deprecated since v3.1.
+Instead use the "pixel_shape" property which returns a list of NAXISj keyword values.
+
+  warnings.warn(NAXIS_DEPRECATE_MESSAGE, AstropyDeprecationWarning)
+
+[WARNING ] /Users/bcook/anaconda/envs/py36/lib/python3.6/site-packages/astropy/wcs/wcs.py:2701: AstropyDeprecationWarning: 
+Private attributes "_naxis1" and "_naxis2" have been deprecated since v3.1.
+Instead use the "pixel_shape" property which returns a list of NAXISj keyword values.
+
+  warnings.warn(NAXIS_DEPRECATE_MESSAGE, AstropyDeprecationWarning)
+
+[WARNING ] /Users/bcook/anaconda/envs/py36/lib/python3.6/site-packages/astropy/wcs/wcs.py:2686: AstropyDeprecationWarning: 
+Private attributes "_naxis1" and "_naxis2" have been deprecated since v3.1.
+Instead use the "pixel_shape" property which returns a list of NAXISj keyword values.
+
+  warnings.warn(NAXIS_DEPRECATE_MESSAGE, AstropyDeprecationWarning)
+
+[WARNING ] /Users/bcook/anaconda/envs/py36/lib/python3.6/site-packages/astropy/wcs/wcs.py:2696: AstropyDeprecationWarning: 
+Private attributes "_naxis1" and "_naxis2" have been deprecated since v3.1.
+Instead use the "pixel_shape" property which returns a list of NAXISj keyword values.
+
+  warnings.warn(NAXIS_DEPRECATE_MESSAGE, AstropyDeprecationWarning)
+
+[INFO    ] Updating header for /Users/bcook/pCMDs/pixcmd/data/M87/raw/M87_F814W_EXP7_flc.fits[4]
+[INFO    ]     with WCS of
+[INFO    ] WCS Keywords
+[INFO    ] 
+[INFO    ] CD_11  CD_12: -3.882476768945607e-06 -1.3246807799572725e-05
+[INFO    ] CD_21  CD_22: -1.3124501658711676e-05 2.6533165110171007e-06
+[INFO    ] CRVAL    : 187.69485661367528 12.39401619738859
+[INFO    ] CRPIX    : 2048.0 1024.0
+[INFO    ] NAXIS    : 4096 2048
+[INFO    ] Plate Scale : 0.04927219170863603
+[INFO    ] ORIENTAT : -78.67362024051943
+[INFO    ] WCSNAME  :  INITIAL_F814W
+[INFO    ]     Writing out new WCS to alternate WCS: "B"
+[INFO    ] Updating WCSCORR table with new WCS solution "INITIAL_F814W"
+[WARNING ] /Users/bcook/anaconda/envs/py36/lib/python3.6/site-packages/astropy/wcs/wcs.py:2691: AstropyDeprecationWarning: 
+Private attributes "_naxis1" and "_naxis2" have been deprecated since v3.1.
+Instead use the "pixel_shape" property which returns a list of NAXISj keyword values.
+
+  warnings.warn(NAXIS_DEPRECATE_MESSAGE, AstropyDeprecationWarning)
+
+[WARNING ] /Users/bcook/anaconda/envs/py36/lib/python3.6/site-packages/astropy/wcs/wcs.py:2701: AstropyDeprecationWarning: 
+Private attributes "_naxis1" and "_naxis2" have been deprecated since v3.1.
+Instead use the "pixel_shape" property which returns a list of NAXISj keyword values.
+
+  warnings.warn(NAXIS_DEPRECATE_MESSAGE, AstropyDeprecationWarning)
+
+[WARNING ] /Users/bcook/anaconda/envs/py36/lib/python3.6/site-packages/astropy/wcs/wcs.py:2691: AstropyDeprecationWarning: 
+Private attributes "_naxis1" and "_naxis2" have been deprecated since v3.1.
+Instead use the "pixel_shape" property which returns a list of NAXISj keyword values.
+
+  warnings.warn(NAXIS_DEPRECATE_MESSAGE, AstropyDeprecationWarning)
+
+[WARNING ] /Users/bcook/anaconda/envs/py36/lib/python3.6/site-packages/astropy/wcs/wcs.py:2701: AstropyDeprecationWarning: 
+Private attributes "_naxis1" and "_naxis2" have been deprecated since v3.1.
+Instead use the "pixel_shape" property which returns a list of NAXISj keyword values.
+
+  warnings.warn(NAXIS_DEPRECATE_MESSAGE, AstropyDeprecationWarning)
+
+[WARNING ] /Users/bcook/anaconda/envs/py36/lib/python3.6/site-packages/astropy/io/fits/card.py:266: VerifyWarning: Keyword name 'IDCSCALEB' is greater than 8 characters or contains characters not allowed by the FITS standard; a HIERARCH card will be created.
+  keyword), VerifyWarning)
+
+[WARNING ] /Users/bcook/anaconda/envs/py36/lib/python3.6/site-packages/astropy/wcs/wcs.py:2691: AstropyDeprecationWarning: 
+Private attributes "_naxis1" and "_naxis2" have been deprecated since v3.1.
+Instead use the "pixel_shape" property which returns a list of NAXISj keyword values.
+
+  warnings.warn(NAXIS_DEPRECATE_MESSAGE, AstropyDeprecationWarning)
+
+[WARNING ] /Users/bcook/anaconda/envs/py36/lib/python3.6/site-packages/astropy/wcs/wcs.py:2701: AstropyDeprecationWarning: 
+Private attributes "_naxis1" and "_naxis2" have been deprecated since v3.1.
+Instead use the "pixel_shape" property which returns a list of NAXISj keyword values.
+
+  warnings.warn(NAXIS_DEPRECATE_MESSAGE, AstropyDeprecationWarning)
+
+[WARNING ] /Users/bcook/anaconda/envs/py36/lib/python3.6/site-packages/astropy/io/fits/card.py:266: VerifyWarning: Keyword name 'IDCSCALEB' is greater than 8 characters or contains characters not allowed by the FITS standard; a HIERARCH card will be created.
+  keyword), VerifyWarning)
+
+[INFO    ] 
+[INFO    ] ====================
+[INFO    ] Performing fit for: /Users/bcook/pCMDs/pixcmd/data/M87/raw/M87_F814W_EXP8_flc.fits
+[INFO    ] 
+[INFO    ] Matching sources from '/Users/bcook/pCMDs/pixcmd/data/M87/raw/M87_F814W_EXP8_flc.fits' with sources from reference image '/Users/bcook/pCMDs/pixcmd/data/M87/raw/M87_F814W_EXP1_flc.fits'
+[INFO    ] Computing initial guess for X and Y shifts...
+[INFO    ] Found initial X and Y shifts of  -0.2908163265306136 -0.11224489795918302
+[INFO    ]     with significance of  1135.3383476463584 and  196.0  matches
+[INFO    ] Found 358 matches for /Users/bcook/pCMDs/pixcmd/data/M87/raw/M87_F814W_EXP8_flc.fits...
+[INFO    ] Performing "rscale" fit
+[INFO    ] Performing "rscale" fit
+[INFO    ] Performing "rscale" fit
+[INFO    ] Performing "rscale" fit
+[INFO    ] Computed  rscale  fit for  /Users/bcook/pCMDs/pixcmd/data/M87/raw/M87_F814W_EXP8_flc.fits : 
+[INFO    ] XSH: -0.0004  YSH: -0.0002    ROT: 9.691602388e-07    SCALE: 0.999998
+[INFO    ] XRMS: 0.21    YRMS: 0.15
+[INFO    ] 
+[INFO    ] RMS_RA: 2.7e-06 (deg)   RMS_DEC: 2.3e-06 (deg)
+[INFO    ] 
+[INFO    ] Final solution based on  357  objects.
+[INFO    ] Adding 1167 new sources to the reference catalog for a total of 9942 sources.
+[INFO    ] 
+[INFO    ] ....Updating header for /Users/bcook/pCMDs/pixcmd/data/M87/raw/M87_F814W_EXP8_flc.fits...
+[INFO    ] 
+[INFO    ] 
+[INFO    ] Processing /Users/bcook/pCMDs/pixcmd/data/M87/raw/M87_F814W_EXP8_flc.fits['SCI',1]
+[INFO    ] 
+[WARNING ] /Users/bcook/anaconda/envs/py36/lib/python3.6/site-packages/astropy/wcs/wcs.py:2691: AstropyDeprecationWarning: 
+Private attributes "_naxis1" and "_naxis2" have been deprecated since v3.1.
+Instead use the "pixel_shape" property which returns a list of NAXISj keyword values.
+
+  warnings.warn(NAXIS_DEPRECATE_MESSAGE, AstropyDeprecationWarning)
+
+[WARNING ] /Users/bcook/anaconda/envs/py36/lib/python3.6/site-packages/astropy/wcs/wcs.py:2701: AstropyDeprecationWarning: 
+Private attributes "_naxis1" and "_naxis2" have been deprecated since v3.1.
+Instead use the "pixel_shape" property which returns a list of NAXISj keyword values.
+
+  warnings.warn(NAXIS_DEPRECATE_MESSAGE, AstropyDeprecationWarning)
+
+[WARNING ] /Users/bcook/anaconda/envs/py36/lib/python3.6/site-packages/astropy/wcs/wcs.py:2686: AstropyDeprecationWarning: 
+Private attributes "_naxis1" and "_naxis2" have been deprecated since v3.1.
+Instead use the "pixel_shape" property which returns a list of NAXISj keyword values.
+
+  warnings.warn(NAXIS_DEPRECATE_MESSAGE, AstropyDeprecationWarning)
+
+[WARNING ] /Users/bcook/anaconda/envs/py36/lib/python3.6/site-packages/astropy/wcs/wcs.py:2696: AstropyDeprecationWarning: 
+Private attributes "_naxis1" and "_naxis2" have been deprecated since v3.1.
+Instead use the "pixel_shape" property which returns a list of NAXISj keyword values.
+
+  warnings.warn(NAXIS_DEPRECATE_MESSAGE, AstropyDeprecationWarning)
+
+[INFO    ] Updating header for /Users/bcook/pCMDs/pixcmd/data/M87/raw/M87_F814W_EXP8_flc.fits[1]
+[INFO    ]     with WCS of
+[INFO    ] WCS Keywords
+[INFO    ] 
+[INFO    ] CD_11  CD_12: -3.7517728860112184e-06 -1.3682171775767933e-05
+[INFO    ] CD_21  CD_22: -1.3330601063084668e-05 2.85084079451401e-06
+[INFO    ] CRVAL    : 187.72382020231336 12.388181279538625
+[INFO    ] CRPIX    : 2048.0 1024.0
+[INFO    ] NAXIS    : 4096 2048
+[INFO    ] Plate Scale : 0.04985445266102398
+[INFO    ] ORIENTAT : -78.23015249678724
+[INFO    ] WCSNAME  :  INITIAL_F814W
+[INFO    ] 
+[INFO    ] Processing /Users/bcook/pCMDs/pixcmd/data/M87/raw/M87_F814W_EXP8_flc.fits['SCI',2]
+[INFO    ] 
+[WARNING ] /Users/bcook/anaconda/envs/py36/lib/python3.6/site-packages/astropy/wcs/wcs.py:2691: AstropyDeprecationWarning: 
+Private attributes "_naxis1" and "_naxis2" have been deprecated since v3.1.
+Instead use the "pixel_shape" property which returns a list of NAXISj keyword values.
+
+  warnings.warn(NAXIS_DEPRECATE_MESSAGE, AstropyDeprecationWarning)
+
+[WARNING ] /Users/bcook/anaconda/envs/py36/lib/python3.6/site-packages/astropy/wcs/wcs.py:2701: AstropyDeprecationWarning: 
+Private attributes "_naxis1" and "_naxis2" have been deprecated since v3.1.
+Instead use the "pixel_shape" property which returns a list of NAXISj keyword values.
+
+  warnings.warn(NAXIS_DEPRECATE_MESSAGE, AstropyDeprecationWarning)
+
+[WARNING ] /Users/bcook/anaconda/envs/py36/lib/python3.6/site-packages/astropy/wcs/wcs.py:2686: AstropyDeprecationWarning: 
+Private attributes "_naxis1" and "_naxis2" have been deprecated since v3.1.
+Instead use the "pixel_shape" property which returns a list of NAXISj keyword values.
+
+  warnings.warn(NAXIS_DEPRECATE_MESSAGE, AstropyDeprecationWarning)
+
+[WARNING ] /Users/bcook/anaconda/envs/py36/lib/python3.6/site-packages/astropy/wcs/wcs.py:2696: AstropyDeprecationWarning: 
+Private attributes "_naxis1" and "_naxis2" have been deprecated since v3.1.
+Instead use the "pixel_shape" property which returns a list of NAXISj keyword values.
+
+  warnings.warn(NAXIS_DEPRECATE_MESSAGE, AstropyDeprecationWarning)
+
+[INFO    ] Updating header for /Users/bcook/pCMDs/pixcmd/data/M87/raw/M87_F814W_EXP8_flc.fits[4]
+[INFO    ]     with WCS of
+[INFO    ] WCS Keywords
+[INFO    ] 
+[INFO    ] CD_11  CD_12: -3.882479261455143e-06 -1.3246708863278e-05
+[INFO    ] CD_21  CD_22: -1.3124400798652791e-05 2.6533278798876106e-06
+[INFO    ] CRVAL    : 187.69485568707515 12.394012647218497
+[INFO    ] CRPIX    : 2048.0 1024.0
+[INFO    ] NAXIS    : 4096 2048
+[INFO    ] Plate Scale : 0.049271712289634687
+[INFO    ] ORIENTAT : -78.67349055656409
+[INFO    ] WCSNAME  :  INITIAL_F814W
+[INFO    ]     Writing out new WCS to alternate WCS: "B"
+[INFO    ] Updating WCSCORR table with new WCS solution "INITIAL_F814W"
+[WARNING ] /Users/bcook/anaconda/envs/py36/lib/python3.6/site-packages/astropy/wcs/wcs.py:2691: AstropyDeprecationWarning: 
+Private attributes "_naxis1" and "_naxis2" have been deprecated since v3.1.
+Instead use the "pixel_shape" property which returns a list of NAXISj keyword values.
+
+  warnings.warn(NAXIS_DEPRECATE_MESSAGE, AstropyDeprecationWarning)
+
+[WARNING ] /Users/bcook/anaconda/envs/py36/lib/python3.6/site-packages/astropy/wcs/wcs.py:2701: AstropyDeprecationWarning: 
+Private attributes "_naxis1" and "_naxis2" have been deprecated since v3.1.
+Instead use the "pixel_shape" property which returns a list of NAXISj keyword values.
+
+  warnings.warn(NAXIS_DEPRECATE_MESSAGE, AstropyDeprecationWarning)
+
+[WARNING ] /Users/bcook/anaconda/envs/py36/lib/python3.6/site-packages/astropy/wcs/wcs.py:2691: AstropyDeprecationWarning: 
+Private attributes "_naxis1" and "_naxis2" have been deprecated since v3.1.
+Instead use the "pixel_shape" property which returns a list of NAXISj keyword values.
+
+  warnings.warn(NAXIS_DEPRECATE_MESSAGE, AstropyDeprecationWarning)
+
+[WARNING ] /Users/bcook/anaconda/envs/py36/lib/python3.6/site-packages/astropy/wcs/wcs.py:2701: AstropyDeprecationWarning: 
+Private attributes "_naxis1" and "_naxis2" have been deprecated since v3.1.
+Instead use the "pixel_shape" property which returns a list of NAXISj keyword values.
+
+  warnings.warn(NAXIS_DEPRECATE_MESSAGE, AstropyDeprecationWarning)
+
+[WARNING ] /Users/bcook/anaconda/envs/py36/lib/python3.6/site-packages/astropy/io/fits/card.py:266: VerifyWarning: Keyword name 'IDCSCALEB' is greater than 8 characters or contains characters not allowed by the FITS standard; a HIERARCH card will be created.
+  keyword), VerifyWarning)
+
+[WARNING ] /Users/bcook/anaconda/envs/py36/lib/python3.6/site-packages/astropy/wcs/wcs.py:2691: AstropyDeprecationWarning: 
+Private attributes "_naxis1" and "_naxis2" have been deprecated since v3.1.
+Instead use the "pixel_shape" property which returns a list of NAXISj keyword values.
+
+  warnings.warn(NAXIS_DEPRECATE_MESSAGE, AstropyDeprecationWarning)
+
+[WARNING ] /Users/bcook/anaconda/envs/py36/lib/python3.6/site-packages/astropy/wcs/wcs.py:2701: AstropyDeprecationWarning: 
+Private attributes "_naxis1" and "_naxis2" have been deprecated since v3.1.
+Instead use the "pixel_shape" property which returns a list of NAXISj keyword values.
+
+  warnings.warn(NAXIS_DEPRECATE_MESSAGE, AstropyDeprecationWarning)
+
+[WARNING ] /Users/bcook/anaconda/envs/py36/lib/python3.6/site-packages/astropy/io/fits/card.py:266: VerifyWarning: Keyword name 'IDCSCALEB' is greater than 8 characters or contains characters not allowed by the FITS standard; a HIERARCH card will be created.
+  keyword), VerifyWarning)
+
+[INFO    ]     Saving Primary WCS to alternate WCS: "A"
+[INFO    ] Updating WCSCORR table with new WCS solution "INITIAL_F814W"
+[WARNING ] /Users/bcook/anaconda/envs/py36/lib/python3.6/site-packages/astropy/wcs/wcs.py:2691: AstropyDeprecationWarning: 
+Private attributes "_naxis1" and "_naxis2" have been deprecated since v3.1.
+Instead use the "pixel_shape" property which returns a list of NAXISj keyword values.
+
+  warnings.warn(NAXIS_DEPRECATE_MESSAGE, AstropyDeprecationWarning)
+
+[WARNING ] /Users/bcook/anaconda/envs/py36/lib/python3.6/site-packages/astropy/wcs/wcs.py:2701: AstropyDeprecationWarning: 
+Private attributes "_naxis1" and "_naxis2" have been deprecated since v3.1.
+Instead use the "pixel_shape" property which returns a list of NAXISj keyword values.
+
+  warnings.warn(NAXIS_DEPRECATE_MESSAGE, AstropyDeprecationWarning)
+
+[WARNING ] /Users/bcook/anaconda/envs/py36/lib/python3.6/site-packages/astropy/wcs/wcs.py:2691: AstropyDeprecationWarning: 
+Private attributes "_naxis1" and "_naxis2" have been deprecated since v3.1.
+Instead use the "pixel_shape" property which returns a list of NAXISj keyword values.
+
+  warnings.warn(NAXIS_DEPRECATE_MESSAGE, AstropyDeprecationWarning)
+
+[WARNING ] /Users/bcook/anaconda/envs/py36/lib/python3.6/site-packages/astropy/wcs/wcs.py:2701: AstropyDeprecationWarning: 
+Private attributes "_naxis1" and "_naxis2" have been deprecated since v3.1.
+Instead use the "pixel_shape" property which returns a list of NAXISj keyword values.
+
+  warnings.warn(NAXIS_DEPRECATE_MESSAGE, AstropyDeprecationWarning)
+
+[WARNING ] /Users/bcook/anaconda/envs/py36/lib/python3.6/site-packages/astropy/io/fits/card.py:266: VerifyWarning: Keyword name 'IDCSCALEB' is greater than 8 characters or contains characters not allowed by the FITS standard; a HIERARCH card will be created.
+  keyword), VerifyWarning)
+
+[WARNING ] /Users/bcook/anaconda/envs/py36/lib/python3.6/site-packages/astropy/wcs/wcs.py:2691: AstropyDeprecationWarning: 
+Private attributes "_naxis1" and "_naxis2" have been deprecated since v3.1.
+Instead use the "pixel_shape" property which returns a list of NAXISj keyword values.
+
+  warnings.warn(NAXIS_DEPRECATE_MESSAGE, AstropyDeprecationWarning)
+
+[WARNING ] /Users/bcook/anaconda/envs/py36/lib/python3.6/site-packages/astropy/wcs/wcs.py:2701: AstropyDeprecationWarning: 
+Private attributes "_naxis1" and "_naxis2" have been deprecated since v3.1.
+Instead use the "pixel_shape" property which returns a list of NAXISj keyword values.
+
+  warnings.warn(NAXIS_DEPRECATE_MESSAGE, AstropyDeprecationWarning)
+
+[WARNING ] /Users/bcook/anaconda/envs/py36/lib/python3.6/site-packages/astropy/io/fits/card.py:266: VerifyWarning: Keyword name 'IDCSCALEB' is greater than 8 characters or contains characters not allowed by the FITS standard; a HIERARCH card will be created.
+  keyword), VerifyWarning)
+
+[INFO    ] Trailer file written to:  tweakreg.log
+[INFO    ] Setting up logfile :  tweakreg.log
+[INFO    ] TweakReg Version 1.4.7(18-April-2018) started at: 12:14:35.365 (11/04/2019) 
+[INFO    ] 
+[INFO    ] Version Information
+[INFO    ] --------------------
+[INFO    ] Python Version [GCC 4.2.1 Compatible Clang 4.0.1 (tags/RELEASE_401/final)]
+[INFO    ] 3.6.4 |Anaconda custom (64-bit)| (default, Jan 16 2018, 12:04:33) 
+[INFO    ] numpy Version -> 1.15.1 
+[INFO    ] astropy Version -> 3.1.2 
+[INFO    ] stwcs Version -> 1.4.2 
+[INFO    ] 
+[INFO    ] USER INPUT PARAMETERS common to all Processing Steps:
+[INFO    ] 	clean :	True
+[INFO    ] 	enforce_user_order :	True
+[INFO    ] 	exclusions :	
+[INFO    ] 	expand_refcat :	True
+[INFO    ] 	input :	['../data/M87/raw/M87_F475W_EXP1_flc.fits', '../data/M87/raw/M87_F475W_EXP2_flc.fits']
+[INFO    ] 	interactive :	False
+[INFO    ] 	refimage :	
+[INFO    ] 	runfile :	tweakreg.log
+[INFO    ] 	updatewcs :	False
+[INFO    ] 	verbose :	False
+[INFO    ] 	writecat :	False
+[INFO    ] 
+[INFO    ] Finding shifts for: 
+[INFO    ]     /Users/bcook/pCMDs/pixcmd/data/M87/raw/M87_F475W_EXP1_flc.fits
+[INFO    ]     /Users/bcook/pCMDs/pixcmd/data/M87/raw/M87_F475W_EXP2_flc.fits
+[INFO    ] 
+[INFO    ] USER INPUT PARAMETERS for finding sources for each input image:
+[INFO    ] 	clean :	True
+[INFO    ] 	computesig :	True
+[INFO    ] 	conv_width :	4.0
+[INFO    ] 	dqbits :	
+[INFO    ] 	enforce_user_order :	True
+[INFO    ] 	expand_refcat :	True
+[INFO    ] 	fluxmax :	None
+[INFO    ] 	fluxmin :	None
+[INFO    ] 	input :	['../data/M87/raw/M87_F475W_EXP1_flc.fits', '../data/M87/raw/M87_F475W_EXP2_flc.fits']
+[INFO    ] 	interactive :	False
+[INFO    ] 	nsigma :	1.5
+[INFO    ] 	peakmax :	None
+[INFO    ] 	peakmin :	None
+[INFO    ] 	ratio :	1.0
+[INFO    ] 	refimage :	
+[INFO    ] 	roundhi :	1.0
+[INFO    ] 	roundlo :	-1.0
+[INFO    ] 	runfile :	tweakreg.log
+[INFO    ] 	sharphi :	1.0
+[INFO    ] 	sharplo :	0.2
+[INFO    ] 	skysigma :	0.0
+[INFO    ] 	theta :	0.0
+[INFO    ] 	threshold :	200
+[INFO    ] 	updatehdr :	True
+[INFO    ] 	updatewcs :	False
+[INFO    ] 	use_sharp_round :	False
+[INFO    ] 	verbose :	False
+[INFO    ] 	writecat :	False
+[INFO    ] 	xyunits :	pixels
+[INFO    ] 
+[INFO    ] ===  Source finding for image '/Users/bcook/pCMDs/pixcmd/data/M87/raw/M87_F475W_EXP1_flc.fits':
+[INFO    ]   #  Source finding for '/Users/bcook/pCMDs/pixcmd/data/M87/raw/M87_F475W_EXP1_flc.fits', EXT=('SCI', 1) started at: 12:14:35.600 (11/04/2019)
+[INFO    ]    Finding sources using sky sigma = 8.929335
+[INFO    ] ###Source finding finished at: 12:14:36.342 (11/04/2019)
+[INFO    ]      Found 1193 objects.
+[INFO    ]   #  Source finding for '/Users/bcook/pCMDs/pixcmd/data/M87/raw/M87_F475W_EXP1_flc.fits', EXT=('SCI', 2) started at: 12:14:36.47 (11/04/2019)
+[INFO    ]    Finding sources using sky sigma = 10.638492
+[INFO    ] ###Source finding finished at: 12:14:37.102 (11/04/2019)
+[INFO    ]      Found 1035 objects.
+[INFO    ] ===  FINAL number of objects in image '/Users/bcook/pCMDs/pixcmd/data/M87/raw/M87_F475W_EXP1_flc.fits': 2228
+[INFO    ] 
+[INFO    ] ===  Source finding for image '/Users/bcook/pCMDs/pixcmd/data/M87/raw/M87_F475W_EXP2_flc.fits':
+[INFO    ]   #  Source finding for '/Users/bcook/pCMDs/pixcmd/data/M87/raw/M87_F475W_EXP2_flc.fits', EXT=('SCI', 1) started at: 12:14:37.40 (11/04/2019)
+[INFO    ]    Finding sources using sky sigma = 9.793254
+[INFO    ] ###Source finding finished at: 12:14:38.04 (11/04/2019)
+[INFO    ]      Found 1015 objects.
+[INFO    ]   #  Source finding for '/Users/bcook/pCMDs/pixcmd/data/M87/raw/M87_F475W_EXP2_flc.fits', EXT=('SCI', 2) started at: 12:14:38.175 (11/04/2019)
+[INFO    ]    Finding sources using sky sigma = 11.337605
+[INFO    ] ###Source finding finished at: 12:14:38.807 (11/04/2019)
+[INFO    ]      Found 939 objects.
+[INFO    ] ===  FINAL number of objects in image '/Users/bcook/pCMDs/pixcmd/data/M87/raw/M87_F475W_EXP2_flc.fits': 1954
+[INFO    ] 
+[INFO    ] Converting RA/Dec positions of reference sources from "/Users/bcook/pCMDs/pixcmd/data/M87/raw/M87_F475W_EXP1_flc.fits" to X,Y positions in reference WCS...
+[INFO    ] 
+[INFO    ] ===============================================================
+[INFO    ] Performing alignment in the projection plane defined by the WCS
+[INFO    ] derived from '/Users/bcook/pCMDs/pixcmd/data/M87/raw/M87_F475W_EXP1_flc.fits'
+[INFO    ] ===============================================================
+[INFO    ] 
+[INFO    ] USER INPUT PARAMETERS for matching sources:
+[INFO    ] 	minobj :	15
+[INFO    ] 	residplot :	NoPlot
+[INFO    ] 	searchrad :	1.0
+[INFO    ] 	searchunits :	arcseconds
+[INFO    ] 	see2dplot :	False
+[INFO    ] 	separation :	0.5
+[INFO    ] 	tolerance :	1.0
+[INFO    ] 	use2dhist :	True
+[INFO    ] 	xoffset :	0.0
+[INFO    ] 	yoffset :	0.0
+[INFO    ] 
+[INFO    ] USER INPUT PARAMETERS for fitting source lists:
+[INFO    ] 	fitgeometry :	rscale
+[INFO    ] 	labelsize :	8
+[INFO    ] 	minobj :	15
+[INFO    ] 	nclip :	3
+[INFO    ] 	residplot :	NoPlot
+[INFO    ] 	sigma :	3.0
+[INFO    ] 	ylimit :	None
+[INFO    ] 
+[INFO    ] ====================
+[INFO    ] Performing fit for: /Users/bcook/pCMDs/pixcmd/data/M87/raw/M87_F475W_EXP2_flc.fits
+[INFO    ] 
+[INFO    ] Matching sources from '/Users/bcook/pCMDs/pixcmd/data/M87/raw/M87_F475W_EXP2_flc.fits' with sources from reference image '/Users/bcook/pCMDs/pixcmd/data/M87/raw/M87_F475W_EXP1_flc.fits'
+[INFO    ] Computing initial guess for X and Y shifts...
+[INFO    ] Found initial X and Y shifts of  -0.793721973094172 -0.8609865470852007
+[INFO    ]     with significance of  971.397921594401 and  134.0  matches
+[INFO    ] Found 211 matches for /Users/bcook/pCMDs/pixcmd/data/M87/raw/M87_F475W_EXP2_flc.fits...
+[INFO    ] Performing "rscale" fit
+[INFO    ] Performing "rscale" fit
+[INFO    ] Performing "rscale" fit
+[INFO    ] Performing "rscale" fit
+[INFO    ] Computed  rscale  fit for  /Users/bcook/pCMDs/pixcmd/data/M87/raw/M87_F475W_EXP2_flc.fits : 
+[INFO    ] XSH: -0.0226  YSH: -0.0185    ROT: 359.9999464    SCALE: 0.999998
+[INFO    ] XRMS: 0.024    YRMS: 0.019
+[INFO    ] 
+[INFO    ] RMS_RA: 2.8e-07 (deg)   RMS_DEC: 3.4e-07 (deg)
+[INFO    ] 
+[INFO    ] Final solution based on  200  objects.
+[INFO    ] Adding 1743 new sources to the reference catalog for a total of 3971 sources.
+[INFO    ] 
+[INFO    ] ....Updating header for /Users/bcook/pCMDs/pixcmd/data/M87/raw/M87_F475W_EXP2_flc.fits...
+[INFO    ] 
+[INFO    ] 
+[INFO    ] Processing /Users/bcook/pCMDs/pixcmd/data/M87/raw/M87_F475W_EXP2_flc.fits['SCI',1]
+[INFO    ] 
+[INFO    ] Updating header for /Users/bcook/pCMDs/pixcmd/data/M87/raw/M87_F475W_EXP2_flc.fits[1]
+[INFO    ]     with WCS of
+[INFO    ] WCS Keywords
+[INFO    ] 
+[INFO    ] CD_11  CD_12: -4.12186648465796e-07 -1.3965868421772443e-05
+[INFO    ] CD_21  CD_22: -1.3842933668791448e-05 -5.454003892219519e-07
+[INFO    ] CRVAL    : 187.72683193442887 12.391913753531215
+[INFO    ] CRPIX    : 2048.0 1024.0
+[INFO    ] NAXIS    : 4096 2048
+[INFO    ] Plate Scale : 0.049856532920128364
+[INFO    ] ORIENTAT : -92.23640006656814
+[INFO    ] WCSNAME  :  INITIAL_F475W
+[INFO    ] 
+[INFO    ] Processing /Users/bcook/pCMDs/pixcmd/data/M87/raw/M87_F475W_EXP2_flc.fits['SCI',2]
+[INFO    ] 
+[WARNING ] /Users/bcook/anaconda/envs/py36/lib/python3.6/site-packages/astropy/wcs/wcs.py:2691: AstropyDeprecationWarning: 
+Private attributes "_naxis1" and "_naxis2" have been deprecated since v3.1.
+Instead use the "pixel_shape" property which returns a list of NAXISj keyword values.
+
+  warnings.warn(NAXIS_DEPRECATE_MESSAGE, AstropyDeprecationWarning)
+
+[WARNING ] /Users/bcook/anaconda/envs/py36/lib/python3.6/site-packages/astropy/wcs/wcs.py:2701: AstropyDeprecationWarning: 
+Private attributes "_naxis1" and "_naxis2" have been deprecated since v3.1.
+Instead use the "pixel_shape" property which returns a list of NAXISj keyword values.
+
+  warnings.warn(NAXIS_DEPRECATE_MESSAGE, AstropyDeprecationWarning)
+
+[WARNING ] /Users/bcook/anaconda/envs/py36/lib/python3.6/site-packages/astropy/wcs/wcs.py:2686: AstropyDeprecationWarning: 
+Private attributes "_naxis1" and "_naxis2" have been deprecated since v3.1.
+Instead use the "pixel_shape" property which returns a list of NAXISj keyword values.
+
+  warnings.warn(NAXIS_DEPRECATE_MESSAGE, AstropyDeprecationWarning)
+
+[WARNING ] /Users/bcook/anaconda/envs/py36/lib/python3.6/site-packages/astropy/wcs/wcs.py:2696: AstropyDeprecationWarning: 
+Private attributes "_naxis1" and "_naxis2" have been deprecated since v3.1.
+Instead use the "pixel_shape" property which returns a list of NAXISj keyword values.
+
+  warnings.warn(NAXIS_DEPRECATE_MESSAGE, AstropyDeprecationWarning)
+
+[INFO    ] Updating header for /Users/bcook/pCMDs/pixcmd/data/M87/raw/M87_F475W_EXP2_flc.fits[4]
+[INFO    ]     with WCS of
+[INFO    ] WCS Keywords
+[INFO    ] 
+[INFO    ] CD_11  CD_12: -5.885238066824055e-07 -1.3495727377788347e-05
+[INFO    ] CD_21  CD_22: -1.3675124521758875e-05 -6.316378447767125e-07
+[INFO    ] CRVAL    : 187.69728225112993 12.390724753440232
+[INFO    ] CRPIX    : 2048.0 1024.0
+[INFO    ] NAXIS    : 4096 2048
+[INFO    ] Plate Scale : 0.04927590323169507
+[INFO    ] ORIENTAT : -92.67964752536777
+[INFO    ] WCSNAME  :  INITIAL_F475W
+[INFO    ]     Writing out new WCS to alternate WCS: "B"
+[INFO    ] Updating WCSCORR table with new WCS solution "INITIAL_F475W"
+[WARNING ] /Users/bcook/anaconda/envs/py36/lib/python3.6/site-packages/astropy/wcs/wcs.py:2691: AstropyDeprecationWarning: 
+Private attributes "_naxis1" and "_naxis2" have been deprecated since v3.1.
+Instead use the "pixel_shape" property which returns a list of NAXISj keyword values.
+
+  warnings.warn(NAXIS_DEPRECATE_MESSAGE, AstropyDeprecationWarning)
+
+[WARNING ] /Users/bcook/anaconda/envs/py36/lib/python3.6/site-packages/astropy/wcs/wcs.py:2701: AstropyDeprecationWarning: 
+Private attributes "_naxis1" and "_naxis2" have been deprecated since v3.1.
+Instead use the "pixel_shape" property which returns a list of NAXISj keyword values.
+
+  warnings.warn(NAXIS_DEPRECATE_MESSAGE, AstropyDeprecationWarning)
+
+[WARNING ] /Users/bcook/anaconda/envs/py36/lib/python3.6/site-packages/astropy/wcs/wcs.py:2691: AstropyDeprecationWarning: 
+Private attributes "_naxis1" and "_naxis2" have been deprecated since v3.1.
+Instead use the "pixel_shape" property which returns a list of NAXISj keyword values.
+
+  warnings.warn(NAXIS_DEPRECATE_MESSAGE, AstropyDeprecationWarning)
+
+[WARNING ] /Users/bcook/anaconda/envs/py36/lib/python3.6/site-packages/astropy/wcs/wcs.py:2701: AstropyDeprecationWarning: 
+Private attributes "_naxis1" and "_naxis2" have been deprecated since v3.1.
+Instead use the "pixel_shape" property which returns a list of NAXISj keyword values.
+
+  warnings.warn(NAXIS_DEPRECATE_MESSAGE, AstropyDeprecationWarning)
+
+[WARNING ] /Users/bcook/anaconda/envs/py36/lib/python3.6/site-packages/astropy/io/fits/card.py:266: VerifyWarning: Keyword name 'IDCSCALEB' is greater than 8 characters or contains characters not allowed by the FITS standard; a HIERARCH card will be created.
+  keyword), VerifyWarning)
+
+[WARNING ] /Users/bcook/anaconda/envs/py36/lib/python3.6/site-packages/astropy/wcs/wcs.py:2691: AstropyDeprecationWarning: 
+Private attributes "_naxis1" and "_naxis2" have been deprecated since v3.1.
+Instead use the "pixel_shape" property which returns a list of NAXISj keyword values.
+
+  warnings.warn(NAXIS_DEPRECATE_MESSAGE, AstropyDeprecationWarning)
+
+[WARNING ] /Users/bcook/anaconda/envs/py36/lib/python3.6/site-packages/astropy/wcs/wcs.py:2701: AstropyDeprecationWarning: 
+Private attributes "_naxis1" and "_naxis2" have been deprecated since v3.1.
+Instead use the "pixel_shape" property which returns a list of NAXISj keyword values.
+
+  warnings.warn(NAXIS_DEPRECATE_MESSAGE, AstropyDeprecationWarning)
+
+[WARNING ] /Users/bcook/anaconda/envs/py36/lib/python3.6/site-packages/astropy/io/fits/card.py:266: VerifyWarning: Keyword name 'IDCSCALEB' is greater than 8 characters or contains characters not allowed by the FITS standard; a HIERARCH card will be created.
+  keyword), VerifyWarning)
+
+[INFO    ]     Saving Primary WCS to alternate WCS: " "
+[INFO    ] Updating WCSCORR table with new WCS solution "INITIAL_F475W"
+[WARNING ] /Users/bcook/anaconda/envs/py36/lib/python3.6/site-packages/astropy/wcs/wcs.py:2691: AstropyDeprecationWarning: 
+Private attributes "_naxis1" and "_naxis2" have been deprecated since v3.1.
+Instead use the "pixel_shape" property which returns a list of NAXISj keyword values.
+
+  warnings.warn(NAXIS_DEPRECATE_MESSAGE, AstropyDeprecationWarning)
+
+[WARNING ] /Users/bcook/anaconda/envs/py36/lib/python3.6/site-packages/astropy/wcs/wcs.py:2701: AstropyDeprecationWarning: 
+Private attributes "_naxis1" and "_naxis2" have been deprecated since v3.1.
+Instead use the "pixel_shape" property which returns a list of NAXISj keyword values.
+
+  warnings.warn(NAXIS_DEPRECATE_MESSAGE, AstropyDeprecationWarning)
+
+[WARNING ] /Users/bcook/anaconda/envs/py36/lib/python3.6/site-packages/astropy/wcs/wcs.py:2691: AstropyDeprecationWarning: 
+Private attributes "_naxis1" and "_naxis2" have been deprecated since v3.1.
+Instead use the "pixel_shape" property which returns a list of NAXISj keyword values.
+
+  warnings.warn(NAXIS_DEPRECATE_MESSAGE, AstropyDeprecationWarning)
+
+[WARNING ] /Users/bcook/anaconda/envs/py36/lib/python3.6/site-packages/astropy/wcs/wcs.py:2701: AstropyDeprecationWarning: 
+Private attributes "_naxis1" and "_naxis2" have been deprecated since v3.1.
+Instead use the "pixel_shape" property which returns a list of NAXISj keyword values.
+
+  warnings.warn(NAXIS_DEPRECATE_MESSAGE, AstropyDeprecationWarning)
+
+[WARNING ] /Users/bcook/anaconda/envs/py36/lib/python3.6/site-packages/astropy/io/fits/card.py:266: VerifyWarning: Keyword name 'IDCSCALEB' is greater than 8 characters or contains characters not allowed by the FITS standard; a HIERARCH card will be created.
+  keyword), VerifyWarning)
+
+[WARNING ] /Users/bcook/anaconda/envs/py36/lib/python3.6/site-packages/astropy/wcs/wcs.py:2691: AstropyDeprecationWarning: 
+Private attributes "_naxis1" and "_naxis2" have been deprecated since v3.1.
+Instead use the "pixel_shape" property which returns a list of NAXISj keyword values.
+
+  warnings.warn(NAXIS_DEPRECATE_MESSAGE, AstropyDeprecationWarning)
+
+[WARNING ] /Users/bcook/anaconda/envs/py36/lib/python3.6/site-packages/astropy/wcs/wcs.py:2701: AstropyDeprecationWarning: 
+Private attributes "_naxis1" and "_naxis2" have been deprecated since v3.1.
+Instead use the "pixel_shape" property which returns a list of NAXISj keyword values.
+
+  warnings.warn(NAXIS_DEPRECATE_MESSAGE, AstropyDeprecationWarning)
+
+[WARNING ] /Users/bcook/anaconda/envs/py36/lib/python3.6/site-packages/astropy/io/fits/card.py:266: VerifyWarning: Keyword name 'IDCSCALEB' is greater than 8 characters or contains characters not allowed by the FITS standard; a HIERARCH card will be created.
+  keyword), VerifyWarning)
+
+[INFO    ] Trailer file written to:  tweakreg.log
+[INFO    ] Setting up logfile :  tweakreg.log
+[INFO    ] TweakReg Version 1.4.7(18-April-2018) started at: 12:15:45.782 (11/04/2019) 
+[INFO    ] 
+[INFO    ] Version Information
+[INFO    ] --------------------
+[INFO    ] Python Version [GCC 4.2.1 Compatible Clang 4.0.1 (tags/RELEASE_401/final)]
+[INFO    ] 3.6.4 |Anaconda custom (64-bit)| (default, Jan 16 2018, 12:04:33) 
+[INFO    ] numpy Version -> 1.15.1 
+[INFO    ] astropy Version -> 3.1.2 
+[INFO    ] stwcs Version -> 1.4.2 
+[INFO    ] 
+[INFO    ] USER INPUT PARAMETERS common to all Processing Steps:
+[INFO    ] 	clean :	True
+[INFO    ] 	enforce_user_order :	True
+[INFO    ] 	exclusions :	
+[INFO    ] 	expand_refcat :	True
+[INFO    ] 	input :	['../data/M87_v2/reduced/M87_F475W_drc.fits']
+[INFO    ] 	interactive :	False
+[INFO    ] 	refimage :	../data/M87_v2/reduced/M87_F814W_drc.fits
+[INFO    ] 	runfile :	tweakreg.log
+[INFO    ] 	updatewcs :	False
+[INFO    ] 	verbose :	False
+[INFO    ] 	writecat :	False
+[INFO    ] 
+[INFO    ] Finding shifts for: 
+[INFO    ]     /Users/bcook/pCMDs/pixcmd/data/M87_v2/reduced/M87_F475W_drc.fits
+[INFO    ] 
+[INFO    ] USER INPUT PARAMETERS for finding sources for each input image:
+[INFO    ] 	clean :	True
+[INFO    ] 	computesig :	True
+[INFO    ] 	conv_width :	4.0
+[INFO    ] 	dqbits :	
+[INFO    ] 	enforce_user_order :	True
+[INFO    ] 	expand_refcat :	True
+[INFO    ] 	fluxmax :	None
+[INFO    ] 	fluxmin :	None
+[INFO    ] 	input :	['../data/M87_v2/reduced/M87_F475W_drc.fits']
+[INFO    ] 	interactive :	False
+[INFO    ] 	nsigma :	1.5
+[INFO    ] 	peakmax :	None
+[INFO    ] 	peakmin :	None
+[INFO    ] 	ratio :	1.0
+[INFO    ] 	refimage :	../data/M87_v2/reduced/M87_F814W_drc.fits
+[INFO    ] 	roundhi :	1.0
+[INFO    ] 	roundlo :	-1.0
+[INFO    ] 	runfile :	tweakreg.log
+[INFO    ] 	sharphi :	1.0
+[INFO    ] 	sharplo :	0.2
+[INFO    ] 	skysigma :	0.0
+[INFO    ] 	theta :	0.0
+[INFO    ] 	threshold :	200
+[INFO    ] 	updatehdr :	True
+[INFO    ] 	updatewcs :	False
+[INFO    ] 	use_sharp_round :	False
+[INFO    ] 	verbose :	False
+[INFO    ] 	writecat :	False
+[INFO    ] 	xyunits :	pixels
+[INFO    ] 
+[INFO    ] ===  Source finding for image '/Users/bcook/pCMDs/pixcmd/data/M87_v2/reduced/M87_F475W_drc.fits':
+[INFO    ]   #  Source finding for '/Users/bcook/pCMDs/pixcmd/data/M87_v2/reduced/M87_F475W_drc.fits', EXT=('SCI', 1) started at: 12:15:45.896 (11/04/2019)
+[INFO    ]    Finding sources using sky sigma = 13.916371
+[WARNING ] /Users/bcook/anaconda/envs/py36/lib/python3.6/site-packages/drizzlepac/findobj.py:190: RuntimeWarning: invalid value encountered in greater
+  tdata=np.where(convdata > threshold, convdata, 0)
+
+[INFO    ] ###Source finding finished at: 12:15:47.554 (11/04/2019)
+[INFO    ]      Found 377 objects.
+[INFO    ] ===  FINAL number of objects in image '/Users/bcook/pCMDs/pixcmd/data/M87_v2/reduced/M87_F475W_drc.fits': 377
+[INFO    ] 
+[INFO    ] 
+[INFO    ] USER INPUT PARAMETERS for finding sources for the reference image:
+[INFO    ] 	clean :	True
+[INFO    ] 	computesig :	True
+[INFO    ] 	conv_width :	3.5
+[INFO    ] 	dqbits :	
+[INFO    ] 	enforce_user_order :	True
+[INFO    ] 	expand_refcat :	True
+[INFO    ] 	fluxmax :	None
+[INFO    ] 	fluxmin :	None
+[INFO    ] 	input :	['../data/M87_v2/reduced/M87_F475W_drc.fits']
+[INFO    ] 	interactive :	False
+[INFO    ] 	nsigma :	1.5
+[INFO    ] 	peakmax :	None
+[INFO    ] 	peakmin :	None
+[INFO    ] 	ratio :	1.0
+[INFO    ] 	refimage :	../data/M87_v2/reduced/M87_F814W_drc.fits
+[INFO    ] 	roundhi :	1.0
+[INFO    ] 	roundlo :	-1.0
+[INFO    ] 	runfile :	tweakreg.log
+[INFO    ] 	sharphi :	1.0
+[INFO    ] 	sharplo :	0.2
+[INFO    ] 	skysigma :	0.0
+[INFO    ] 	theta :	0.0
+[INFO    ] 	threshold :	200
+[INFO    ] 	updatehdr :	False
+[INFO    ] 	updatewcs :	False
+[INFO    ] 	use_sharp_round :	False
+[INFO    ] 	verbose :	False
+[INFO    ] 	writecat :	False
+[INFO    ] 	xyunits :	pixels
+[INFO    ] ===  Source finding for image '../data/M87_v2/reduced/M87_F814W_drc.fits':
+[INFO    ]   #  Source finding for '../data/M87_v2/reduced/M87_F814W_drc.fits', EXT=('SCI', 1) started at: 12:15:47.773 (11/04/2019)
+[INFO    ]    Finding sources using sky sigma = 42.470658
+[INFO    ] ###Source finding finished at: 12:15:50.040 (11/04/2019)
+[INFO    ]      Found 949 objects.
+[INFO    ] ===  FINAL number of objects in image '../data/M87_v2/reduced/M87_F814W_drc.fits': 949
+[INFO    ] 
+[INFO    ] Converting RA/Dec positions of reference sources from "/Users/bcook/pCMDs/pixcmd/data/M87_v2/reduced/M87_F814W_drc.fits" to X,Y positions in reference WCS...
+[INFO    ] 
+[INFO    ] ===============================================================
+[INFO    ] Performing alignment in the projection plane defined by the WCS
+[INFO    ] derived from '/Users/bcook/pCMDs/pixcmd/data/M87_v2/reduced/M87_F814W_drc.fits'
+[INFO    ] ===============================================================
+[INFO    ] 
+[INFO    ] USER INPUT PARAMETERS for matching sources:
+[INFO    ] 	minobj :	15
+[INFO    ] 	residplot :	NoPlot
+[INFO    ] 	searchrad :	1.0
+[INFO    ] 	searchunits :	arcseconds
+[INFO    ] 	see2dplot :	False
+[INFO    ] 	separation :	0.5
+[INFO    ] 	tolerance :	1.0
+[INFO    ] 	use2dhist :	True
+[INFO    ] 	xoffset :	0.0
+[INFO    ] 	yoffset :	0.0
+[INFO    ] 
+[INFO    ] USER INPUT PARAMETERS for fitting source lists:
+[INFO    ] 	fitgeometry :	rscale
+[INFO    ] 	labelsize :	8
+[INFO    ] 	minobj :	15
+[INFO    ] 	nclip :	10
+[INFO    ] 	residplot :	NoPlot
+[INFO    ] 	sigma :	3.0
+[INFO    ] 	ylimit :	None
+[INFO    ] 
+[INFO    ] ====================
+[INFO    ] Performing fit for: /Users/bcook/pCMDs/pixcmd/data/M87_v2/reduced/M87_F475W_drc.fits
+[INFO    ] 
+[INFO    ] Matching sources from '/Users/bcook/pCMDs/pixcmd/data/M87_v2/reduced/M87_F475W_drc.fits' with sources from reference image '/Users/bcook/pCMDs/pixcmd/data/M87_v2/reduced/M87_F814W_drc.fits'
+[INFO    ] Computing initial guess for X and Y shifts...
+[INFO    ] Found initial X and Y shifts of  0.5840707964588994 -14.345132743364111
+[INFO    ]     with significance of  771.621817065477 and  86.0  matches
+[INFO    ] Found 223 matches for /Users/bcook/pCMDs/pixcmd/data/M87_v2/reduced/M87_F475W_drc.fits...
+[INFO    ] Performing "rscale" fit
+[INFO    ] Performing "rscale" fit
+[INFO    ] Performing "rscale" fit
+[INFO    ] Performing "rscale" fit
+[INFO    ] Performing "rscale" fit
+[INFO    ] Performing "rscale" fit
+[INFO    ] Performing "rscale" fit
+[INFO    ] Performing "rscale" fit
+[INFO    ] Performing "rscale" fit
+[INFO    ] Performing "rscale" fit
+[INFO    ] Performing "rscale" fit
+[INFO    ] Computed  rscale  fit for  /Users/bcook/pCMDs/pixcmd/data/M87_v2/reduced/M87_F475W_drc.fits : 
+[INFO    ] XSH: 1.0088  YSH: -13.9292    ROT: 0.006168770284    SCALE: 1.000009
+[INFO    ] XRMS: 0.035    YRMS: 0.034
+[INFO    ] 
+[INFO    ] RMS_RA: 5e-07 (deg)   RMS_DEC: 4.7e-07 (deg)
+[INFO    ] 
+[INFO    ] Final solution based on  199  objects.
+[INFO    ] Adding 154 new sources to the reference catalog for a total of 1103 sources.
+[INFO    ] Initializing new WCSCORR table for  /Users/bcook/pCMDs/pixcmd/data/M87_v2/reduced/M87_F475W_drc.fits
+[WARNING ] /Users/bcook/anaconda/envs/py36/lib/python3.6/site-packages/astropy/wcs/wcs.py:2691: AstropyDeprecationWarning: 
+Private attributes "_naxis1" and "_naxis2" have been deprecated since v3.1.
+Instead use the "pixel_shape" property which returns a list of NAXISj keyword values.
+
+  warnings.warn(NAXIS_DEPRECATE_MESSAGE, AstropyDeprecationWarning)
+
+[WARNING ] /Users/bcook/anaconda/envs/py36/lib/python3.6/site-packages/astropy/wcs/wcs.py:2701: AstropyDeprecationWarning: 
+Private attributes "_naxis1" and "_naxis2" have been deprecated since v3.1.
+Instead use the "pixel_shape" property which returns a list of NAXISj keyword values.
+
+  warnings.warn(NAXIS_DEPRECATE_MESSAGE, AstropyDeprecationWarning)
+
+[WARNING ] /Users/bcook/anaconda/envs/py36/lib/python3.6/site-packages/astropy/wcs/wcs.py:2691: AstropyDeprecationWarning: 
+Private attributes "_naxis1" and "_naxis2" have been deprecated since v3.1.
+Instead use the "pixel_shape" property which returns a list of NAXISj keyword values.
+
+  warnings.warn(NAXIS_DEPRECATE_MESSAGE, AstropyDeprecationWarning)
+
+[WARNING ] /Users/bcook/anaconda/envs/py36/lib/python3.6/site-packages/astropy/wcs/wcs.py:2701: AstropyDeprecationWarning: 
+Private attributes "_naxis1" and "_naxis2" have been deprecated since v3.1.
+Instead use the "pixel_shape" property which returns a list of NAXISj keyword values.
+
+  warnings.warn(NAXIS_DEPRECATE_MESSAGE, AstropyDeprecationWarning)
+
+[INFO    ] 
+[INFO    ] ....Updating header for /Users/bcook/pCMDs/pixcmd/data/M87_v2/reduced/M87_F475W_drc.fits...
+[INFO    ] 
+[INFO    ] 
+[INFO    ] Processing /Users/bcook/pCMDs/pixcmd/data/M87_v2/reduced/M87_F475W_drc.fits['SCI',1]
+[INFO    ] 
+[WARNING ] /Users/bcook/anaconda/envs/py36/lib/python3.6/site-packages/astropy/wcs/wcs.py:2691: AstropyDeprecationWarning: 
+Private attributes "_naxis1" and "_naxis2" have been deprecated since v3.1.
+Instead use the "pixel_shape" property which returns a list of NAXISj keyword values.
+
+  warnings.warn(NAXIS_DEPRECATE_MESSAGE, AstropyDeprecationWarning)
+
+[WARNING ] /Users/bcook/anaconda/envs/py36/lib/python3.6/site-packages/astropy/wcs/wcs.py:2701: AstropyDeprecationWarning: 
+Private attributes "_naxis1" and "_naxis2" have been deprecated since v3.1.
+Instead use the "pixel_shape" property which returns a list of NAXISj keyword values.
+
+  warnings.warn(NAXIS_DEPRECATE_MESSAGE, AstropyDeprecationWarning)
+
+[WARNING ] /Users/bcook/anaconda/envs/py36/lib/python3.6/site-packages/astropy/wcs/wcs.py:2686: AstropyDeprecationWarning: 
+Private attributes "_naxis1" and "_naxis2" have been deprecated since v3.1.
+Instead use the "pixel_shape" property which returns a list of NAXISj keyword values.
+
+  warnings.warn(NAXIS_DEPRECATE_MESSAGE, AstropyDeprecationWarning)
+
+[WARNING ] /Users/bcook/anaconda/envs/py36/lib/python3.6/site-packages/astropy/wcs/wcs.py:2696: AstropyDeprecationWarning: 
+Private attributes "_naxis1" and "_naxis2" have been deprecated since v3.1.
+Instead use the "pixel_shape" property which returns a list of NAXISj keyword values.
+
+  warnings.warn(NAXIS_DEPRECATE_MESSAGE, AstropyDeprecationWarning)
+
+[INFO    ] Updating header for /Users/bcook/pCMDs/pixcmd/data/M87_v2/reduced/M87_F475W_drc.fits[1]
+[INFO    ]     with WCS of
+[INFO    ] WCS Keywords
+[INFO    ] 
+[INFO    ] CD_11  CD_12: -1.3888766513917642e-05 1.496088659417417e-09
+[INFO    ] CD_21  CD_22: 1.4960852137397978e-09 1.3888766518052075e-05
+[INFO    ] CRVAL    : 187.71220690359388 12.39129666673887
+[INFO    ] CRPIX    : 2119.161007367536 2108.161924638063
+[INFO    ] NAXIS    : 4238 4214
+[INFO    ] Plate Scale : 0.049999999999996804
+[INFO    ] ORIENTAT : 0.0061718631038285955
+[INFO    ] WCSNAME  :  TWEAK_F814W
+[INFO    ]     Writing out new WCS to alternate WCS: "B"
+[INFO    ] Updating WCSCORR table with new WCS solution "TWEAK_F814W"
+[WARNING ] /Users/bcook/anaconda/envs/py36/lib/python3.6/site-packages/astropy/wcs/wcs.py:2691: AstropyDeprecationWarning: 
+Private attributes "_naxis1" and "_naxis2" have been deprecated since v3.1.
+Instead use the "pixel_shape" property which returns a list of NAXISj keyword values.
+
+  warnings.warn(NAXIS_DEPRECATE_MESSAGE, AstropyDeprecationWarning)
+
+[WARNING ] /Users/bcook/anaconda/envs/py36/lib/python3.6/site-packages/astropy/wcs/wcs.py:2701: AstropyDeprecationWarning: 
+Private attributes "_naxis1" and "_naxis2" have been deprecated since v3.1.
+Instead use the "pixel_shape" property which returns a list of NAXISj keyword values.
+
+  warnings.warn(NAXIS_DEPRECATE_MESSAGE, AstropyDeprecationWarning)
+
+[WARNING ] /Users/bcook/anaconda/envs/py36/lib/python3.6/site-packages/astropy/wcs/wcs.py:2691: AstropyDeprecationWarning: 
+Private attributes "_naxis1" and "_naxis2" have been deprecated since v3.1.
+Instead use the "pixel_shape" property which returns a list of NAXISj keyword values.
+
+  warnings.warn(NAXIS_DEPRECATE_MESSAGE, AstropyDeprecationWarning)
+
+[WARNING ] /Users/bcook/anaconda/envs/py36/lib/python3.6/site-packages/astropy/wcs/wcs.py:2701: AstropyDeprecationWarning: 
+Private attributes "_naxis1" and "_naxis2" have been deprecated since v3.1.
+Instead use the "pixel_shape" property which returns a list of NAXISj keyword values.
+
+  warnings.warn(NAXIS_DEPRECATE_MESSAGE, AstropyDeprecationWarning)
+
+[INFO    ] Trailer file written to:  tweakreg.log
+[WARNING ] AstropyDeprecationWarning: 
+Private attributes "_naxis1" and "_naxis2" have been deprecated since v3.1.
+Instead use the "pixel_shape" property which returns a list of NAXISj keyword values.
+
+[WARNING ] AstropyDeprecationWarning: 
+Private attributes "_naxis1" and "_naxis2" have been deprecated since v3.1.
+Instead use the "pixel_shape" property which returns a list of NAXISj keyword values.
+
+[WARNING ] AstropyDeprecationWarning: 
+Private attributes "_naxis1" and "_naxis2" have been deprecated since v3.1.
+Instead use the "pixel_shape" property which returns a list of NAXISj keyword values.
+
+[WARNING ] AstropyDeprecationWarning: 
+Private attributes "_naxis1" and "_naxis2" have been deprecated since v3.1.
+Instead use the "pixel_shape" property which returns a list of NAXISj keyword values.
+
+[INFO    ]     with WCS of
+[WARNING ] AstropyDeprecationWarning: 
+Private attributes "_naxis1" and "_naxis2" have been deprecated since v3.1.
+Instead use the "pixel_shape" property which returns a list of NAXISj keyword values.
+
+[WARNING ] AstropyDeprecationWarning: 
+Private attributes "_naxis1" and "_naxis2" have been deprecated since v3.1.
+Instead use the "pixel_shape" property which returns a list of NAXISj keyword values.
+
+[WARNING ] AstropyDeprecationWarning: 
+Private attributes "_naxis1" and "_naxis2" have been deprecated since v3.1.
+Instead use the "pixel_shape" property which returns a list of NAXISj keyword values.
+
+[WARNING ] AstropyDeprecationWarning: 
+Private attributes "_naxis1" and "_naxis2" have been deprecated since v3.1.
+Instead use the "pixel_shape" property which returns a list of NAXISj keyword values.
+
+[INFO    ]     with WCS of
+[WARNING ] AstropyDeprecationWarning: 
+Private attributes "_naxis1" and "_naxis2" have been deprecated since v3.1.
+Instead use the "pixel_shape" property which returns a list of NAXISj keyword values.
+
+[WARNING ] AstropyDeprecationWarning: 
+Private attributes "_naxis1" and "_naxis2" have been deprecated since v3.1.
+Instead use the "pixel_shape" property which returns a list of NAXISj keyword values.
+
+[WARNING ] AstropyDeprecationWarning: 
+Private attributes "_naxis1" and "_naxis2" have been deprecated since v3.1.
+Instead use the "pixel_shape" property which returns a list of NAXISj keyword values.
+
+[WARNING ] AstropyDeprecationWarning: 
+Private attributes "_naxis1" and "_naxis2" have been deprecated since v3.1.
+Instead use the "pixel_shape" property which returns a list of NAXISj keyword values.
+
+[INFO    ]     with WCS of
+[WARNING ] AstropyDeprecationWarning: 
+Private attributes "_naxis1" and "_naxis2" have been deprecated since v3.1.
+Instead use the "pixel_shape" property which returns a list of NAXISj keyword values.
+
+[WARNING ] AstropyDeprecationWarning: 
+Private attributes "_naxis1" and "_naxis2" have been deprecated since v3.1.
+Instead use the "pixel_shape" property which returns a list of NAXISj keyword values.
+
+[WARNING ] AstropyDeprecationWarning: 
+Private attributes "_naxis1" and "_naxis2" have been deprecated since v3.1.
+Instead use the "pixel_shape" property which returns a list of NAXISj keyword values.
+
+[WARNING ] AstropyDeprecationWarning: 
+Private attributes "_naxis1" and "_naxis2" have been deprecated since v3.1.
+Instead use the "pixel_shape" property which returns a list of NAXISj keyword values.
+
+[INFO    ]     with WCS of
+[INFO    ] Setting up logfile :  tweakreg.log
+[INFO    ] TweakReg Version 1.4.7(18-April-2018) started at: 13:42:32.442 (11/04/2019) 
+[INFO    ] 
+[INFO    ] Version Information
+[INFO    ] --------------------
+[INFO    ] Python Version [GCC 4.2.1 Compatible Clang 4.0.1 (tags/RELEASE_401/final)]
+[INFO    ] 3.6.4 |Anaconda custom (64-bit)| (default, Jan 16 2018, 12:04:33) 
+[INFO    ] numpy Version -> 1.15.1 
+[INFO    ] astropy Version -> 3.1.2 
+[INFO    ] stwcs Version -> 1.4.2 
+[INFO    ] 
+[INFO    ] USER INPUT PARAMETERS common to all Processing Steps:
+[INFO    ] 	clean :	True
+[INFO    ] 	enforce_user_order :	True
+[INFO    ] 	exclusions :	
+[INFO    ] 	expand_refcat :	False
+[INFO    ] 	input :	['../data/M87_v2/reduced/M87_F814W_drc.fits', '../data/M87_v2/reduced/M87_F475W_drc.fits']
+[INFO    ] 	interactive :	False
+[INFO    ] 	refimage :	
+[INFO    ] 	runfile :	tweakreg.log
+[INFO    ] 	updatewcs :	False
+[INFO    ] 	verbose :	False
+[INFO    ] 	writecat :	False
+[INFO    ] 
+[INFO    ] Finding shifts for: 
+[INFO    ]     /Users/bcook/pCMDs/pixcmd/data/M87_v2/reduced/M87_F814W_drc.fits
+[INFO    ]     /Users/bcook/pCMDs/pixcmd/data/M87_v2/reduced/M87_F475W_drc.fits
+[INFO    ] 
+[INFO    ] USER INPUT PARAMETERS for finding sources for each input image:
+[INFO    ] 	clean :	True
+[INFO    ] 	computesig :	True
+[INFO    ] 	conv_width :	4.0
+[INFO    ] 	dqbits :	
+[INFO    ] 	enforce_user_order :	True
+[INFO    ] 	expand_refcat :	False
+[INFO    ] 	fluxmax :	None
+[INFO    ] 	fluxmin :	None
+[INFO    ] 	input :	['../data/M87_v2/reduced/M87_F814W_drc.fits', '../data/M87_v2/reduced/M87_F475W_drc.fits']
+[INFO    ] 	interactive :	False
+[INFO    ] 	nsigma :	1.5
+[INFO    ] 	peakmax :	None
+[INFO    ] 	peakmin :	None
+[INFO    ] 	ratio :	1.0
+[INFO    ] 	refimage :	
+[INFO    ] 	roundhi :	1.0
+[INFO    ] 	roundlo :	-1.0
+[INFO    ] 	runfile :	tweakreg.log
+[INFO    ] 	sharphi :	1.0
+[INFO    ] 	sharplo :	0.2
+[INFO    ] 	skysigma :	0.0
+[INFO    ] 	theta :	0.0
+[INFO    ] 	threshold :	100
+[INFO    ] 	updatehdr :	False
+[INFO    ] 	updatewcs :	False
+[INFO    ] 	use_sharp_round :	False
+[INFO    ] 	verbose :	False
+[INFO    ] 	writecat :	False
+[INFO    ] 	xyunits :	pixels
+[INFO    ] 
+[WARNING ] /Users/bcook/anaconda/envs/py36/lib/python3.6/site-packages/astropy/wcs/wcs.py:2691: AstropyDeprecationWarning: 
+Private attributes "_naxis1" and "_naxis2" have been deprecated since v3.1.
+Instead use the "pixel_shape" property which returns a list of NAXISj keyword values.
+
+  warnings.warn(NAXIS_DEPRECATE_MESSAGE, AstropyDeprecationWarning)
+
+[WARNING ] /Users/bcook/anaconda/envs/py36/lib/python3.6/site-packages/astropy/wcs/wcs.py:2701: AstropyDeprecationWarning: 
+Private attributes "_naxis1" and "_naxis2" have been deprecated since v3.1.
+Instead use the "pixel_shape" property which returns a list of NAXISj keyword values.
+
+  warnings.warn(NAXIS_DEPRECATE_MESSAGE, AstropyDeprecationWarning)
+
+[INFO    ] ===  Source finding for image '/Users/bcook/pCMDs/pixcmd/data/M87_v2/reduced/M87_F814W_drc.fits':
+[INFO    ]   #  Source finding for '/Users/bcook/pCMDs/pixcmd/data/M87_v2/reduced/M87_F814W_drc.fits', EXT=('SCI', 1) started at: 13:42:32.801 (11/04/2019)
+[INFO    ]    Finding sources using sky sigma = 42.470658
+[WARNING ] /Users/bcook/anaconda/envs/py36/lib/python3.6/site-packages/drizzlepac/findobj.py:190: RuntimeWarning: invalid value encountered in greater
+  tdata=np.where(convdata > threshold, convdata, 0)
+
+[INFO    ] ###Source finding finished at: 13:42:36.155 (11/04/2019)
+[INFO    ]      Found 1578 objects.
+[INFO    ] ===  FINAL number of objects in image '/Users/bcook/pCMDs/pixcmd/data/M87_v2/reduced/M87_F814W_drc.fits': 1578
+[INFO    ] 
+[INFO    ] ===  Source finding for image '/Users/bcook/pCMDs/pixcmd/data/M87_v2/reduced/M87_F475W_drc.fits':
+[INFO    ]   #  Source finding for '/Users/bcook/pCMDs/pixcmd/data/M87_v2/reduced/M87_F475W_drc.fits', EXT=('SCI', 1) started at: 13:42:36.495 (11/04/2019)
+[INFO    ]    Finding sources using sky sigma = 14.093501
+[INFO    ] ###Source finding finished at: 13:42:39.418 (11/04/2019)
+[INFO    ]      Found 794 objects.
+[INFO    ] ===  FINAL number of objects in image '/Users/bcook/pCMDs/pixcmd/data/M87_v2/reduced/M87_F475W_drc.fits': 794
+[INFO    ] 
+[WARNING ] /Users/bcook/anaconda/envs/py36/lib/python3.6/site-packages/astropy/wcs/wcs.py:2686: AstropyDeprecationWarning: 
+Private attributes "_naxis1" and "_naxis2" have been deprecated since v3.1.
+Instead use the "pixel_shape" property which returns a list of NAXISj keyword values.
+
+  warnings.warn(NAXIS_DEPRECATE_MESSAGE, AstropyDeprecationWarning)
+
+[WARNING ] /Users/bcook/anaconda/envs/py36/lib/python3.6/site-packages/astropy/wcs/wcs.py:2696: AstropyDeprecationWarning: 
+Private attributes "_naxis1" and "_naxis2" have been deprecated since v3.1.
+Instead use the "pixel_shape" property which returns a list of NAXISj keyword values.
+
+  warnings.warn(NAXIS_DEPRECATE_MESSAGE, AstropyDeprecationWarning)
+
+[INFO    ] Converting RA/Dec positions of reference sources from "/Users/bcook/pCMDs/pixcmd/data/M87_v2/reduced/M87_F814W_drc.fits" to X,Y positions in reference WCS...
+[INFO    ] 
+[INFO    ] ===============================================================
+[INFO    ] Performing alignment in the projection plane defined by the WCS
+[INFO    ] derived from '/Users/bcook/pCMDs/pixcmd/data/M87_v2/reduced/M87_F814W_drc.fits'
+[INFO    ] ===============================================================
+[INFO    ] 
+[INFO    ] USER INPUT PARAMETERS for matching sources:
+[INFO    ] 	minobj :	15
+[INFO    ] 	residplot :	both
+[INFO    ] 	searchrad :	1.0
+[INFO    ] 	searchunits :	arcseconds
+[INFO    ] 	see2dplot :	True
+[INFO    ] 	separation :	0.5
+[INFO    ] 	tolerance :	1.0
+[INFO    ] 	use2dhist :	True
+[INFO    ] 	xoffset :	0.0
+[INFO    ] 	yoffset :	0.0
+[INFO    ] 
+[INFO    ] USER INPUT PARAMETERS for fitting source lists:
+[INFO    ] 	fitgeometry :	rscale
+[INFO    ] 	labelsize :	8
+[INFO    ] 	minobj :	15
+[INFO    ] 	nclip :	10
+[INFO    ] 	residplot :	both
+[INFO    ] 	sigma :	3.0
+[INFO    ] 	ylimit :	None
+[INFO    ] 
+[INFO    ] ====================
+[INFO    ] Performing fit for: /Users/bcook/pCMDs/pixcmd/data/M87_v2/reduced/M87_F475W_drc.fits
+[INFO    ] 
+[INFO    ] Matching sources from '/Users/bcook/pCMDs/pixcmd/data/M87_v2/reduced/M87_F475W_drc.fits' with sources from reference image '/Users/bcook/pCMDs/pixcmd/data/M87_v2/reduced/M87_F814W_drc.fits'
+[INFO    ] Computing initial guess for X and Y shifts...
+[INFO    ] Found initial X and Y shifts of  -0.48817204301203176 -0.5419354838722477
+[INFO    ]     with significance of  1023.2884675563523 and  128.0  matches
+[INFO    ] Found 462 matches for /Users/bcook/pCMDs/pixcmd/data/M87_v2/reduced/M87_F475W_drc.fits...
+[INFO    ] Performing "rscale" fit
+[INFO    ] Performing "rscale" fit
+[INFO    ] Performing "rscale" fit
+[INFO    ] Performing "rscale" fit
+[INFO    ] Performing "rscale" fit
+[INFO    ] Performing "rscale" fit
+[INFO    ] Performing "rscale" fit
+[INFO    ] Performing "rscale" fit
+[INFO    ] Performing "rscale" fit
+[INFO    ] Performing "rscale" fit
+[INFO    ] Performing "rscale" fit
+[INFO    ] Computed  rscale  fit for  /Users/bcook/pCMDs/pixcmd/data/M87_v2/reduced/M87_F475W_drc.fits : 
+[INFO    ] XSH: 0.0018  YSH: -0.0025    ROT: 359.9999293    SCALE: 1.000001
+[INFO    ] XRMS: 0.031    YRMS: 0.031
+[INFO    ] 
+[INFO    ] RMS_RA: 4.5e-07 (deg)   RMS_DEC: 4.3e-07 (deg)
+[INFO    ] 
+[INFO    ] Final solution based on  405  objects.
+[INFO    ] Total # points:  405
+[INFO    ] # of points after clipping:  405
+[INFO    ] Total # points:  405
+[INFO    ] # of points after clipping:  405
+[INFO    ] ....Updating header for /Users/bcook/pCMDs/pixcmd/data/M87_v2/reduced/M87_F475W_drc.fits...
+[INFO    ] Processing /Users/bcook/pCMDs/pixcmd/data/M87_v2/reduced/M87_F475W_drc.fits['SCI',1]
+[INFO    ] Updating header for /Users/bcook/pCMDs/pixcmd/data/M87_v2/reduced/M87_F475W_drc.fits[1]
+[INFO    ] Trailer file written to:  tweakreg.log
