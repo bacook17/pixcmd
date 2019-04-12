@@ -1,0 +1,10 @@
+Using pcmdpy version 0.9.0
+Loading Setup File: setup_files/NGC4993/NGC4993_model4c.py
+Other error when importing
+cuInit failed: no CUDA-capable device is detected
+Check stderr for full traceback
+mprof: Sampling memory every 10.0s
+               JobID    JobName   NTasks  AllocCPUS    AllocGRES  Partition    Elapsed     MaxRSS  MaxVMSize  MaxDiskRead MaxDiskWrite      State 
+-------------------- ---------- -------- ---------- ------------ ---------- ---------- ---------- ---------- ------------ ------------ ---------- 
+           6642255_4 NGC4993_r+                   2        gpu:1    fas_gpu   00:00:47                                                    RUNNING 
+    6642255_4.extern     extern        1          2        gpu:1              00:00:47                                                    RUNNING 

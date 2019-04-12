@@ -1,0 +1,21 @@
+Using pcmdpy version 0.9.0
+Loading Setup File: setup_files/NGC4993/NGC4993_model5c.py
+Other error when importing
+cuInit failed: no CUDA-capable device is detected
+Check stderr for full traceback
+mprof: Sampling memory every 10.0s
+               JobID    JobName   NTasks  AllocCPUS    AllocGRES  Partition    Elapsed     MaxRSS  MaxVMSize  MaxDiskRead MaxDiskWrite      State 
+-------------------- ---------- -------- ---------- ------------ ---------- ---------- ---------- ---------- ------------ ------------ ---------- 
+           6642255_5 NGC4993_r+                   2        gpu:1    fas_gpu   00:00:32                                                    RUNNING 
+    6642255_5.extern     extern        1          2        gpu:1              00:00:32                                                    RUNNING 
+           6642255_1 NGC4993_r+                   1        gpu:1    fas_gpu   00:41:40                                                    RUNNING 
+    6642255_1.extern     extern        1          1        gpu:1              00:41:40                                                    RUNNING 
+           6642255_2 NGC4993_r+                   2        gpu:1    fas_gpu   00:01:15                                                  COMPLETED 
+     6642255_2.batch      batch        1          2        gpu:1              00:01:15    154776K   1163460K       32.59M        0.15M  COMPLETED 
+    6642255_2.extern     extern        1          2        gpu:1              00:01:39      1056K    156600K        0.00M            0  COMPLETED 
+           6642255_3 NGC4993_r+                   2        gpu:1    fas_gpu   00:00:55                                                  COMPLETED 
+     6642255_3.batch      batch        1          2        gpu:1              00:00:55    165188K   1424512K       33.71M        0.15M  COMPLETED 
+    6642255_3.extern     extern        1          2        gpu:1              00:00:56      1064K    156600K        0.00M            0  COMPLETED 
+           6642255_4 NGC4993_r+                   2        gpu:1    fas_gpu   00:00:48                                                  COMPLETED 
+     6642255_4.batch      batch        1          2        gpu:1              00:00:48    162544K   1211464K       34.89M        0.15M  COMPLETED 
+    6642255_4.extern     extern        1          2        gpu:1              00:00:54      1064K    156600K        0.00M            0  COMPLETED 
