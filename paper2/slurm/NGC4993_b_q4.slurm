@@ -1,6 +1,6 @@
 #!/bin/bash
 #SBATCH -p fas_gpu,holyseasgpu,gpu
-#SBATCH -J NGC4993_r73
+#SBATCH -J NGC4993_r142
 #SBATCH -n 1 # Number of cores requested
 #SBATCH -N 1 #ensure that all cores are on one machine
 #SBATCH --gres=gpu:1 #Number of GPUs requested

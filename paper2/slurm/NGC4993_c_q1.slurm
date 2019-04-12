@@ -1,6 +1,6 @@
 #!/bin/bash
 #SBATCH -p fas_gpu,holyseasgpu,gpu
-#SBATCH -J NGC4993_r46
+#SBATCH -J NGC4993_r83
 #SBATCH -n 1 # Number of cores requested
 #SBATCH -N 1 #ensure that all cores are on one machine
 #SBATCH --gres=gpu:1 #Number of GPUs requested
@@ -15,7 +15,7 @@ MPROF_FILE="logs/${SLURM_JOB_NAME}_m${SLURM_ARRAY_TASK_ID}.mem"
 command rm $MPROF_FILE
 
 CONFIG_FILE="setup_files/NGC4993/NGC4993_model${SLURM_ARRAY_TASK_ID}c.py"
-DATA_FILE="../data/NGC4993/pcmds/NGC4993_z_gz_46.pcmd"
+DATA_FILE="../data/NGC4993/pcmds/NGC4993_z_gz_83.pcmd"
 RESULTS_FILE="results/${SLURM_JOB_NAME}_m${SLURM_ARRAY_TASK_ID}.csv"
 
 COMMAND="pcmd_integrate --config ${CONFIG_FILE} --data ${DATA_FILE} --results ${RESULTS_FILE}"
