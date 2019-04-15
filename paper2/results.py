@@ -15,7 +15,7 @@ pcmds = {}
 data = {}
 results_dir = expanduser('~/pCMDs/pixcmd/paper2/results/')
 data_dir = expanduser('~/pCMDs/pixcmd/data/')
-df_radii = pd.read_csv(results_dir + 'regions_radii.csv')
+df_radii = pd.read_csv(results_dir + 'regions_radii.csv', index_col=0)
 radii_am = {}
 radii_kpc = {}
 regions = {}
@@ -137,7 +137,7 @@ print('NGC4993')
 for m in range(1, 6):
     add_set('NGC4993', m, 203, f'NGC4993_a1_m{m}')
     add_set('NGC4993', m, 143, f'NGC4993_b1_m{m}')
-    # add_set('NGC4993', m, 83, f'NGC4993_c1_m{m}')
+    add_set('NGC4993', m, 83, f'NGC4993_c1_m{m}')
     
 print('M31')
 m31_regions = {
