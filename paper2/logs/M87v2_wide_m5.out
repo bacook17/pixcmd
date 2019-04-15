@@ -1,0 +1,19 @@
+Using pcmdpy version 0.9.0
+Loading Setup File: setup_files/M87_v2/M87_model5b.py
+mprof: Sampling memory every 10.0s
+               JobID    JobName   NTasks  AllocCPUS    AllocGRES  Partition    Elapsed     MaxRSS  MaxVMSize  MaxDiskRead MaxDiskWrite      State 
+-------------------- ---------- -------- ---------- ------------ ---------- ---------- ---------- ---------- ------------ ------------ ---------- 
+           6652957_5 M87v2_wide                   1        gpu:1    fas_gpu   00:01:12                                                    RUNNING 
+    6652957_5.extern     extern        1          1        gpu:1              00:01:12                                                    RUNNING 
+           6652957_1 M87v2_wide                   1        gpu:1    fas_gpu   00:01:20                                                  COMPLETED 
+     6652957_1.batch      batch        1          1        gpu:1              00:01:20    458940K 156992672K      532.62M        1.14M  COMPLETED 
+    6652957_1.extern     extern        1          1        gpu:1              00:01:38       852K    156600K        0.00M            0  COMPLETED 
+           6652957_2 M87v2_wide                   1        gpu:1    fas_gpu   00:01:12                                                  COMPLETED 
+     6652957_2.batch      batch        1          1        gpu:1              00:01:12    162572K   1205344K       34.26M        0.13M  COMPLETED 
+    6652957_2.extern     extern        1          1        gpu:1              00:01:13       852K    156600K        0.00M            0  COMPLETED 
+           6652957_3 M87v2_wide                   1        gpu:1    fas_gpu   00:01:02                                                  COMPLETED 
+     6652957_3.batch      batch        1          1        gpu:1              00:01:02    158972K   1199324K       33.68M        0.13M  COMPLETED 
+    6652957_3.extern     extern        1          1        gpu:1              00:01:08       856K    156600K        0.00M            0  COMPLETED 
+           6652957_4 M87v2_wide                   1        gpu:1    fas_gpu   00:01:13                                                  COMPLETED 
+     6652957_4.batch      batch        1          1        gpu:1              00:01:13    704268K 157238984K      715.94M        1.14M  COMPLETED 
+    6652957_4.extern     extern        1          1        gpu:1              00:01:13       844K    156600K        0.00M            0  COMPLETED 
