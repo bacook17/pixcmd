@@ -13,6 +13,17 @@ filters['DF2'] = ppy.instrument.default_df2_filters()
 filters['M31'] = ppy.instrument.m31_winter_filters()
 filters['M51'] = ppy.instrument.default_m51_filters()
 
+sky = {
+    'M87': [292.8, 377.1],
+    'M87v2': [292.8, 43.4],
+    'M49': [56.9, 50.1],
+    'M31': [178.1, 103.5],
+    'M51': [72.9, 40.5],
+    'NGC3377': [126.9, 76.5],
+    'NGC4993': [62.0, 175.3],
+    'DF2': [163.7, 207.1]
+}
+
 print('Loading Isochrone Models')
 iso_models = {
     'M87': ppy.isochrones.Isochrone_Model(filters['M87']),  # 814, 606
