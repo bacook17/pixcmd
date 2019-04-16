@@ -1,12 +1,12 @@
-# NGC3377 Model 5 (SSP, Free, Single)
+# NGC3377 Model 7 (NonParam, Fixed, Single)
 # Ben Cook (bcook@cfa.harvard.edu)
 
 ###############################################
-# CONFIG FILE for NGC3377 Model 1
+# CONFIG FILE for NGC3377 Model 7
 # MODEL Galaxy:
 #    Single FeH
 #    Single Dust
-#    SSP SFH
+#    NonParam SFH
 #    Distance Free
 
 import pcmdpy_gpu as ppy
@@ -64,7 +64,7 @@ sampler_params['pool'] = pool
 params['dynamic'] = DYNAMIC = False
 
 # The number of dynesty live points
-_nlive = 500
+_nlive = 400
 if DYNAMIC:
     run_params['nlive_init'] = _nlive
 else:
@@ -95,7 +95,7 @@ sampler_params['first_update'] = {'min_eff': 30.}
 # DYNESTY RUN_NESTED SETTINGS
 
 # The number of max calls for dynesty
-run_params['maxcall'] = 500000
+run_params['maxcall'] = 600000
 
 # The error tolerance for dynesty stopping criterion
 _dlogz = 0.5
@@ -151,14 +151,14 @@ dustmodel = ppy.dustmodels.SingleDust()  # single dust screen
 # dustmodel = ppy.dustmodels.FixedWidthLogNormDust(0.3)  # fixed width lognorm
 
 # Age model
-# sfhmodel = ppy.sfhmodels.NonParam()  # Fully non-parametric model
+sfhmodel = ppy.sfhmodels.NonParam()  # Fully non-parametric model
 # sfhmodel = ppy.sfhmodels.ConstantSFR()  # constant Star Formation Rate
 # sfhmodel = ppy.sfhmodels.TauModel()  # exponential SFR decline
 # sfhmodel = ppy.sfhmodels.RisingTau()  # Linear x exponential decline
-sfhmodel = ppy.sfhmodels.SSPModel()  # single age SSP
+# sfhmodel = ppy.sfhmodels.SSPModel()  # single age SSP
 
 # Distance model
-# distancemodel = ppy.distancemodels.FixedDistance(30.21)  # fixed dmod=30.21 (11.144 Mpc)
+# distancemodel = ppy.distancemodels.FixedDistance(24.42)  # fixed dmod=24.42 (766 kpc)
 distancemodel = ppy.distancemodels.VariableDistance()  # dmod floats
 params['gal_model'] = ppy.galaxy.CustomGalaxy(metalmodel, dustmodel, sfhmodel,
                                               distancemodel)
@@ -200,20 +200,32 @@ params['gain'] = 2.0
 
 # The bounds on the flat prior for each parameter
 z_bound = [-1.0, 0.5]  # metallicity
-dust_med_bound = [-2.0, -1.0]  # log dust median
+dust_med_bound = [-2.0, -.5]  # log dust median
 # Only set the distance bounds if allowed to float
 # dmod_bound = None
-dmod_bound = [[29., 31.]]
+dmod_bound = [[28., 32.]]
 
 # Compute the 7-param SFH bound using tau models to bound
-Npix_bound = [2.5, 5.5]
-age_bound = [9.5, 10.2]
+# Npix_bound = [2., 5.]
+# tau_bound = [0.1, 5.]
+logNpix = 4.0
+dN = 2.0
+tau = 3.0
+model = ppy.sfhmodels.TauModel(iso_step=-1)
+model.set_params([logNpix - dN, tau])
+lower_sfh = np.log10(model.SFH)
+
+model.set_params([logNpix + dN, tau])
+upper_sfh = np.log10(model.SFH)
+
+SFH_bounds_arr = np.array([lower_sfh, upper_sfh]).T
+SFH_bounds = list(list(bound) for bound in SFH_bounds_arr)
 
 # Create a Prior object with given bounds
 prior_bounds = {}
 prior_bounds['feh_bounds'] = [z_bound]
 prior_bounds['dust_bounds'] = [dust_med_bound]
-prior_bounds['age_bounds'] = [Npix_bound, age_bound]
+prior_bounds['age_bounds'] = SFH_bounds
 prior_bounds['dmod_bounds'] = dmod_bound
 
 params['prior'] = params['gal_model'].get_flat_prior(**prior_bounds)

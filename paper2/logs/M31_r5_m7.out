@@ -1,0 +1,22 @@
+Using pcmdpy version 0.9.0
+Loading Setup File: setup_files/M31/M31_model7.py
+Other error when importing
+[Errno 2] No such file or directory: 'setup_files/M31/M31_model7.py'
+Check stderr for full traceback
+mprof: Sampling memory every 10.0s
+               JobID    JobName   NTasks  AllocCPUS    AllocGRES  Partition    Elapsed     MaxRSS  MaxVMSize  MaxDiskRead MaxDiskWrite      State 
+-------------------- ---------- -------- ---------- ------------ ---------- ---------- ---------- ---------- ------------ ------------ ---------- 
+           7042831_5        M31                   2        gpu:1 holyseasg+   00:00:53                                                    RUNNING 
+    7042831_5.extern     extern        1          2        gpu:1              00:00:53                                                    RUNNING 
+           7042831_1        M31                   2        gpu:1 holyseasg+   00:00:37                                                  COMPLETED 
+     7042831_1.batch      batch        1          2        gpu:1              00:00:37      1364K    178340K            0            0  COMPLETED 
+    7042831_1.extern     extern        1          2        gpu:1              00:00:37      1104K    156560K            0            0  COMPLETED 
+           7042831_2        M31                   2        gpu:1 holyseasg+   00:00:54                                                  COMPLETED 
+     7042831_2.batch      batch        1          2        gpu:1              00:00:54    158788K   1199296K       33.69M        0.15M  COMPLETED 
+    7042831_2.extern     extern        1          2        gpu:1              00:00:55      1100K    156560K        0.00M            0  COMPLETED 
+           7042831_3        M31                   2        gpu:1 holyseasg+   00:00:54                                                  COMPLETED 
+     7042831_3.batch      batch        1          2        gpu:1              00:00:54    163216K   1424348K       33.73M        0.15M  COMPLETED 
+    7042831_3.extern     extern        1          2        gpu:1              00:00:55      1100K    156560K        0.00M            0  COMPLETED 
+           7042831_4        M31                   2        gpu:1        gpu   00:00:54                                                  COMPLETED 
+     7042831_4.batch      batch        1          2        gpu:1              00:00:54    162692K   1211596K       34.94M        0.13M  COMPLETED 
+    7042831_4.extern     extern        1          2        gpu:1              00:00:54      1052K    156560K        0.00M            0  COMPLETED 
