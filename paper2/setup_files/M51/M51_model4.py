@@ -193,6 +193,8 @@ params['shot_noise'] = True
 
 params['dither'] = False
 
+params['gain'] = 2.0
+
 ###############################################
 # PRIOR SETTINGS
 
