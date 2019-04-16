@@ -1,4 +1,4 @@
-#!/Bin/bash
+#!/bin/bash
 #SBATCH -p fas_gpu,holyseasgpu,gpu
 #SBATCH -J M87_r42
 #SBATCH -n 1 # Number of cores requested
