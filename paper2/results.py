@@ -62,17 +62,18 @@ base_models[5] = ppy.galaxy.CustomGalaxy(
     ppy.sfhmodels.SSPModel(),
     ppy.distancemodels.VariableDistance()
 )
+base_models[6] = base_models[1].copy()
 
 
 def add_set(galaxy, mnum, region, key,
-            colors='z_gz'):
+            colors='z_gz', model=None):
     g_orig = galaxy.replace('v2', '')
     data_file = data_dir + f'{galaxy.lower()}/pcmds/{g_orig}_{colors}_{region}.pcmd'
     res_file = results_dir + f'{galaxy}_r{region}_m{mnum}.csv'
     live_file = res_file.replace('.csv', '_live.csv')
     pcmd_file = res_file.replace('.csv', '.pcmd')
     regions[key] = region
-    models[key] = base_models[mnum].copy()
+    models[key] = model or base_models[mnum].copy()
     results[key] = ppy.results.ResultsPlotter(
         res_file, live_file=live_file, dmod_true=dmods[galaxy],
         gal_model=models[key], model_is_truth=False)
@@ -114,30 +115,59 @@ for m in range(1, 6):
     add_set('M87', m, 204, f'M87_a1_m{m}', colors='I_VI')
     add_set('M87', m, 128, f'M87_b1_m{m}', colors='I_VI')
     add_set('M87', m, 44, f'M87_c1_m{m}', colors='I_VI')
+for i, r in enumerate([204, 201, 202, 203]):
+    add_set('M87', 6, r, f'M87_a1_m6', colors='I_VI')
+for i, r in enumerate([128, 125, 126, 127]):
+    add_set('M87', 6, r, f'M87_b1_m6', colors='I_VI')
+for i, r in enumerate([44, 41, 42, 43]):
+    add_set('M87', 6, r, f'M87_c1_m6', colors='I_VI')
 
+    
 print('M87v2')
 for m in range(1, 6):
     add_set('M87v2', m, 204, f'M87v2_a1_m{m}', colors='I_gI')
     add_set('M87v2', m, 128, f'M87v2_b1_m{m}', colors='I_gI')
     add_set('M87v2', m, 44, f'M87v2_c1_m{m}', colors='I_gI')
+for i, r in enumerate([204, 201, 202, 203]):
+    add_set('M87v2', 6, r, f'M87v2_a1_m6', colors='I_gI')
+for i, r in enumerate([128, 125, 126, 127]):
+    add_set('M87v2', 6, r, f'M87v2_b1_m6', colors='I_gI')
+for i, r in enumerate([44, 41, 42, 43]):
+    add_set('M87v2', 6, r, f'M87v2_c1_m6', colors='I_gI')
 
 print('M49')
 for m in range(1, 6):
     add_set('M49', m, 204, f'M49_a1_m{m}')
     add_set('M49', m, 124, f'M49_b1_m{m}')
     add_set('M49', m, 40, f'M49_c1_m{m}')
+for i, r in enumerate([204, 201, 202, 203]):
+    add_set('M49', 6, r, f'M49_a1_m6')
+for i, r in enumerate([124, 121, 122, 123]):
+    add_set('M49', 6, r, f'M49_b1_m6')
+for i, r in enumerate([40, 37, 38, 39]):
+    add_set('M49', 6, r, f'M49_c1_m6')
     
 print('NGC3377')
 for m in range(1, 6):
     add_set('NGC3377', m, 173, f'NGC3377_a1_m{m}')
     add_set('NGC3377', m, 97, f'NGC3377_b1_m{m}')
     add_set('NGC3377', m, 41, f'NGC3377_c1_m{m}')
+for i, r in enumerate([173, 174, 175, 176]):
+    add_set('NGC3377', 6, r, f'NGC3377_a1_m6')
+for i, r in enumerate([97, 98, 99, 100]):
+    add_set('NGC3377', 6, r, f'NGC3377_b1_m6')
+for i, r in enumerate([41, 42, 43, 44]):
+    add_set('NGC3377', 6, r, f'NGC3377_c1_m6')
 
 print('NGC4993')
 for m in range(1, 6):
     add_set('NGC4993', m, 203, f'NGC4993_a1_m{m}')
     add_set('NGC4993', m, 143, f'NGC4993_b1_m{m}')
     add_set('NGC4993', m, 83, f'NGC4993_c1_m{m}')
+for m in [6]:
+    add_set('NGC4993', m, 203, f'NGC4993_a1_m{m}', model=base_models[5])
+    add_set('NGC4993', m, 143, f'NGC4993_b1_m{m}', model=base_models[5])
+    add_set('NGC4993', m, 83, f'NGC4993_c1_m{m}', model=base_models[5])
     
 print('M31')
 m31_regions = {
@@ -154,7 +184,7 @@ m31_rpix = {
     'd': 1350,
     'e': 700
 }
-for m in range(1, 6):
+for m in range(1, 7):
     for i, r in enumerate(['a', 'b', 'c', 'd', 'e']):
         k = f'M31_{r}_m{m}'
         add_set_v2('M31', m, r, f'M31_{r}_m{m}', 'm31_'+m31_regions[r])
