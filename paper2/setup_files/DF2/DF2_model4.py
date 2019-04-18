@@ -165,7 +165,7 @@ sfhmodel.update_edges(np.arange(9.0, 10.3, 0.1))
 # distancemodel = ppy.distancemodels.FixedDistance(31.505)  # fixed dmod=31.505
 distancemodel = ppy.distancemodels.VariableDistance()  # dmod floats
 
-imf = 'kroupa'
+# imf = 'kroupa'
 params['gal_model'] = ppy.galaxy.CustomGalaxy(metalmodel, dustmodel, sfhmodel,
                                               distancemodel, imf=imf)
 

@@ -126,8 +126,6 @@ params['Nim'] = 512
 # The filters (photometry bands) to model. There should be at least 2 filters.
 # Default choice: F814W and F475W
 params['filters'] = ppy.instrument.default_df2_filters()
-for f in params['filters']:
-    f._exposure *= 0.95
 
 # Alternative choice: F814W, F555W, and F435W
 # params['filters'] = ppy.instrument.default_m51_filters()
