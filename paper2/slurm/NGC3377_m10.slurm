@@ -6,19 +6,6 @@
 #SBATCH --gres=gpu:1 #Number of GPUs requested
 #SBATCH -t 7-00:00 #runtime in D-HH:MM
 #SBATCH --mem-per-cpu 4000 #memory pool for cores
-<<<<<<< HEAD
-#SBATCH -o logs/%x_r%a_m7.out
-#SBATCH -e logs/%x_r%a_m7.err
-#SBATCH --mail-type=BEGIN,END,FAIL #alert when done
-#SBATCH --mail-user=bcook@cfa.harvard.edu #Email to send to
-
-MPROF_FILE="logs/${SLURM_JOB_NAME}_r${SLURM_ARRAY_TASK_ID}_m7.mem"
-command rm $MPROF_FILE
-
-CONFIG_FILE="setup_files/NGC3377/NGC3377_model7.py"
-DATA_FILE="../data/NGC3377/pcmds/NGC3377_z_gz_${SLURM_ARRAY_TASK_ID}.pcmd"
-RESULTS_FILE="results/${SLURM_JOB_NAME}_r${SLURM_ARRAY_TASK_ID}_m7.csv"
-=======
 #SBATCH -o logs/%x_r%a_m10.out
 #SBATCH -e logs/%x_r%a_m10.err
 #SBATCH --mail-type=BEGIN,END,FAIL #alert when done
@@ -30,7 +17,6 @@ command rm $MPROF_FILE
 CONFIG_FILE="setup_files/NGC3377/NGC3377_model10.py"
 DATA_FILE="../data/NGC3377/pcmds/NGC3377_z_gz_${SLURM_ARRAY_TASK_ID}.pcmd"
 RESULTS_FILE="results/${SLURM_JOB_NAME}_r${SLURM_ARRAY_TASK_ID}_m10.csv"
->>>>>>> f2a3f587a6742361d87cc7cab96cc5ed7f951088
 
 COMMAND="pcmd_integrate --config ${CONFIG_FILE} --data ${DATA_FILE} --results ${RESULTS_FILE}"
 
