@@ -1,7 +1,7 @@
 #!/bin/bash
 
 echo 'M87'
-sbatch --array=[204,128,44] slurm/M87_m7.slurm
+sbatch --array=[204,128,44] slurm/M87_m8.slurm
 
 sleep 1
 

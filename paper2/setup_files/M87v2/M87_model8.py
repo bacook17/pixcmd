@@ -198,8 +198,8 @@ params['dark_per_sec'] = 0.0127
 # PRIOR SETTINGS
 
 # The bounds on the flat prior for each parameter
-z_bound = [-1.0, 0.25]  # metallicity
-dust_med_bound = [-2.0, -1.0]  # log dust median
+z_bound = [-1.0, 0.5]  # metallicity
+dust_med_bound = [-2.0, -.5]  # log dust median
 # Only set the distance bounds if allowed to float
 # dmod_bound = None
 dmod_bound = [[30., 32.]]
