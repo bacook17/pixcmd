@@ -192,7 +192,8 @@ params['sky_noise'] = [62.0, 175.3]
 params['shot_noise'] = True
 
 params['dither'] = False
-params['gain'] = 2.0
+params['gain'] = 1.0
+params['dark_per_sec'] = 0.0127
 
 ###############################################
 # PRIOR SETTINGS

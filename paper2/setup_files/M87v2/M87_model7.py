@@ -193,6 +193,10 @@ params['shot_noise'] = True
 
 params['dither'] = False
 
+params['dark_per_sec'] = 0.0127
+
+params['dark_per_sec'] = 0.0127
+
 ###############################################
 # PRIOR SETTINGS
 
