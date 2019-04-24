@@ -7,7 +7,7 @@ except:
     import pcmdpy as ppy
 import numpy as np
 import pandas as pd
-from os.path import expanduser
+from os.path import expanduser, isfile
 
 models = {}
 results = {}
@@ -23,12 +23,32 @@ regions = {}
 dmods = {
     'NGC3377': 30.18,
     'NGC4993': 33.05,
-    'M87': 31.02,
-    'M87v2': 31.02,
-    'M49': 31.0,
+    'M87': 30.9,
+    'M87v2': 30.9,
+    'M49': 31.12,
     'DF2': 31.505,
-    'M31': 24.42,
+    'M31': 24.44,
+    'M31d': 24.44,
     'M51': 29.67
+}
+m51_rpix = {
+    'a': 1745,
+    'b': 2776,
+    'c': 2471,
+    'd': 2709,
+    'e': 678
+}
+m31_rpix = {
+    'e': 6250,
+    'd': 3550,
+    'c': 2050,
+    'b': 1350,
+    'a': 700
+}
+m31d_rpix = {
+    'a': 21397,
+    'b': 23423,
+    'c': 25217
 }
 
 base_models = {}
@@ -63,27 +83,52 @@ base_models[5] = ppy.galaxy.CustomGalaxy(
     ppy.distancemodels.VariableDistance()
 )
 base_models[6] = base_models[1].copy()
-base_models[7] = base_models[5].copy()
+base_models[7] = base_models[1].copy()
+base_models[8] = base_models[5].copy()
+base_models[9] = base_models[1].copy()
+base_models[10] = base_models[2].copy()
+base_models[11] = ppy.galaxy.CustomGalaxy(
+    ppy.metalmodels.ClosedBoxMDF(),
+    ppy.dustmodels.SingleDust(),
+    ppy.sfhmodels.NonParam(),
+    ppy.distancemodels.VariableDistance()
+)
+base_models[12] = base_models[4].copy()
 
 
 def add_set(galaxy, mnum, region, key,
-            colors='z_gz', model=None):
-    g_orig = galaxy.replace('v2', '')
-    data_file = data_dir + f'{galaxy.lower()}/pcmds/{g_orig}_{colors}_{region}.pcmd'
+            colors='z_gz', model=None,
+            dataname=None):
+    g_orig = galaxy.replace('v2', '').replace('M31d', 'M31')
+    g_dir = galaxy.replace('d','').lower()
+    if dataname is not None:
+        data_file = data_dir + f'{g_dir}/pcmds/{dataname}.pcmd'
+    else:
+        data_file = data_dir + f'{g_dir}/pcmds/{g_orig}_{colors}_{region}.pcmd'
     res_file = results_dir + f'{galaxy}_r{region}_m{mnum}.csv'
     live_file = res_file.replace('.csv', '_live.csv')
     pcmd_file = res_file.replace('.csv', '.pcmd')
+    if not isfile(res_file):
+        print(f'Skipping {key}')
+        return
     regions[key] = region
     models[key] = model or base_models[mnum].copy()
-    results[key] = ppy.results.ResultsPlotter(
-        res_file, live_file=live_file, dmod_true=dmods[galaxy],
-        gal_model=models[key], model_is_truth=False)
-    if key.replace(f'_m{mnum}', '_m1') in data:
-        data[key] = data[key.replace(f'_m{mnum}', '_m1')]
+    try:
+        results[key] = ppy.results.ResultsPlotter(
+            res_file, live_file=live_file, dmod_true=dmods[galaxy],
+            gal_model=models[key], model_is_truth=False)
+    except Exception as e:
+        print('Error loading ', key)
+        print(e)
+        return
+    ks = [d for d in data.keys() if key.replace(f'_m{mnum}', '') in d]
+    if len(ks) > 0:
+        data[key] = data[ks[0]]
     elif key not in data:
         data[key] = np.loadtxt(data_file, unpack=True)
-    radii_am[key] = df_radii[g_orig][region] * 0.05 / 60.
-    radii_kpc[key] = radii_am[key] * (np.pi/(180.*60.)) * 1e3 * ppy.distancemodels.dmod_to_mpc(dmods[galaxy])
+    if g_orig in df_radii:
+        radii_am[key] = df_radii[g_orig][region] * 0.05 / 60.
+        radii_kpc[key] = radii_am[key] * (np.pi/(180.*60.)) * 1e3 * ppy.distancemodels.dmod_to_mpc(dmods[galaxy])
     try:
         pcmds[key] = np.loadtxt(pcmd_file, unpack=True)
     except:
@@ -97,11 +142,17 @@ def add_set_v2(galaxy, mnum, region, key, data_name, model=None):
     pcmd_file = res_file.replace('.csv', '.pcmd')
     regions[key] = region
     models[key] = model or base_models[mnum].copy()
-    results[key] = ppy.results.ResultsPlotter(
-        res_file, live_file=live_file, dmod_true=dmods[galaxy],
-        gal_model=models[key], model_is_truth=False)
-    if key.replace(f'_m{mnum}', '_m1') in data:
-        data[key] = data[key.replace(f'_m{mnum}', '_m1')]
+    try:
+        results[key] = ppy.results.ResultsPlotter(
+            res_file, live_file=live_file, dmod_true=dmods[galaxy],
+            gal_model=models[key], model_is_truth=False)
+    except Exception as e:
+        print('Error loading ', key)
+        print(e)
+        return
+    ks = [d for d in data.keys() if key.replace(f'_m{mnum}', '') in d]
+    if len(ks) > 0:
+        data[key] = data[ks[0]]
     else:
         data[key] = np.loadtxt(data_file, unpack=True)
     try:
@@ -110,127 +161,78 @@ def add_set_v2(galaxy, mnum, region, key, data_name, model=None):
         pass
 
 
-def load_M87():
-    # M87
+def load_model(m, all_quads=False):
     print('M87')
-    for m in range(1, 6):
-        add_set('M87', m, 204, f'M87_a1_m{m}', colors='I_VI')
-        add_set('M87', m, 128, f'M87_b1_m{m}', colors='I_VI')
-        add_set('M87', m, 44, f'M87_c1_m{m}', colors='I_VI')
-    for i, r in enumerate([204, 201, 202, 203]):
-        add_set('M87', 6, r, f'M87_a1_m6', colors='I_VI')
-    for i, r in enumerate([128, 125, 126, 127]):
-        add_set('M87', 6, r, f'M87_b1_m6', colors='I_VI')
-    for i, r in enumerate([44, 41, 42, 43]):
-        add_set('M87', 6, r, f'M87_c1_m6', colors='I_VI')
+    for let, rs in zip(['a','b','c'], [[204,201,202,203], [128,125,126,127], [44,41,42,43]]):
+        for i, r in enumerate(rs):
+            if (i > 0) and not all_quads:
+                continue
+            add_set('M87', m, r, f'M87_{let}{i+1}_m{m}', colors='I_VI')
 
-        
-def load_M87v2():
     print('M87v2')
-    for m in range(1, 6):
-        add_set('M87v2', m, 204, f'M87v2_a1_m{m}', colors='I_gI')
-        add_set('M87v2', m, 128, f'M87v2_b1_m{m}', colors='I_gI')
-        add_set('M87v2', m, 44, f'M87v2_c1_m{m}', colors='I_gI')
-    for i, r in enumerate([204, 201, 202, 203]):
-        add_set('M87v2', 6, r, f'M87v2_a1_m6', colors='I_gI')
-    for i, r in enumerate([128, 125, 126, 127]):
-        add_set('M87v2', 6, r, f'M87v2_b1_m6', colors='I_gI')
-    for i, r in enumerate([44, 41, 42, 43]):
-        add_set('M87v2', 6, r, f'M87v2_c1_m6', colors='I_gI')
+    for let, rs in zip(['a','b','c'], [[204,201,202,203], [128,125,126,127], [44,41,42,43]]):
+        for i, r in enumerate(rs):
+            if (i > 0) and not all_quads:
+                continue
+            add_set('M87v2', m, r, f'M87v2_{let}{i+1}_m{m}', colors='I_gI')
 
-        
-def load_M49():
     print('M49')
-    for m in range(1, 6):
-        add_set('M49', m, 204, f'M49_a1_m{m}')
-        add_set('M49', m, 124, f'M49_b1_m{m}')
-        add_set('M49', m, 40, f'M49_c1_m{m}')
-    for i, r in enumerate([204, 201, 202, 203]):
-        add_set('M49', 6, r, f'M49_a1_m6')
-    for i, r in enumerate([124, 121, 122, 123]):
-        add_set('M49', 6, r, f'M49_b1_m6')
-    for i, r in enumerate([40, 37, 38, 39]):
-        add_set('M49', 6, r, f'M49_c1_m6')
+    for let, rs in zip(['a','b','c'], [[204,201,202,203], [124,121,122,123], [40,37,38,39]]):
+        for i, r in enumerate(rs):
+            if (i > 0) and not all_quads:
+                continue
+            add_set('M49', m, r, f'M49_{let}{i+1}_m{m}')
 
-        
-def load_NGC3377():
     print('NGC3377')
-    for m in range(1, 6):
-        add_set('NGC3377', m, 173, f'NGC3377_a1_m{m}')
-        add_set('NGC3377', m, 97, f'NGC3377_b1_m{m}')
-        add_set('NGC3377', m, 41, f'NGC3377_c1_m{m}')
-    for i, r in enumerate([173, 174, 175, 176]):
-        add_set('NGC3377', 6, r, f'NGC3377_a1_m6')
-    for i, r in enumerate([97, 98, 99, 100]):
-        add_set('NGC3377', 6, r, f'NGC3377_b1_m6')
-    for i, r in enumerate([41, 42, 43, 44]):
-        add_set('NGC3377', 6, r, f'NGC3377_c1_m6')
-    for m in range(7, 8):
-        add_set('NGC3377', m, 173, f'NGC3377_a1_m{m}')
-        add_set('NGC3377', m, 97, f'NGC3377_b1_m{m}')
-        add_set('NGC3377', m, 41, f'NGC3377_c1_m{m}')
+    for let, rs in zip(['a','b','c'], [[173,174,175,176], [97,98,99,100], [41,42,43,44]]):
+        for i, r in enumerate(rs):
+            if (i > 0) and not all_quads:
+                continue
+            if r == 175:
+                continue
+            add_set('NGC3377', m, r, f'NGC3377_{let}{i+1}_m{m}')
 
-        
-def load_NGC4993():
     print('NGC4993')
-    for m in range(1, 6):
-        add_set('NGC4993', m, 203, f'NGC4993_a1_m{m}')
-        add_set('NGC4993', m, 143, f'NGC4993_b1_m{m}')
-        add_set('NGC4993', m, 83, f'NGC4993_c1_m{m}')
-    for m in [6]:
-        add_set('NGC4993', m, 203, f'NGC4993_a1_m{m}', model=base_models[5])
-        add_set('NGC4993', m, 143, f'NGC4993_b1_m{m}', model=base_models[5])
-        add_set('NGC4993', m, 83, f'NGC4993_c1_m{m}', model=base_models[5])
+    for let, rs in zip(['a','b','c'], [[203,204,201,202], [143,144,141,142], [83,84,81,82]]):
+        for i, r in enumerate(rs):
+            if (i > 0) and not all_quads:
+                continue
+            if r == 201:
+                continue
+            model = (base_models[5].copy() if m==6 else None)
+            add_set('NGC4993', m, r, f'NGC4993_{let}{i+1}_m{m}', model=model)
 
-        
-def load_M31():
-    print('M31')
-    m31_regions = {
-        'a': 'summer_r1',
-        'b': 'winter_r9',
-        'c': 'winter_r1',
-        'd': 'winter_r2',
-        'e': 'winter_r10'
-    }
-    m31_rpix = {
-        'a': 6250,
-        'b': 3550,
-        'c': 2050,
-        'd': 1350,
-        'e': 700
-    }
-    for m in range(1, 7):
-        for i, r in enumerate(['a', 'b', 'c', 'd', 'e']):
-            k = f'M31_{r}_m{m}'
-            add_set_v2('M31', m, r, f'M31_{r}_m{m}', 'm31_'+m31_regions[r])
-            radii_am[k] = m31_rpix[r] * 0.05 / 60.
-            radii_kpc[k] = radii_am[k] * (np.pi/(180.*60.)) * 1e3 * ppy.distancemodels.dmod_to_mpc(dmods['M31'])
+    print('M31 Bulge')
+    for i, let in enumerate(['e','d','c','b','a']):
+        k = f'M31_{let}_m{m}'
+        add_set('M31', m, i+1, k,
+                dataname=f'm31_bulge_r{i+1}')
+        radii_am[k] = m31_rpix[let] * 0.05/60.
+        radii_kpc[k] = radii_am[k] * (np.pi/(180.*60.)) * 1e3 * ppy.distancemodels.dmod_to_mpc(dmods['M31'])
 
-            
-def load_M51():
-    print('M51')
-    m51_rpix = {
-        'a': 1745,
-        'b': 2776,
-        'c': 2471,
-        'd': 2709,
-        'e': 678
-    }
-    for m in range(1, 4):
-        model = base_models[m].copy()
-        model.dust_model = ppy.dustmodels.FixedWidthLogNormDust(0.1)
-        for i, r in enumerate(['a', 'b', 'c', 'd', 'e']):
-            k = f'M51_{r}_m{m}'
-            add_set_v2('M51', m, r, f'M51_{r}_m{m}', f'M51_I_BI_{i+1}',
-                       model=model)
-            radii_am[k] = m51_rpix[r] * 0.05 / 60.
-            radii_kpc[k] = radii_am[k] * (np.pi/(180.*60.)) * 1e3 * ppy.distancemodels.dmod_to_mpc(dmods['M51'])
+    # if m in [7]:
+    #     print('M31 Disk')
+    #     for i, let in enumerate(['a','b','c']):
+    #         k = f'M31d_{let}_m{m}'
+    #         add_set('M31d', m, i+1, k,
+    #                 dataname=f'm31_disk_r{i+1}')
+    #         radii_am[k] = m31d_rpix[let] * 0.05/60.
+    #         radii_kpc[k] = radii_am[k] * (np.pi/(180.*60.)) * 1e3 * ppy.distancemodels.dmod_to_mpc(dmods['M31'])
 
+    # print('M51')
+    # for i, let in enumerate(['a','b','c','d','e']):
+    #     k = f'M51_{let}_m{m}'
+    #     model = base_models[m].copy()
+    #     model.dust_model = ppy.dustmodels.FixedWidthLogNormDust(0.1)
+    #     add_set('M51', m, i+1, k, colors='I_BI', model=model)
+    #     radii_am[k] = m51_rpix[let] * 0.05/60.
+    #     radii_kpc[k] = radii_am[k] * (np.pi/(180.*60.)) * 1e3 * ppy.distancemodels.dmod_to_mpc(dmods['M51'])
+    
 
-load_M87()
-load_M87v2()
-load_M49()
-load_NGC3377()
-load_NGC4993()
-load_M31()
-load_M51()
+#load_M87()
+#load_M87v2()
+#load_M49()
+#load_NGC3377()
+#load_NGC4993()
+#load_M31()
+#load_M51()
