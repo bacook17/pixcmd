@@ -197,7 +197,7 @@ params['gain'] = 1.0
 
 params['dark_per_sec'] = 0.0127
 
-params['Nnoise'] = 10
+params['Nnoise'] = 5
 
 ###############################################
 # PRIOR SETTINGS
