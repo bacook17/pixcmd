@@ -1,0 +1,282 @@
+Using pcmdpy version 0.9.3
+Loading Setup File: setup_files/mocks/mock_1.py
+Running Nested Sampling
+-initializing models
+-Saving initial results dataframe
+iter: 1 | batch: 0 | nc: 1 | ncalls: 1 | bounds: 0 | eff(%):  0.200 | logz: -3.2e+04 +/- 1.2e-01 | dlogz:    inf >  0.500
+ loglike: -3.2e+04 | params: [ 0.24586118 -0.82126023  1.04880035  3.710288   29.65875971]
+ Average call time: 1797.55 sec | Current time: 2019-06-25 15:55:05.106956
+ --------------------------
+iter: 2 | batch: 0 | nc: 1 | ncalls: 2 | bounds: 0 | eff(%):  0.398 | logz: -3.1e+04 +/- 1.2e-01 | dlogz: 32014.828 >  0.500
+ loglike: -3.1e+04 | params: [-0.43096859 -0.1122101   1.06575623  6.9250479  29.49385345]
+ Average call time: 3.84 sec | Current time: 2019-06-25 15:55:08.947559
+ --------------------------
+iter: 3 | batch: 0 | nc: 1 | ncalls: 3 | bounds: 0 | eff(%):  0.596 | logz: -3.1e+04 +/- 1.2e-01 | dlogz: 30866.852 >  0.500
+ loglike: -3.1e+04 | params: [-0.28442538 -0.19472114  1.22483051  2.29771434 29.68355696]
+ Average call time: 3.84 sec | Current time: 2019-06-25 15:55:12.784013
+ --------------------------
+iter: 4 | batch: 0 | nc: 1 | ncalls: 4 | bounds: 0 | eff(%):  0.794 | logz: -3.1e+04 +/- 1.2e-01 | dlogz: 30805.646 >  0.500
+ loglike: -3.1e+04 | params: [-0.26484338 -0.43169395  1.13426008  7.81703655 29.85294606]
+ Average call time: 3.38 sec | Current time: 2019-06-25 15:55:16.162935
+ --------------------------
+iter: 5 | batch: 0 | nc: 1 | ncalls: 5 | bounds: 0 | eff(%):  0.990 | logz: -3.0e+04 +/- 1.2e-01 | dlogz: 30661.739 >  0.500
+ loglike: -3.0e+04 | params: [-0.07910286 -0.49691683  1.0550738   6.20533031 29.41320595]
+ Average call time: 3.40 sec | Current time: 2019-06-25 15:55:19.565739
+ --------------------------
+iter: 6 | batch: 0 | nc: 1 | ncalls: 6 | bounds: 0 | eff(%):  1.186 | logz: -2.9e+04 +/- 1.2e-01 | dlogz: 30333.604 >  0.500
+ loglike: -2.9e+04 | params: [-0.22633551 -0.38460382  1.30152497  3.01370965 29.66570051]
+ Average call time: 3.41 sec | Current time: 2019-06-25 15:55:22.973089
+ --------------------------
+iter: 7 | batch: 0 | nc: 1 | ncalls: 7 | bounds: 0 | eff(%):  1.381 | logz: -2.9e+04 +/- 1.2e-01 | dlogz: 29156.837 >  0.500
+ loglike: -2.9e+04 | params: [-0.08017873 -0.16224585  1.22445426  7.1698686  29.47899753]
+ Average call time: 3.83 sec | Current time: 2019-06-25 15:55:26.803701
+ --------------------------
+iter: 8 | batch: 0 | nc: 1 | ncalls: 8 | bounds: 0 | eff(%):  1.575 | logz: -2.9e+04 +/- 1.2e-01 | dlogz: 28957.571 >  0.500
+ loglike: -2.9e+04 | params: [-0.06341687 -0.93225172  1.02380209  3.79729282 28.95113871]
+ Average call time: 3.38 sec | Current time: 2019-06-25 15:55:30.182441
+ --------------------------
+iter: 9 | batch: 0 | nc: 1 | ncalls: 9 | bounds: 0 | eff(%):  1.768 | logz: -2.8e+04 +/- 1.2e-01 | dlogz: 28881.764 >  0.500
+ loglike: -2.8e+04 | params: [-0.4875554  -0.46448546  1.18276827  1.31643699 29.21505224]
+ Average call time: 3.40 sec | Current time: 2019-06-25 15:55:33.579606
+ --------------------------
+iter: 10 | batch: 0 | nc: 1 | ncalls: 10 | bounds: 0 | eff(%):  1.961 | logz: -2.7e+04 +/- 1.2e-01 | dlogz: 28362.358 >  0.500
+ loglike: -2.7e+04 | params: [-0.14166844 -0.69331352  1.22642831  7.50099815 29.52001801]
+ Average call time: 4.01 sec | Current time: 2019-06-25 15:55:37.590221
+ --------------------------
+iter: 11 | batch: 0 | nc: 1 | ncalls: 11 | bounds: 0 | eff(%):  2.153 | logz: -2.6e+04 +/- 1.2e-01 | dlogz: 27458.233 >  0.500
+ loglike: -2.6e+04 | params: [ 0.07605915 -0.69710156  1.06070036  3.76061262 28.51668539]
+ Average call time: 3.37 sec | Current time: 2019-06-25 15:55:40.955547
+ --------------------------
+iter: 12 | batch: 0 | nc: 1 | ncalls: 12 | bounds: 0 | eff(%):  2.344 | logz: -2.6e+04 +/- 1.2e-01 | dlogz: 26496.798 >  0.500
+ loglike: -2.6e+04 | params: [-0.22276259 -0.395666    1.41241776  6.43875604 29.72776618]
+ Average call time: 3.38 sec | Current time: 2019-06-25 15:55:44.334914
+ --------------------------
+iter: 13 | batch: 0 | nc: 1 | ncalls: 13 | bounds: 0 | eff(%):  2.534 | logz: -2.6e+04 +/- 1.2e-01 | dlogz: 26140.195 >  0.500
+ loglike: -2.6e+04 | params: [-0.46806381 -0.75220273  1.18006655  5.67314685 29.17353385]
+ Average call time: 3.37 sec | Current time: 2019-06-25 15:55:47.705536
+ --------------------------
+iter: 14 | batch: 0 | nc: 1 | ncalls: 14 | bounds: 0 | eff(%):  2.724 | logz: -2.6e+04 +/- 1.2e-01 | dlogz: 25918.437 >  0.500
+ loglike: -2.6e+04 | params: [ 0.07351736 -0.64068494  1.35201913  5.86358404 29.40524964]
+ Average call time: 3.82 sec | Current time: 2019-06-25 15:55:51.523862
+ --------------------------
+iter: 15 | batch: 0 | nc: 1 | ncalls: 15 | bounds: 0 | eff(%):  2.913 | logz: -2.5e+04 +/- 1.2e-01 | dlogz: 25674.830 >  0.500
+ loglike: -2.5e+04 | params: [-0.41533151 -0.56195851  1.28429282  6.54833635 29.33057824]
+ Average call time: 3.80 sec | Current time: 2019-06-25 15:55:55.326070
+ --------------------------
+iter: 16 | batch: 0 | nc: 1 | ncalls: 16 | bounds: 0 | eff(%):  3.101 | logz: -2.4e+04 +/- 1.2e-01 | dlogz: 25162.369 >  0.500
+ loglike: -2.4e+04 | params: [-0.16730203 -0.18998554  1.41546765  1.91687944 28.95882204]
+ Average call time: 3.89 sec | Current time: 2019-06-25 15:55:59.221070
+ --------------------------
+iter: 17 | batch: 0 | nc: 1 | ncalls: 17 | bounds: 0 | eff(%):  3.288 | logz: -2.4e+04 +/- 1.2e-01 | dlogz: 23857.342 >  0.500
+ loglike: -2.4e+04 | params: [ 0.03624541 -0.27590852  1.07470576  2.35792352 27.90243168]
+ Average call time: 3.83 sec | Current time: 2019-06-25 15:56:03.054708
+ --------------------------
+iter: 18 | batch: 0 | nc: 1 | ncalls: 18 | bounds: 0 | eff(%):  3.475 | logz: -2.4e+04 +/- 1.2e-01 | dlogz: 23622.938 >  0.500
+ loglike: -2.4e+04 | params: [ 0.20827762 -0.67674123  1.38976791  7.58435935 29.28517411]
+ Average call time: 3.84 sec | Current time: 2019-06-25 15:56:06.892817
+ --------------------------
+iter: 19 | batch: 0 | nc: 1 | ncalls: 19 | bounds: 0 | eff(%):  3.661 | logz: -2.4e+04 +/- 1.2e-01 | dlogz: 23586.008 >  0.500
+ loglike: -2.4e+04 | params: [-0.48097551 -0.67618317  1.37158913  1.55539138 29.14685066]
+ Average call time: 3.82 sec | Current time: 2019-06-25 15:56:10.710888
+ --------------------------
+iter: 20 | batch: 0 | nc: 1 | ncalls: 20 | bounds: 0 | eff(%):  3.846 | logz: -2.4e+04 +/- 1.2e-01 | dlogz: 23539.491 >  0.500
+ loglike: -2.4e+04 | params: [-0.39220987 -0.54715377  1.01788429  2.58677175 28.05227343]
+ Average call time: 3.84 sec | Current time: 2019-06-25 15:56:14.551907
+ --------------------------
+iter: 21 | batch: 0 | nc: 1 | ncalls: 21 | bounds: 0 | eff(%):  4.031 | logz: -2.2e+04 +/- 1.2e-01 | dlogz: 23514.612 >  0.500
+ loglike: -2.2e+04 | params: [-0.3846408  -0.22277958  1.23585253  0.72506776 28.32119231]
+ Average call time: 3.37 sec | Current time: 2019-06-25 15:56:17.920726
+ --------------------------
+iter: 22 | batch: 0 | nc: 1 | ncalls: 22 | bounds: 0 | eff(%):  4.215 | logz: -2.2e+04 +/- 1.2e-01 | dlogz: 22291.040 >  0.500
+ loglike: -2.2e+04 | params: [ 0.06197599 -0.0672636   1.35364632  6.69133942 28.65690292]
+ Average call time: 3.86 sec | Current time: 2019-06-25 15:56:21.778057
+ --------------------------
+iter: 23 | batch: 0 | nc: 1 | ncalls: 23 | bounds: 0 | eff(%):  4.398 | logz: -2.2e+04 +/- 1.2e-01 | dlogz: 21898.849 >  0.500
+ loglike: -2.2e+04 | params: [-0.28539306 -0.34135377  1.36120164  6.59589594 29.03707144]
+ Average call time: 3.44 sec | Current time: 2019-06-25 15:56:25.221779
+ --------------------------
+iter: 24 | batch: 0 | nc: 1 | ncalls: 24 | bounds: 0 | eff(%):  4.580 | logz: -2.2e+04 +/- 1.2e-01 | dlogz: 21879.746 >  0.500
+ loglike: -2.2e+04 | params: [-0.13908444 -0.96505644  1.44358185  7.1734181  29.46050569]
+ Average call time: 3.79 sec | Current time: 2019-06-25 15:56:29.014903
+ --------------------------
+iter: 25 | batch: 0 | nc: 1 | ncalls: 25 | bounds: 0 | eff(%):  4.762 | logz: -2.1e+04 +/- 1.2e-01 | dlogz: 21591.371 >  0.500
+ loglike: -2.1e+04 | params: [-0.2099612  -0.21478596  1.40537624  3.28320918 28.71198338]
+ Average call time: 3.37 sec | Current time: 2019-06-25 15:56:32.381908
+ --------------------------
+iter: 26 | batch: 0 | nc: 1 | ncalls: 26 | bounds: 0 | eff(%):  4.943 | logz: -2.1e+04 +/- 1.2e-01 | dlogz: 20882.481 >  0.500
+ loglike: -2.1e+04 | params: [ 0.17780152 -0.86149525  1.00617505  4.94139133 27.70851465]
+ Average call time: 3.80 sec | Current time: 2019-06-25 15:56:36.183020
+ --------------------------
+iter: 27 | batch: 0 | nc: 1 | ncalls: 27 | bounds: 0 | eff(%):  5.123 | logz: -2.1e+04 +/- 1.2e-01 | dlogz: 20746.149 >  0.500
+ loglike: -2.1e+04 | params: [-0.42704919 -0.69908349  1.24106648  4.70710557 28.62208285]
+ Average call time: 3.37 sec | Current time: 2019-06-25 15:56:39.554291
+ --------------------------
+iter: 28 | batch: 0 | nc: 1 | ncalls: 28 | bounds: 0 | eff(%):  5.303 | logz: -2.0e+04 +/- 1.2e-01 | dlogz: 20661.931 >  0.500
+ loglike: -2.0e+04 | params: [ 0.20846597 -0.42061745  1.7470406   4.81222886 29.66878149]
+ Average call time: 3.82 sec | Current time: 2019-06-25 15:56:43.373315
+ --------------------------
+iter: 29 | batch: 0 | nc: 1 | ncalls: 29 | bounds: 0 | eff(%):  5.482 | logz: -2.0e+04 +/- 1.2e-01 | dlogz: 20014.465 >  0.500
+ loglike: -2.0e+04 | params: [-0.16049254 -0.31608714  1.24479849  5.95024425 28.36298373]
+ Average call time: 3.39 sec | Current time: 2019-06-25 15:56:46.768134
+ --------------------------
+iter: 30 | batch: 0 | nc: 1 | ncalls: 30 | bounds: 0 | eff(%):  5.660 | logz: -2.0e+04 +/- 1.2e-01 | dlogz: 19841.945 >  0.500
+ loglike: -2.0e+04 | params: [ 0.20144718 -0.1895731   1.75337231  4.73981396 29.51755278]
+ Average call time: 3.98 sec | Current time: 2019-06-25 15:56:50.744026
+ --------------------------
+iter: 31 | batch: 0 | nc: 1 | ncalls: 31 | bounds: 0 | eff(%):  5.838 | logz: -1.9e+04 +/- 1.2e-01 | dlogz: 19731.364 >  0.500
+ loglike: -1.9e+04 | params: [ 0.15123737 -0.67048732  1.21419139  6.37294704 28.21691208]
+ Average call time: 3.43 sec | Current time: 2019-06-25 15:56:54.171719
+ --------------------------
+iter: 32 | batch: 0 | nc: 1 | ncalls: 32 | bounds: 0 | eff(%):  6.015 | logz: -1.8e+04 +/- 1.2e-01 | dlogz: 19066.985 >  0.500
+ loglike: -1.8e+04 | params: [ 0.07148042 -0.57479082  1.55557378  1.80787179 28.82350136]
+ Average call time: 3.36 sec | Current time: 2019-06-25 15:56:57.528270
+ --------------------------
+iter: 33 | batch: 0 | nc: 1 | ncalls: 33 | bounds: 0 | eff(%):  6.191 | logz: -1.7e+04 +/- 1.2e-01 | dlogz: 17882.125 >  0.500
+ loglike: -1.7e+04 | params: [ 0.23827676 -0.38437774  1.61886531  6.66860878 29.07848535]
+ Average call time: 3.85 sec | Current time: 2019-06-25 15:57:01.375585
+ --------------------------
+iter: 34 | batch: 0 | nc: 1 | ncalls: 34 | bounds: 0 | eff(%):  6.367 | logz: -1.7e+04 +/- 1.2e-01 | dlogz: 16809.198 >  0.500
+ loglike: -1.7e+04 | params: [ 0.08928889 -0.85502268  1.34995262  2.1283797  28.20058706]
+ Average call time: 3.37 sec | Current time: 2019-06-25 15:57:04.748161
+ --------------------------
+iter: 35 | batch: 0 | nc: 1 | ncalls: 35 | bounds: 0 | eff(%):  6.542 | logz: -1.6e+04 +/- 1.2e-01 | dlogz: 16646.506 >  0.500
+ loglike: -1.6e+04 | params: [ 0.19785195 -0.98930825  1.37232912  1.1593066  28.13668512]
+ Average call time: 3.38 sec | Current time: 2019-06-25 15:57:08.126511
+ --------------------------
+iter: 36 | batch: 0 | nc: 1 | ncalls: 36 | bounds: 0 | eff(%):  6.716 | logz: -1.6e+04 +/- 1.2e-01 | dlogz: 15834.388 >  0.500
+ loglike: -1.6e+04 | params: [-0.49429139 -0.10366202  4.9902118   6.46743202 25.15083967]
+ Average call time: 3.37 sec | Current time: 2019-06-25 15:57:11.499998
+ --------------------------
+iter: 37 | batch: 0 | nc: 1 | ncalls: 37 | bounds: 0 | eff(%):  6.890 | logz: -1.5e+04 +/- 1.2e-01 | dlogz: 15749.128 >  0.500
+ loglike: -1.5e+04 | params: [ 0.11373534 -0.49244493  1.08477321  3.52482189 27.23156528]
+ Average call time: 3.36 sec | Current time: 2019-06-25 15:57:14.863023
+ --------------------------
+iter: 38 | batch: 0 | nc: 1 | ncalls: 38 | bounds: 0 | eff(%):  7.063 | logz: -1.5e+04 +/- 1.2e-01 | dlogz: 15451.027 >  0.500
+ loglike: -1.5e+04 | params: [ 0.19808997 -0.6610031   1.48033249  4.1785544  28.49603532]
+ Average call time: 3.80 sec | Current time: 2019-06-25 15:57:18.664476
+ --------------------------
+iter: 39 | batch: 0 | nc: 1 | ncalls: 39 | bounds: 0 | eff(%):  7.236 | logz: -1.5e+04 +/- 1.2e-01 | dlogz: 15291.863 >  0.500
+ loglike: -1.5e+04 | params: [-0.49273229 -0.77495827  1.33676055  6.62512033 28.57383609]
+ Average call time: 3.80 sec | Current time: 2019-06-25 15:57:22.465133
+ --------------------------
+iter: 40 | batch: 0 | nc: 1 | ncalls: 40 | bounds: 0 | eff(%):  7.407 | logz: -1.5e+04 +/- 1.2e-01 | dlogz: 15168.170 >  0.500
+ loglike: -1.5e+04 | params: [-0.19279659 -0.99428492  4.81605746  4.88149554 25.03273138]
+ Average call time: 3.88 sec | Current time: 2019-06-25 15:57:26.350019
+ --------------------------
+iter: 41 | batch: 0 | nc: 1 | ncalls: 41 | bounds: 0 | eff(%):  7.579 | logz: -1.4e+04 +/- 1.2e-01 | dlogz: 15125.847 >  0.500
+ loglike: -1.4e+04 | params: [-0.45514308 -0.81571292  1.18942112  5.43155945 27.9731239 ]
+ Average call time: 3.37 sec | Current time: 2019-06-25 15:57:29.722062
+ --------------------------
+iter: 42 | batch: 0 | nc: 1 | ncalls: 42 | bounds: 0 | eff(%):  7.749 | logz: -1.4e+04 +/- 1.2e-01 | dlogz: 14415.289 >  0.500
+ loglike: -1.4e+04 | params: [ 0.19373528 -0.47086836  4.88474293  4.42329681 25.03218989]
+ Average call time: 3.79 sec | Current time: 2019-06-25 15:57:33.513191
+ --------------------------
+iter: 43 | batch: 0 | nc: 1 | ncalls: 43 | bounds: 0 | eff(%):  7.919 | logz: -1.4e+04 +/- 1.2e-01 | dlogz: 14132.401 >  0.500
+ loglike: -1.4e+04 | params: [ 0.09200539 -0.62956195  1.44384977  3.30120659 28.2564939 ]
+ Average call time: 3.39 sec | Current time: 2019-06-25 15:57:36.899907
+ --------------------------
+iter: 44 | batch: 0 | nc: 1 | ncalls: 44 | bounds: 0 | eff(%):  8.088 | logz: -1.4e+04 +/- 1.2e-01 | dlogz: 13973.138 >  0.500
+ loglike: -1.4e+04 | params: [-0.29783577 -0.91609487  1.78297449  7.58540158 29.84868508]
+ Average call time: 3.35 sec | Current time: 2019-06-25 15:57:40.249699
+ --------------------------
+iter: 45 | batch: 0 | nc: 1 | ncalls: 45 | bounds: 0 | eff(%):  8.257 | logz: -1.4e+04 +/- 1.2e-01 | dlogz: 13912.036 >  0.500
+ loglike: -1.4e+04 | params: [-0.35736211 -0.99139461  1.5100916   0.99163132 28.65207226]
+ Average call time: 3.38 sec | Current time: 2019-06-25 15:57:43.629111
+ --------------------------
+iter: 46 | batch: 0 | nc: 1 | ncalls: 46 | bounds: 0 | eff(%):  8.425 | logz: -1.4e+04 +/- 1.2e-01 | dlogz: 13652.726 >  0.500
+ loglike: -1.4e+04 | params: [-0.49298857 -0.09935138  4.90896572  4.49946797 25.42386922]
+ Average call time: 3.28 sec | Current time: 2019-06-25 15:57:46.904494
+ --------------------------
+iter: 47 | batch: 0 | nc: 1 | ncalls: 47 | bounds: 0 | eff(%):  8.592 | logz: -1.3e+04 +/- 1.2e-01 | dlogz: 13579.283 >  0.500
+ loglike: -1.3e+04 | params: [-0.10336534 -0.48068858  1.9558838   5.86340464 29.98037613]
+ Average call time: 3.81 sec | Current time: 2019-06-25 15:57:50.711989
+ --------------------------
+iter: 48 | batch: 0 | nc: 1 | ncalls: 48 | bounds: 0 | eff(%):  8.759 | logz: -1.3e+04 +/- 1.2e-01 | dlogz: 13252.103 >  0.500
+ loglike: -1.3e+04 | params: [-0.45959474 -0.54835159  4.92801897  1.07914733 25.59690449]
+ Average call time: 3.81 sec | Current time: 2019-06-25 15:57:54.517501
+ --------------------------
+iter: 49 | batch: 0 | nc: 1 | ncalls: 49 | bounds: 0 | eff(%):  8.925 | logz: -1.3e+04 +/- 1.2e-01 | dlogz: 13163.048 >  0.500
+ loglike: -1.3e+04 | params: [ 0.18668789 -0.82228373  4.92841037  5.26963329 25.71008859]
+ Average call time: 3.37 sec | Current time: 2019-06-25 15:57:57.884378
+ --------------------------
+iter: 50 | batch: 0 | nc: 1 | ncalls: 50 | bounds: 0 | eff(%):  9.091 | logz: -1.3e+04 +/- 1.2e-01 | dlogz: 12929.829 >  0.500
+ loglike: -1.3e+04 | params: [ 1.61236425e-02 -9.42386861e-01  1.33843891e+00  2.73320396e+00
+  2.79528727e+01]
+ Average call time: 4.00 sec | Current time: 2019-06-25 15:58:01.884443
+ --------------------------
+iter: 51 | batch: 0 | nc: 1 | ncalls: 51 | bounds: 0 | eff(%):  9.256 | logz: -1.3e+04 +/- 1.2e-01 | dlogz: 12898.162 >  0.500
+ loglike: -1.3e+04 | params: [-0.35092108 -0.55604638  4.69906938  5.40433144 25.40761548]
+ Average call time: 3.45 sec | Current time: 2019-06-25 15:58:05.338082
+ --------------------------
+iter: 52 | batch: 0 | nc: 1 | ncalls: 52 | bounds: 0 | eff(%):  9.420 | logz: -1.2e+04 +/- 1.2e-01 | dlogz: 12889.705 >  0.500
+ loglike: -1.2e+04 | params: [ 0.04033204 -0.76879552  1.09817757  2.13318303 27.05058015]
+ Average call time: 3.35 sec | Current time: 2019-06-25 15:58:08.685128
+ --------------------------
+iter: 53 | batch: 0 | nc: 1 | ncalls: 53 | bounds: 0 | eff(%):  9.584 | logz: -1.2e+04 +/- 1.2e-01 | dlogz: 12278.251 >  0.500
+ loglike: -1.2e+04 | params: [-0.35361751 -0.94260855  4.65897819  6.66229372 25.79502139]
+ Average call time: 3.79 sec | Current time: 2019-06-25 15:58:12.475620
+ --------------------------
+iter: 54 | batch: 0 | nc: 1 | ncalls: 54 | bounds: 0 | eff(%):  9.747 | logz: -1.2e+04 +/- 1.2e-01 | dlogz: 12001.790 >  0.500
+ loglike: -1.2e+04 | params: [ 0.04502887 -0.29354274  1.12696604  1.99156604 26.85528786]
+ Average call time: 3.38 sec | Current time: 2019-06-25 15:58:15.851479
+ --------------------------
+iter: 55 | batch: 0 | nc: 1 | ncalls: 55 | bounds: 0 | eff(%):  9.910 | logz: -1.2e+04 +/- 1.2e-01 | dlogz: 11967.594 >  0.500
+ loglike: -1.2e+04 | params: [-0.11488483 -0.19293371  1.39586524  3.83300065 27.83670924]
+ Average call time: 3.35 sec | Current time: 2019-06-25 15:58:19.200483
+ --------------------------
+iter: 56 | batch: 0 | nc: 1 | ncalls: 56 | bounds: 0 | eff(%): 10.072 | logz: -1.2e+04 +/- 1.2e-01 | dlogz: 11868.723 >  0.500
+ loglike: -1.2e+04 | params: [-0.10495467 -0.37027343  4.52605533  5.16499947 25.11343958]
+ Average call time: 3.79 sec | Current time: 2019-06-25 15:58:22.987341
+ --------------------------
+iter: 57 | batch: 0 | nc: 1 | ncalls: 57 | bounds: 0 | eff(%): 10.233 | logz: -1.2e+04 +/- 1.2e-01 | dlogz: 11727.232 >  0.500
+ loglike: -1.2e+04 | params: [-0.04550874 -0.03520348  4.87036592  7.44722759 25.92339916]
+ Average call time: 3.37 sec | Current time: 2019-06-25 15:58:26.355858
+ --------------------------
+iter: 58 | batch: 0 | nc: 1 | ncalls: 58 | bounds: 0 | eff(%): 10.394 | logz: -1.2e+04 +/- 1.2e-01 | dlogz: 11633.256 >  0.500
+ loglike: -1.2e+04 | params: [-0.38382184 -0.61999776  4.93067794  2.23750938 26.13336982]
+ Average call time: 3.43 sec | Current time: 2019-06-25 15:58:29.788201
+ --------------------------
+iter: 59 | batch: 0 | nc: 1 | ncalls: 59 | bounds: 0 | eff(%): 10.555 | logz: -1.2e+04 +/- 1.2e-01 | dlogz: 11610.072 >  0.500
+ loglike: -1.2e+04 | params: [-0.1255596  -0.30785627  1.30447046  1.91565723 27.48683934]
+ Average call time: 3.37 sec | Current time: 2019-06-25 15:58:33.158375
+ --------------------------
+iter: 60 | batch: 0 | nc: 1 | ncalls: 60 | bounds: 0 | eff(%): 10.714 | logz: -1.1e+04 +/- 1.2e-01 | dlogz: 11509.247 >  0.500
+ loglike: -1.1e+04 | params: [-0.19649127 -0.85393307  1.72633938  4.84046076 29.22029021]
+ Average call time: 3.41 sec | Current time: 2019-06-25 15:58:36.564066
+ --------------------------
+iter: 61 | batch: 0 | nc: 1 | ncalls: 61 | bounds: 0 | eff(%): 10.873 | logz: -1.1e+04 +/- 1.2e-01 | dlogz: 11210.478 >  0.500
+ loglike: -1.1e+04 | params: [-0.15273761 -0.14136658  1.41742088  6.83860177 27.98561521]
+ Average call time: 3.84 sec | Current time: 2019-06-25 15:58:40.401515
+ --------------------------
+iter: 62 | batch: 0 | nc: 1 | ncalls: 62 | bounds: 0 | eff(%): 11.032 | logz: -1.1e+04 +/- 1.2e-01 | dlogz: 10787.602 >  0.500
+ loglike: -1.1e+04 | params: [-0.11620905 -0.15638356  4.97417461  5.0829738  26.42736665]
+ Average call time: 3.37 sec | Current time: 2019-06-25 15:58:43.769229
+ --------------------------
+iter: 63 | batch: 0 | nc: 1 | ncalls: 63 | bounds: 0 | eff(%): 11.190 | logz: -1.1e+04 +/- 1.2e-01 | dlogz: 10773.984 >  0.500
+ loglike: -1.1e+04 | params: [ 0.19221164 -0.2797586   1.50372414  5.78083049 28.07747135]
+ Average call time: 3.78 sec | Current time: 2019-06-25 15:58:47.553128
+ --------------------------
+iter: 64 | batch: 0 | nc: 1 | ncalls: 64 | bounds: 0 | eff(%): 11.348 | logz: -1.0e+04 +/- 1.2e-01 | dlogz: 10679.482 >  0.500
+ loglike: -1.0e+04 | params: [-0.18379391 -0.06783457  4.47053128  3.61687798 25.1459471 ]
+ Average call time: 3.79 sec | Current time: 2019-06-25 15:58:51.343816
+ --------------------------
+iter: 65 | batch: 0 | nc: 1 | ncalls: 65 | bounds: 0 | eff(%): 11.504 | logz: -1.0e+04 +/- 1.2e-01 | dlogz: 10316.401 >  0.500
+ loglike: -1.0e+04 | params: [ 0.04995332 -0.93447943  4.26204513  6.89220783 25.15805266]
+ Average call time: 3.41 sec | Current time: 2019-06-25 15:58:54.753670
+ --------------------------
+iter: 66 | batch: 0 | nc: 1 | ncalls: 66 | bounds: 0 | eff(%): 11.661 | logz: -1.0e+04 +/- 1.2e-01 | dlogz: 10247.913 >  0.500
+ loglike: -1.0e+04 | params: [-0.4705164  -0.56822348  4.41710339  3.43639502 25.44224555]
+ Average call time: 3.45 sec | Current time: 2019-06-25 15:58:58.206741
+ --------------------------
+iter: 67 | batch: 0 | nc: 1 | ncalls: 67 | bounds: 0 | eff(%): 11.817 | logz: -1.0e+04 +/- 1.2e-01 | dlogz: 10194.690 >  0.500
+ loglike: -1.0e+04 | params: [ 0.1345481  -0.81674433  4.65187677  0.91885289 25.63411906]
+ Average call time: 3.80 sec | Current time: 2019-06-25 15:59:02.003971
+ --------------------------
+iter: 68 | batch: 0 | nc: 1 | ncalls: 68 | bounds: 0 | eff(%): 11.972 | logz: -1.0e+04 +/- 1.2e-01 | dlogz: 10151.123 >  0.500
+ loglike: -1.0e+04 | params: [-0.38355199 -0.63900804  4.82030103  1.12825111 26.36423293]
+ Average call time: 3.85 sec | Current time: 2019-06-25 15:59:05.856125
+ --------------------------
+iter: 69 | batch: 0 | nc: 1 | ncalls: 69 | bounds: 0 | eff(%): 12.127 | logz: -9.9e+03 +/- 1.2e-01 | dlogz: 10016.063 >  0.500
+ loglike: -9.9e+03 | params: [-0.07271908 -0.1106568   4.67256746  1.30384102 25.59492503]
+ Average call time: 3.80 sec | Current time: 2019-06-25 15:59:09.659840
+ --------------------------

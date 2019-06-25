@@ -1,0 +1,17 @@
+Mock Tests (LogLike = 4, ShotNoise On, Nim=512)
+----------
+1 : Fixed (0.2) MDF, Fixed (0.1) LogNorm, Tau, Dist
+      [-0.25, -0.5, 2.0, 3.0, 26.0]
+      (SAME as Paper 1, Job 5)
+
+2 : same as 1, with Nim = 1024
+      (SAME as Paper 1, Job 11)
+
+3 : Fixed (0.2) MDF, Fixed (0.1) LogNorm, NonParam (off Tau: 2.0, 3.0), Dist
+      [-0.25, -0.5, 2.0, 3.0, 26.0]
+      (SAME as Paper 1, Job 8)
+
+4 - 5 : same as 3, with mock Npix = [1e4, 1e5]
+      (SAME as Paper 1, Jobs 47-48)
+
+6 - 7 : same as 4 - 5, with single dust, single metallicity
