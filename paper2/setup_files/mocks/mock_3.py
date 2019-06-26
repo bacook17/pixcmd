@@ -1,26 +1,26 @@
-# Mock configuration file for Paper 1
+# Mock configuration file for Paper 2
 # Ben Cook (bcook@cfa.harvard.edu)
 
 ###############################################
-# CONFIG FILE for mock run #8
+# CONFIG FILE for mock run #3
 # MOCK Galaxy:
-#    Metallicity Model: Fixed-Width (0.2) MDF
+#    Metallicity Model: Single FeH
 #            [Fe/H] = -0.25
-#    Dust Model:        Fixed-Width (0.1) LogNormal (Fdust = 0.5)
-#        log E(B-V) = -0.5
+#    Dust Model:        Single Dust
+#        log E(B-V) = -1.0
 #    SFH Model: Tau
 #              Npix = 2.0
 #              tau  = 3.0
 #    Distance
-#              dmod = 26.0
+#              dmod = 29.0
 #
 # MODEL Galaxy: Matches input model
 #       WITH Non-Param SFH
 # Priors:
 #           [Fe/H] : [-0.5, 0.25]
-#       log E(B-V) : [-1.0, 0.0]
+#       log E(B-V) : [-1.5, 0.0]
 #            SFH_i : tau_model +/- 1 dex 
-#         distance : [25.0, 30.0]
+#         distance : [27.0, 33.0]
 
 import pcmdpy_gpu as ppy
 import multiprocessing
@@ -146,14 +146,14 @@ params['iso_model'] = ppy.isochrones.Isochrone_Model(params['filters'])
 # Set a custom Galaxy Model with four parts
 
 # Metallicity model
-# metalmodel = ppy.metalmodels.SingleFeH()  # Single Metallicity
+metalmodel = ppy.metalmodels.SingleFeH()  # Single Metallicity
 # metalmodel = ppy.metalmodels.NormMDF()  # Gaussian MDF
-metalmodel = ppy.metalmodels.FixedWidthNormMDF(0.2)  # fixed width MDF
+# metalmodel = ppy.metalmodels.FixedWidthNormMDF(0.2)  # fixed width MDF
 
 # Dust model
-# dustmodel = ppy.dustmodels.SingleDust()  # single dust screen
+dustmodel = ppy.dustmodels.SingleDust()  # single dust screen
 # dustmodel = ppy.dustmodels.LogNormDust()  # lognormal screen
-dustmodel = ppy.dustmodels.FixedWidthLogNormDust(0.1)  # fixed width lognorm
+# dustmodel = ppy.dustmodels.FixedWidthLogNormDust(0.1)  # fixed width lognorm
 
 # Age model
 sfhmodel = ppy.sfhmodels.NonParam()  # Fully non-parametric model
@@ -206,11 +206,11 @@ params['shot_noise'] = True
 # The bounds on the flat prior for each parameter
 z_bound = [-0.5, 0.25]  # metallicity
 
-dust_med_bound = [-1.0, 0.0]  # log dust
+dust_med_bound = [-1.5, 0.0]  # log dust
 
 # Only set the distance bounds if allowed to float
 # dmod_bound = None
-dmod_bound = [[25.0, 30.0]]
+dmod_bound = [[27.0, 33.0]]
 
 # Compute the 7-param SFH bound using tau models to bound
 Npix_low, tau = 1.0, 3.0
@@ -218,7 +218,7 @@ model = ppy.sfhmodels.TauModel(iso_step=-1)
 model.set_params([Npix_low, tau])
 lower_sfh = np.log10(model.SFH)
 
-Npix_high = 3.0
+Npix_high = 5.0
 model.set_params([Npix_high, tau])
 upper_sfh = np.log10(model.SFH)
 
@@ -245,10 +245,10 @@ N_mock = 256
 
 # model of the mock galaxy
 feh = -0.25
-log_ebv = -0.5
-log_npix = 2.0
-tau = 3.0
-dmod = 26.0
+log_ebv = -1.0
+log_npix = 3.0
+tau = 2.0
+dmod = 29.0
 
 # Mock data is generated with same model as is fit (except Tau Model)
 metalmodel = metalmodel

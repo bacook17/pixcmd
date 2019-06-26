@@ -1,26 +1,26 @@
-# Mock configuration file for Paper 1
+# Mock configuration file for Paper 2
 # Ben Cook (bcook@cfa.harvard.edu)
 
 ###############################################
-# CONFIG FILE for mock run #48
+# CONFIG FILE for mock run #3
 # MOCK Galaxy:
-#    Metallicity Model: Fixed-Width (0.2) MDF
+#    Metallicity Model: Single FeH
 #            [Fe/H] = -0.25
-#    Dust Model:        Fixed-Width (0.1) LogNormal (Fdust = 0.5)
-#        log E(B-V) = -0.5
+#    Dust Model:        Single Dust
+#        log E(B-V) = -1.0
 #    SFH Model: Tau
-#              Npix = 5.0
+#              Npix = 2.0
 #              tau  = 3.0
 #    Distance
-#              dmod = 26.0
+#              dmod = 29.0
 #
 # MODEL Galaxy: Matches input model
 #       WITH Non-Param SFH
 # Priors:
 #           [Fe/H] : [-0.5, 0.25]
-#       log E(B-V) : [-1.0, 0.0]
+#       log E(B-V) : [-1.5, 0.0]
 #            SFH_i : tau_model +/- 1 dex 
-#         distance : [25.0, 30.0]
+#         distance : [27.0, 33.0]
 
 import pcmdpy_gpu as ppy
 import multiprocessing
@@ -77,7 +77,7 @@ sampler_params['pool'] = pool
 params['dynamic'] = DYNAMIC = True
 
 # The number of dynesty live points
-_nlive = 1000
+_nlive = 500
 if DYNAMIC:
     run_params['nlive_init'] = _nlive
 else:
@@ -108,8 +108,7 @@ sampler_params['first_update'] = {'min_eff': 30.}
 # DYNESTY RUN_NESTED SETTINGS
 
 # The number of max calls for dynesty
-run_params['maxcall'] = 200000
-params['continue_run'] = False
+run_params['maxcall'] = 250000
 
 # The error tolerance for dynesty stopping criterion
 _dlogz = 0.5
@@ -174,7 +173,7 @@ params['gal_model'] = ppy.galaxy.CustomGalaxy(
     distancemodel)
 
 # Add the binned hess values and the mean magnitude and color terms
-params['like_mode'] = 4
+params['like_mode'] = 5
 
 # The hess bins to compute the likelihood in
 # The magnitude upper/lower bounds are very important to consider
@@ -207,19 +206,19 @@ params['shot_noise'] = True
 # The bounds on the flat prior for each parameter
 z_bound = [-0.5, 0.25]  # metallicity
 
-dust_med_bound = [-1.0, 0.0]  # log dust
+dust_med_bound = [-1.5, 0.0]  # log dust
 
 # Only set the distance bounds if allowed to float
 # dmod_bound = None
-dmod_bound = [[25.0, 30.0]]
+dmod_bound = [[27.0, 33.0]]
 
 # Compute the 7-param SFH bound using tau models to bound
-Npix_low, tau = 4.0, 3.0
+Npix_low, tau = 1.0, 3.0
 model = ppy.sfhmodels.TauModel(iso_step=-1)
 model.set_params([Npix_low, tau])
 lower_sfh = np.log10(model.SFH)
 
-Npix_high = 6.0
+Npix_high = 5.0
 model.set_params([Npix_high, tau])
 upper_sfh = np.log10(model.SFH)
 
@@ -246,10 +245,10 @@ N_mock = 256
 
 # model of the mock galaxy
 feh = -0.25
-log_ebv = -0.5
-log_npix = 5.0
-tau = 3.0
-dmod = 26.0
+log_ebv = -1.0
+log_npix = 3.0
+tau = 2.0
+dmod = 29.0
 
 # Mock data is generated with same model as is fit (except Tau Model)
 metalmodel = metalmodel
