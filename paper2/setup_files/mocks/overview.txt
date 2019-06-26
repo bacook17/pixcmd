@@ -1,17 +1,11 @@
-Mock Tests (LogLike = 4, ShotNoise On, Nim=512)
+Mock Tests (ShotNoise On, Nim=512)
 ----------
-1 : Fixed (0.2) MDF, Fixed (0.1) LogNorm, Tau, Dist
-      [-0.25, -0.5, 2.0, 3.0, 26.0]
-      (SAME as Paper 1, Job 5)
+1 : Single Metallicity/Dust, Tau Model, LikeMode=4
+      [-0.25, -1.0, 3.0, 2.0, 29.0]
 
-2 : same as 1, with Nim = 1024
-      (SAME as Paper 1, Job 11)
+2 : same as 1, with Npix = 1e5
+      [-0.25, -1.0, 5.0, 2.0, 29.0]
 
-3 : Fixed (0.2) MDF, Fixed (0.1) LogNorm, NonParam (off Tau: 2.0, 3.0), Dist
-      [-0.25, -0.5, 2.0, 3.0, 26.0]
-      (SAME as Paper 1, Job 8)
+3 - 4 : Same as 1-2, with Non-Param SFH
 
-4 - 5 : same as 3, with mock Npix = [1e4, 1e5]
-      (SAME as Paper 1, Jobs 47-48)
-
-6 - 7 : same as 4 - 5, with single dust, single metallicity
+5 - 8 : Same as 1-4, with LikeMode = 5
