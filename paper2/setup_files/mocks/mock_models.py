@@ -52,6 +52,17 @@ run_names['mock_7'] = r'NonParam Model, Npix=1e3, LL=5'
 models['mock_8'] = models['mock_4'].copy()
 run_names['mock_8'] = r'NonParam Model, Npix=1e5, LL=5'
 
+models['mock_9'] = models['mock_1'].copy()
+run_names['mock_9'] = 'Tau Model, Npix=1e3, LL=2'
+
+models['mock_10'] = models['mock_2'].copy()
+run_names['mock_10'] = 'Tau Model, Npix=1e5, LL=2'
+
+models['mock_11'] = models['mock_3'].copy()
+run_names['mock_11'] = r'NonParam Model, Npix=1e3, LL=2'
+
+models['mock_12'] = models['mock_4'].copy()
+run_names['mock_12'] = r'NonParam Model, Npix=1e5, LL=2'
 
 for key in models.keys():
     res_file = results_dir + 'paper2_' + key + '.csv'
