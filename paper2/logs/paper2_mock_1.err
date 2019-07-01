@@ -1,1 +1,5 @@
-slurmstepd: error: *** JOB 14891274 ON holyseasgpu11 CANCELLED AT 2019-06-27T13:26:18 ***
+/n/home01/bcook/.conda/envs/py36/lib/python3.6/site-packages/pysynphot/locations.py:46: UserWarning: PYSYN_CDBS is undefined; functionality will be SEVERELY crippled.
+  warnings.warn("PYSYN_CDBS is undefined; functionality will be SEVERELY "
+/n/home01/bcook/.conda/envs/py36/lib/python3.6/site-packages/pysynphot/locations.py:329: UserWarning: Extinction files not found in extinction
+  warnings.warn('Extinction files not found in %s' % (extdir, ))
+Please wait while the GPU states are initializedPlease wait while the GPU states are initialized
