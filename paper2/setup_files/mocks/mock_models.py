@@ -77,6 +77,11 @@ models['mock_12'] = models['mock_4'].copy()
 run_names['mock_12'] = r'NonParam Model, Npix=1e5, LL=2'
 nlive['mock_12'] = nlive['mock_4']
 
+for k in ['mock_13', 'mock_14', 'mock_15', 'mock_16']:
+    models[k] = models['mock_1'].copy()
+    run_names[k] = models['mock_1']
+    nlive[k] = nlive['mock_1']
+
 for key in models.keys():
     res_file = results_dir + 'paper2_' + key + '.csv'
     live_file = res_file.replace('.csv', '_live.csv')
