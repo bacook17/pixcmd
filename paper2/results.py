@@ -94,6 +94,8 @@ base_models[11] = ppy.galaxy.CustomGalaxy(
     ppy.distancemodels.VariableDistance()
 )
 base_models[12] = base_models[4].copy()
+base_models[13] = base_models[9].copy()
+base_models[14] = base_models[9].copy()
 
 
 def add_set(galaxy, mnum, region, key,
