@@ -165,7 +165,7 @@ params['gal_model'] = ppy.galaxy.CustomGalaxy(metalmodel, dustmodel, sfhmodel,
 
 # Add the binned hess values and the mean magnitude and color terms
 params['like_mode'] = 4
-params['ksneff'] = 300
+params['ksneff'] = 10000
 
 # The hess bins to compute the likelihood in
 # The magnitude upper/lower bounds are very important to consider
