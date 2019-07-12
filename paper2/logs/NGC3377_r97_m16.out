@@ -1,0 +1,5 @@
+mprof: Sampling memory every 10.0s
+               JobID    JobName   NTasks  AllocCPUS    AllocGRES  Partition    Elapsed     MaxRSS  MaxVMSize  MaxDiskRead MaxDiskWrite      State 
+-------------------- ---------- -------- ---------- ------------ ---------- ---------- ---------- ---------- ------------ ------------ ---------- 
+         15980836_97    NGC3377                   2        gpu:1        gpu   00:08:56                                                    RUNNING 
+  15980836_97.extern     extern        1          2        gpu:1              00:08:56                                                    RUNNING 

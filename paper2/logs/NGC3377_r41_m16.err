@@ -1,0 +1,21 @@
+Traceback (most recent call last):
+  File "/n/home01/bcook/.conda/envs/py36/lib/python3.6/site-packages/mprof.py", line 237, in run_action
+    multiprocess=args.multiprocess, stream=f)
+  File "/n/home01/bcook/.conda/envs/py36/lib/python3.6/site-packages/memory_profiler.py", line 388, in memory_usage
+    stream.flush()
+OSError: [Errno 116] Stale file handle
+
+During handling of the above exception, another exception occurred:
+
+OSError: [Errno 116] Stale file handle
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/n/home01/bcook/.conda/envs/py36/bin/mprof", line 11, in <module>
+    sys.exit(main())
+  File "/n/home01/bcook/.conda/envs/py36/lib/python3.6/site-packages/mprof.py", line 554, in main
+    actions[get_action()]()
+  File "/n/home01/bcook/.conda/envs/py36/lib/python3.6/site-packages/mprof.py", line 237, in run_action
+    multiprocess=args.multiprocess, stream=f)
+OSError: [Errno 116] Stale file handle
