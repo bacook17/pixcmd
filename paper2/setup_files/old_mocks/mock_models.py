@@ -91,6 +91,7 @@ for key in models.keys():
         results[key] = ppy.results.ResultsPlotter(
             res_file, live_file=live_file, run_name=run_names[key],
             gal_model=models[key], model_is_truth=('mock in key'), nlive=nlive[key],
+            max_logl=np.inf,
             nlive_batch=100)
     except (FileNotFoundError, ValueError, AttributeError) as e:
         print(key, e)
