@@ -2,25 +2,25 @@
 # Ben Cook (bcook@cfa.harvard.edu)
 
 ###############################################
-# CONFIG FILE for mock run #3
+# CONFIG FILE for mock run #1
 # MOCK Galaxy:
 #    Metallicity Model: Single FeH
-#            [Fe/H] = -0.25
+#            [Fe/H] = -0.3
 #    Dust Model:        Single Dust
-#        log E(B-V) = -1.0
+#        log E(B-V) = -1.4
 #    SFH Model: Tau
-#              Npix = 2.0
-#              tau  = 3.0
+#              Npix = 4.0
+#              tau  = 2.0
 #    Distance
 #              dmod = 29.0
 #
 # MODEL Galaxy: Matches input model
-#       WITH Non-Param SFH
 # Priors:
 #           [Fe/H] : [-0.5, 0.25]
-#       log E(B-V) : [-1.5, 0.0]
-#            SFH_i : tau_model +/- 1 dex 
-#         distance : [27.0, 33.0]
+#       log E(B-V) : [-1.0, 0.0]
+#             Npix : [1.0, 6.0]
+#             tau  : [0.1, 8.0]
+#         distance : [27.0, 32.0]
 
 import pcmdpy_gpu as ppy
 import multiprocessing
@@ -108,10 +108,10 @@ sampler_params['first_update'] = {'min_eff': 30.}
 # DYNESTY RUN_NESTED SETTINGS
 
 # The number of max calls for dynesty
-run_params['maxcall'] = 250000
+run_params['maxcall'] = 150000
 
 # The error tolerance for dynesty stopping criterion
-_dlogz = 0.5
+_dlogz = 0.01
 if DYNAMIC:
     run_params['dlogz_init'] = _dlogz
 else:
@@ -120,7 +120,7 @@ else:
 
 if DYNAMIC:
     # How many batches?
-    run_params['maxbatch'] = 10
+    run_params['maxbatch'] = 50
     # How many live points per batch?
     run_params['nlive_batch'] = 100
     # weight function parameters
@@ -156,16 +156,15 @@ dustmodel = ppy.dustmodels.SingleDust()  # single dust screen
 # dustmodel = ppy.dustmodels.FixedWidthLogNormDust(0.1)  # fixed width lognorm
 
 # Age model
-sfhmodel = ppy.sfhmodels.NonParam()  # Fully non-parametric model
+# sfhmodel = ppy.sfhmodels.NonParam()  # Fully non-parametric model
 # sfhmodel = ppy.sfhmodels.ConstantSFR()  # constant Star Formation Rate
-# sfhmodel = ppy.sfhmodels.TauModel()  # exponential SFR decline
+sfhmodel = ppy.sfhmodels.TauModel()  # exponential SFR decline
 # sfhmodel = ppy.sfhmodels.RisingTau()  # Linear x exponential decline
 # sfhmodel = ppy.sfhmodels.SSPModel()  # single age SSP
 
 # Distance model
 # distancemodel = ppy.distancemodels.FixedDistance(26.0)  # fixed dmod=26.0 (1.6 Mpc)
 distancemodel = ppy.distancemodels.VariableDistance()  # dmod floats
-
 params['gal_model'] = ppy.galaxy.CustomGalaxy(
     metalmodel,
     dustmodel,
@@ -174,13 +173,14 @@ params['gal_model'] = ppy.galaxy.CustomGalaxy(
 
 # Add the binned hess values and the mean magnitude and color terms
 params['like_mode'] = 4
+params['ksneff'] = 10000
 
 # The hess bins to compute the likelihood in
 # The magnitude upper/lower bounds are very important to consider
 # relative to distance
-magbins = np.arange(10, 45, 0.05)
-colorbins = np.arange(-1.5, 5.6, 0.05)  # fairly insensitive to distance
-params['bins'] = [magbins, colorbins]
+# magbins = np.arange(10, 45, 0.05)
+# colorbins = np.arange(-1.5, 5.6, 0.05)  # fairly insensitive to distance
+# params['bins'] = [magbins, colorbins]
 
 # Factor to downsample the isochrones
 params['downsample'] = 5
@@ -196,7 +196,7 @@ params['lum_cut'] = np.inf
 params['fixed_seed'] = True
 
 # Average counts of "sky noise" to add in each band
-params['sky_noise'] = None
+params['sky_noise'] = np.array([50., 50.])
 
 params['shot_noise'] = True
 
@@ -210,26 +210,17 @@ dust_med_bound = [-1.5, 0.0]  # log dust
 
 # Only set the distance bounds if allowed to float
 # dmod_bound = None
-dmod_bound = [[27.0, 33.0]]
+dmod_bound = [[27.0, 32.0]]
 
 # Compute the 7-param SFH bound using tau models to bound
-Npix_low, tau = 1.0, 3.0
-model = ppy.sfhmodels.TauModel(iso_step=-1)
-model.set_params([Npix_low, tau])
-lower_sfh = np.log10(model.SFH)
-
-Npix_high = 5.0
-model.set_params([Npix_high, tau])
-upper_sfh = np.log10(model.SFH)
-
-SFH_bounds_arr = np.array([lower_sfh, upper_sfh]).T
-SFH_bounds = list(list(bound) for bound in SFH_bounds_arr)
+Npix_bound = [1.0, 7.0]
+tau_bound = [0.1, 8.0]
 
 # Create a Prior object with given bounds
 prior_bounds = {}
 prior_bounds['feh_bounds'] = [z_bound]
 prior_bounds['dust_bounds'] = [dust_med_bound]
-prior_bounds['age_bounds'] = SFH_bounds
+prior_bounds['age_bounds'] = [Npix_bound, tau_bound]
 prior_bounds['dmod_bounds'] = dmod_bound
 
 params['prior'] = params['gal_model'].get_flat_prior(**prior_bounds)
@@ -244,16 +235,16 @@ params['data_is_mock'] = True
 N_mock = 256
 
 # model of the mock galaxy
-feh = -0.25
-log_ebv = -1.0
+feh = -0.3
+log_ebv = -1.4
 log_npix = 3.0
 tau = 2.0
-dmod = 29.0
+dmod = 30.0
 
-# Mock data is generated with same model as is fit (except Tau Model)
+# Mock data is generated with same model as is fit (except possibly distance)
 metalmodel = metalmodel
 dustmodel = dustmodel
-sfhmodel = ppy.sfhmodels.TauModel()
+sfhmodel = sfhmodel
 distancemodel = ppy.distancemodels.VariableDistance()  # dmod floats
 model_mock = ppy.galaxy.CustomGalaxy(
     metalmodel,
@@ -268,11 +259,14 @@ model_mock.set_params(gal_params)
 # temporary driver to make mock
 driv = ppy.driver.Driver(params['iso_model'], gpu=True)
 # The mock data
-params['data_pcmd'], _ = driv.simulate(model_mock, N_mock,
-                                       fixed_seed=params['fixed_seed'],
-                                       shot_noise=params['shot_noise'],
-                                       sky_noise=params['sky_noise'],
-                                       downsample=params['downsample'],
-                                       mag_system=params['mag_system'])
+pcmd, _ = driv.simulate(model_mock, N_mock,
+                        fixed_seed=params['fixed_seed'],
+                        shot_noise=params['shot_noise'],
+                        sky_noise=params['sky_noise'],
+                        downsample=params['downsample'],
+                        mag_system=params['mag_system'])
+pcmd = pcmd.reshape(2, 256, 256)
+pcmd = pcmd[:, :205, :205].reshape((2, 205*205))
+params['data_pcmd'] = pcmd
 
 del driv

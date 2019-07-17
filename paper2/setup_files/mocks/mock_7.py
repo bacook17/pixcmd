@@ -5,12 +5,12 @@
 # CONFIG FILE for mock run #3
 # MOCK Galaxy:
 #    Metallicity Model: Single FeH
-#            [Fe/H] = -0.25
+#            [Fe/H] = -0.3
 #    Dust Model:        Single Dust
-#        log E(B-V) = -1.0
+#        log E(B-V) = -1.4
 #    SFH Model: Tau
-#              Npix = 2.0
-#              tau  = 3.0
+#              Npix = 5.0
+#              tau  = 2.0
 #    Distance
 #              dmod = 29.0
 #
@@ -111,7 +111,7 @@ sampler_params['first_update'] = {'min_eff': 30.}
 run_params['maxcall'] = 250000
 
 # The error tolerance for dynesty stopping criterion
-_dlogz = 0.5
+_dlogz = 0.01
 if DYNAMIC:
     run_params['dlogz_init'] = _dlogz
 else:
@@ -120,7 +120,7 @@ else:
 
 if DYNAMIC:
     # How many batches?
-    run_params['maxbatch'] = 10
+    run_params['maxbatch'] = 50
     # How many live points per batch?
     run_params['nlive_batch'] = 100
     # weight function parameters
@@ -173,7 +173,8 @@ params['gal_model'] = ppy.galaxy.CustomGalaxy(
     distancemodel)
 
 # Add the binned hess values and the mean magnitude and color terms
-params['like_mode'] = 5
+params['like_mode'] = 4
+params['ksneff'] = 10000
 
 # The hess bins to compute the likelihood in
 # The magnitude upper/lower bounds are very important to consider
@@ -196,7 +197,7 @@ params['lum_cut'] = np.inf
 params['fixed_seed'] = True
 
 # Average counts of "sky noise" to add in each band
-params['sky_noise'] = None
+params['sky_noise'] = np.array([50., 50.])
 
 params['shot_noise'] = True
 
@@ -244,16 +245,19 @@ params['data_is_mock'] = True
 N_mock = 256
 
 # model of the mock galaxy
-feh = -0.25
-log_ebv = -1.0
-log_npix = 3.0
+feh = -0.3
+log_ebv = -1.4
+log_npix = 5.0
 tau = 2.0
-dmod = 29.0
+dmod = 30.0
 
 # Mock data is generated with same model as is fit (except Tau Model)
 metalmodel = metalmodel
 dustmodel = dustmodel
-sfhmodel = ppy.sfhmodels.TauModel()
+model = ppy.sfhmodels.TauModel(iso_step=-1)
+model.set_params([log_npix, tau])
+model_sfh_params = np.log10(model.SFH)
+sfhmodel = sfhmodel
 distancemodel = ppy.distancemodels.VariableDistance()  # dmod floats
 model_mock = ppy.galaxy.CustomGalaxy(
     metalmodel,
@@ -261,7 +265,7 @@ model_mock = ppy.galaxy.CustomGalaxy(
     sfhmodel,
     distancemodel)
 
-gal_params = np.array([feh, log_ebv, log_npix, tau, dmod])
+gal_params = np.array([feh, log_ebv] + list(model_sfh_params) + [dmod])
 model_mock.set_params(gal_params)
 
 # Create the mock data

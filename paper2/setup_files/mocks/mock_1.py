@@ -5,14 +5,14 @@
 # CONFIG FILE for mock run #1
 # MOCK Galaxy:
 #    Metallicity Model: Single FeH
-#            [Fe/H] = -0.25
+#            [Fe/H] = -0.3
 #    Dust Model:        Single Dust
-#        log E(B-V) = -1.0
+#        log E(B-V) = -1.4
 #    SFH Model: Tau
-#              Npix = 3.0
+#              Npix = 2.0
 #              tau  = 2.0
 #    Distance
-#              dmod = 29.0
+#              dmod = 25.0
 #
 # MODEL Galaxy: Matches input model
 # Priors:
@@ -77,7 +77,7 @@ sampler_params['pool'] = pool
 params['dynamic'] = DYNAMIC = True
 
 # The number of dynesty live points
-_nlive = 300
+_nlive = 500
 if DYNAMIC:
     run_params['nlive_init'] = _nlive
 else:
@@ -111,7 +111,7 @@ sampler_params['first_update'] = {'min_eff': 30.}
 run_params['maxcall'] = 150000
 
 # The error tolerance for dynesty stopping criterion
-_dlogz = 0.5
+_dlogz = 0.01
 if DYNAMIC:
     run_params['dlogz_init'] = _dlogz
 else:
@@ -120,7 +120,7 @@ else:
 
 if DYNAMIC:
     # How many batches?
-    run_params['maxbatch'] = 10
+    run_params['maxbatch'] = 50
     # How many live points per batch?
     run_params['nlive_batch'] = 100
     # weight function parameters
@@ -173,6 +173,7 @@ params['gal_model'] = ppy.galaxy.CustomGalaxy(
 
 # Add the binned hess values and the mean magnitude and color terms
 params['like_mode'] = 4
+params['ksneff'] = 10000
 
 # The hess bins to compute the likelihood in
 # The magnitude upper/lower bounds are very important to consider
@@ -195,7 +196,7 @@ params['lum_cut'] = np.inf
 params['fixed_seed'] = True
 
 # Average counts of "sky noise" to add in each band
-params['sky_noise'] = None
+params['sky_noise'] = np.array([50., 50.])
 
 params['shot_noise'] = True
 
@@ -209,10 +210,10 @@ dust_med_bound = [-1.5, 0.0]  # log dust
 
 # Only set the distance bounds if allowed to float
 # dmod_bound = None
-dmod_bound = [[27.0, 33.0]]
+dmod_bound = [[22.0, 28.0]]
 
 # Compute the 7-param SFH bound using tau models to bound
-Npix_bound = [1.0, 6.0]
+Npix_bound = [1.0, 7.0]
 tau_bound = [0.1, 8.0]
 
 # Create a Prior object with given bounds
@@ -231,14 +232,14 @@ params['prior'] = params['gal_model'].get_flat_prior(**prior_bounds)
 params['data_is_mock'] = True
 
 # scale of mock image (N_mock x N_mock)
-N_mock = 256
+N_mock = 2048
 
 # model of the mock galaxy
-feh = -0.25
-log_ebv = -1.0
-log_npix = 3.0
+feh = -0.3
+log_ebv = -1.4
+log_npix = 2.0
 tau = 2.0
-dmod = 29.0
+dmod = 25.0
 
 # Mock data is generated with same model as is fit (except possibly distance)
 metalmodel = metalmodel
