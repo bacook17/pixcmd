@@ -236,7 +236,7 @@ N_mock = 256
 # model of the mock galaxy
 feh = -0.3
 log_ebv = -1.4
-log_npix = 3.0
+log_npix = 4.0
 tau = 2.0
 dmod = 30.0
 
